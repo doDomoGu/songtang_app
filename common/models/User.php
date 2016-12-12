@@ -1,189 +1,82 @@
 <?php
+
 namespace common\models;
 
 use Yii;
-use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
 
-/**
- * User model
- *
- * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
- * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
- */
-class User extends ActiveRecord implements IdentityInterface
+class User extends \yii\db\ActiveRecord
 {
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
-
-
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
+    public function validatePassword($password)
     {
-        return '{{%user}}';
+        return $this->password === md5($password);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
+    public function attributeLabels(){
         return [
-            TimestampBehavior::className(),
+            'username' => '用户名(邮箱)',
+            'password' => '密码',
+            'password_true' => '密码22',
+            'name' => '姓名',
+            'aid' => '地区id',
+            'bid' => '业态id',
+            'did' => '部门id',
+            'position_id' => '职位id',
+            'gender' => '性别',
+            'birthday' => '生日',
+            'join_date' => '入职日期',
+            'contract_date' => '合同到期日期',
+            'mobile' => '联系手机',
+            'phone' => '联系电话',
+            'describe' => '其他备注',
+            'ord' => '排序',
+            'status' => '状态'
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['username', 'password', 'name', 'ord', 'status'], 'required'],
+            ['username','unique'],
+            [['id', 'ord', 'status', 'position_id', 'gender'], 'integer'],
+            ['username','email'],
+            ['username','unique','on'=>'create', 'targetClass' => 'app\models\User', 'message' => '此用户名已经被使用。'],
+            [['reg_code', 'forgetpw_code'],'default','value'=>''],
+            [['reg_code', 'forgetpw_code', 'birthday', 'join_date', 'contract_date', 'mobile', 'phone', 'describe','password_true'], 'safe']
+
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id)
+/*CREATE TABLE `user` (
+`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+`username` varchar(100) NOT NULL,
+`password` varchar(100) NOT NULL,
+`reg_code` varchar(255) NOT NULL,
+`forgetpw_code` varchar(255) NOT NULL,
+`name` varchar(100) NOT NULL,
+`is_admin` tinyint(1) unsigned DEFAULT '0',
+`position_id` int(9) unsigned NOT NULL DEFAULT '0',
+`gender` tinyint(1) unsigned NOT NULL DEFAULT '0',
+`birthday` date DEFAULT NULL,
+`join_date` date DEFAULT NULL,
+`mobile` varchar(255) NOT NULL DEFAULT '',
+`phone` varchar(255) NOT NULL DEFAULT '',
+`describe` text NOT NULL,
+`ord` int(9) NOT NULL DEFAULT '0',
+`status` tinyint(1) NOT NULL DEFAULT '0',
+PRIMARY KEY (`id`),
+UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8*/
+
+
+    /*ALTER TABLE `user`
+     ADD `contract_date` DATE DEFAULT NULL AFTER `join_date`,
+     ADD `head_img` VARCHAR(255) DEFAULT NULL AFTER `contract_date`;*/
+
+    /*ALTER TABLE `user` ADD `password_true` VARCHAR(255) DEFAULT NULL AFTER `password`;*/
+
+    /*public function getPosition()
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        if (!static::isPasswordResetTokenValid($token)) {
-            return null;
-        }
-
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return bool
-     */
-    public static function isPasswordResetTokenValid($token)
-    {
-        if (empty($token)) {
-            return false;
-        }
-
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        return $timestamp + $expire >= time();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
-        return $this->getPrimaryKey();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
-    }
-
-    /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
-    }
-
-    /**
-     * Generates "remember me" authentication key
-     */
-    public function generateAuthKey()
-    {
-        $this->auth_key = Yii::$app->security->generateRandomString();
-    }
-
-    /**
-     * Generates new password reset token
-     */
-    public function generatePasswordResetToken()
-    {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
-    }
-
-    /**
-     * Removes password reset token
-     */
-    public function removePasswordResetToken()
-    {
-        $this->password_reset_token = null;
-    }
+        return $this->hasOne('app\models\Position', array('id' => 'position_id'));
+    }*/
 }
