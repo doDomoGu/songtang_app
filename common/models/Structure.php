@@ -78,12 +78,12 @@ class Structure extends \yii\db\ActiveRecord
                 }
 
                 //补全relation
-                $list1 = Structure::find()->groupBy('aid,bid')->all();
+                $list1 = Structure::find()->where(['>','aid',0])->groupBy('aid,bid')->all();
                 foreach($list1 as $l){
                     $this->addOne($l->aid,$l->bid,0);
                 }
 
-                $list2 = Structure::find()->groupBy('bid,did')->all();
+                $list2 = Structure::find()->where(['>','did',0])->groupBy('bid,did')->all();
                 foreach($list2 as $l){
                     $this->addOne(0,$l->bid,$l->did);
                 }

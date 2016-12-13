@@ -1,6 +1,6 @@
 <?php
 use yii\bootstrap\Modal;
-use app\components\CommonFunc;
+use common\components\CommonFunc;
 use yii\bootstrap\Html;
 
 $this->title = '参数设置 - 地区';

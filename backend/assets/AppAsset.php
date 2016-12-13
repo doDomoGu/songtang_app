@@ -24,11 +24,11 @@ class AppAsset extends AssetBundle
 
     //导入当前页的功能js文件，注意加载顺序，这个应该最后调用  文件路径相对@web即可
     public static function addJsFile($view, $jsfile) {
-        $view->registerJsFile($jsfile, ['depends' => 'app\assets\AppAsset']);
+        $view->registerJsFile($jsfile, ['depends' => 'backend\assets\AppAsset']);
     }
     //导入当前页的功能js代码，注意加载顺序，这个应该最后调用  文件路径相对@web即可
     public static function addJs($view, $jsString) {
-        $view->registerJs($jsString, ['depends' => 'app\assets\AppAsset']);
+        $view->registerJs($jsString, ['depends' => 'backend\assets\AppAsset']);
     }
     //导入当前页的样式css文件，注意加载顺序，这个应该最后调用  文件路径相对@web即可
     public static function addCssFile($view, $cssfile) {

@@ -6,7 +6,7 @@ use yii\bootstrap\Html;
     else
         $this->title = '参数设置 - 职位';
 
-    app\assets\AppAsset::addJsFile($this,'js/main/setting/position.js');
+    backend\assets\AppAsset::addJsFile($this,'js/main/setting/position.js');
 ?>
 <section>
     <p>
@@ -30,7 +30,7 @@ use yii\bootstrap\Html;
                 <td><?=$l->id?></td>
                 <td><?=$l->name?></td>
                 <td><?=$l->alias?></td>
-                <td><?=\app\components\CommonFunc::getStatusCn($l->status)?></td>
+                <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>
                     <?php if($p_id==0):?>
                         <?=Html::a('进入扩展职位信息',['/setting/position','p_id'=>$l->id],['class'=>'btn btn-xs btn-success'])?>

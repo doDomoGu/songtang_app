@@ -2,7 +2,7 @@
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
     $this->title = '组织结构';
-    app\assets\AppAsset::addJsFile($this,'js/main/structure/index.js');
+    backend\assets\AppAsset::addJsFile($this,'js/main/structure/index.js');
 ?>
 <section>
     <table class="table table-bordered" style="background: #fafafa;">
@@ -42,7 +42,7 @@ use yii\bootstrap\Html;
                 <td rowspan="<?=$count?>" ><?=$aArr[$l->aid]?></td>
                 <td class="td-empty"></td>
                 <td class="td-empty"></td>
-                <td><?=\app\components\CommonFunc::getStatusCn($l->status)?></td>
+                <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>
                     <?/*=Html::a('添加业态','script:void(0)',['data-pid'=>$l->aid,'data-pname'=>$aArr[$l->aid],'data-type'=>'area','data-toggle'=>"modal",'data-target'=>"#addModal",'class'=>'btn btn-xs btn-success'])*/?>
                 </td>
@@ -53,7 +53,7 @@ use yii\bootstrap\Html;
                     <?=$bArr[$b->bid]?>
                 </td>
                 <td class="td-empty"></td>
-                <td><?=\app\components\CommonFunc::getStatusCn($b->status)?></td>
+                <td><?=\common\components\CommonFunc::getStatusCn($b->status)?></td>
                 <td>
                     <?=Html::a('添加部门','script:void(0)',['data-aid'=>$l->aid,'data-bid'=>$b->bid,'data-p_id'=>0,'data-toggle'=>"modal",'data-target'=>"#addModal",'class'=>'btn btn-xs btn-warning'])?>
                 </td>
@@ -64,7 +64,7 @@ use yii\bootstrap\Html;
                     <td>
                     <?=$c->name?>
                     </td>
-                    <td><?=\app\components\CommonFunc::getStatusCn($c->status)?></td>
+                    <td><?=\common\components\CommonFunc::getStatusCn($c->status)?></td>
                     <td>
                         <?=Html::a('添加子部门','script:void(0)',['data-aid'=>$l->aid,'data-bid'=>$b->bid,'data-p_id'=>$c->did,'data-toggle'=>"modal",'data-target'=>"#addModal",'class'=>'btn btn-xs btn-primary'])?>
                     </td>

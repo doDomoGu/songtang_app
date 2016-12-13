@@ -1,9 +1,9 @@
 <?php
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
-use app\components\CommonFunc;
+use common\components\CommonFunc;
 $this->title = '参数设置 - 部门';
-app\assets\AppAsset::addJsFile($this,'js/main/setting/department.js');
+backend\assets\AppAsset::addJsFile($this,'js/main/setting/department.js');
 ?>
 
 <div style="margin-bottom: 10px;">
