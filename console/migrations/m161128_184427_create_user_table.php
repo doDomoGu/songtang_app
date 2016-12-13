@@ -17,6 +17,7 @@ class m161128_184427_create_user_table extends Migration
             'username'=> $this->string(200)->notNull(),
             'password'=> $this->string(32)->notNull(),
             'password_true'=> $this->string(100)->notNull(),
+            'name'=> $this->string(200)->notNull(),
             'aid' => $this->integer(11)->notNull(),
             'bid' => $this->integer(11)->notNull(),
             'did' => $this->integer(11)->notNull(),

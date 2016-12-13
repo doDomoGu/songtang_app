@@ -200,11 +200,11 @@ class Structure extends \yii\db\ActiveRecord
     }
 
     public function getBusiness(){
-        return $this->hasOne('app\models\Business', array('id' => 'bid'));
+        return $this->hasOne('common\models\Business', array('id' => 'bid'));
     }
 
     public function getDepartment(){
-        return $this->hasOne('app\models\Department', array('id' => 'did'));
+        return $this->hasOne('common\models\Department', array('id' => 'did'));
     }
 
 

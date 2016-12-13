@@ -1,10 +1,10 @@
 <?php
 namespace backend\controllers;
 
-use app\models\Area;
-use app\models\Business;
-use app\models\Department;
-use app\models\Structure;
+use common\models\Area;
+use common\models\Business;
+use common\models\Department;
+use common\models\Structure;
 use Yii;
 use yii\web\Response;
 

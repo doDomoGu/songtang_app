@@ -27,10 +27,10 @@ use yii\bootstrap\Html;
                 <td><?=$l->name?></td>
                 <td><?=$aArr[$l->aid]?></td>
                 <td><?=$bArr[$l->bid]?></td>
-                <td><?=\app\models\Department::getFullRoute([$l->did])?></td>
+                <td><?=\common\models\Department::getFullRoute([$l->did])?></td>
                 <td><?=$l->gender?></td>
                 <td><?=$l->birthday?></td>
-                <td><?=\app\components\CommonFunc::getStatusCn($l->status)?></td>
+                <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>
                     <?/*=Html::a('添加业态','script:void(0)',['data-pid'=>$l->aid,'data-pname'=>$aArr[$l->aid],'data-type'=>'area','data-toggle'=>"modal",'data-target'=>"#addModal",'class'=>'btn btn-xs btn-success'])*/?>
                 </td>

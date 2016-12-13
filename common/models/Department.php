@@ -26,10 +26,10 @@ class Department extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getChild()
+    /*public function getChild()
     {
-        return $this->hasMany('app\models\DepartmentClass', array('p_id' => 'id'));
-    }
+        return $this->hasMany('common\models\DepartmentClass', array('p_id' => 'id'));
+    }*/
 
 
     public static function getNameArr()

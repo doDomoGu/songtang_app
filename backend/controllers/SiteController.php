@@ -2,19 +2,14 @@
 
 namespace backend\controllers;
 
-use app\models\Area;
-use app\models\Business;
-use app\models\Department;
-use app\models\Position;
-use app\models\Structure;
-use yii\base\Exception;
-use yii\base\UserException;
-use yii\web\HttpException;
-use app\models\User;
+use common\models\Area;
+use common\models\Business;
+use common\models\Department;
+use common\models\Position;
+use common\models\Structure;
+use common\models\User;
 use Yii;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
+//use common\models\LoginForm;
 use yii\web\Response;
 
 class SiteController extends BaseController

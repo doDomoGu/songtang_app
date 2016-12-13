@@ -68,7 +68,7 @@ class Position extends \yii\db\ActiveRecord
                     $m->save();
                     $ord++;
                 }
-                echo 'position install finish'."<br/>";
+                echo 'Position install finish'."<br/>";
             }
             return true;
         }catch (\Exception $e)
