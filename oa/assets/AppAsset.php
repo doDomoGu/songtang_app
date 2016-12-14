@@ -1,11 +1,11 @@
 <?php
 
-namespace frontend\assets;
+namespace oa\assets;
 
 use yii\web\AssetBundle;
 
 /**
- * Main frontend application asset bundle.
+ * Main oa application asset bundle.
  */
 class AppAsset extends AssetBundle
 {

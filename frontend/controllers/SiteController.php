@@ -19,6 +19,7 @@ use frontend\models\ContactForm;
  */
 class SiteController extends Controller
 {
+    public $layout = 'main2';
     /**
      * @inheritdoc
      */
@@ -83,7 +84,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        $this->layout = 'main2';
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }

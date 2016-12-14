@@ -27,8 +27,16 @@ AppAsset::register($this);
 
 <div class="wrap">
     <div class="container">
-        <?=Yii::$app->user->isGuest?'0000':'1111'?>
-        <?= Alert::widget() ?>
+        <?php if(Yii::$app->user->isGuest):?>
+            <a href="/site/login" >login</a>
+        <?php else:?>
+            <?=Html::beginForm(['/site/logout'], 'post')
+            . Html::submitButton(
+                'Logout (' . Yii::$app->user->identity->username . ')',
+                ['class' => 'btn btn-link logout']
+            )
+            . Html::endForm()?>
+        <?php endif;?>
         <?= $content ?>
     </div>
 </div>
