@@ -30,12 +30,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if(Yii::$app->user->isGuest){
-            echo '0000';
-        }else{
-            echo '1111';
-        }
-        exit;
+
         return $this->render('index');
     }
 }
