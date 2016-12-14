@@ -27,7 +27,7 @@ use yii\bootstrap\Html;
                 <td><?=$l->name?></td>
                 <td><?=$aArr[$l->aid]?></td>
                 <td><?=$bArr[$l->bid]?></td>
-                <td><?=\common\models\Department::getFullRoute([$l->did])?></td>
+                <td><?=\user\models\Department::getFullRoute([$l->did])?></td>
                 <td><?=$l->gender?></td>
                 <td><?=$l->birthday?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>

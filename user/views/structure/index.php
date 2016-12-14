@@ -2,7 +2,7 @@
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
     $this->title = '组织结构';
-    backend\assets\AppAsset::addJsFile($this,'js/main/structure/index.js');
+    user\assets\AppAsset::addJsFile($this,'js/main/structure/index.js');
 ?>
 <section>
     <table class="table table-bordered" style="background: #fafafa;">

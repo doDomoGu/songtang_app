@@ -3,7 +3,7 @@ use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
 use common\components\CommonFunc;
 $this->title = '参数设置 - 部门';
-backend\assets\AppAsset::addJsFile($this,'js/main/setting/department.js');
+user\assets\AppAsset::addJsFile($this,'js/main/setting/department.js');
 ?>
 
 <div style="margin-bottom: 10px;">

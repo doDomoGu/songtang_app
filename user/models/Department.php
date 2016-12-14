@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace user\models;
 
 //部门
 class Department extends \yii\db\ActiveRecord
@@ -25,11 +25,6 @@ class Department extends \yii\db\ActiveRecord
             [['name', 'alias'], 'safe'],
         ];
     }
-
-    /*public function getChild()
-    {
-        return $this->hasMany('common\models\DepartmentClass', array('p_id' => 'id'));
-    }*/
 
 
     public static function getNameArr()

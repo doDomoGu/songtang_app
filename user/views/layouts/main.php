@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use backend\assets\AppAsset;
+use user\assets\AppAsset;
 
 AppAsset::register($this);
 ?>
@@ -16,7 +16,7 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title><?=Yii::$app->id.($this->title!=''?'_'.Html::encode($this->title):'') ?></title>
     <?php $this->head() ?>
 </head>
 <body>

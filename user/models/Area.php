@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace user\models;
 
 
 //地区

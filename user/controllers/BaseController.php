@@ -1,7 +1,6 @@
 <?php
-namespace backend\controllers;
+namespace user\controllers;
 
-use yii\bootstrap\Html;
 use Yii;
 use yii\web\Controller;
 
@@ -82,45 +81,6 @@ $s=5/0;
 
         $this->redirect(Yii::$app->urlManager->createUrl(Yii::$app->user->loginUrl));
         Yii::$app->end();
-    }
-
-    //检测是否在房间
-    public function checkIsInRoom(){
-        if(!Yii::$app->user->isGuest) {
-            $uid = Yii::$app->user->id;
-            $roomExist = Room::find()
-                ->where(['player_1' => $uid])
-                ->orWhere(['player_2' => $uid])
-                ->andWhere(['in','status',Room::$status_normal])
-                ->one();
-            if ($roomExist) {
-                $this->roomId = $roomExist->id;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function setNavItems(){
-        $items[] = ['label' => '游戏规则', 'url' => ['/site/rule']];
-        if(Yii::$app->user->isGuest){
-            $items[] = ['label' => '登录', 'url' => ['/site/login']];
-            $items[] = ['label' => '注册', 'url' => ['/site/register']];
-        }else{
-            $items[] = ['label' => '房间列表', 'url' => ['/room'] , 'active'=>($this->id=='room' && $this->action->id=='index')?true:false];
-            if($this->isInRoom && $this->roomId>0 && (!in_array($this->id,['room','game'])))
-                $items[] = ['label' => '进入你的房间<span class="label label-warning">!</span>', 'url' => ['/room/'.$this->roomId],'encode'=>false];
-            $items[] = ['label' => '个人中心(' . $this->user->nickname . ')', 'url'=> ['/user'], 'active' => ($this->id=='user')?true:false];
-            $items[] = '<li>'
-                . Html::beginForm(['/site/logout'], 'post', ['class' => 'navbar-form'])
-                . Html::submitButton(
-                    '登出',
-                    ['class' => 'btn btn-link']
-                )
-                . Html::endForm()
-                . '</li>';
-        }
-        $this->navItems = $items;
     }
 
 }

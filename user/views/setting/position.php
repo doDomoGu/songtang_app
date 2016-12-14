@@ -1,12 +1,13 @@
 <?php
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
-    if($p_id>0)
-        $this->title = '参数设置 - 扩展职位';
-    else
-        $this->title = '参数设置 - 职位';
 
-    backend\assets\AppAsset::addJsFile($this,'js/main/setting/position.js');
+if($p_id>0)
+    $this->title = '参数设置 - 扩展职位';
+else
+    $this->title = '参数设置 - 职位';
+
+user\assets\AppAsset::addJsFile($this,'js/main/setting/position.js');
 ?>
 <section>
     <p>

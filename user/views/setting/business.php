@@ -4,7 +4,7 @@ use yii\bootstrap\Html;
 use common\components\CommonFunc;
 
 $this->title = '参数设置 - 业态';
-backend\assets\AppAsset::addJsFile($this,'js/main/setting/business.js');
+user\assets\AppAsset::addJsFile($this,'js/main/setting/business.js');
 ?>
 <div style="margin-bottom: 10px;">
     <?=Html::a('新增业态','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>

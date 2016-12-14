@@ -32,8 +32,8 @@ return [
     'Development' => [
         'path' => 'dev',
         'setWritable' => [
-            'backend/runtime',
-            'backend/web/assets',
+            'user/runtime',
+            'user/web/assets',
             'frontend/runtime',
             'frontend/web/assets',
         ],
@@ -42,7 +42,7 @@ return [
             'yii_test',
         ],
         'setCookieValidationKey' => [
-            'backend/config/main-local.php',
+            'user/config/main-local.php',
             'frontend/config/main-local.php',
         ],
     ],
