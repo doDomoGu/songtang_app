@@ -49,8 +49,8 @@ return [
     'Production' => [
         'path' => 'prod',
         'setWritable' => [
-            'backend/runtime',
-            'backend/web/assets',
+            'user/runtime',
+            'user/web/assets',
             'frontend/runtime',
             'frontend/web/assets',
         ],
@@ -58,7 +58,7 @@ return [
             'yii',
         ],
         'setCookieValidationKey' => [
-            'backend/config/main-local.php',
+            'user/config/main-local.php',
             'frontend/config/main-local.php',
         ],
     ],
