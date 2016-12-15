@@ -30,11 +30,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-//        $area = Area::find()->all();
-//        foreach($area as $a){
-//            var_dump($a->attributes);echo '<br/>';
-//        }
-//        exit;
+
+
         return $this->render('index');
     }
 }

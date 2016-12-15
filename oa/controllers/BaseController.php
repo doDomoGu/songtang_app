@@ -29,7 +29,7 @@ $s=5/0;
 
 
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
-            $this->checkLogin();  //检测用户登录 和 状态是否正常
+            //$this->checkLogin();  //检测用户登录 和 状态是否正常
 
             //Yii::$app->setLayoutPath(Yii::$app->viewPath);  //修改读取布局文件的默认文件夹  原本为 views/layouts => views
 
@@ -55,7 +55,7 @@ $s=5/0;
             //用户未登录
             $except = [
                 'site/login',
-                //'site/get-user',
+                'site/get-user',
                 'site/captcha',
                 'site/error',
                 /*'site/index',
@@ -79,7 +79,7 @@ $s=5/0;
         $session = Yii::$app->session;
         $session['referrer_url_user'] = Yii::$app->request->getAbsoluteUrl();
 
-        $this->redirect(Yii::$app->params['loginUrl']);
+        $this->redirect(Yii::$app->urlManager->createUrl(Yii::$app->user->loginUrl));
         Yii::$app->end();
     }
 

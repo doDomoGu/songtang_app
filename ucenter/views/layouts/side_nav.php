@@ -74,7 +74,7 @@
         </li>-->
 
         <li class="menu-single">
-            <a href="site/logout">
+            <a href="<?=Yii::$app->params['logoutUrl']?>">
                 <span class="menu-icon glyphicon glyphicon-log-out"></span>
                 退出
             </a>
