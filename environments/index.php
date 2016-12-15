@@ -32,34 +32,40 @@ return [
     'Development' => [
         'path' => 'dev',
         'setWritable' => [
-            'user/runtime',
-            'user/web/assets',
-            'frontend/runtime',
-            'frontend/web/assets',
+            'ucenter/runtime',
+            'ucenter/web/assets',
+            'oa/runtime',
+            'oa/web/assets',
+            'login/runtime',
+            'login/web/assets',
         ],
         'setExecutable' => [
             'yii',
             'yii_test',
         ],
         'setCookieValidationKey' => [
-            'user/config/main-local.php',
-            'frontend/config/main-local.php',
+            'ucenter/config/main-local.php',
+            'oa/config/main-local.php',
+            'login/config/main-local.php',
         ],
     ],
     'Production' => [
         'path' => 'prod',
         'setWritable' => [
-            'user/runtime',
-            'user/web/assets',
-            'frontend/runtime',
-            'frontend/web/assets',
+            'ucenter/runtime',
+            'ucenter/web/assets',
+            'oa/runtime',
+            'oa/web/assets',
+            'login/runtime',
+            'login/web/assets',
         ],
         'setExecutable' => [
             'yii',
         ],
         'setCookieValidationKey' => [
-            'user/config/main-local.php',
-            'frontend/config/main-local.php',
+            'ucenter/config/main-local.php',
+            'oa/config/main-local.php',
+            'login/config/main-local.php',
         ],
     ],
 ];

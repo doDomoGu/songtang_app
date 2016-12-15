@@ -1,8 +1,7 @@
 <?php
 namespace oa\controllers;
 
-use backend\models\Area;
-use frontend\models\UserIdentity;
+use ucenter\models\Area;
 use Yii;
 use yii\web\Controller;
 
@@ -31,11 +30,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $area = Area::find()->all();
-        foreach($area as $a){
-            var_dump($a->attributes);echo '<br/>';
-        }
-        exit;
+//        $area = Area::find()->all();
+//        foreach($area as $a){
+//            var_dump($a->attributes);echo '<br/>';
+//        }
+//        exit;
         return $this->render('index');
     }
 }

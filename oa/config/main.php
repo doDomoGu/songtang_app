@@ -16,7 +16,7 @@ return [
             'csrfParam' => '_csrf-oa',
         ],
         'user' => [
-            'identityClass' => 'frontend\models\UserIdentity',
+            'identityClass' => 'login\models\UserIdentity',
             'enableAutoLogin' => true,
             'idParam'=>'_songtang_user_identity',
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true,'domain' => '.localsongtang.net','path'=>'/'],

@@ -2,7 +2,7 @@
 
 namespace login\models;
 
-use common\models\User;
+use ucenter\models\User;
 
 class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterface
 {
