@@ -47,8 +47,34 @@ class User extends \yii\db\ActiveRecord
         ];
     }
 
-    /*public static function findByUsername($username)
-    {
-        return User::findOne(['username' => $username, 'status' => 1]);
-    }*/
+    public function install() {
+        try {
+            $exist = self::find()->one();
+            if($exist){
+                throw new \yii\base\Exception('User has installed');
+            }else{
+                $m = new User();
+                $m->username = 'admin';
+                $m->password = md5('123123');
+                $m->password_true = '123123';
+                $m->aid = 1;
+                $m->bid = 1;
+                $m->did = 1;
+                $m->position_id = 1;
+                $m->status = 1;
+                $m->save();
+
+
+                echo 'User install finish'."<br/>";
+            }
+            return true;
+        }catch (\Exception $e)
+        {
+            $message = $e->getMessage() . "\n";
+            $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
+            echo $message;
+            echo '<br/>';
+            return false;
+        }
+    }
 }
