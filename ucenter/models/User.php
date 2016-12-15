@@ -1,6 +1,6 @@
 <?php
 
-namespace user\models;
+namespace ucenter\models;
 
 use Yii;
 

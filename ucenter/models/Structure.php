@@ -1,6 +1,6 @@
 <?php
 
-namespace user\models;
+namespace ucenter\models;
 
 
 //公司结构
@@ -200,11 +200,11 @@ class Structure extends \yii\db\ActiveRecord
     }
 
     public function getBusiness(){
-        return $this->hasOne('user\models\Business', array('id' => 'bid'));
+        return $this->hasOne('ucenter\models\Business', array('id' => 'bid'));
     }
 
     public function getDepartment(){
-        return $this->hasOne('user\models\Department', array('id' => 'did'));
+        return $this->hasOne('ucenter\models\Department', array('id' => 'did'));
     }
 
 

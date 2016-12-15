@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use user\assets\AppAsset;
+use ucenter\assets\AppAsset;
 
 AppAsset::register($this);
 ?>

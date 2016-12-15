@@ -9,7 +9,7 @@ $params = array_merge(
 return [
     'id' => '颂唐职员管理系统',
     'basePath' => dirname(__DIR__),
-    'controllerNamespace' => 'user\controllers',
+    'controllerNamespace' => 'ucenter\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [

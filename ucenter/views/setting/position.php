@@ -7,7 +7,7 @@ if($p_id>0)
 else
     $this->title = '参数设置 - 职位';
 
-user\assets\AppAsset::addJsFile($this,'js/main/setting/position.js');
+ucenter\assets\AppAsset::addJsFile($this,'js/main/setting/position.js');
 ?>
 <section>
     <p>

@@ -4,7 +4,7 @@ use common\components\CommonFunc;
 use yii\bootstrap\Html;
 
 $this->title = '参数设置 - 地区';
-user\assets\AppAsset::addJsFile($this,'js/main/setting/area.js');
+ucenter\assets\AppAsset::addJsFile($this,'js/main/setting/area.js');
 
 ?>
 <div style="margin-bottom: 10px;">

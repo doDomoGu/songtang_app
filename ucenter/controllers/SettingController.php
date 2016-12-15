@@ -1,12 +1,12 @@
 <?php
 
-namespace user\controllers;
+namespace ucenter\controllers;
 
-use user\models\Area;
-use user\models\Business;
-use user\models\Department;
-use user\models\Position;
-use user\models\Structure;
+use ucenter\models\Area;
+use ucenter\models\Business;
+use ucenter\models\Department;
+use ucenter\models\Position;
+use ucenter\models\Structure;
 use yii\web\Response;
 use Yii;
 
