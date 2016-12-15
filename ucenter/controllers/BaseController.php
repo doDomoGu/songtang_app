@@ -1,6 +1,7 @@
 <?php
 namespace ucenter\controllers;
 
+use ucenter\models\UserAppAuth;
 use Yii;
 use yii\web\Controller;
 
@@ -11,6 +12,7 @@ class BaseController extends Controller
     public $layout = 'main';    //布局文件
     public $viewName = '';      //视图文件
     public $isMobile = false;   //表示是否为移动用户
+    public $hasAuth = false;    //表示是否有权限使用
 
 
     public function beforeAction($action){
@@ -30,6 +32,8 @@ $s=5/0;
 
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
             $this->checkLogin();  //检测用户登录 和 状态是否正常
+
+            $this->checkAuth();
 
             //Yii::$app->setLayoutPath(Yii::$app->viewPath);  //修改读取布局文件的默认文件夹  原本为 views/layouts => views
 
@@ -80,6 +84,24 @@ $s=5/0;
         $session['referrer_url_user'] = Yii::$app->request->getAbsoluteUrl();
 
         $this->redirect(Yii::$app->params['loginUrl']);
+        Yii::$app->end();
+    }
+
+    //检查是否有使用这个app权限
+    private function checkAuth(){
+        if(!Yii::$app->user->isGuest){
+            $authExist = UserAppAuth::find()->where(['app'=>'ucenter','uid'=>Yii::$app->user->id,'is_enable'=>1])->one();
+            if(!$authExist){
+                if($this->getRoute()=='site/no-auth'){
+                    return true;
+                }else{
+                    return $this->redirect('/site/no-auth');
+                }
+            }else{
+                $this->hasAuth = true;
+                return true;
+            }
+        }
         Yii::$app->end();
     }
 

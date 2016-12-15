@@ -41,8 +41,7 @@ class User extends \yii\db\ActiveRecord
             [['id', 'ord', 'status', 'position_id', 'gender'], 'integer'],
             ['username','email'],
             ['username','unique','on'=>'create', 'targetClass' => 'app\models\User', 'message' => '此用户名已经被使用。'],
-            [['reg_code', 'forgetpw_code'],'default','value'=>''],
-            [['reg_code', 'forgetpw_code', 'birthday', 'join_date', 'contract_date', 'mobile', 'phone', 'describe','password_true'], 'safe']
+            [[ 'birthday', 'join_date', 'contract_date', 'mobile', 'phone', 'describe','password_true'], 'safe']
 
         ];
     }
@@ -54,16 +53,17 @@ class User extends \yii\db\ActiveRecord
                 throw new \yii\base\Exception('User has installed');
             }else{
                 $m = new User();
-                $m->username = 'admin';
+                $m->username = 'admin@songtang.net';
                 $m->password = md5('123123');
                 $m->password_true = '123123';
                 $m->aid = 1;
                 $m->bid = 1;
                 $m->did = 1;
+                $m->name = '管理员';
                 $m->position_id = 1;
+                $m->ord = 1;
                 $m->status = 1;
                 $m->save();
-
 
                 echo 'User install finish'."<br/>";
             }

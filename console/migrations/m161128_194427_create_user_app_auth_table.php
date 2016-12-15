@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `user_app_auth`.  控制用户是否可以使用某个app的权限
  */
-class m161128_184427_create_user_app_auth_table extends Migration
+class m161128_194427_create_user_app_auth_table extends Migration
 {
     /**
      * @inheritdoc

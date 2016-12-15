@@ -6,6 +6,7 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
+            'class' => 'yii\web\user',
             'identityClass' => 'login\models\UserIdentity',
             'enableAutoLogin' => true,
             //'loginUrl' => '/',
@@ -13,6 +14,7 @@ return [
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true,'domain' => '.localsongtang.net','path'=>'/'],
         ],
         'session' => [
+            'class'=>'yii\web\session',
             // this is the name of the session cookie used for login on the frontend
             //'name' => 'advanced-frontend',
             'cookieParams' => [

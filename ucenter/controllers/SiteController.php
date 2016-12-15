@@ -8,6 +8,7 @@ use ucenter\models\Department;
 use ucenter\models\Position;
 use ucenter\models\Structure;
 use ucenter\models\User;
+use ucenter\models\UserAppAuth;
 use Yii;
 //use ucenter\models\LoginForm;
 use yii\web\Response;
@@ -119,6 +120,12 @@ foreach($list as $l){
 
         $n = new Position();
         $n->install();
+
+        $n = new User();
+        $n->install();
+
+        $n = new UserAppAuth();
+        $n->install();
     }
 
     public function actionGetUser(){
@@ -139,5 +146,14 @@ foreach($list as $l){
         $response = Yii::$app->response;
         $response->format=Response::FORMAT_JSON;
         $response->data=['result'=>$result,'data'=>$data];
+    }
+
+    public function actionNoAuth(){
+        if($this->hasAuth){
+            return $this->redirect('/');
+        }else{
+            $this->layout = false;
+            return $this->render('no-auth');
+        }
     }
 }
