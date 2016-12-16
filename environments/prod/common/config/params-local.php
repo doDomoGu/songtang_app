@@ -1,5 +1,5 @@
 <?php
 return [
-    'loginUrl'=>'http://login.localsongtang.net',
-    'logoutUrl'=>'http://login.localsongtang.net/site/logout'
+    'loginUrl'=>'http://login.songtang.net',
+    'logoutUrl'=>'http://login.songtang.net/site/logout'
 ];
