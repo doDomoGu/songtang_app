@@ -89,6 +89,9 @@ $s=5/0;
 
     //检查是否有使用这个app权限
     private function checkAuth(){
+        if($this->route=='site/install'){
+            return true;
+        }
         if(!Yii::$app->user->isGuest){
             $authExist = UserAppAuth::find()->where(['app'=>'ucenter','uid'=>Yii::$app->user->id,'is_enable'=>1])->one();
             if(!$authExist){

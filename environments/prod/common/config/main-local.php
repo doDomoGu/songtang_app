@@ -3,7 +3,7 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=songtang_app',
+            'dsn' => 'mysql:host=localhost;dbname=songtang_ucenter',
             'username' => 'root',
             'password' => 'gljgogo',
             'charset' => 'utf8',
