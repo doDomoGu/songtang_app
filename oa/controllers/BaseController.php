@@ -1,5 +1,5 @@
 <?php
-namespace ucenter\controllers;
+namespace oa\controllers;
 
 use Yii;
 use yii\web\Controller;
@@ -11,7 +11,9 @@ class BaseController extends Controller
     public $layout = 'main';    //布局文件
     public $viewName = '';      //视图文件
     public $isMobile = false;   //表示是否为移动用户
-
+    public $except = [
+        'site/error'
+    ];
 
     public function beforeAction($action){
         //$this->addUserHistory();  //记录用户访问日志
@@ -29,7 +31,7 @@ $s=5/0;
 
 
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
-            //$this->checkLogin();  //检测用户登录 和 状态是否正常
+            $this->checkLogin();  //检测用户登录 和 状态是否正常
 
             //Yii::$app->setLayoutPath(Yii::$app->viewPath);  //修改读取布局文件的默认文件夹  原本为 views/layouts => views
 
@@ -49,28 +51,17 @@ $s=5/0;
         }
     }
 
-    //检测是否登陆  1.
+    //检测是否登陆
     public function checkLogin(){
-        if(Yii::$app->user->isGuest) {
-            //用户未登录
-            $except = [
-                'site/login',
-                'site/get-user',
-                'site/captcha',
-                'site/error',
-                /*'site/index',
-                'site/logout',*/
-
-                'site/send-test',
-                'site/test',
-                'site/install'
-            ];
-            //除了上述访问路径外，需要用户登录，跳转至登录页面
-            if (!in_array($this->route, $except)) {
+        //除了上述访问路径外，需要用户登录，跳转至登录页面
+        if (!in_array($this->route, $this->except)) {
+            if(Yii::$app->user->isGuest) {
                 $this->toLogin();
+                return false;
             }
+        }else{
+            return true;
         }
-        return true;
     }
 
     //跳转至登录页面
@@ -79,7 +70,7 @@ $s=5/0;
         $session = Yii::$app->session;
         $session['referrer_url_user'] = Yii::$app->request->getAbsoluteUrl();
 
-        $this->redirect(Yii::$app->urlManager->createUrl(Yii::$app->user->loginUrl));
+        $this->redirect(Yii::$app->params['loginUrl']);
         Yii::$app->end();
     }
 

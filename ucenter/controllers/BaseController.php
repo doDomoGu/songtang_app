@@ -13,7 +13,18 @@ class BaseController extends Controller
     public $viewName = '';      //视图文件
     public $isMobile = false;   //表示是否为移动用户
     public $hasAuth = false;    //表示是否有权限使用
+    public $except = [
+        'site/login',
+        //'site/get-user',
+        'site/captcha',
+        'site/error',
+        /*'site/index',
+        'site/logout',*/
 
+        'site/send-test',
+        'site/test',
+        'site/install'
+    ];
 
     public function beforeAction($action){
         //$this->addUserHistory();  //记录用户访问日志
@@ -33,8 +44,6 @@ $s=5/0;
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
             $this->checkLogin();  //检测用户登录 和 状态是否正常
 
-            $this->checkAuth();
-
             //Yii::$app->setLayoutPath(Yii::$app->viewPath);  //修改读取布局文件的默认文件夹  原本为 views/layouts => views
 
             //$this->viewName = $this->action->id;  //一般视图名就等于动作名  site/login => login.php
@@ -53,28 +62,19 @@ $s=5/0;
         }
     }
 
-    //检测是否登陆  1.
+    //检测是否登陆
     public function checkLogin(){
-        if(Yii::$app->user->isGuest) {
-            //用户未登录
-            $except = [
-                'site/login',
-                //'site/get-user',
-                'site/captcha',
-                'site/error',
-                /*'site/index',
-                'site/logout',*/
-
-                'site/send-test',
-                'site/test',
-                'site/install'
-            ];
-            //除了上述访问路径外，需要用户登录，跳转至登录页面
-            if (!in_array($this->route, $except)) {
+        //除了上述访问路径外，需要用户登录，跳转至登录页面
+        if (!in_array($this->route, $this->except)) {
+            if(Yii::$app->user->isGuest) {
                 $this->toLogin();
+                return false;
+            }else{
+                return $this->checkAuth();
             }
+        }else{
+            return true;
         }
-        return true;
     }
 
     //跳转至登录页面
@@ -89,23 +89,17 @@ $s=5/0;
 
     //检查是否有使用这个app权限
     private function checkAuth(){
-        if($this->route=='site/install'){
+        $authExist = UserAppAuth::find()->where(['app'=>'ucenter','uid'=>Yii::$app->user->id,'is_enable'=>1])->one();
+        if(!$authExist){
+            if($this->getRoute()=='site/no-auth'){
+                return true;
+            }else{
+                return $this->redirect('/site/no-auth');
+            }
+        }else{
+            $this->hasAuth = true;
             return true;
         }
-        if(!Yii::$app->user->isGuest){
-            $authExist = UserAppAuth::find()->where(['app'=>'ucenter','uid'=>Yii::$app->user->id,'is_enable'=>1])->one();
-            if(!$authExist){
-                if($this->getRoute()=='site/no-auth'){
-                    return true;
-                }else{
-                    return $this->redirect('/site/no-auth');
-                }
-            }else{
-                $this->hasAuth = true;
-                return true;
-            }
-        }
-        Yii::$app->end();
     }
 
 }
