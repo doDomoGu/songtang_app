@@ -1,6 +1,8 @@
 <?php
-use yii\bootstrap\Modal;
-use yii\bootstrap\Html;
+    use yii\bootstrap\Modal;
+    use yii\bootstrap\Html;
+    use yii\helpers\Url;
+
     $this->title = '任务管理';
     oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/index.js');
 ?>
@@ -28,7 +30,8 @@ use yii\bootstrap\Html;
                 <td><?=\ucenter\models\Department::getFullRoute([$l->department_id])?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>
-                    <?/*=Html::a('添加业态','script:void(0)',['data-pid'=>$l->aid,'data-pname'=>$aArr[$l->aid],'data-type'=>'area','data-toggle'=>"modal",'data-target'=>"#addModal",'class'=>'btn btn-xs btn-success'])*/?>
+                    <?=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
+                    <?=Html::a('发起人设置',Url::to(['task/apply_user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
                 </td>
             </tr>
 

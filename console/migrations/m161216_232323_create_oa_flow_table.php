@@ -13,10 +13,14 @@ class m161216_232323_create_oa_flow_table extends Migration
     public function up()
     {
         $this->createTable('oa_flow', [
-            'task_id'=> $this->integer(11)->notNull(),
-            'user_id'=> $this->integer(11)->notNull()
+            'id' => $this->primaryKey(11),
+            'task_id' => $this->integer(11)->notNull(),
+            'step' => $this->smallInteger(2)->notNull(),
+            'title' => $this->string(100),
+            'type' => $this->smallInteger(1),
+            'user_id' => $this->integer(11)->notNull(),
+            'status' => $this->smallInteger(1)
         ]);
-        $this->addPrimaryKey('pk','oa_flow',['task_id','user_id']);
     }
 
     /**
@@ -24,6 +28,6 @@ class m161216_232323_create_oa_flow_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('oa_apply_user');
+        $this->dropTable('oa_flow');
     }
 }
