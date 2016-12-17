@@ -36,6 +36,9 @@ class BaseController extends Controller
                 return $this->checkAuth();
             }
         }else{
+            if(!Yii::$app->user->isGuest && '/'.$this->route == AdminFunc::adminUrl('default/no-auth')){
+                return $this->redirect(AdminFunc::adminUrl('/'));
+            }
             return true;
         }
     }
@@ -54,7 +57,7 @@ class BaseController extends Controller
     private function checkAuth(){
         $authExist = UserAppAuth::find()->where(['app'=>'oa-admin','uid'=>Yii::$app->user->id,'is_enable'=>1])->one();
         if(!$authExist){
-            if($this->getRoute()==AdminFunc::adminUrl('default/no-auth')){
+            if('/'.$this->getRoute()==AdminFunc::adminUrl('default/no-auth')){
                 return true;
             }else{
                 return $this->redirect(AdminFunc::adminUrl('default/no-auth'));
