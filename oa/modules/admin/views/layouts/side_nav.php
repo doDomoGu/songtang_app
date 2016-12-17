@@ -1,4 +1,5 @@
 <?php
+    use oa\modules\admin\components\AdminFunc;
     //手动引入bootstrap.js
     //**由于有可能没有调用任何bootstrap组件   **使用Asset依赖注册不会重复引入js文件
     yii\bootstrap\BootstrapPluginAsset::register($this);
@@ -9,15 +10,15 @@
     </div>
     <ul class="nav nav-pills nav-stacked">
         <li class="menu-single <?=$this->context->id=='default'?'active':''?>">
-            <a href="/admin">
+            <a href="<?=AdminFunc::adminUrl('/')?>">
                 <span class="menu-icon glyphicon glyphicon-inbox"></span>
                 仪表盘
             </a>
         </li>
-        <li class="menu-single <?=$this->context->id=='user'?'active':''?>">
-            <a href="/user">
+        <li class="menu-single <?=$this->context->id=='task'?'active':''?>">
+            <a href="<?=AdminFunc::adminUrl('task')?>">
                 <span class="menu-icon glyphicon glyphicon-inbox"></span>
-                职员管理
+                任务管理
             </a>
         </li>
         <li class="menu-single <?=$this->context->id=='structure'?'active':''?>">

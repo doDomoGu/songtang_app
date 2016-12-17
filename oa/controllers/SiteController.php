@@ -3,6 +3,8 @@ namespace oa\controllers;
 
 use ucenter\models\Area;
 use Yii;
+use yii\debug\models\search\Log;
+use yii\log\Logger;
 use yii\web\Controller;
 
 /**
@@ -30,7 +32,6 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-
 
         return $this->render('index');
     }
