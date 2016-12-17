@@ -2,12 +2,11 @@
 
 namespace oa\modules\admin\controllers;
 
-use yii\web\Controller;
-
+use Yii;
 /**
  * Default controller for the `admin` module
  */
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
     /**
      * Renders the index view for the module
@@ -16,5 +15,15 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionError(){
+        echo 'oa - admin - error';
+        Yii::$app->end();
+    }
+
+    public function actionNoAuth(){
+        echo 'oa - admin - no - auth';
+        Yii::$app->end();
     }
 }

@@ -13,7 +13,7 @@ return [
     'controllerNamespace' => 'oa\controllers',
     'modules' => [
         'admin' => [
-            'class' => 'app\modules\admin\Module',
+            'class' => 'oa\modules\admin\Module',
         ],
     ],
     'components' => [

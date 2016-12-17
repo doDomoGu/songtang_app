@@ -1,53 +1,72 @@
 <?php
 namespace oa\modules\admin\controllers;
 
+use oa\modules\admin\components\AdminFunc;
 use Yii;
 use yii\web\Controller;
+use ucenter\models\UserAppAuth;
 
 class BaseController extends Controller
 {
-
-    public $isMobile = false;   //表示是否为移动用户
     public $mobileNavItems = [];  //手机端导航栏 选项
+    public $except = [];
+    public $hasAuth = false;
 
     public function beforeAction($action){
         if (!parent::beforeAction($action)) {
             return false;
         }
+        $this->except = [
+            AdminFunc::adminUrl('default/error'),
+            AdminFunc::adminUrl('default/no-auth')
+        ];
         $this->checkLogin();
-        /*if(!$this->checkLogin()){
-            return false;
-        }
 
-        $this->isInRoom = $this->checkIsInRoom();
-
-        $this->setNavItems();*/
-//        $this->getMessageInfo();
-
-        $this->isMobile = CommonFunc::isMobile(); //根据设备属性判断是否为移动用户
-
-        if($this->isMobile) {  //如果是移动设备 调用另一个布局文件 启用导航栏
-            Yii::$app->getModule('admin')->setLayoutPath(Yii::$app->getModule('admin')->viewPath . '/layouts_mobile');
-            $this->setNavItems();
-        }
         return true;
     }
 
+    //检测是否登陆
     public function checkLogin(){
-        //除“首页”和“登陆页面”以外的页面，需要进行登陆判断
-        if(!in_array($this->route,array('admin/site/login','admin/site/captcha','admin/site/error','admin/site/logout'))){
-            if($this->module->adminUser->isGuest){
-                $session = Yii::$app->session;
-                $session['referrer_url_admin'] = Yii::$app->request->getAbsoluteUrl();
-                $this->redirect(Yii::$app->urlManager->createUrl($this->module->adminUser->loginUrl));
-                Yii::$app->end();
+        //除了上述访问路径外，需要用户登录，跳转至登录页面
+        if (!in_array('/'.$this->route, $this->except)) {
+            if(Yii::$app->user->isGuest) {
+                $this->toLogin();
+                return false;
+            }else{
+                return $this->checkAuth();
             }
+        }else{
+            return true;
         }
-        return true;
+    }
+
+    //跳转至登录页面
+    private function toLogin(){
+        //session记录当前页面的url  登录后返回
+        $session = Yii::$app->session;
+        $session['referrer_url_user'] = Yii::$app->request->getAbsoluteUrl();
+
+        $this->redirect(Yii::$app->params['loginUrl']);
+        Yii::$app->end();
+    }
+
+    //检查是否有使用这个app权限
+    private function checkAuth(){
+        $authExist = UserAppAuth::find()->where(['app'=>'oa-admin','uid'=>Yii::$app->user->id,'is_enable'=>1])->one();
+        if(!$authExist){
+            if($this->getRoute()==AdminFunc::adminUrl('default/no-auth')){
+                return true;
+            }else{
+                return $this->redirect(AdminFunc::adminUrl('default/no-auth'));
+            }
+        }else{
+            $this->hasAuth = true;
+            return true;
+        }
     }
 
 
-    public function setNavItems(){
+    /*public function setNavItems(){
         $items[] = ['label' => '仪表盘', 'url' => [AdminFunc::adminUrl('')]];
         $items[] = ['label' => '玩家', 'url' => [AdminFunc::adminUrl('user')]];
         $items[] = ['label' => '游戏', 'url' => [AdminFunc::adminUrl('game')]];
@@ -61,7 +80,7 @@ class BaseController extends Controller
 
         $items[] = ['label' => '退出', 'url' => [AdminFunc::adminUrl('site/logout')]];
         $this->mobileNavItems = $items;
-    }
+    }*/
 
 
 }

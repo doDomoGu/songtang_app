@@ -39,7 +39,7 @@ class User extends \yii\db\ActiveRecord
             [['username', 'password', 'name', 'ord', 'status'], 'required'],
             ['username','unique'],
             [['id', 'ord', 'status', 'position_id', 'gender'], 'integer'],
-            ['username','email'],
+            //['username','email'],
             ['username','unique','on'=>'create', 'targetClass' => 'app\models\User', 'message' => '此用户名已经被使用。'],
             [[ 'birthday', 'join_date', 'contract_date', 'mobile', 'phone', 'describe','password_true'], 'safe']
 
@@ -52,6 +52,8 @@ class User extends \yii\db\ActiveRecord
             if($exist){
                 throw new \yii\base\Exception('User has installed');
             }else{
+
+
                 $m = new User();
                 $m->username = 'admin@songtang.net';
                 $m->password = md5('123123');
@@ -64,7 +66,38 @@ class User extends \yii\db\ActiveRecord
                 $m->ord = 1;
                 $m->status = 1;
                 $m->save();
+                $arr = [
+                    ['zj','张总监'],
+                    ['zjl','张总经理'],
+                    ['zj2','王总监'],
+                    ['zjl2','许总监'],
+                    ['pt','张三'],
+                    ['pt2','李四'],
+                    ['pt3','王五'],
+                    ['cw','李财务'],
+                    ['cw2','张财务'],
+                    ['zg','张主管'],
+                    ['zg2','徐主管'],
+                    ['xz','李行政'],
+                    ['xz2','顾行政'],
+                    ['rs','顾人事'],
+                    ['rs2','张人事'],
+                ];
 
+                foreach($arr as $a){
+                    $m = new User();
+                    $m->username = $a[0];
+                    $m->password = md5('123123');
+                    $m->password_true = '123123';
+                    $m->aid = 1;
+                    $m->bid = 1;
+                    $m->did = 1;
+                    $m->name = $a[1];
+                    $m->position_id = 1;
+                    $m->ord = 1;
+                    $m->status = 1;
+                    $m->save();
+                }
                 echo 'User install finish'."<br/>";
             }
             return true;

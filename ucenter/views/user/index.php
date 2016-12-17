@@ -28,6 +28,7 @@ use yii\bootstrap\Html;
                 <td><?=$aArr[$l->aid]?></td>
                 <td><?=$bArr[$l->bid]?></td>
                 <td><?=\ucenter\models\Department::getFullRoute([$l->did])?></td>
+                <td><?=$pArr[$l->position_id]?></td>
                 <td><?=$l->gender?></td>
                 <td><?=$l->birthday?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>

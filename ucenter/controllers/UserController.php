@@ -4,6 +4,7 @@ namespace ucenter\controllers;
 use ucenter\models\Area;
 use ucenter\models\Business;
 use ucenter\models\Department;
+use ucenter\models\Position;
 use ucenter\models\Structure;
 use ucenter\models\User;
 use Yii;
@@ -20,6 +21,7 @@ class UserController extends BaseController
         $params['list'] = $list;
         $params['aArr'] = Area::getNameArr();
         $params['bArr'] = Business::getNameArr();
+        $params['pArr'] = Position::getNameArr();
         $params['bArr2'] = Area::getRelationsArr($aid);
 
         $params['aid'] = $aid;

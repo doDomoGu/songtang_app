@@ -89,4 +89,14 @@ class Position extends \yii\db\ActiveRecord
             return false;
         }
     }
+
+
+    public static function getNameArr(){
+        $list = self::find()->select(['id','name'])->all();
+        $arr = [];
+        foreach($list as $l){
+            $arr[$l->id] = $l->name;
+        }
+        return $arr;
+    }
 }
