@@ -21,7 +21,7 @@ class OaTask extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['ord', 'status', 'area_id', 'bussiness_id', 'department_id'], 'integer'],
+            [['ord', 'status', 'area_id', 'business_id', 'department_id'], 'integer'],
         ];
     }
 
