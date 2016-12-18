@@ -3,31 +3,33 @@ use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
 use oa\models\OaFlow;
 use yii\helpers\Url;
-    $this->title = '【'.$task->title.'】的流程设置';
+    $this->title = '【'.$task->title.'】的发起人设置';
     oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/flow.js');
 ?>
 <section>
     <div style="margin-bottom: 10px;">
-        <?=Html::a('新增流程','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?=Html::a('新增发起人','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
         <?=Html::a('返回','/admin/task',['class'=>'btn btn-default'])?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
-            <th>#</th>
-            <th>标题</th>
-            <th>操作类型</th>
-            <th>指定操作人</th>
-            <th>状态</th>
+            <th>职员ID</th>
+            <th>职员姓名</th>
+            <th>地区</th>
+            <th>业态</th>
+            <th>部门</th>
+            <th>职位</th>
             <th>操作</th>
         </tr>
         <tbody>
         <?php foreach($list as $l):?>
             <tr>
-                <td><?=$l->id?></td>
-                <td><?=$l->title?></td>
-                <td><?=OaFlow::getTypeCn($l->type)?></td>
+                <td><?=$l->user_id?></td>
                 <td><?=$l->user->name?></td>
-                <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
+                <td><?=$l->user->area->name?></td>
+                <td><?=$l->user->business->name?></td>
+                <td><?=$l->user->did?></td>
+                <td><?=$l->user->position_id?></td>
                 <td>
                     <?/*=Html::a('流程设置',AdminFunc::adminUrl('task/flow',['tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?><!--
                     --><?/*=Html::a('发起人设置',AdminFunc::adminUrl('task/apply_user',['tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>

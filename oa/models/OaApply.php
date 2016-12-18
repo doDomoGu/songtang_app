@@ -3,6 +3,8 @@
 namespace oa\models;
 
 //oa 申请表
+use ucenter\models\User;
+
 class OaApply extends \yii\db\ActiveRecord
 {
     const STATUS_NORMAL     = 1; //正常流程中
@@ -34,4 +36,11 @@ class OaApply extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getApplyUser(){
+        return $this->hasOne(User::className(), array('id' => 'user_id'));
+    }
+
+    public function getTask(){
+        return $this->hasOne(OaTask::className(), array('id' => 'task_id'));
+    }
 }

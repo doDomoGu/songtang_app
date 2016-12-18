@@ -110,4 +110,14 @@ class User extends \yii\db\ActiveRecord
             return false;
         }
     }
+
+
+    public function getArea(){
+        return $this->hasOne(Area::className(), array('id' => 'aid'));
+    }
+
+    public function getBusiness(){
+        return $this->hasOne(Business::className(), array('id' => 'bid'));
+    }
+
 }

@@ -4,6 +4,7 @@ namespace oa\modules\admin\controllers;
 
 use oa\models\OaFlow;
 use oa\models\OaTask;
+use oa\models\OaTaskApplyUser;
 use oa\modules\admin\components\AdminFunc;
 use ucenter\models\Area;
 use ucenter\models\Business;
@@ -128,5 +129,19 @@ class TaskController extends BaseController
         $response=Yii::$app->response;
         $response->format=Response::FORMAT_JSON;
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+    public function actionApplyUser(){
+        $tid = Yii::$app->request->get('tid',false);
+        $task = OaTask::find()->where(['id'=>$tid])->one();
+        if($task){
+            $applyUser= OaTaskApplyUser::find()->where(['task_id'=>$tid])->all();
+            $params['list'] = $applyUser;
+            $params['task'] = $task;
+            return $this->render('apply_user',$params);
+        }else{
+            Yii::$app->getSession()->setFlash('error','发起人设置对应的任务id不存在!');
+            return $this->redirect(AdminFunc::adminUrl('task'));
+        }
     }
 }

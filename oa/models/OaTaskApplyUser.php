@@ -3,6 +3,9 @@
 namespace oa\models;
 
 //oa 任务 发起人对应表
+
+use ucenter\models\User;
+
 class OaTaskApplyUser extends \yii\db\ActiveRecord
 {
     public function attributeLabels(){
@@ -18,5 +21,11 @@ class OaTaskApplyUser extends \yii\db\ActiveRecord
             [['task_id', 'user_id'], 'integer'],
         ];
     }
+
+
+    public function getUser(){
+        return $this->hasOne(User::className(), array('id' => 'user_id'));
+    }
+
 
 }
