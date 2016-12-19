@@ -1,0 +1,10 @@
+.task-preview {
+    margin-top:10px;
+    border:1px solid #333;
+}
+.task-preview li {
+
+}
+.task-preview li div.task-preview-step {
+    background: #cfcddc;
+}

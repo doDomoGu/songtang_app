@@ -27,5 +27,8 @@ class OaTaskApplyUser extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), array('id' => 'user_id'));
     }
 
+    public function getTask(){
+        return $this->hasOne(OaTask::className(), array('id' => 'task_id'));
+    }
 
 }

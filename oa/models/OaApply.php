@@ -20,6 +20,7 @@ class OaApply extends \yii\db\ActiveRecord
             'user_id' => '发起人ID',
             'task_id' => '对应任务表Id',
             'flow_step' => '流程执行到第几步',
+            'message' => '申请人填写的备注/内容',
             'add_time' => '开始时间',
             'edit_time' => '编辑时间',
             'status' => '状态',
@@ -32,7 +33,7 @@ class OaApply extends \yii\db\ActiveRecord
         return [
             [['title','user_id','task_id','flow_step'], 'required'],
             [['user_id','task_id','flow_step','status'], 'integer'],
-            [['add_time','edit_time'],'safe']
+            [['add_time','edit_time','message'],'safe']
         ];
     }
 
