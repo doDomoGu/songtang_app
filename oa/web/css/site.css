@@ -67,6 +67,12 @@ body {
     float:left;
     overflow: hidden;
 }
+#page_head {
+    margin-left:20px;
+    margin-bottom:20px;
+    width:920px;
+    float:left;
+}
 
 /*  main  */
 #main {

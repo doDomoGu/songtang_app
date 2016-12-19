@@ -3,7 +3,8 @@ namespace oa\controllers;
 
 use oa\components\Func;
 use oa\models\OaApply;
-use oa\models\OaApplyForm;
+use oa\models\OaApplyCreateForm;
+use oa\models\OaApplyDoForm;
 use oa\models\OaApplyRecord;
 use oa\models\OaFlow;
 use oa\models\OaTask;
@@ -14,7 +15,7 @@ use Yii;
 class ApplyController extends BaseController
 {
     public function actionCreate(){
-        $model = new OaApplyForm();
+        $model = new OaApplyCreateForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $new = new OaApply();
@@ -74,52 +75,100 @@ class ApplyController extends BaseController
     }
 
 
-
-
-
-
-    public function actionFlowCreate(){
+    /*
+     * get-record 获取申请表详情
+     * 返回 html
+     */
+    public function actionGetRecord(){
         $errormsg = '';
         $result = false;
+        $html = '';
         if(Yii::$app->request->isAjax){
-            $title = trim(Yii::$app->request->post('title',false));
-            $type = intval(Yii::$app->request->post('type',0));
-            $user_id = intval(Yii::$app->request->post('user_id',0));
-            $tid = intval(Yii::$app->request->post('tid',0));
-            if($title==''){
-                $errormsg = '名称或别名不能为空！';
-            }else{
-                $exist = OaTask::find()->where(['id'=>$tid])->one();
-                if(!$exist){
-                    $errormsg = '对应的任务ID不存在！';
-                }else{
-                    $existUser = User::find()->where(['id'=>$user_id])->one();
-                    if(!$existUser){
-                        $errormsg = '所选职员ID不存在！';
-                    }else{
-                        $last = OaFlow::find()->where(['task_id'=>$tid])->orderBy('step desc')->one();
-                        $flow = new OaFlow();
-                        $flow->title = $title;
-                        $flow->task_id = $tid;
-                        $flow->user_id = $user_id;
-                        $flow->type = $type;
-                        $flow->step = isset($last)?$last->step+1:1;
-                        $flow->status = 1;
-                        if($flow->save()){
-                            Yii::$app->getSession()->setFlash('success','新增流程【'.$flow->title.'】成功！');
-                            $result = true;
-                        }else{
-                            $errormsg = '保存失败，刷新页面重试!';
-                        }
+            $id = trim(Yii::$app->request->post('id',false));
+            $apply = OaApply::find()->where(['id'=>$id])->one();
+            if($apply){
+                $html .= '<li><div>发起申请</div></li>';
+                $result = true;
+                $records = OaApplyRecord::find()->where(['apply_id'=>$id])->all();
+                if(!empty($records)){
+                    foreach($records as $r){
+                        $htmlOne = '<li>';
+                        $htmlOne.= '<div class="task-preview-step">步骤'.$r->flow->step.'</div>';
+                        $htmlOne.= '<div>标题：'.$r->flow->title.'</div>';
+                        $htmlOne.= '<div>类型：'.$r->flow->typeName.'</div>';
+                        $htmlOne.= '<div>操作人：'.$r->flow->user->name.'</div>';
+                        $htmlOne.= '</li>';
+                        $html .= $htmlOne;
                     }
                 }
+            }else{
+                $errormsg = '申请表不存在！';
             }
         }else{
             $errormsg = '操作错误，请重试!';
         }
         $response=Yii::$app->response;
         $response->format=Response::FORMAT_JSON;
-        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+        $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html];
+    }
+
+    public function actionMy(){
+        $list = OaApply::find()->where(['user_id'=>Yii::$app->user->id])->orderBy('add_time desc')->all();
+
+        $params['list'] = $list;
+        return $this->render('my',$params);
+    }
+
+
+    public function actionTodo(){
+        $flow = OaFlow::find()->where(['user_id'=>Yii::$app->user->id])->all();
+        if(!empty($flow)){
+            $list = OaApply::find();
+            foreach($flow as $f){
+                $list= $list->orWhere(['task_id'=>$f->task_id,'flow_step'=>$f->step]);
+            }
+
+            $list = $list->orderBy('add_time desc')->all();
+        }else{
+            $list = [];
+        }
+
+
+        $params['list'] = $list;
+        return $this->render('todo',$params);
+    }
+
+    public function actionDo(){
+        $id = Yii::$app->request->get('id',false);
+        $apply = OaApply::find()->where(['id'=>$id])->one();
+        if($apply){
+            $flow = OaFlow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step,'user_id'=>Yii::$app->user->id])->one();
+            if($flow){
+                $model = new OaApplyDoForm();
+
+                if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+                    $new = new OaApplyRecord();
+                    $new->attributes = $model->attributes;
+                    $new->apply_id = $apply->id;
+                    $new->flow_id = $flow->id;
+                    $new->add_time = date('Y-m-d H:i:s');
+                    if($new->save()){
+                        $apply->flow_step++;
+                        $apply->save();
+
+                        //Yii::$app->session->setFlash()
+                        return $this->redirect('/apply/todo');
+                    }
+                }
+                $params['model'] = $model;
+                $params['apply'] = $apply;
+                $params['flow'] = $flow;
+                return $this->render('do',$params);
+            }
+        }
+
+
+
     }
 
 }

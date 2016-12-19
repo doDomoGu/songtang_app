@@ -25,4 +25,7 @@ class OaApplyRecord extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getFlow(){
+        return $this->hasOne(OaFlow::className(), array('id' => 'flow_id'));
+    }
 }

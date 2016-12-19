@@ -46,6 +46,7 @@ NavBar::end();
 <div class="wrap">
     <div class="container">
         <?=$this->render('sidebar')?>
+        <?=$this->render('page_head')?>
         <section id="main">
             <?= $content ?>
         </section>
