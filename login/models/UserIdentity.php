@@ -9,6 +9,15 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $id;
     public $username;
     public $password;
+    public $name;
+    public $aid;
+    public $area;
+    public $bid;
+    public $business;
+    public $did;
+    public $department;
+    public $position_id;
+    public $position;
     public $authKey;
     public $accessToken;
     public $status;
@@ -38,6 +47,15 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 'id' => $user->id,
                 'username' => $user->username,
                 'password' => $user->password,
+                'name'=>$user->name,
+                'aid'=>$user->aid,
+                'area'=>$user->area->name,
+                'bid'=>$user->bid,
+                'business'=>$user->business->name,
+                'did'=>$user->did,
+                'department'=>$user->getDepartmentFullRoute('<br/>&emsp;&emsp;&emsp;&emsp;> '),
+                'position_id'=>$user->position_id,
+                'position'=>$user->position->name,
                 'authKey' => 'key-'.$user->id,
                 'accessToken' => 'token-'.$user->id
             ];

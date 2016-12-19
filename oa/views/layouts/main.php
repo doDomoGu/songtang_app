@@ -45,14 +45,15 @@ NavBar::end();
 ?>
 <div class="wrap">
     <div class="container">
-        <?= $content ?>
+        <?=$this->render('sidebar')?>
+        <section id="main">
+            <?= $content ?>
+        </section>
     </div>
 </div>
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="text-center">&copy; 颂唐机构 <?= date('Y') ?></p>
     </div>
 </footer>
 

@@ -2,6 +2,7 @@
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
 use common\components\CommonFunc;
+use ucenter\models\Department;
 $this->title = '参数设置 - 部门';
 ucenter\assets\AppAsset::addJsFile($this,'js/main/setting/department.js');
 ?>
@@ -20,7 +21,7 @@ ucenter\assets\AppAsset::addJsFile($this,'js/main/setting/department.js');
     <div class="panel-body">
         <?php if($p_id>0):?>
             <div>
-                <h3>部门路径： <?=\app\models\Department::getFullRoute($p_id)?></h3>
+                <h3>部门路径： <?=Department::getFullRoute($p_id)?></h3>
             </div>
         <?php endif;?>
         <table class="table table-bordered table-striped">

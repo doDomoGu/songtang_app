@@ -1,6 +1,7 @@
 <?php
 namespace oa\controllers;
 
+use ucenter\models\User;
 use Yii;
 use yii\web\Controller;
 
@@ -32,6 +33,10 @@ $s=5/0;
 
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
             $this->checkLogin();  //检测用户登录 和 状态是否正常
+
+            /*if(!Yii::$app->user->isGuest){
+                $this->user = User::
+            }*/
 
             //Yii::$app->setLayoutPath(Yii::$app->viewPath);  //修改读取布局文件的默认文件夹  原本为 views/layouts => views
 

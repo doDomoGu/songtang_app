@@ -492,7 +492,6 @@ class SettingController extends BaseController
         $params['list'] = $list;
         $params['count'] = $count;
         $params['p_id'] = $p_id;
-
         return $this->render('department',$params);
     }
 
@@ -540,7 +539,7 @@ class SettingController extends BaseController
                             $errormsg = '业态不存在';
                         }
                         break;
-                    case 'class':
+                    case 'department':
                         $exist = Department::find()->where(['id'=>$id])->one();
                         if($exist){
                             $repeat = Department::find()->where(['<>','id',$id])->andWhere(['name'=>$name,'p_id'=>$exist->p_id])->one();

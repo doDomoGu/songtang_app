@@ -120,4 +120,11 @@ class User extends \yii\db\ActiveRecord
         return $this->hasOne(Business::className(), array('id' => 'bid'));
     }
 
+    public function getDepartmentFullRoute($separator=' > '){
+        return Department::getFullRoute($this->did,$separator);
+    }
+
+    public function getPosition(){
+        return $this->hasOne(Position::className(), array('id' => 'position_id'));
+    }
 }
