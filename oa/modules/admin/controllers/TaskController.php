@@ -5,6 +5,7 @@ namespace oa\modules\admin\controllers;
 use oa\models\OaFlow;
 use oa\models\OaTask;
 use oa\models\OaTaskApplyUser;
+use oa\models\OaTaskCategory;
 use oa\modules\admin\components\AdminFunc;
 use ucenter\models\Area;
 use ucenter\models\Business;
@@ -18,6 +19,16 @@ use yii\web\Response;
  */
 class TaskController extends BaseController
 {
+    public function actionCategory()
+    {
+        $list = OaTaskCategory::find()->all();
+
+
+        $params['list'] = $list;
+        return $this->render('category',$params);
+    }
+
+
     public function actionIndex()
     {
         $aid = Yii::$app->request->get('aid',false);
@@ -33,6 +44,7 @@ class TaskController extends BaseController
 
         $params['aid'] = $aid;
         $params['bid'] = $bid;
+        $params['categoryList'] = OaTaskCategory::getDropdownList();
         return $this->render('index',$params);
     }
 
@@ -41,7 +53,8 @@ class TaskController extends BaseController
         $result = false;
         if(Yii::$app->request->isAjax){
             $title = trim(Yii::$app->request->post('title',false));
-            $area_id = intval(Yii::$app->request->post('area_id',0));
+            $area_id = intval(Yii::$app->request->post('area_id',1));
+            $category = intval(Yii::$app->request->post('category',0));
             //AREA BUSINESS DEPARTMENT  TODO
             if($title==''){
                 $errormsg = '名称或别名不能为空！';
@@ -52,6 +65,7 @@ class TaskController extends BaseController
                 }else{
                     $task = new OaTask();
                     $task->title = $title;
+                    $task->category = $category;
                     $task->area_id = $area_id;
                     $task->business_id = $area_id;
                     $task->department_id = $area_id;

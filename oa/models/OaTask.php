@@ -9,6 +9,7 @@ class OaTask extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => '任务名称',
+            'category_id' => '任务分类',
             'area_id' => '锁定地区',
             'business_id' => '锁定业态',
             'department_id' => '锁定部门',
@@ -21,8 +22,12 @@ class OaTask extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['ord', 'status', 'area_id', 'business_id', 'department_id'], 'integer'],
+            [['ord', 'category_id', 'status', 'area_id', 'business_id', 'department_id'], 'integer'],
         ];
+    }
+
+    public function getCategory(){
+        return $this->hasOne(OaTaskCategory::className(), array('id' => 'category_id'));
     }
 
 }

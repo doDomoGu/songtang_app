@@ -8,7 +8,8 @@ $(function () {
             dataType: 'json',
             data: {
                 title: $('#createContent .create-title').val(),
-                area_id: $('#createContent .create-area-select').val()
+                //area_id: $('#createContent .create-area-select').val(),
+                category: $('#createContent .create-category-select').val()
             },
             success: function (data) {
                 if(data.result){

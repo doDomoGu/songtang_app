@@ -2,6 +2,7 @@
 
 namespace oa\modules\admin\controllers;
 
+use oa\models\OaTaskCategory;
 use Yii;
 /**
  * Default controller for the `admin` module
@@ -25,5 +26,11 @@ class DefaultController extends BaseController
     public function actionNoAuth(){
         echo 'oa - admin - no - auth';
         Yii::$app->end();
+    }
+
+
+    public function actionInstall(){
+        $n = new OaTaskCategory();
+        $n->install();
     }
 }

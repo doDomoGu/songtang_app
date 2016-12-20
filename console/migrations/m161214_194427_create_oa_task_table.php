@@ -15,6 +15,7 @@ class m161214_194427_create_oa_task_table extends Migration
         $this->createTable('oa_task', [
             'id'=> $this->primaryKey(5),
             'title' => $this->string(100)->notNull(),
+            'category_id' => $this->integer(11)->notNull(),
             'area_id' => $this->integer(11)->notNull()->defaultValue(0),
             'business_id' => $this->integer(11)->notNull()->defaultValue(0),
             'department_id' => $this->integer(11)->notNull()->defaultValue(0),
