@@ -4,6 +4,7 @@ use yii\bootstrap\Html;
 
 $this->title = '我的申请';
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/my.js');
+oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
 
 ?>
 <section class="panel panel-default">

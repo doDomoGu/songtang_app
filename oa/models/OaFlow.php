@@ -17,6 +17,15 @@ class OaFlow extends \yii\db\ActiveRecord
     const TYPE_WATCH_CN    = '阅览';
     const TYPE_FEEDBACK_CN = '反馈';
 
+    const RESULT_APPROVAL_TRUE  = '审批通过';
+    const RESULT_APPROVAL_FALSE = '审批不通过';
+    const RESULT_EXAMINE_TRUE   = '审核通过';
+    const RESULT_EXAMINE_FALSE  = '审核不通过';
+    const RESULT_EXECUTE_TRUE   = '执行完成';
+    const RESULT_EXECUTE_FALSE  = '执行失败';
+    const RESULT_WATCH_TRUE     = '已阅';
+    const RESULT_FEEDBACK_TRUE  = '已反馈';
+
     public function attributeLabels(){
         return [
             'id' => 'ID',
@@ -95,6 +104,45 @@ class OaFlow extends \yii\db\ActiveRecord
         $html .= '<option value="'.self::TYPE_FEEDBACK.'">'.self::TYPE_FEEDBACK_CN.'</option>';
 
         return $html;
+    }
+
+    public static function getResultCn($type,$result){
+        $return = 'N/A';
+        switch($type){
+            case self::TYPE_APPROVAL:
+                if($result==1){
+                    $return = self::RESULT_APPROVAL_TRUE;
+                }else{
+                    $return = self::RESULT_APPROVAL_FALSE;
+                }
+                break;
+            case self::TYPE_EXAMINE:
+                if($result ==1){
+                    $return = self::RESULT_EXAMINE_TRUE;
+                }else{
+                    $return = self::RESULT_EXAMINE_FALSE;
+                }
+                break;
+            case self::TYPE_EXECUTE:
+                if($result ==1){
+                    $return = self::RESULT_EXECUTE_TRUE;
+                }else{
+                    $return = self::RESULT_EXECUTE_FALSE;
+                }
+                break;
+            case self::TYPE_WATCH:
+                if($result == 1){
+                    $return = self::RESULT_WATCH_TRUE;
+                }
+                break;
+            case self::TYPE_FEEDBACK:
+                if($result == 1){
+                    $return = self::RESULT_FEEDBACK_TRUE;
+                }
+                break;
+        }
+
+        return $return;
     }
 
 }

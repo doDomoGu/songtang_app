@@ -87,20 +87,30 @@ class ApplyController extends BaseController
             $id = trim(Yii::$app->request->post('id',false));
             $apply = OaApply::find()->where(['id'=>$id])->one();
             if($apply){
-                $html .= '<li><div>发起申请</div></li>';
                 $result = true;
+                //1.发起申请
+                $html = '<li><div>【'.$apply->applyUser->name.'】在 '.$apply->add_time.' 发起申请</div></li>';
+
+                //2.操作记录
                 $records = OaApplyRecord::find()->where(['apply_id'=>$id])->all();
                 if(!empty($records)){
                     foreach($records as $r){
                         $htmlOne = '<li>';
                         $htmlOne.= '<div class="task-preview-step">步骤'.$r->flow->step.'</div>';
                         $htmlOne.= '<div>标题：'.$r->flow->title.'</div>';
-                        $htmlOne.= '<div>类型：'.$r->flow->typeName.'</div>';
+                        $htmlOne.= '<div>操作类型：'.$r->flow->typeName.'</div>';
                         $htmlOne.= '<div>操作人：'.$r->flow->user->name.'</div>';
+                        $htmlOne.= '<div>结果：'.OaFlow::getResultCn($r->flow->type,$r->result).'</div>';
+                        $htmlOne.= '<div>备注信息：'.$r->message.'</div>';
                         $htmlOne.= '</li>';
                         $html .= $htmlOne;
                     }
                 }
+
+                //3.剩余未完成操作
+                $curStep = $apply->flow_step;
+
+
             }else{
                 $errormsg = '申请表不存在！';
             }

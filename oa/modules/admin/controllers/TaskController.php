@@ -54,7 +54,7 @@ class TaskController extends BaseController
         if(Yii::$app->request->isAjax){
             $title = trim(Yii::$app->request->post('title',false));
             $area_id = intval(Yii::$app->request->post('area_id',1));
-            $category = intval(Yii::$app->request->post('category',0));
+            $category_id = intval(Yii::$app->request->post('category_id',0));
             //AREA BUSINESS DEPARTMENT  TODO
             if($title==''){
                 $errormsg = '名称或别名不能为空！';
@@ -65,7 +65,7 @@ class TaskController extends BaseController
                 }else{
                     $task = new OaTask();
                     $task->title = $title;
-                    $task->category = $category;
+                    $task->category_id = $category_id;
                     $task->area_id = $area_id;
                     $task->business_id = $area_id;
                     $task->department_id = $area_id;
@@ -145,6 +145,20 @@ class TaskController extends BaseController
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 
+    public function actionSetComplete(){
+        $id = Yii::$app->request->get('id',false);
+        $task = OaTask::find()->where(['id'=>$id])->one();
+        if($task){
+            $task->set_complete = 1;
+            $task->save();
+            Yii::$app->getSession()->setFlash('success','任务表【'.$task->title.'】确认完成设置！');
+        }else{
+            Yii::$app->getSession()->setFlash('error','任务表ID不存在！');
+        }
+        return $this->redirect('/admin/task');
+
+    }
+
     public function actionApplyUser(){
         $tid = Yii::$app->request->get('tid',false);
         $task = OaTask::find()->where(['id'=>$tid])->one();
@@ -157,5 +171,43 @@ class TaskController extends BaseController
             Yii::$app->getSession()->setFlash('error','发起人设置对应的任务id不存在!');
             return $this->redirect(AdminFunc::adminUrl('task'));
         }
+    }
+
+    public function actionApplyUserAdd(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $user_id = intval(Yii::$app->request->post('user_id',0));
+            $tid = intval(Yii::$app->request->post('tid',0));
+            $exist = OaTask::find()->where(['id'=>$tid])->one();
+            if(!$exist){
+                $errormsg = '对应的任务ID不存在！';
+            }else{
+                $existUser = User::find()->where(['id'=>$user_id])->one();
+                if(!$existUser){
+                    $errormsg = '所选职员ID不存在！';
+                }else{
+                    $existData = OaTaskApplyUser::find()->where(['task_id'=>$tid,'user_id'=>$user_id])->one();
+                    if($existData){
+                        $errormsg = '该任务表中此发起人已存在！';
+                    }else{
+                        $n = new OaTaskApplyUser();
+                        $n->task_id = $tid;
+                        $n->user_id = $user_id;
+                        if($n->save()){
+                            Yii::$app->getSession()->setFlash('success','添加发起人成功！');
+                            $result = true;
+                        }else{
+                            $errormsg = '保存失败，刷新页面重试!';
+                        }
+                    }
+                }
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 }

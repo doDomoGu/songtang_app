@@ -4,11 +4,14 @@ use yii\bootstrap\Html;
 use oa\models\OaFlow;
 use yii\helpers\Url;
     $this->title = '【'.$task->title.'】的发起人设置';
-    oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/flow.js');
+    oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/apply_user.js');
 ?>
 <section>
     <div style="margin-bottom: 10px;">
-        <?=Html::a('新增发起人','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?php if($task->set_complete==0):?>
+        <?=Html::a('新增发起人','script:void(0)',['data-toggle'=>"modal",
+            'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?php endif;?>
         <?=Html::a('返回','/admin/task',['class'=>'btn btn-default'])?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
@@ -46,7 +49,7 @@ use yii\helpers\Url;
 
 <?php
 Modal::begin([
-    'header' => '新增流程',
+    'header' => '新增发起人',
     'id'=>'createModal',
     'options'=>['style'=>'margin-top:120px;'],
 ]);
@@ -55,23 +58,9 @@ Modal::begin([
         <form class="form-horizontal" role="form">
             <input class="task-id" type="hidden" value="<?=$task->id?>" />
             <div class="form-group">
-                <label class="col-sm-4 control-label label1">标题</label>
+                <label class="col-sm-4 control-label label1">发起人</label>
                 <div class="col-sm-6">
-                    <input class="form-control create-title">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label label1">类型</label>
-                <div class="col-sm-6">
-                    <select class="form-control create-type-select">
-                        <?=OaFlow::getOptions()?>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label label1">职员</label>
-                <div class="col-sm-6">
-                    <input class="form-control create-user-select">
+                    <input class="form-control create-user-id">
                 </div>
             </div>
             <div class="form-group">

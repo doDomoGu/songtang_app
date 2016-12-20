@@ -20,6 +20,7 @@ class m161214_194427_create_oa_task_table extends Migration
             'business_id' => $this->integer(11)->notNull()->defaultValue(0),
             'department_id' => $this->integer(11)->notNull()->defaultValue(0),
             'ord' => $this->smallInteger(4),
+            'set_complete' => $this->smallInteger(1)->defaultValue(0),
             'status' => $this->smallInteger(1)
         ]);
     }
