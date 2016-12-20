@@ -10,6 +10,7 @@ return [
     'id' => '颂唐OA',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language' => 'zh-CN',
     'controllerNamespace' => 'oa\controllers',
     'modules' => [
         'admin' => [
