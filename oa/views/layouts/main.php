@@ -7,6 +7,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use oa\assets\AppAsset;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -28,17 +29,18 @@ NavBar::begin([
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar-default navbar-fixed-top',
+        'id'=>'top-navbar'
     ],
 ]);
-$menuItems = [];
-if (Yii::$app->user->isGuest) {
-    $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-    $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-} else {
-    $menuItems[] = ['label' => 'Logout (' . Yii::$app->user->identity->username . ')', 'url' => Yii::$app->params['logoutUrl']];
-}
+    $menuItems = [];
+    $menuItems[] = ['label' => '发起申请', 'url' => Url::to('/apply/create'),'options'=>['class'=>'nav-create-btn']];
+    $menuItems[] = ['label' => '我的申请', 'url' => Url::to('/apply/my'),'options'=>['class'=>'nav-do-btn']];
+    $menuItems[] = ['label' => '待办事项', 'url' => Url::to('/apply/todo'),'options'=>['class'=>'nav-do-btn']];
+    $menuItems[] = ['label' => '相关事项', 'url' => Url::to('/apply/related'),'options'=>['class'=>'nav-do-btn']];
+    $menuItems[] = ['label' => '安全退出', 'url' => Yii::$app->params['logoutUrl']];
 echo Nav::widget([
-    'options' => ['class' => 'navbar-nav navbar-right'],
+    'options' => ['class' => 'navbar-nav navbar-right','id'=>'top-nav'],
+
     'items' => $menuItems,
 ]);
 NavBar::end();
@@ -46,7 +48,7 @@ NavBar::end();
 <div class="wrap">
     <div class="container">
         <?=$this->render('sidebar')?>
-        <?=$this->render('page_head')?>
+        <?/*=$this->render('page_head')*/?>
         <section id="main">
             <?= $content ?>
         </section>

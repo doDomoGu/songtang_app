@@ -112,6 +112,8 @@ class ApplyController extends BaseController
         $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html];
     }
 
+
+    //我的申请
     public function actionMy(){
         $list = OaApply::find()->where(['user_id'=>Yii::$app->user->id])->orderBy('add_time desc')->all();
 
@@ -119,24 +121,64 @@ class ApplyController extends BaseController
         return $this->render('my',$params);
     }
 
-
+    //待办事项
     public function actionTodo(){
+        //检索出所有与你相关的流程
         $flow = OaFlow::find()->where(['user_id'=>Yii::$app->user->id])->all();
         if(!empty($flow)){
             $list = OaApply::find();
+            //使用 任务id和流程步骤数 搜索当前的申请表中匹配的
             foreach($flow as $f){
                 $list= $list->orWhere(['task_id'=>$f->task_id,'flow_step'=>$f->step]);
             }
-
+            //按时间倒序
             $list = $list->orderBy('add_time desc')->all();
+        }else{
+            $list = [];
+        }
+
+        $params['list'] = $list;
+        return $this->render('todo',$params);
+    }
+
+    //相关事项
+    public function actionRelated(){
+        //检索出所有与你相关的流程  按task_id分组
+        $flow = OaFlow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
+        if(!empty($flow)){
+            $taskIds = [];
+            foreach($flow as $f){
+                $taskIds[] = $f->task_id;
+            }
+            $list = OaApply::find()->where(['task_id'=>$taskIds])->orderBy('add_time desc')->all();
         }else{
             $list = [];
         }
 
 
         $params['list'] = $list;
-        return $this->render('todo',$params);
+        return $this->render('related',$params);
     }
+
+    /*//完结事项
+    public function actionRelated(){
+        //检索出所有与你相关的流程  按task_id分组
+        $flow = OaFlow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
+        if(!empty($flow)){
+            $taskIds = [];
+            foreach($flow as $f){
+                $taskIds[] = $f->task_id;
+            }
+            $list = OaApply::find()->where(['task_id'=>$taskIds])->orderBy('add_time desc')->all();
+        }else{
+            $list = [];
+        }
+
+
+        $params['list'] = $list;
+        return $this->render('related',$params);
+    }*/
+
 
     public function actionDo(){
         $id = Yii::$app->request->get('id',false);

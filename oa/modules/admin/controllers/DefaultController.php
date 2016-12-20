@@ -9,6 +9,16 @@ use Yii;
  */
 class DefaultController extends BaseController
 {
+
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ]
+        ];
+    }
+
     /**
      * Renders the index view for the module
      * @return string
@@ -18,14 +28,8 @@ class DefaultController extends BaseController
         return $this->render('index');
     }
 
-    public function actionError(){
-        echo 'oa - admin - error';
-        Yii::$app->end();
-    }
-
     public function actionNoAuth(){
-        echo 'oa - admin - no - auth';
-        Yii::$app->end();
+        return $this->render('no_auth');
     }
 
 

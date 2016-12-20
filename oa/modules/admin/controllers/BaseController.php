@@ -6,7 +6,7 @@ use Yii;
 use yii\web\Controller;
 use ucenter\models\UserAppAuth;
 
-class BaseController extends Controller
+class   BaseController extends Controller
 {
     public $mobileNavItems = [];  //手机端导航栏 选项
     public $except = [];
@@ -18,7 +18,6 @@ class BaseController extends Controller
         }
         $this->except = [
             AdminFunc::adminUrl('default/error'),
-            AdminFunc::adminUrl('default/no-auth')
         ];
         $this->checkLogin();
 
@@ -36,9 +35,9 @@ class BaseController extends Controller
                 return $this->checkAuth();
             }
         }else{
-            if(!Yii::$app->user->isGuest && '/'.$this->route == AdminFunc::adminUrl('default/no-auth')){
+            /*if(!Yii::$app->user->isGuest && '/'.$this->route == AdminFunc::adminUrl('default/no-auth')){
                 return $this->redirect(AdminFunc::adminUrl('/'));
-            }
+            }*/
             return true;
         }
     }

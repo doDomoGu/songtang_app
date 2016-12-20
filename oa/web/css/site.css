@@ -80,5 +80,26 @@ body {
     margin-left:20px;
     width:920px;
     float:left;
-    border:1px solid #333;
+    overflow: hidden;
+}
+
+/* nav */
+#top-nav > li.nav-create-btn {
+    background: #5cb85c;
+}
+
+#top-nav > li.nav-create-btn:hover {
+    background: #54a254;
+}
+
+#top-nav > li.nav-create-btn > a {
+    color: #fff;
+}
+
+#top-nav > li.nav-do-btn:hover {
+    background: #337ab7;
+}
+
+#top-nav > li.nav-do-btn:hover > a {
+    color: #fff;
 }

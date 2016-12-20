@@ -7,7 +7,7 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'test',
+    'id' => '颂唐OA',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'oa\controllers',
