@@ -1,19 +1,24 @@
 <section id="sidebar" class="well well-sm">
     <ul class="list-unstyled">
         <li>
-            姓名：<?=Yii::$app->user->getIdentity()->name?>
+            <span class="col">姓名：</span>
+            <span class="val"><?=Yii::$app->user->getIdentity()->name?></span>
         </li>
         <li>
-            地区：<?=Yii::$app->user->getIdentity()->area?>
+            <span class="col">地区：</span>
+            <span class="val"><?=Yii::$app->user->getIdentity()->area?></span>
         </li>
         <li>
-            业态：<?=Yii::$app->user->getIdentity()->business?>
+            <span class="col">业态：</span>
+            <span class="val"><?=Yii::$app->user->getIdentity()->business?></span>
         </li>
         <li>
-            部门：<?=Yii::$app->user->getIdentity()->department?>
+            <span class="col">部门：</span>
+            <span class="val"><?=Yii::$app->user->getIdentity()->department?></span>
         </li>
         <li>
-            职位：<?=Yii::$app->user->getIdentity()->position?>
+            <span class="col">职位：</span>
+            <span class="val"><?=Yii::$app->user->getIdentity()->position?></span>
         </li>
     </ul>
 </section>

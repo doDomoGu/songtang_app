@@ -67,6 +67,25 @@ body {
     float:left;
     overflow: hidden;
 }
+
+#sidebar > ul > li {
+    overflow: hidden;
+}
+
+#sidebar > ul > li > span.col {
+    width:50px;
+    text-align: right;
+    display:block;
+    float:left;
+}
+
+#sidebar > ul > li > span.val {
+    width:130px;
+    display: block;
+    float:left;
+
+}
+
 #page_head {
     margin-left:20px;
     margin-bottom:20px;
