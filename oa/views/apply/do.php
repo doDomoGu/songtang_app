@@ -4,6 +4,12 @@ use yii\bootstrap\ActiveForm;
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/create.js');
 $this->title = '进行操作';
 ?>
+<section class="panel panel-default">
+    <div class="panel-heading">
+        <h3><?=$this->title?></h3>
+    </div>
+    <div class="panel-body">
+
 <?php $form = ActiveForm::begin([
     'id' => 'apply-do-form',
     'options' => ['class' => 'form-horizontal','autocomplete'=>'off'],
@@ -23,3 +29,6 @@ $this->title = '进行操作';
 </div>
 
 <?php ActiveForm::end(); ?>
+
+    </div>
+</section>

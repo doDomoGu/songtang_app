@@ -1,4 +1,7 @@
 <section id="sidebar" class="well well-sm">
+    <div style="text-align: center;border-bottom: 1px solid #333;padding-bottom:4px;margin-bottom:10px;">
+        职员信息
+    </div>
     <ul class="list-unstyled">
         <li>
             <span class="col">姓名：</span>

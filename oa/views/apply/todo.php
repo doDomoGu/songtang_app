@@ -6,8 +6,8 @@ $this->title = '待办事项';
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/my.js');
 
 ?>
-<section class="panel">
-    <div class="panel-head">
+<section class="panel panel-default">
+    <div class="panel-heading">
         <h3><?=$this->title?></h3>
     </div>
     <div class="panel-body">

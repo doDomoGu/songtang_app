@@ -34,9 +34,9 @@ NavBar::begin([
 ]);
     $menuItems = [];
     $menuItems[] = ['label' => '发起申请', 'url' => Url::to('/apply/create'),'options'=>['class'=>'nav-create-btn']];
-    $menuItems[] = ['label' => '我的申请', 'url' => Url::to('/apply/my'),'options'=>['class'=>'nav-do-btn']];
-    $menuItems[] = ['label' => '待办事项', 'url' => Url::to('/apply/todo'),'options'=>['class'=>'nav-do-btn']];
-    $menuItems[] = ['label' => '相关事项', 'url' => Url::to('/apply/related'),'options'=>['class'=>'nav-do-btn']];
+    $menuItems[] = ['label' => '我的申请', 'url' => Url::to('/apply/my'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/my'?true:false];
+    $menuItems[] = ['label' => '待办事项', 'url' => Url::to('/apply/todo'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/todo'?true:false];
+    $menuItems[] = ['label' => '相关事项', 'url' => Url::to('/apply/related'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/related'?true:false];
     $menuItems[] = ['label' => '安全退出', 'url' => Yii::$app->params['logoutUrl']];
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav navbar-right','id'=>'top-nav'],
