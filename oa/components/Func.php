@@ -18,7 +18,7 @@ class Func extends Component {
         $task = OaTask::find()->where(['status'=>1,'set_complete'=>1])->all();
         $taskIds = [];
         foreach($task as $t){
-            $taskIds[] = $t;
+            $taskIds[] = $t->id;
         }
         $list = OaTaskApplyUser::find()->where(['user_id'=>$user_id,'task_id'=>$taskIds])->all();
         foreach($list as $l){

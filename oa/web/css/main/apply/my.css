@@ -5,3 +5,7 @@
     margin-bottom: 10px;
     padding:2px 10px;
 }
+
+#infoContent > .content >li.not-do {
+    background: #ffedce;
+}

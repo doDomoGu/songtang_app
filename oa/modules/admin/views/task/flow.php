@@ -25,7 +25,7 @@ use yii\helpers\Url;
         <tbody>
         <?php foreach($list as $l):?>
             <tr>
-                <td><?=$l->id?></td>
+                <td><?=$l->step?></td>
                 <td><?=$l->title?></td>
                 <td><?=OaFlow::getTypeCn($l->type)?></td>
                 <td><?=$l->user->name?></td>
@@ -72,6 +72,7 @@ Modal::begin([
                 <label class="col-sm-4 control-label label1">职员</label>
                 <div class="col-sm-6">
                     <input class="form-control create-user-select">
+                    <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>
             <div class="form-group">

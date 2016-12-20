@@ -96,7 +96,7 @@ class ApplyController extends BaseController
                 if(!empty($records)){
                     foreach($records as $r){
                         $htmlOne = '<li>';
-                        $htmlOne.= '<div class="task-preview-step">步骤'.$r->flow->step.'</div>';
+                        $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
                         $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
                         $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.OaFlow::getResultCn($r->flow->type,$r->result).'</b></div>';
                         $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
@@ -107,8 +107,15 @@ class ApplyController extends BaseController
 
                 //3.剩余未完成操作
                 $curStep = $apply->flow_step;
-
-
+                $flow = OaFlow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
+                foreach($flow as $f){
+                    $htmlOne = '<li class="not-do">';
+                    $htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
+                    $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
+                    $htmlOne.= '<div>操作人：<b>'.$f->user->name.'</b> </div>';
+                    $htmlOne.= '</li>';
+                    $html .= $htmlOne;
+                }
             }else{
                 $errormsg = '申请表不存在！';
             }
