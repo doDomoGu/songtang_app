@@ -34,6 +34,7 @@ class OaFlow extends \yii\db\ActiveRecord
             'title' => '标题',
             'type' => '操作类型',
             'user_id' => '指定操作人',
+            'back_step' => '指定打回的步骤数', //操作类型为 1 approval审核 和 3 execute执行才用到
             'status' => '状态'
         ];
     }
@@ -42,7 +43,7 @@ class OaFlow extends \yii\db\ActiveRecord
     {
         return [
             [['task_id','step','title','type','user_id'], 'required'],
-            [['task_id','step','type','user_id'], 'integer'],
+            [['task_id','step','type','user_id','back_step'], 'integer'],
         ];
     }
 

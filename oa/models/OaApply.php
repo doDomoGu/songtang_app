@@ -41,6 +41,11 @@ class OaApply extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), array('id' => 'user_id'));
     }
 
+
+    public function getFlow(){
+        return $this->hasOne(OaFlow::className(), array('step' => 'flow_step','task_id'=>'task_id'));
+    }
+
     public function getTask(){
         return $this->hasOne(OaTask::className(), array('id' => 'task_id'));
     }

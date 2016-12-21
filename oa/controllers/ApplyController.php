@@ -234,13 +234,30 @@ class ApplyController extends BaseController
                 $model->result = 1;
 
                 if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-                    $new = new OaApplyRecord();
-                    $new->attributes = $model->attributes;
-                    $new->apply_id = $apply->id;
-                    $new->flow_id = $flow->id;
-                    $new->add_time = date('Y-m-d H:i:s');
-                    if($new->save()){
-                        $apply->flow_step++;
+                    $record = new OaApplyRecord();
+                    $record->attributes = $model->attributes;
+                    $record->apply_id = $apply->id;
+                    $record->flow_id = $flow->id;
+                    $record->add_time = date('Y-m-d H:i:s');
+                    if($record->save()){
+                        //操作类型为 1 approval审核 和 3 execute执行  结果为0 进行打回操作
+                        if($record->result==0 && in_array($flow->type,[OaFlow::TYPE_APPROVAL,OaFlow::TYPE_EXECUTE])){
+                            if($flow->back_step==0){
+                                //打回到发起者 改为失败状态
+                                $apply->status = OaApply::STATUS_FAILURE;
+                            }else{
+                                $apply->flow_step = $flow->back_step;
+                            }
+                        }else{
+                            //查找是否还有后续流程
+                            $exist = OaFlow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$flow->step])->one();
+                            if($exist){
+                                $apply->flow_step++;
+                            }else{
+                                // 没有就完成此申请  改为成功状态
+                                $apply->status= OaApply::STATUS_SUCCESS;
+                            }
+                        }
                         $apply->save();
 
                         //Yii::$app->session->setFlash()
