@@ -106,6 +106,30 @@ class OaFlow extends \yii\db\ActiveRecord
         return $html;
     }
 
+    public static function getRadioItems($type){
+        switch($type){
+            case self::TYPE_APPROVAL:
+                $items = [1=>self::RESULT_APPROVAL_TRUE,0=>self::RESULT_APPROVAL_FALSE];
+                break;
+            case self::TYPE_EXAMINE:
+                $items = [1=>self::RESULT_EXAMINE_TRUE,0=>self::RESULT_EXAMINE_FALSE];
+                break;
+            case self::TYPE_EXECUTE:
+                $items = [1=>self::RESULT_EXECUTE_TRUE,0=>self::RESULT_EXECUTE_FALSE];
+                break;
+            case self::TYPE_WATCH:
+                $items = [1=>self::RESULT_WATCH_TRUE];
+                break;
+            case self::TYPE_FEEDBACK:
+                $items = [1=>self::RESULT_FEEDBACK_TRUE];
+                break;
+            default:
+                $items = [];
+        }
+
+        return $items;
+    }
+
     public static function getResultCn($type,$result){
         $return = 'N/A';
         switch($type){
