@@ -26,8 +26,8 @@
                 <td><?=$l->typeName?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>
-                    <?=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
-                    <?=Html::a('发起人设置',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
+                    <?/*=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?><!--
+                    --><?/*=Html::a('发起人设置',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
                 </td>
             </tr>
 
