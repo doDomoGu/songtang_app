@@ -2,10 +2,10 @@
 
 namespace oa\modules\admin\controllers;
 
-use oa\models\OaFlow;
-use oa\models\OaTask;
-use oa\models\OaTaskApplyUser;
-use oa\models\OaTaskCategory;
+use oa\models\Flow;
+use oa\models\Task;
+use oa\models\TaskApplyUser;
+use oa\models\TaskCategory;
 use oa\modules\admin\components\AdminFunc;
 use ucenter\models\Area;
 use ucenter\models\Business;
@@ -21,7 +21,7 @@ class TaskController extends BaseController
 {
     public function actionCategory()
     {
-        $list = OaTaskCategory::find()->all();
+        $list = TaskCategory::find()->all();
 
 
         $params['list'] = $list;
@@ -33,7 +33,7 @@ class TaskController extends BaseController
     {
         $aid = Yii::$app->request->get('aid',false);
         $bid = Yii::$app->request->get('bid',false);
-        $list = OaTask::find()->all();
+        $list = Task::find()->all();
 
 
         $params['list'] = $list;
@@ -44,7 +44,7 @@ class TaskController extends BaseController
 
         $params['aid'] = $aid;
         $params['bid'] = $bid;
-        $params['categoryList'] = OaTaskCategory::getDropdownList();
+        $params['categoryList'] = TaskCategory::getDropdownList();
         return $this->render('index',$params);
     }
 
@@ -59,11 +59,11 @@ class TaskController extends BaseController
             if($title==''){
                 $errormsg = '名称或别名不能为空！';
             }else{
-                $exist = OaTask::find()->where(['title'=>$title])->one();
+                $exist = Task::find()->where(['title'=>$title])->one();
                 if($exist){
                     $errormsg = '标题已存在!';
                 }else{
-                    $task = new OaTask();
+                    $task = new Task();
                     $task->title = $title;
                     $task->category_id = $category_id;
                     $task->area_id = $area_id;
@@ -89,9 +89,9 @@ class TaskController extends BaseController
 
     public function actionFlow(){
         $tid = Yii::$app->request->get('tid',false);
-        $task = OaTask::find()->where(['id'=>$tid])->one();
+        $task = Task::find()->where(['id'=>$tid])->one();
         if($task){
-            $flow = OaFlow::find()->where(['task_id'=>$tid])->orderBy('step asc')->all();
+            $flow = Flow::find()->where(['task_id'=>$tid])->orderBy('step asc')->all();
             $params['list'] = $flow;
             $params['task'] = $task;
             return $this->render('flow',$params);
@@ -112,7 +112,7 @@ class TaskController extends BaseController
             if($title==''){
                 $errormsg = '名称或别名不能为空！';
             }else{
-                $exist = OaTask::find()->where(['id'=>$tid])->one();
+                $exist = Task::find()->where(['id'=>$tid])->one();
                 if(!$exist){
                     $errormsg = '对应的任务ID不存在！';
                 }else{
@@ -120,8 +120,8 @@ class TaskController extends BaseController
                     if(!$existUser){
                         $errormsg = '所选职员ID不存在！';
                     }else{
-                        $last = OaFlow::find()->where(['task_id'=>$tid])->orderBy('step desc')->one();
-                        $flow = new OaFlow();
+                        $last = Flow::find()->where(['task_id'=>$tid])->orderBy('step desc')->one();
+                        $flow = new Flow();
                         $flow->title = $title;
                         $flow->task_id = $tid;
                         $flow->user_id = $user_id;
@@ -147,7 +147,7 @@ class TaskController extends BaseController
 
     public function actionSetComplete(){
         $id = Yii::$app->request->get('id',false);
-        $task = OaTask::find()->where(['id'=>$id])->one();
+        $task = Task::find()->where(['id'=>$id])->one();
         if($task){
             $task->set_complete = 1;
             $task->save();
@@ -161,9 +161,9 @@ class TaskController extends BaseController
 
     public function actionApplyUser(){
         $tid = Yii::$app->request->get('tid',false);
-        $task = OaTask::find()->where(['id'=>$tid])->one();
+        $task = Task::find()->where(['id'=>$tid])->one();
         if($task){
-            $applyUser= OaTaskApplyUser::find()->where(['task_id'=>$tid])->all();
+            $applyUser= TaskApplyUser::find()->where(['task_id'=>$tid])->all();
             $params['list'] = $applyUser;
             $params['task'] = $task;
             return $this->render('apply_user',$params);
@@ -179,7 +179,7 @@ class TaskController extends BaseController
         if(Yii::$app->request->isAjax){
             $user_id = intval(Yii::$app->request->post('user_id',0));
             $tid = intval(Yii::$app->request->post('tid',0));
-            $exist = OaTask::find()->where(['id'=>$tid])->one();
+            $exist = Task::find()->where(['id'=>$tid])->one();
             if(!$exist){
                 $errormsg = '对应的任务ID不存在！';
             }else{
@@ -187,11 +187,11 @@ class TaskController extends BaseController
                 if(!$existUser){
                     $errormsg = '所选职员ID不存在！';
                 }else{
-                    $existData = OaTaskApplyUser::find()->where(['task_id'=>$tid,'user_id'=>$user_id])->one();
+                    $existData = TaskApplyUser::find()->where(['task_id'=>$tid,'user_id'=>$user_id])->one();
                     if($existData){
                         $errormsg = '该任务表中此发起人已存在！';
                     }else{
-                        $n = new OaTaskApplyUser();
+                        $n = new TaskApplyUser();
                         $n->task_id = $tid;
                         $n->user_id = $user_id;
                         if($n->save()){

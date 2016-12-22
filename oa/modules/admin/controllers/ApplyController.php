@@ -2,9 +2,9 @@
 
 namespace oa\modules\admin\controllers;
 
-use oa\models\OaApply;
-use oa\models\OaApplyRecord;
-use oa\models\OaFlow;
+use oa\models\Apply;
+use oa\models\ApplyRecord;
+use oa\models\Flow;
 use oa\modules\admin\components\AdminFunc;
 use ucenter\models\Area;
 use ucenter\models\Business;
@@ -18,7 +18,7 @@ class ApplyController extends BaseController
     {
         $aid = Yii::$app->request->get('aid',false);
         $bid = Yii::$app->request->get('bid',false);
-        $list = OaApply::find()->all();
+        $list = Apply::find()->all();
 
 
         $params['list'] = $list;
@@ -34,19 +34,19 @@ class ApplyController extends BaseController
 
     public function actionShowRecord(){
         $aid = Yii::$app->request->get('aid',false);
-        $apply = OaApply::find()->where(['id'=>$aid])->one();
+        $apply = Apply::find()->where(['id'=>$aid])->one();
         if($apply){
             //1.发起申请
             $html = '<li><div>发起申请</div><div>操作人：<b>'.$apply->applyUser->name.'</b> 时间：<b>'.$apply->add_time.' </b></div></li>';
 
             //2.操作记录
-            $records = OaApplyRecord::find()->where(['apply_id'=>$aid])->all();
+            $records = ApplyRecord::find()->where(['apply_id'=>$aid])->all();
             if(!empty($records)){
                 foreach($records as $r){
                     $htmlOne = '<li>';
                     $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
                     $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
-                    $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.OaFlow::getResultCn($r->flow->type,$r->result).'</b></div>';
+                    $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
                     $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
                     $htmlOne.= '</li>';
                     $html .= $htmlOne;
@@ -55,7 +55,7 @@ class ApplyController extends BaseController
 
             //3.剩余未完成操作
             $curStep = $apply->flow_step;
-            $flow = OaFlow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
+            $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
             foreach($flow as $f){
                 $htmlOne = '<li class="not-do">';
                 $htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';

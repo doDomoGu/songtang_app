@@ -2,12 +2,16 @@
 
 namespace ucenter\models;
 
-
+use Yii;
 //公司结构
 use yii\helpers\ArrayHelper;
 
 class Structure extends \yii\db\ActiveRecord
 {
+    public static function getDb(){
+        return Yii::$app->db_ucenter;
+    }
+
     public function attributeLabels(){
         return [
             'aid' => '地区',

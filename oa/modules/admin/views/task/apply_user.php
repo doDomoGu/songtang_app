@@ -1,7 +1,7 @@
 <?php
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
-use oa\models\OaFlow;
+use oa\models\Flow;
 use yii\helpers\Url;
     $this->title = '【'.$task->title.'】的发起人设置';
     oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/apply_user.js');

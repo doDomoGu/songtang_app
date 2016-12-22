@@ -12,10 +12,10 @@ class m161128_194427_create_user_app_auth_table extends Migration
     {
         $this->createTable('user_app_auth', [
             'app'=> $this->string(20)->notNull(),
-            'uid'=> $this->integer(11)->notNull(),
+            'user_id'=> $this->integer(11)->notNull(),
             'is_enable'=> $this->smallInteger(1)->defaultValue(0)
         ]);
-        $this->addPrimaryKey('pk','user_app_auth',['app','uid']);
+        $this->addPrimaryKey('pk','user_app_auth',['app','user_id']);
         $this->createIndex('app_name','user_app_auth','app');
     }
 

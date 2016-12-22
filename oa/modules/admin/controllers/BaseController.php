@@ -4,9 +4,9 @@ namespace oa\modules\admin\controllers;
 use oa\modules\admin\components\AdminFunc;
 use Yii;
 use yii\web\Controller;
-use ucenter\models\UserAppAuth;
+use common\models\UserAppAuth;
 
-class   BaseController extends Controller
+class  BaseController extends Controller
 {
     public $mobileNavItems = [];  //手机端导航栏 选项
     public $except = [];
@@ -54,7 +54,7 @@ class   BaseController extends Controller
 
     //检查是否有使用这个app权限
     private function checkAuth(){
-        $authExist = UserAppAuth::find()->where(['app'=>'oa-admin','uid'=>Yii::$app->user->id,'is_enable'=>1])->one();
+        $authExist = UserAppAuth::find()->where(['app'=>'oa-admin','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
         if(!$authExist){
             if('/'.$this->getRoute()==AdminFunc::adminUrl('default/no-auth')){
                 return true;

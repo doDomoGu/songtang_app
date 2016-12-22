@@ -1,10 +1,14 @@
 <?php
 
 namespace oa\models;
-
+use Yii;
 //oa 任务表 (即预先分配好的oa流程环节)
-class OaTask extends \yii\db\ActiveRecord
+class Task extends \yii\db\ActiveRecord
 {
+    public static function getDb(){
+        return Yii::$app->db_oa;
+    }
+
     public function attributeLabels(){
         return [
             'id' => 'ID',
@@ -27,7 +31,7 @@ class OaTask extends \yii\db\ActiveRecord
     }
 
     public function getCategory(){
-        return $this->hasOne(OaTaskCategory::className(), array('id' => 'category_id'));
+        return $this->hasOne(TaskCategory::className(), array('id' => 'category_id'));
     }
 
 }

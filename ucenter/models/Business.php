@@ -2,9 +2,14 @@
 
 namespace ucenter\models;
 
+use Yii;
 //业态
 class Business extends \yii\db\ActiveRecord
 {
+    public static function getDb(){
+        return Yii::$app->db_ucenter;
+    }
+
     public function attributeLabels(){
         return [
             'id' => 'ID',

@@ -1,7 +1,7 @@
 <?php
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
-use oa\models\OaFlow;
+use oa\models\Flow;
 use yii\helpers\Url;
     $this->title = '【'.$task->title.'】的流程设置';
     oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/flow.js');
@@ -27,7 +27,7 @@ use yii\helpers\Url;
             <tr>
                 <td><?=$l->step?></td>
                 <td><?=$l->title?></td>
-                <td><?=OaFlow::getTypeCn($l->type)?></td>
+                <td><?=Flow::getTypeCn($l->type)?></td>
                 <td><?=$l->user->name?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>
@@ -64,7 +64,7 @@ Modal::begin([
                 <label class="col-sm-4 control-label label1">类型</label>
                 <div class="col-sm-6">
                     <select class="form-control create-type-select">
-                        <?=OaFlow::getOptions()?>
+                        <?=Flow::getOptions()?>
                     </select>
                 </div>
             </div>

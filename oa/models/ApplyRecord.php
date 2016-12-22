@@ -1,10 +1,13 @@
 <?php
 
 namespace oa\models;
-
+use Yii;
 //oa 申请 进行操作的记录
-class OaApplyRecord extends \yii\db\ActiveRecord
+class ApplyRecord extends \yii\db\ActiveRecord
 {
+    public static function getDb(){
+        return Yii::$app->db_oa;
+    }
     public function attributeLabels(){
         return [
             'id' => 'ID',
@@ -26,6 +29,6 @@ class OaApplyRecord extends \yii\db\ActiveRecord
     }
 
     public function getFlow(){
-        return $this->hasOne(OaFlow::className(), array('id' => 'flow_id'));
+        return $this->hasOne(Flow::className(), array('id' => 'flow_id'));
     }
 }

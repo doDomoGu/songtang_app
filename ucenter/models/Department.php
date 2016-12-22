@@ -1,10 +1,14 @@
 <?php
 
 namespace ucenter\models;
-
+use Yii;
 //部门
 class Department extends \yii\db\ActiveRecord
 {
+    public static function getDb(){
+        return Yii::$app->db_ucenter;
+    }
+
     public function attributeLabels()
     {
         return [

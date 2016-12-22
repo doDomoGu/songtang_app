@@ -4,9 +4,12 @@ namespace oa\models;
 
 //oa 申请表
 use ucenter\models\User;
-
-class OaApply extends \yii\db\ActiveRecord
+use Yii;
+class Apply extends \yii\db\ActiveRecord
 {
+    public static function getDb(){
+        return Yii::$app->db_oa;
+    }
     const STATUS_NORMAL     = 1; //正常流程中
     const STATUS_DELETE     = 0; //删除
     const STATUS_SUCCESS    = 2; //成功 完成
@@ -43,10 +46,10 @@ class OaApply extends \yii\db\ActiveRecord
 
 
     public function getFlow(){
-        return $this->hasOne(OaFlow::className(), array('step' => 'flow_step','task_id'=>'task_id'));
+        return $this->hasOne(Flow::className(), array('step' => 'flow_step','task_id'=>'task_id'));
     }
 
     public function getTask(){
-        return $this->hasOne(OaTask::className(), array('id' => 'task_id'));
+        return $this->hasOne(Task::className(), array('id' => 'task_id'));
     }
 }

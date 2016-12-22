@@ -6,6 +6,10 @@ use Yii;
 
 class User extends \yii\db\ActiveRecord
 {
+    public static function getDb(){
+        return Yii::$app->db_ucenter;
+    }
+
     public function validatePassword($password)
     {
         return $this->password === md5($password);

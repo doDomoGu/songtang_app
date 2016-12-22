@@ -1,10 +1,14 @@
 <?php
 
 namespace oa\models;
-
+use Yii;
 //oa 任务表分类
-class OaTaskCategory extends \yii\db\ActiveRecord
+class TaskCategory extends \yii\db\ActiveRecord
 {
+    public static function getDb(){
+        return Yii::$app->db_oa;
+    }
+    
     const TYPE_HR       = 1;    //人事类   招聘 人员调动
     const TYPE_DAILY    = 2;    //日常类   费用核算 报销 采购
     const TYPE_BUSINESS = 3;    //商务类   合同
@@ -38,7 +42,7 @@ class OaTaskCategory extends \yii\db\ActiveRecord
         try {
             $exist = self::find()->one();
             if($exist){
-                throw new \yii\base\Exception('OaTaskCategory has installed');
+                throw new \yii\base\Exception('TaskCategory has installed');
             }else{
                 $arr = [
                     1=>['招聘','入职','转正','升职','降职','调动','调薪'],
@@ -49,7 +53,7 @@ class OaTaskCategory extends \yii\db\ActiveRecord
                 foreach($arr as $k=>$nameArr) {
                     $ord = 1;
                     foreach($nameArr as $n){
-                        $m = new OaTaskCategory();
+                        $m = new TaskCategory();
                         $m->name = $n;
                         $m->type = $k;
                         $m->ord = $ord;
@@ -59,7 +63,7 @@ class OaTaskCategory extends \yii\db\ActiveRecord
                         $ord++;
                     }
                 }
-                echo 'OaTaskCategory install finish'."<br/>";
+                echo 'TaskCategory install finish'."<br/>";
             }
             return true;
         }catch (\Exception $e)
@@ -115,7 +119,7 @@ class OaTaskCategory extends \yii\db\ActiveRecord
         $typeList = self::getTypeList();
         foreach($typeList as $k => $tl){
             $list['t'.$k] = $tl;
-            $cate = OaTaskCategory::find()->where(['type'=>$k])->all();
+            $cate = TaskCategory::find()->where(['type'=>$k])->all();
             $count = count($cate);
             $i=1;
             foreach($cate as $c){

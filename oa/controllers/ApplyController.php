@@ -2,23 +2,23 @@
 namespace oa\controllers;
 
 use oa\components\Func;
-use oa\models\OaApply;
-use oa\models\OaApplyCreateForm;
-use oa\models\OaApplyDoForm;
-use oa\models\OaApplyRecord;
-use oa\models\OaFlow;
-use oa\models\OaTask;
-use oa\models\OaTaskApplyUser;
+use oa\models\Apply;
+use oa\models\ApplyCreateForm;
+use oa\models\ApplyDoForm;
+use oa\models\ApplyRecord;
+use oa\models\Flow;
+use oa\models\Task;
+use oa\models\TaskApplyUser;
 use yii\web\Response;
 use Yii;
 
 class ApplyController extends BaseController
 {
     public function actionCreate(){
-        $model = new OaApplyCreateForm();
+        $model = new ApplyCreateForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $new = new OaApply();
+            $new = new Apply();
             $new->attributes = $model->attributes;
             $new->user_id = Yii::$app->user->id;
             $new->flow_step = 1;
@@ -45,9 +45,9 @@ class ApplyController extends BaseController
         $html = '';
         if(Yii::$app->request->isAjax){
             $task_id = trim(Yii::$app->request->post('task_id',false));
-            $task = OaTask::find()->where(['id'=>$task_id])->one();
+            $task = Task::find()->where(['id'=>$task_id])->one();
             if($task){
-                $flows = OaFlow::find()->where(['task_id'=>$task_id])->all();
+                $flows = Flow::find()->where(['task_id'=>$task_id])->all();
                 if(!empty($flows)){
                     $html.='<h3>申请表预览：</h3>';
                     foreach($flows as $f){
@@ -85,20 +85,20 @@ class ApplyController extends BaseController
         $html = '';
         if(Yii::$app->request->isAjax){
             $id = trim(Yii::$app->request->post('id',false));
-            $apply = OaApply::find()->where(['id'=>$id])->one();
+            $apply = Apply::find()->where(['id'=>$id])->one();
             if($apply){
                 $result = true;
                 //1.发起申请
                 $html = '<li><div>发起申请</div><div>操作人：<b>'.$apply->applyUser->name.'</b> 时间：<b>'.$apply->add_time.' </b></div></li>';
 
                 //2.操作记录
-                $records = OaApplyRecord::find()->where(['apply_id'=>$id])->all();
+                $records = ApplyRecord::find()->where(['apply_id'=>$id])->all();
                 if(!empty($records)){
                     foreach($records as $r){
                         $htmlOne = '<li>';
                         $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
                         $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
-                        $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.OaFlow::getResultCn($r->flow->type,$r->result).'</b></div>';
+                        $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
                         $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
                         $htmlOne.= '</li>';
                         $html .= $htmlOne;
@@ -107,7 +107,7 @@ class ApplyController extends BaseController
 
                 //3.剩余未完成操作
                 $curStep = $apply->flow_step;
-                $flow = OaFlow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
+                $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
                 foreach($flow as $f){
                     $htmlOne = '<li class="not-do">';
                     $htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
@@ -130,7 +130,7 @@ class ApplyController extends BaseController
 
     //我的申请
     public function actionMy(){
-        $list = OaApply::find()->where(['user_id'=>Yii::$app->user->id])->orderBy('add_time desc')->all();
+        $list = Apply::find()->where(['user_id'=>Yii::$app->user->id])->orderBy('add_time desc')->all();
 
         $params['list'] = $list;
         return $this->render('my',$params);
@@ -139,9 +139,9 @@ class ApplyController extends BaseController
     //待办事项
     public function actionTodo(){
         //检索出所有与你相关的流程
-        $flow = OaFlow::find()->where(['user_id'=>Yii::$app->user->id])->all();
+        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->all();
         if(!empty($flow)){
-            $list = OaApply::find();
+            $list = Apply::find();
             //使用 任务id和流程步骤数 搜索当前的申请表中匹配的
             foreach($flow as $f){
                 $list= $list->orWhere(['task_id'=>$f->task_id,'flow_step'=>$f->step]);
@@ -159,13 +159,13 @@ class ApplyController extends BaseController
     //相关事项
     public function actionRelated(){
         //检索出所有与你相关的流程  按task_id分组
-        $flow = OaFlow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
+        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
         if(!empty($flow)){
             $taskIds = [];
             foreach($flow as $f){
                 $taskIds[] = $f->task_id;
             }
-            $list = OaApply::find()->where(['task_id'=>$taskIds])->orderBy('add_time desc')->all();
+            $list = Apply::find()->where(['task_id'=>$taskIds])->orderBy('add_time desc')->all();
         }else{
             $list = [];
         }
@@ -178,13 +178,13 @@ class ApplyController extends BaseController
     /*//完结事项
     public function actionRelated(){
         //检索出所有与你相关的流程  按task_id分组
-        $flow = OaFlow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
+        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
         if(!empty($flow)){
             $taskIds = [];
             foreach($flow as $f){
                 $taskIds[] = $f->task_id;
             }
-            $list = OaApply::find()->where(['task_id'=>$taskIds])->orderBy('add_time desc')->all();
+            $list = Apply::find()->where(['task_id'=>$taskIds])->orderBy('add_time desc')->all();
         }else{
             $list = [];
         }
@@ -197,19 +197,19 @@ class ApplyController extends BaseController
 
     public function actionDo(){
         $id = Yii::$app->request->get('id',false);
-        $apply = OaApply::find()->where(['id'=>$id])->one();
+        $apply = Apply::find()->where(['id'=>$id])->one();
         if($apply){
             //1.发起申请
             $html = '<li><div>发起申请</div><div>操作人：<b>'.$apply->applyUser->name.'</b> 时间：<b>'.$apply->add_time.' </b></div></li>';
 
             //2.操作记录
-            $records = OaApplyRecord::find()->where(['apply_id'=>$id])->all();
+            $records = ApplyRecord::find()->where(['apply_id'=>$id])->all();
             if(!empty($records)){
                 foreach($records as $r){
                     $htmlOne = '<li>';
                     $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
                     $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
-                    $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.OaFlow::getResultCn($r->flow->type,$r->result).'</b></div>';
+                    $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
                     $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
                     $htmlOne.= '</li>';
                     $html .= $htmlOne;
@@ -219,7 +219,7 @@ class ApplyController extends BaseController
             //3.剩余未完成操作
             $html2 = '';
             $curStep = $apply->flow_step;
-            $flow = OaFlow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$curStep])->all();
+            $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$curStep])->all();
             foreach($flow as $f){
                 $htmlOne = '<li class="not-do">';
                 $htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
@@ -228,34 +228,34 @@ class ApplyController extends BaseController
                 $htmlOne.= '</li>';
                 $html2 .= $htmlOne;
             }
-            $flow = OaFlow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step,'user_id'=>Yii::$app->user->id])->one();
+            $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step,'user_id'=>Yii::$app->user->id])->one();
             if($flow){
-                $model = new OaApplyDoForm();
+                $model = new ApplyDoForm();
                 $model->result = 1;
 
                 if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-                    $record = new OaApplyRecord();
+                    $record = new ApplyRecord();
                     $record->attributes = $model->attributes;
                     $record->apply_id = $apply->id;
                     $record->flow_id = $flow->id;
                     $record->add_time = date('Y-m-d H:i:s');
                     if($record->save()){
                         //操作类型为 1 approval审核 和 3 execute执行  结果为0 进行打回操作
-                        if($record->result==0 && in_array($flow->type,[OaFlow::TYPE_APPROVAL,OaFlow::TYPE_EXECUTE])){
+                        if($record->result==0 && in_array($flow->type,[Flow::TYPE_APPROVAL,Flow::TYPE_EXECUTE])){
                             if($flow->back_step==0){
                                 //打回到发起者 改为失败状态
-                                $apply->status = OaApply::STATUS_FAILURE;
+                                $apply->status = Apply::STATUS_FAILURE;
                             }else{
                                 $apply->flow_step = $flow->back_step;
                             }
                         }else{
                             //查找是否还有后续流程
-                            $exist = OaFlow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$flow->step])->one();
+                            $exist = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$flow->step])->one();
                             if($exist){
                                 $apply->flow_step++;
                             }else{
                                 // 没有就完成此申请  改为成功状态
-                                $apply->status= OaApply::STATUS_SUCCESS;
+                                $apply->status= Apply::STATUS_SUCCESS;
                             }
                         }
                         $apply->save();

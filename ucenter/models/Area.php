@@ -2,10 +2,15 @@
 
 namespace ucenter\models;
 
-
+use Yii;
 //地区
 class Area extends \yii\db\ActiveRecord
 {
+
+    public static function getDb(){
+        return Yii::$app->db_ucenter;
+    }
+
     public function attributeLabels(){
         return [
             'id' => 'ID',

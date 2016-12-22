@@ -53,7 +53,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 'bid'=>$user->bid,
                 'business'=>$user->business->name,
                 'did'=>$user->did,
-                'department'=>$user->getDepartmentFullRoute(' > '),
+                'department'=>$user->getDepartmentFullRoute(),
                 'position_id'=>$user->position_id,
                 'position'=>$user->position->name,
                 'authKey' => 'key-'.$user->id,

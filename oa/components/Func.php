@@ -1,8 +1,8 @@
 <?php
 namespace oa\components;
 
-use oa\models\OaTask;
-use oa\models\OaTaskApplyUser;
+use oa\models\Task;
+use oa\models\TaskApplyUser;
 use yii\base\Component;
 use yii;
 
@@ -15,12 +15,12 @@ class Func extends Component {
     public static function getTasksByUid($user_id){
         $return = [];
         //有效的task列表
-        $task = OaTask::find()->where(['status'=>1,'set_complete'=>1])->all();
+        $task = Task::find()->where(['status'=>1,'set_complete'=>1])->all();
         $taskIds = [];
         foreach($task as $t){
             $taskIds[] = $t->id;
         }
-        $list = OaTaskApplyUser::find()->where(['user_id'=>$user_id,'task_id'=>$taskIds])->all();
+        $list = TaskApplyUser::find()->where(['user_id'=>$user_id,'task_id'=>$taskIds])->all();
         foreach($list as $l){
             $return[$l->task_id] = $l->task->title;
         }

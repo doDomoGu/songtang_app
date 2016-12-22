@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use oa\models\OaFlow;
+use oa\models\Flow;
 //oa\assets\AppAsset::addJsFile($this,'js/main/apply/create.js');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/do.css');
 $this->title = '待办事项';
@@ -36,11 +36,11 @@ $this->title = '待办事项';
 <div class="form-group">
     <label class="col-lg-2 control-label" >操作类型</label>
     <div class="col-lg-5" style="padding-top:7px;font-weight:bold;">
-         <?=OaFlow::getTypeCn($flow->type)?>
+         <?=Flow::getTypeCn($flow->type)?>
     </div>
 </div>
 
-<?= $form->field($model, 'result')->radioList(OaFlow::getRadioItems($flow->type),['value'=>1]) ?>
+<?= $form->field($model, 'result')->radioList(Flow::getRadioItems($flow->type),['value'=>1]) ?>
 
 <?= $form->field($model, 'message')->textarea() ?>
 

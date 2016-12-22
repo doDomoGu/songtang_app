@@ -1,7 +1,7 @@
 <?php
 namespace ucenter\controllers;
 
-use ucenter\models\UserAppAuth;
+use common\models\UserAppAuth;
 use Yii;
 use yii\web\Controller;
 
@@ -89,7 +89,7 @@ $s=5/0;
 
     //检查是否有使用这个app权限
     private function checkAuth(){
-        $authExist = UserAppAuth::find()->where(['app'=>'ucenter','uid'=>Yii::$app->user->id,'is_enable'=>1])->one();
+        $authExist = UserAppAuth::find()->where(['app'=>'ucenter','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
         if(!$authExist){
             if($this->getRoute()=='site/no-auth'){
                 return true;

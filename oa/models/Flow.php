@@ -1,10 +1,14 @@
 <?php
 
 namespace oa\models;
-
+use Yii;
 //oa 流程
-class OaFlow extends \yii\db\ActiveRecord
+class Flow extends \yii\db\ActiveRecord
 {
+    public static function getDb(){
+        return Yii::$app->db_oa;
+    }
+
     const TYPE_APPROVAL = 1;    //审批
     const TYPE_EXAMINE  = 2;    //审核
     const TYPE_EXECUTE  = 3;    //执行
