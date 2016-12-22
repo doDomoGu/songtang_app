@@ -38,6 +38,8 @@ return [
             'oa/web/assets',
             'login/runtime',
             'login/web/assets',
+            'yun/runtime',
+            'yun/web/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -47,6 +49,7 @@ return [
             'ucenter/config/main-local.php',
             'oa/config/main-local.php',
             'login/config/main-local.php',
+            'yun/config/main-local.php',
         ],
     ],
     'Production' => [
@@ -58,6 +61,8 @@ return [
             'oa/web/assets',
             'login/runtime',
             'login/web/assets',
+            'yun/runtime',
+            'yun/web/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -66,6 +71,7 @@ return [
             'ucenter/config/main-local.php',
             'oa/config/main-local.php',
             'login/config/main-local.php',
+            'yun/config/main-local.php',
         ],
     ],
 ];

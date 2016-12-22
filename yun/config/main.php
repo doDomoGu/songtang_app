@@ -7,29 +7,14 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'OA',
+    'id' => 'songtang_yun',
+    'name'=>'颂唐云',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'controllerNamespace' => 'oa\controllers',
+    'controllerNamespace' => 'yun\controllers',
     'components' => [
         'request' => [
-            'csrfParam' => '_csrf-oa',
-        ],
-        'user' => [
-            'identityClass' => 'frontend\models\UserIdentity',
-            'enableAutoLogin' => true,
-            'idParam'=>'_songtang_user_identity',
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true,'domain' => '.localsongtang.net','path'=>'/'],
-        ],
-        'session' => [
-            // this is the name of the session cookie used for login on the frontend
-            //'name' => 'advanced-frontend',
-            'cookieParams' => [
-                'domain' => '.localsongtang.net',
-                'lifetime' => 0,
-                'httpOnly' => true,
-                'path' => '/',
-            ],
+            'csrfParam' => '_csrf-yun',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

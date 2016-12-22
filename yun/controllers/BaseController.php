@@ -20,9 +20,11 @@ class BaseController extends Controller
     public $previewTypeArr = [2,3,4,5,6];
     //public $layout = 'main';
     public function beforeAction($action){
+        echo 1111;exit;
         if (!parent::beforeAction($action)) {
             return false;
         }
+        echo 111;exit;
 
         $this->titleSuffix = '_'.yii::$app->id;
         if(!Yii::$app->user->isGuest){
