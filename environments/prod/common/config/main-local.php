@@ -3,7 +3,28 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=songtang_app',
+            'dsn' => 'mysql:host=localhost;dbname=songtang_common',
+            'username' => 'root',
+            'password' => 'gljgogo',
+            'charset' => 'utf8',
+        ],
+        'db_ucenter' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=songtang_ucenter',
+            'username' => 'root',
+            'password' => 'gljgogo',
+            'charset' => 'utf8',
+        ],
+        'db_oa' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=songtang_oa',
+            'username' => 'root',
+            'password' => 'gljgogo',
+            'charset' => 'utf8',
+        ],
+        'db_yun' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=songtang_yun',
             'username' => 'root',
             'password' => 'gljgogo',
             'charset' => 'utf8',

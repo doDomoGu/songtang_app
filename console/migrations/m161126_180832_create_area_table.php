@@ -7,6 +7,10 @@ use yii\db\Migration;
  */
 class m161126_180832_create_area_table extends Migration
 {
+    public function init(){
+        parent::init();
+        $this->db = Yii::$app->db_ucenter;
+    }
     public function up()
     {
         $this->createTable('area', [

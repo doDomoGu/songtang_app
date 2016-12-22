@@ -7,12 +7,13 @@ use yii\db\Migration;
  */
 class m161214_194427_create_oa_task_table extends Migration
 {
-    /**
-     * @inheritdoc
-     */
+    public function init(){
+        parent::init();
+        $this->db = Yii::$app->db_oa;
+    }
     public function up()
     {
-        $this->createTable('oa_task', [
+        $this->createTable('task', [
             'id'=> $this->primaryKey(5),
             'title' => $this->string(100)->notNull(),
             'category_id' => $this->integer(11)->notNull(),
@@ -30,6 +31,6 @@ class m161214_194427_create_oa_task_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('oa_task');
+        $this->dropTable('task');
     }
 }

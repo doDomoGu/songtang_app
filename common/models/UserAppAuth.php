@@ -1,15 +1,16 @@
 <?php
 
-namespace ucenter\models;
+namespace common\models;
 
 use Yii;
 
 class UserAppAuth extends \yii\db\ActiveRecord
 {
+    public $db = 'db';
     public function attributeLabels(){
         return [
             'app'=>'app名称',
-            'uid'=>'职员ID',
+            'user_id'=>'职员ID',
             'is_enable'=>'是否可用'
         ];
     }
@@ -17,8 +18,8 @@ class UserAppAuth extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['app','uid'], 'required'],
-            [['uid', 'is_enable'], 'integer'],
+            [['app','user_id'], 'required'],
+            [['user_id', 'is_enable'], 'integer'],
         ];
     }
 
@@ -30,10 +31,15 @@ class UserAppAuth extends \yii\db\ActiveRecord
             }else{
                 $m = new UserAppAuth();
                 $m->app = 'ucenter';
-                $m->uid = 1;
+                $m->user_id = 1;
                 $m->is_enable = 1;
                 $m->save();
 
+                $m = new UserAppAuth();
+                $m->app = 'oa-admin';
+                $m->user_id = 1;
+                $m->is_enable = 1;
+                $m->save();
                 echo 'UserAppAuth install finish'."<br/>";
             }
             return true;

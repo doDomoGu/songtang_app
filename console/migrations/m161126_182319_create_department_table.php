@@ -4,6 +4,10 @@ use yii\db\Migration;
 
 class m161126_182319_create_department_table extends Migration
 {
+    public function init(){
+        parent::init();
+        $this->db = Yii::$app->db_ucenter;
+    }
     public function up()
     {
         $this->createTable('department', [

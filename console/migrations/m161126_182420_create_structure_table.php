@@ -4,6 +4,10 @@ use yii\db\Migration;
 
 class m161126_182420_create_structure_table extends Migration
 {
+    public function init(){
+        parent::init();
+        $this->db = Yii::$app->db_ucenter;
+    }
     public function up()
     {
         $this->createTable('structure', [

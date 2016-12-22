@@ -7,9 +7,13 @@ use yii\db\Migration;
  */
 class m161217_232311_create_oa_apply_record_table extends Migration
 {
+    public function init(){
+        parent::init();
+        $this->db = Yii::$app->db_oa;
+    }
     public function up()
     {
-        $this->createTable('oa_apply_record', [
+        $this->createTable('apply_record', [
             'id' => $this->primaryKey(11),
             'apply_id' => $this->integer(11)->notNull(),
             'flow_id' => $this->integer(11)->notNull(),
@@ -24,6 +28,6 @@ class m161217_232311_create_oa_apply_record_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('oa_apply_record');
+        $this->dropTable('apply_record');
     }
 }

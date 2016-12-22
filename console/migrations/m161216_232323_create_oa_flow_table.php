@@ -7,12 +7,13 @@ use yii\db\Migration;
  */
 class m161216_232323_create_oa_flow_table extends Migration
 {
-    /**
-     * @inheritdoc
-     */
+    public function init(){
+        parent::init();
+        $this->db = Yii::$app->db_oa;
+    }
     public function up()
     {
-        $this->createTable('oa_flow', [
+        $this->createTable('flow', [
             'id' => $this->primaryKey(11),
             'task_id' => $this->integer(11)->notNull(),
             'step' => $this->smallInteger(2)->notNull(),
@@ -29,6 +30,6 @@ class m161216_232323_create_oa_flow_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('oa_flow');
+        $this->dropTable('flow');
     }
 }

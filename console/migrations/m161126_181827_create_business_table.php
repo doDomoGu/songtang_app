@@ -7,6 +7,10 @@ use yii\db\Migration;
  */
 class m161126_181827_create_business_table extends Migration
 {
+    public function init(){
+        parent::init();
+        $this->db = Yii::$app->db_ucenter;
+    }
     public function up()
     {
         $this->createTable('business', [

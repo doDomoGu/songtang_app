@@ -7,9 +7,10 @@ use yii\db\Migration;
  */
 class m161126_184427_create_position_table extends Migration
 {
-    /**
-     * @inheritdoc
-     */
+    public function init(){
+        parent::init();
+        $this->db = Yii::$app->db_ucenter;
+    }
     public function up()
     {
         $this->createTable('position', [
