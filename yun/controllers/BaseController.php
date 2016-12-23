@@ -30,6 +30,7 @@ class BaseController extends Controller
         $this->titleSuffix = '_'.yii::$app->id;
         $this->except = [
             'site/index',
+            'site/get-qiniu-uptoken'
         ];
         if(!$this->checkLogin()){
             return false;

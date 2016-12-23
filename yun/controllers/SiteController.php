@@ -2,6 +2,7 @@
 namespace yun\controllers;
 
 use yun\components\DirFunc;
+use yun\components\QiniuUpload;
 use yun\models\News;
 use yun\models\Dir;
 use yun\models\Recruitment;
@@ -42,5 +43,12 @@ class SiteController extends BaseController
     {
         yii::$app->response->statusCode = 404;
         return $this->render('error');
+    }
+
+    public function actionGetQiniuUptoken(){
+        $up=new QiniuUpload(yii::$app->params['qiniu-bucket']);
+        $saveKey = yii::$app->request->get('saveKey','');
+        $upToken=$up->createtoken($saveKey);
+        echo json_encode(['uptoken'=>$upToken]);exit;
     }
 }
