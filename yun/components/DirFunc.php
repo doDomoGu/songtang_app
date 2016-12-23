@@ -9,7 +9,7 @@ use yii\helpers\BaseArrayHelper;
 use yii;
 
 class DirFunc extends Component {
-    Const ORDER_TYPE_1 = 'ord Desc,id Desc';
+    Const ORDER_TYPE_1 = 'ord asc,id Desc';
 
     /*
      * 函数getFullRoute ,实现根据dir_id(Dir表 id字段)获取完整的板块目录路径

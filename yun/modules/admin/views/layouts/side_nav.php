@@ -18,13 +18,19 @@
         <li class="menu-single <?=$this->context->id=='news'?'active':''?>">
             <a href="<?=AdminFunc::adminUrl('news')?>">
                 <span class="menu-icon glyphicon glyphicon-list"></span>
-                新闻
+                首页新闻
             </a>
         </li>
         <li class="menu-single <?=$this->context->id=='recruitment'?'active':''?>">
             <a href="<?=AdminFunc::adminUrl('recruitment')?>">
                 <span class="menu-icon glyphicon glyphicon-list"></span>
-                招聘
+                招聘信息
+            </a>
+        </li>
+        <li class="menu-single <?=$this->context->id=='dir'?'active':''?>">
+            <a href="<?=AdminFunc::adminUrl('dir')?>">
+                <span class="menu-icon glyphicon glyphicon-list"></span>
+                板块目录
             </a>
         </li>
         <li class="menu-list <?=$this->context->id=='task'?'nav-active':''?>">

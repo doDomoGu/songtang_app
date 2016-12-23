@@ -13,6 +13,21 @@ use Yii;
  */
 class SiteController extends BaseController
 {
+
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
+
+
     public function actionIndex(){
         /*$dir_1 = Dir::find()->where(['id'=>1])->one();
         $dir_2 = Dir::find()->where(['id'=>2])->one();
@@ -34,15 +49,9 @@ class SiteController extends BaseController
         $params['list_3'] = DirFunc::getChildren(3,true,1,1,$limit);
         $params['list_4'] = DirFunc::getChildren(4,true,1,1,$limit);
         $params['list_5'] = DirFunc::getChildren(5,true,1,1,$limit);*/
-        $this->view->title = yii::$app->id;
+        $this->view->title = yii::$app->name;
         $params = [];
         return $this->render('index',$params);
-    }
-
-    public function actionError()
-    {
-        yii::$app->response->statusCode = 404;
-        return $this->render('error');
     }
 
     public function actionGetQiniuUptoken(){
@@ -50,5 +59,12 @@ class SiteController extends BaseController
         $saveKey = yii::$app->request->get('saveKey','');
         $upToken=$up->createtoken($saveKey);
         echo json_encode(['uptoken'=>$upToken]);exit;
+    }
+
+    public function actionInstall(){
+        $m = new Dir();
+        $m->install();
+
+        exit;
     }
 }

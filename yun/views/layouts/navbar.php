@@ -27,7 +27,8 @@ use yii\helpers\ArrayHelper;
             ]
         ];
 
-        $messageSpan = $this->context->messageNum>0?' <span class="label label-danger">'.$this->context->messageNum.'</span>':'';
+        //$messageSpan = $this->context->messageNum>0?' <span class="label label-danger">'.$this->context->messageNum.'</span>':'';
+        $messageSpan = '';
 
         $navbarItems = ArrayHelper::merge($navbarItems,\yun\components\DirFrontFunc::getNavbar());
 
