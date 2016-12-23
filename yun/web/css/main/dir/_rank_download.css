@@ -1,0 +1,35 @@
+#dir-sidebar-study-download {
+    /*width:160px;
+    float:left;
+    background: #f9f9f9;
+    padding:10px;
+    border:1px solid #ccc;
+    border-top:none;*/
+    width:160px;
+    /*border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+    border-bottom:1px solid #ccc;*/
+    margin-left: 960px;
+    position: fixed;
+    background: #f9f9f9;
+    box-shadow: -1px 0 2px #888888;
+    height:100%;
+    padding:10px;
+    z-index: 131;
+}
+
+#dir-sidebar-study-download h3 {
+    margin: 0;
+    padding: 0;
+}
+
+#dir-sidebar-study-download ul {
+    margin-top:20px;
+}
+
+#dir-sidebar-study-download ul li {
+    height:42px;
+    overflow: hidden;
+    word-break: break-all;
+    margin-bottom: 8px;
+}

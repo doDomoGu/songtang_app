@@ -1,0 +1,49 @@
+#recruitment-section {
+    margin-top:120px;
+    margin-left:-540px;
+    padding:30px 20px;
+    height:420px;
+    overflow: hidden;
+    position:absolute;
+    /*text-align: center;*/
+    background: rgba(150, 150, 150, 0.6);
+    width:240px;
+    left:50%;
+}
+
+#recruitment-section .recruit-heading .sp1 {
+    color:#ED1B23;
+    display: block;
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-size:26px;
+    border-top:4px solid #ED1B23;
+}
+
+#recruitment-section .recruit-heading .sp2 {
+    color:#ED1B23;
+    display: block;
+    font-weight: bold;
+    font-size:16px;
+    padding-bottom: 4px;
+    letter-spacing: 8px;
+    border-bottom:1px solid #ED1B23;
+    margin-bottom: 10px;
+}
+
+#recruitment-section .recruit-list li{
+    color:#eee;
+    line-height: 30px;
+    height:30px;
+    overflow: hidden;
+    width:200px;
+   /* display: block;
+    word-break: break-all;
+    word-wrap: break-word;;*/
+    /*white-space:nowrap;*/
+}
+
+#recruitment-section .recruit-list li a {
+    color:#eee;
+}
+

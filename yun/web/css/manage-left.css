@@ -1,0 +1,20 @@
+.list-group-item a{
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.list-group a:hover, .list-group a:active, .list-group a.active, .list-group a.active:hover, .list-group a.active:active{
+    background: #707070;
+    border-color: #9C9C9C;
+}
+
+.submenu a:hover, .submenu a:active, .submenu a.active, .submenu a.active:hover, .submenu a.active:active {
+    background: #9C9C9C;
+    border-color: #9C9C9C;
+    border-radius: 0;
+    color: #fff;
+}

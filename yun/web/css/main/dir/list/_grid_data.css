@@ -1,0 +1,83 @@
+.grid-style{
+    float: left;
+    /*height: 160px;*/
+    text-align: center;
+    /*width: 196px;*/
+    overflow: hidden;
+    display: block;
+    /*margin-top:10px;
+    margin-bottom:10px;*/
+    width:128px;
+    height:152px;
+    /*padding:10px;*/
+    margin: 18px 34px 10px;
+    cursor: pointer;
+}
+
+/*.grid-style.hover .icon {
+    border: 1px solid #333;
+    padding:9px;
+}
+
+.grid-style.hover .filename {
+    text-decoration: underline;
+}*/
+
+.grid-style .icon {
+    width:128px;
+    height:128px;
+    padding:10px;
+    /*margin: 8px 34px 0;*/
+    position: relative;
+}
+
+.grid-style .icon.filethumb_icon {
+    padding:0;
+}
+
+.grid-style .icon img {
+    width: 100%;
+}
+
+.grid-style .file-check {
+    position: absolute;
+    left:0;
+    top:0;
+    margin:0;
+    padding:0;
+    width:128px;
+    height:128px;
+    border: 2px solid #2e80dc;
+    text-align: left;
+    display: none;
+}
+.grid-style.list-item-hover .file-check
+,.grid-style.list-checked .file-check {
+    display: block;
+}
+
+.grid-style .file-check .file-checkbox {
+    padding:0;
+    margin:0;
+    /*border: 2px solid #2e80dc;*/
+
+}
+/*.grid-style .file-check .file-checkbox {
+    background: rgba(0, 0, 0, 0) url("http://s1.pan.bdstatic.com/box-static/disk-system-cdn/widget/pageModule/list/img/checkbox_8c741da.png") no-repeat scroll 6px -36px;
+    height: 30px;
+    left: -6px;
+    position: absolute;
+    top: -6px;
+    width: 30px;
+}*/
+
+.grid-style .filename {
+    width: 128px;
+    text-align: center;
+    height:32px;
+    line-height: 32px;
+}
+
+.grid-style.list-item-hover .filename {
+    text-decoration: underline;
+}

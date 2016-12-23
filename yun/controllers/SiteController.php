@@ -1,10 +1,10 @@
 <?php
 namespace yun\controllers;
 
-use app\components\DirFunc;
-use app\models\News;
-use app\models\Dir;
-use app\models\Recruitment;
+use yun\components\DirFunc;
+use yun\models\News;
+use yun\models\Dir;
+use yun\models\Recruitment;
 use Yii;
 
 /**
@@ -12,12 +12,8 @@ use Yii;
  */
 class SiteController extends BaseController
 {
-
     public function actionIndex(){
-        $params['recruitment_list'] = Recruitment::find()->where(['status'=>1])->orderBy('ord desc')->all();
-
-
-        $dir_1 = Dir::find()->where(['id'=>1])->one();
+        /*$dir_1 = Dir::find()->where(['id'=>1])->one();
         $dir_2 = Dir::find()->where(['id'=>2])->one();
         $dir_3 = Dir::find()->where(['id'=>3])->one();
         $dir_4 = Dir::find()->where(['id'=>4])->one();
@@ -36,8 +32,9 @@ class SiteController extends BaseController
         $params['list_2'] = DirFunc::getChildren(2,true,1,1,$limit);
         $params['list_3'] = DirFunc::getChildren(3,true,1,1,$limit);
         $params['list_4'] = DirFunc::getChildren(4,true,1,1,$limit);
-        $params['list_5'] = DirFunc::getChildren(5,true,1,1,$limit);
+        $params['list_5'] = DirFunc::getChildren(5,true,1,1,$limit);*/
         $this->view->title = yii::$app->id;
+        $params = [];
         return $this->render('index',$params);
     }
 

@@ -1,0 +1,111 @@
+.navbar-background {
+    background: #362b39;
+    padding-top:12px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 1030;
+}
+
+.navbar-background nav {
+    background: #eee;
+}
+.navbar {
+    margin-bottom: 0;
+}
+.navbar a {
+
+    /*font-size:16px;*/
+    /*font-weight: bold;*/
+}
+
+.navbar{
+    height:73px;
+    border-radius: 0;
+    border-top:none;
+}
+
+
+.navbar-brand {
+    /*padding:44px 15px 0;*/
+    padding:0;
+    width:159px;
+}
+
+.navbar-red {
+    background: #e00024;
+}
+
+.navbar-red .navbar-nav > li > a {
+    color: #d3d3d3;
+}
+
+.navbar-red .navbar-nav > li > a:hover, .navbar-red .navbar-nav > li > a:focus {
+    background-color: transparent;
+    color: #fff;
+}
+
+.navbar-background > .navbar > .container {
+    position:relative;
+}
+
+.wrap > .container {
+    /*padding-top:102px;*/
+    padding-top:98px;
+}
+.wrap > .navbar-background > .navbar > .container{
+    width:1140px;
+}
+
+.navbar-header {
+    /*position:absolute;
+    top:-43px;
+    left:15px;*/
+}
+.navbar ul li {
+    height:72px;
+}
+.navbar ul li a {
+    padding :26px 8px;
+}
+
+.navbar-brand img{
+    height:70px;
+    padding:1px;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: #555;
+    background-color: transparent;
+}
+
+
+/*.navbar li > a:hover .active-red {*/
+.navbar li > a:focus > span.active-red ,
+.navbar li > a:hover > span.active-red ,
+.navbar li.active > a > span.active-red {
+    display: block;
+    position:absolute;
+    background: #ED1B23;
+    width:80%;
+    height:6px;
+    top:-6px;
+    left:10%;
+
+}
+
+
+.navbar ul.dropdown-menu li.user-item {
+    height:auto;
+}
+.navbar ul.dropdown-menu li.user-item a {
+    padding:3px 20px;
+}
+
+#nav_search_form {
+    padding:19px 8px 19px 34px;
+    margin:0;
+    height:72px;
+}

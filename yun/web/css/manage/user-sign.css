@@ -1,0 +1,100 @@
+#sidebar-right {
+    width:240px;
+    overflow: hidden;
+    float:right;
+    padding:60px 10px;
+}
+
+#sidebar-right .sign-btn {
+    text-align: center;
+}
+
+#sidebar-right .sign-text {
+    text-align: center;
+    font-size: 20px;
+    padding:20px;
+}
+.btn-sign,.btn-sign.disabled {
+    padding:10px 26px;
+    background-color: #ed1b23;
+    border-color: #fd1123;
+}
+
+.btn-sign:hover {
+    background-color: #fd2b33;
+    border-color: #fd1123;
+}
+
+#calendar {
+    padding:0 24px;
+    width:900px;
+    overflow: hidden;
+    float:left;
+}
+
+#cal-title {
+    width:600px;
+    margin: 10px 126px;
+    line-height: 40px;
+}
+#cal-title .ym{
+    font-size:28px;
+    font-weight: bold;
+    width:400px;
+    display: block;
+    float:left;
+    text-align: center;
+}
+
+#cal-title .prev-btn,#cal-title .next-btn {
+    width:100px;
+    display: block;
+    float:left;
+
+}
+
+#calendar table{
+
+    /*width:500px;*/
+}
+
+#calendar table th,#calendar table td{
+    text-align: center;
+    padding:20px;
+    width:150px;
+    font-size:18px;
+    border: 1px solid #ccc;
+}
+
+/*#calendar table td{
+    text-align: center;
+    padding:2px;
+    width:150px;
+}*/
+
+#calendar table td.day{
+    background: #f3f3f3;
+    color:#333;
+    cursor:pointer;
+}
+
+#calendar table td.signed{
+    background: #ED1B23;
+    color:#fff;
+}
+
+#calendar table td.today{
+    background: #e38d13;
+    color:#fff;
+    cursor:pointer;
+}
+
+#calendar table td.today:hover{
+    background: #f39d23;
+}
+
+
+#calendar table td.holiday{
+    background: #fff;
+    color: #ED1B23
+}

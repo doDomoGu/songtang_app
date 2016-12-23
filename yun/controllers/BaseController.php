@@ -1,6 +1,7 @@
 <?php
 namespace yun\controllers;
 
+use common\models\UserAppAuth;
 use yun\components\PermissionFunc;
 use yun\models\MessageUser;
 use yun\models\Position;
@@ -20,11 +21,9 @@ class BaseController extends Controller
     public $previewTypeArr = [2,3,4,5,6];
     //public $layout = 'main';
     public function beforeAction($action){
-        echo 1111;exit;
         if (!parent::beforeAction($action)) {
             return false;
         }
-        echo 111;exit;
 
         $this->titleSuffix = '_'.yii::$app->id;
         if(!Yii::$app->user->isGuest){
@@ -34,7 +33,7 @@ class BaseController extends Controller
                 return $this->goHome();
             }
 
-            $this->position = Position::find()->where(['id'=>$this->user->position_id])->one();
+            //$this->position = Position::find()->where(['id'=>$this->user->position_id])->one();
         }
 
 
@@ -42,7 +41,7 @@ class BaseController extends Controller
             return false;
         }
 
-        $this->getMessageInfo();
+        //$this->getMessageInfo();
 
         return true;
     }
@@ -60,14 +59,19 @@ class BaseController extends Controller
         return true;
     }
 
-    //检测是否管理员 User的is_admin字段
-    public function checkIsAdmin(){
-        //进入"管理中心"(manage)需要进行判断
-        if($this->user){
-            if($this->user->is_admin > 0 || $this->user->position_id==1)
+    //检查是否有使用这个app权限
+    private function checkAuth(){
+        $authExist = UserAppAuth::find()->where(['app'=>'yun-admin','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
+        if(!$authExist){
+            if($this->getRoute()=='site/no-auth'){
                 return true;
+            }else{
+                return $this->redirect('site/no-auth');
+            }
+        }else{
+            $this->hasAuth = true;
+            return true;
         }
-        return false;
     }
 
 

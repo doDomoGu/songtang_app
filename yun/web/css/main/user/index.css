@@ -1,0 +1,22 @@
+.wrap > .container {
+    padding-top:100px;
+}
+
+#head-img-aside {
+    width:280px;
+    overflow: hidden;
+    float:left;
+}
+
+#head-img-pic {
+    margin-bottom: 20px;
+}
+
+#head-img-btn {
+
+}
+
+#user-info-aside {
+    width:860px;
+    float:left;
+}

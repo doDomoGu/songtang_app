@@ -1,0 +1,1 @@
+$("#slideBox-news").slide({mainCell:".bd ul",autoPlay:true,effect: "fold", interTime: 3000, delayTime: 1000});

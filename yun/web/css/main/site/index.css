@@ -1,0 +1,155 @@
+.wrap > .container {
+    padding: 50px 15px 10px;
+}
+
+/* aside */
+#site-index aside {
+    width:214px;
+    float:left;
+    margin-right:6px;
+}
+/* main */
+#site-index main {
+    width:920px;
+    float:left;
+}
+
+/* aside slogan */
+#slogan {
+    width:100%;
+    height:232px;
+    background: #eee;
+}
+
+
+/* aside email-login */
+#email-login {
+    width:100%;
+    height:200px;
+    margin-top:6px;
+    background: #eee;
+    padding:10px 10px;
+}
+
+#email-login .email-login-header {
+    background: #B8B8B8;
+    text-align: center;
+    padding:10px;
+}
+
+#email-login input.text {
+    width:70px;
+    margin-right:4px;
+}
+
+#email-login span.email-suffix {
+    font-size:12px;
+}
+
+#email-login .submit-btn {
+    margin-top:16px;
+}
+
+
+/* main dir-list */
+#dir-list {
+    overflow: hidden;
+    margin-bottom:6px;
+}
+
+#dir-list article {
+    width:180px;
+    /*height:400px;*/
+    margin-right:5px;
+    float:left;
+}
+
+#dir-list article.last {
+    margin-right: 0;
+}
+
+#dir-list article .item-heading a {
+    font-size:14px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color:#fff;
+    background: #362b39;
+    padding:4px 20px;
+}
+
+#dir-list article .item-heading a:hover{
+    opacity: 0.8;
+}
+
+#dir-list article .item-list ul {
+    background: #e7e7e7;
+    margin-top:4px;
+    margin-bottom: 0;
+    padding-bottom: 20px;
+}
+#dir-list article .item-list li{
+    margin:0 16px;
+    border-bottom: 1px dashed #333;
+    height:36px;
+    overflow: hidden;
+
+}
+#dir-list article .item-list li a {
+    font-size:12px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color:#333;
+    height:20px;
+    line-height: 20px;
+    padding:10px 0 10px;
+}
+
+#dir-list article .item-list li a:hover{
+    opacity: 0.8;
+}
+
+/* main article */
+#article-link {
+    /*margin-top:3px;*/
+    overflow: hidden;
+}
+
+#article-link article {
+    margin-right:4px;
+    float:left;
+}
+
+#article-link #article-link-3 {
+    margin-right:0;
+}
+
+#article-link > article > span > a {
+    height:200px;
+    width:304px;
+    padding:87px 131px;
+    font-size:18px;
+    display: block;
+    cursor: pointer;
+    background: #31b0d5;
+    color:#fff;
+    text-decoration: none;
+    opacity: 0.9;
+}
+
+#article-link > article > span > a:hover {
+    opacity: 0.8;
+}
+
+#article-link > #article-link-1 > span > a {
+    background: url('../../../images/site-index/x1.jpg');
+}
+
+#article-link > #article-link-2 > span > a {
+    background: url('../../../images/site-index/x2.jpg');
+}
+
+#article-link > #article-link-3 > span > a {
+    background: url('../../../images/site-index/x3.jpg');
+}

@@ -1,82 +1,41 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
-
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use frontend\assets\AppAsset;
-use common\widgets\Alert;
+use yun\assets\AppAsset;
 
-AppAsset::register($this);
+AppAsset::register($this);  /* 注册appAsset */
 ?>
-<?php $this->beginPage() ?>
+<?php $this->beginPage(); /* 页面开始标志位 */ ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?=Yii::$app->id. ($this->title?'_'.Html::encode($this->title):'') ?></title>
-    <?php $this->head() ?>
-</head>
+<?php echo $this->render('head'); /* 引入头部 */ ?>
 <body>
-<?php $this->beginBody() ?>
+<?php $this->beginBody(); /* body开始标志位 */ ?>
 
 <div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => 'My Company',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-    ?>
-
+    <?=$this->render($this->context->navbarView)/* 引入导航栏 */?>
+    <?php if(yii::$app->controller->route == 'site/index'):?>
+        <?=$this->render('/site/_news')?>
+        <?=$this->render('/site/_recruitment')?>
+    <?php endif;?>
+    <?php if(yii::$app->controller->route == 'site/index'):?>
+    <div class="container" style="padding-top:640px;">
+    <?php else:?>
     <div class="container">
+    <?php endif;?>
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= Alert::widget() ?>
         <?= $content ?>
     </div>
+    <?php if(yii::$app->controller->route == 'site/index'):?>
+        <div style="height:30px;background: #3A2E3C;margin-bottom: 10px;">
+
+        </div>
+    <?php endif;?>
 </div>
-
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
-
-<?php $this->endBody() ?>
+<?=$this->render('footer')?>
+<?php $this->endBody(); /* body结束标志位 */ ?>
 </body>
 </html>
-<?php $this->endPage() ?>
+<?php $this->endPage(); /* 页面结束标志位 */ ?>

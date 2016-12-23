@@ -1,0 +1,141 @@
+/* list-style */
+.list-style {
+    height:39px;
+    line-height: 38px;
+    float:left;
+    display: block;
+    overflow: hidden;
+    width:100%;
+    border-bottom: 1px solid #EBEBEB;
+    padding:0;
+    position: relative;
+}
+
+
+.list-style .icon img{
+    border-radius: 4px;
+}
+
+.list-style .info {
+    display: block;
+    float:left;
+    width: 785px;
+    overflow: hidden;
+}
+
+.list-style .info:hover {
+    background: #F0F8FD;
+}
+
+.list-style .file-check {
+    position: absolute;
+    left:0;
+    top:0;
+    z-index: 22;
+    padding-left:11px;
+    padding-top:3px;
+    width:35px;
+}
+
+.list-style .file-check .file-checkbox {
+    padding:0;
+    margin:0;
+}
+
+.list-style .info .filename {
+    width:500px;
+    float:left;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    word-break: break-all;
+    height:38px;
+    padding-left:35px;
+}
+
+/*.list-style .info .filename .file-checkbox {
+    display: block;
+    width:20px;
+    overflow: hidden;
+    float:left;
+    margin-right:4px;
+    margin-left:11px;
+}*/
+
+.list-style .info .filename .icon {
+    display: block;
+    width:20px;
+    overflow: hidden;
+    float:left;
+    margin-right:4px;
+    margin-left:0;
+    height:38px;
+
+}
+.list-style .info .filename .icon img {
+    width:100%;
+}
+
+.list-style .info .filename .filename_txt{
+    width:300px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.list-style .info .filename .filename_txt a {
+    /*width:200px;
+    overflow: hidden;*/
+    display: inline;
+    color:#000;
+    overflow: hidden;
+}
+
+.list-style .info .filename .filename_txt a:hover {
+    text-decoration: underline;
+}
+
+.list-style.download-disable .info .filename .filename_txt,
+.list-style.download-disable .info .filename .filename_txt a{
+    color:#999;
+}
+.list-style.download-disable .info .filename .filename_txt a:hover{
+    text-decoration: none;
+    cursor:default;
+}
+
+.list-style .info .filesize {
+    width:120px;
+    padding-left:10px;
+    float:left;
+    text-align: left;
+}
+
+.list-style .info .upload_time {
+    width:165px;
+    padding-left:10px;
+    float:left;
+    text-align: left;
+}
+
+.list-style .info .upload_uid {
+    width:64px;
+    float:left;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.list-style .info .download_times {
+    width:64px;
+    float:left;
+    text-align: right;
+    margin-left: 10px;
+}
+
+.list-style .info .filename .click_btns {
+    position: absolute;
+    text-align: left;
+    right:10px;
+    clear:both;
+    top:0;
+}
+

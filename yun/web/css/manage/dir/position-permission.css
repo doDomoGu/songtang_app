@@ -1,0 +1,7 @@
+.real-checkbox {
+    background: #eee;
+}
+
+td.checked {
+    background: #ed1b23 none repeat scroll 0 0;
+}

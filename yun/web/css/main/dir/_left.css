@@ -1,0 +1,20 @@
+#tree-div {
+    /*background: #f5f5f5;*/
+    overflow: hidden;
+    overflow-x: scroll;
+    height:100%;
+
+}
+#tree-div h3 {
+    padding:10px 0 0 20px;
+    margin:0;
+}
+
+
+.ztree {
+    padding:5px 0;
+}
+
+.ztree li span.button.ico_docu {
+    background-position: -110px 0;
+}

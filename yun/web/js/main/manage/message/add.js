@@ -1,0 +1,1 @@
+var ue = UE.getEditor('messageform-content');
