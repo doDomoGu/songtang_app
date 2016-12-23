@@ -37,7 +37,7 @@ use yii\helpers\ArrayHelper;
         $item2 = ArrayHelper::merge($item2,[['label' => '我的下载', 'url' => '/user/download','options'=>['class'=>'user-item']]]);
         $item2 = ArrayHelper::merge($item2,[['label' => '我的权限', 'url' => '/user/permission-list','options'=>['class'=>'user-item']]]);
         $item2 =  ArrayHelper::merge($item2,[['label' => '消息通知'.$messageSpan, 'url' => '/message/system','options'=>['class'=>'user-item',],'encode' => false]]);
-        if($this->context->checkIsAdmin())
+        if($this->context->isAdminAuth)
             $item2 = ArrayHelper::merge($item2,[['label' => '管理中心*', 'url' => '/manage','options'=>['class'=>'user-item']]]);
         $item2 = ArrayHelper::merge($item2,[['label' => '回收站', 'url' => '/user/recycle','options'=>['class'=>'user-item']]]);
         $item2 = ArrayHelper::merge($item2,[['label' => '退出', 'url' => '/site/logout','options'=>['class'=>'user-item']]]);

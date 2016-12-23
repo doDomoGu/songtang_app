@@ -14,29 +14,24 @@ class BaseController extends Controller
 {
     public $titleSuffix;
     public $user;
-    public $navbarView = 'navbar2';
+    public $navbarView = 'navbar';
     public $position;
     public $message = [];
     public $messageNum = 0;
     public $previewTypeArr = [2,3,4,5,6];
+    public $except = [];  //未登录也可以访问的页面 排除
+    public $isAdminAuth = false;
     //public $layout = 'main';
+
     public function beforeAction($action){
         if (!parent::beforeAction($action)) {
             return false;
         }
 
         $this->titleSuffix = '_'.yii::$app->id;
-        if(!Yii::$app->user->isGuest){
-            $this->user = User::find()->where(['id'=>yii::$app->user->id])->one();
-            if(!$this->user->status==1){
-                Yii::$app->user->logout();
-                return $this->goHome();
-            }
-
-            //$this->position = Position::find()->where(['id'=>$this->user->position_id])->one();
-        }
-
-
+        $this->except = [
+            'site/index',
+        ];
         if(!$this->checkLogin()){
             return false;
         }
@@ -48,15 +43,28 @@ class BaseController extends Controller
 
     //检测是否登陆
     public function checkLogin(){
-        //除“首页”和“登陆页面”以外的页面，需要进行登陆判断
-        if(!in_array($this->route,array('site/index','site/login','help/index','version/index','stat/position','test/position'))){
-            if(Yii::$app->user->isGuest){
-                $this->redirect(Yii::$app->urlManager->createUrl(Yii::$app->user->loginUrl));
+        //除了上述访问路径外，需要用户登录，跳转至登录页面
+        if (!in_array($this->route, $this->except)) {
+            if(Yii::$app->user->isGuest) {
+                $this->toLogin();
                 return false;
+            }else{
+                if($this->id=='manage')
+                    return $this->checkAuth();
             }
+        }else{
+            return true;
         }
+    }
 
-        return true;
+    //跳转至登录页面
+    private function toLogin(){
+        //session记录当前页面的url  登录后返回
+        $session = Yii::$app->session;
+        $session['referrer_url_user'] = Yii::$app->request->getAbsoluteUrl();
+
+        $this->redirect(Yii::$app->params['loginUrl']);
+        Yii::$app->end();
     }
 
     //检查是否有使用这个app权限
@@ -69,7 +77,7 @@ class BaseController extends Controller
                 return $this->redirect('site/no-auth');
             }
         }else{
-            $this->hasAuth = true;
+            $this->isAdminAuth = true;
             return true;
         }
     }

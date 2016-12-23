@@ -41,7 +41,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
 
     public static function findIdentity($id)
     {
-        $user = User::find()->where(['id'=>$id])->one();
+        $user = User::find()->where(['id'=>$id,'status'=>1])->one();
         if($user){
             $userStatic = [
                 'id' => $user->id,
