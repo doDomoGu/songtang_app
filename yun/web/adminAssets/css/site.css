@@ -1,0 +1,188 @@
+body {
+    background: #424f63 none repeat scroll 0 0;
+}
+a {outline:none;}
+/* side-nav  */
+.side-nav {
+    width:200px;
+    height: 100%;
+    overflow-y: auto;
+    position: fixed;
+    z-index: 100;
+    left:0;
+    top:0;
+}
+.side-nav > .side-head {
+    color:#fff;
+    padding:20px;
+    font-size:18px;
+}
+
+.side-nav > ul.nav > li > a {
+    border-radius: 0;
+    color:#fff;
+    padding-left:44px;
+}
+
+.side-nav > ul.nav > li > a >span.menu-icon  {
+    position:absolute;
+    left:20px;
+    top:13px;
+}
+
+
+.side-nav > ul.nav > li.menu-single.active > a,
+.side-nav > ul.nav > li.menu-single.active > a:hover,
+.side-nav > ul.nav > li.menu-single > a:hover,
+.side-nav > ul.nav > li.menu-single.active > a:focus,
+.side-nav > ul.nav > li.menu-single > a:focus,
+.side-nav > ul.nav > li.menu-single.nav-active > a
+{
+    background-color: #353f4f;
+    color: #65cea7;
+}
+
+.side-nav > ul.nav > li.menu-list > a > span.sub-menu-collapsed,
+.side-nav > ul.nav > li.menu-list > a > span.sub-menu-collapsed-in {
+    position:absolute;
+    right:20px;
+    top:13px;
+    font-size:12px;
+}
+
+
+.side-nav > ul.nav > li.menu-list > a > span.sub-menu-collapsed {
+    display: inline;
+}
+
+.side-nav > ul.nav > li.menu-list.nav-active > a > span.sub-menu-collapsed {
+    display: none;
+}
+
+.side-nav > ul.nav > li.menu-list > a > span.sub-menu-collapsed-in {
+    display: none;
+}
+
+.side-nav > ul.nav > li.menu-list.nav-active > a > span.sub-menu-collapsed-in {
+    display: inline;
+}
+
+/*.side-nav > ul.nav > li.active > a > span.sub-menu-collapsed {
+    display: block;
+}*/
+
+.side-nav > ul.nav > li.menu-list {
+    overflow: hidden;
+    display: block;
+}
+.side-nav > ul.nav > li > ul {
+    list-style: outside none none;
+    padding-left:0;
+    overflow: hidden;
+}
+
+
+
+/*.side-nav > ul.nav > li.menu-list a.collapsed {
+    background: ;
+}*/
+
+.side-nav > ul.nav > li.menu-list a.collapsed {
+    background: transparent;
+
+}
+
+.side-nav > ul.nav > li.menu-list ul.in,
+.side-nav > ul.nav > li.menu-list.nav-hover ul,
+.side-nav > ul.nav > li.menu-list.nav-hover a,
+.side-nav > ul.nav > li.menu-list.nav-active ul,
+.side-nav > ul.nav > li.menu-list.nav-active a{
+    background-color: #353f4f;
+
+    /*overflow:hidden;*/
+}
+.side-nav > ul.nav > li.menu-list.nav-hover > a,
+.side-nav > ul.nav > li.menu-list.nav-active > a{
+    color: #65cea7;
+}
+
+.side-nav > ul.nav > li > ul > li{
+    display: block;
+    width:100%;
+    /*float:left;*/
+}
+
+.side-nav > ul.nav > li > ul > li > a {
+    padding-left:40px;
+}
+
+.side-nav > ul.nav > li > ul > li > a
+    /*.side-nav > ul.nav > li.nav-hover > ul > li > a,
+    .side-nav > ul.nav > li.nav-active > ul > li > a*/{
+    display: block;
+    padding: 10px 44px;
+    color:#fff;
+    text-decoration: none;
+}
+
+.side-nav > ul.nav > li.menu-list.nav-hover > ul > li > a:hover,
+.side-nav > ul.nav > li.menu-list.nav-active > ul > li.active > a {
+    background-color: #2a323f;
+    color: #65cea7;
+}
+
+
+
+/* main */
+.main-content {
+    background: #eff0f4 none repeat scroll 0 0;
+    margin-left: 200px;
+    min-height: 1000px;
+    overflow: hidden;
+    padding:10px;
+}
+
+.main-content .page-heading h3 {
+    color: #49586e;
+    font-size: 25px;
+    font-weight: normal;
+    margin: 10px 0;
+}
+
+.main-content .panel table{
+    width:100%;
+}
+
+.main-content .panel table td{
+    word-break: break-all;
+}
+
+.main-content .panel table td {
+    height:30px;
+    overflow:hidden;
+}
+
+/*  alert  */
+#alert-section {
+    position:absolute;
+    z-index: 1111;
+    width:1000px;
+    left:50%;
+    margin-left:-500px;
+}
+
+.top-alert {
+
+    margin-bottom:2px;
+    overflow: hidden;
+}
+
+.top-alert > .alert {
+    margin-bottom:0;
+}
+
+
+/*table */
+table td.td-empty {
+    background-color: #eee;
+}
