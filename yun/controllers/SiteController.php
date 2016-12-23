@@ -28,7 +28,16 @@ class SiteController extends BaseController
     }
 
 
+    public function actionClear(){
+        $cache = yii::$app->cache;
+        $cache['dirDataId'] = [];
+        $cache['dirChildrenDataId'] = [];
+        $cache['treeDataid'] = [];
+    }
     public function actionIndex(){
+
+
+
         /*$dir_1 = Dir::find()->where(['id'=>1])->one();
         $dir_2 = Dir::find()->where(['id'=>2])->one();
         $dir_3 = Dir::find()->where(['id'=>3])->one();

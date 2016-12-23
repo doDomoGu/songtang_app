@@ -21,7 +21,7 @@ class DirFrontFunc extends Component {
             }
         }
 
-        $dirs = Dir::find()->where(['p_id'=>0,'status'=>1])->orderBy('ord desc,id desc')->all();
+        $dirs = Dir::find()->where(['p_id'=>0,'status'=>1])->orderBy('ord asc,id desc')->all();
         if(!empty($dirs)){
             foreach($dirs as $dir){
                 $active = $dirLvl_1!=null && $dirLvl_1->id==$dir->id?true:false;

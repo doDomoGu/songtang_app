@@ -8,7 +8,7 @@ use yun\components\DirFunc;
 <p></p>
 
 板块选择：<?=BaseHtml::dropDownList('dir-select-1',$dirLvl_1?$dirLvl_1->id:'',$dirList_1,['encode'=>false,'id'=>'dir-select-1','prompt'=>'===请选择==='])?>
-<?php if(1!=1 && !empty($dirList_2)):?>
+<?php if(!empty($dirList_2)):?>
     <p></p>
     目录选择：<?=BaseHtml::dropDownList('dir-select-2',$dirLvl_2?$dirLvl_2->id:'',$dirList_2,['encode'=>false,'id'=>'dir-select-2','prompt'=>'===请选择==='])?>
 <?php endif;?>
