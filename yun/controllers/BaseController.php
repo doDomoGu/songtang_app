@@ -16,12 +16,11 @@ class BaseController extends Controller
     public $user;
     public $navbarView = 'navbar';
     public $position;
-    public $message = [];
-    public $messageNum = 0;
+    //public $message = [];
+    //public $messageNum = 0;
     public $previewTypeArr = [2,3,4,5,6];
     public $except = [];  //未登录也可以访问的页面 排除
     public $isAdminAuth = false;
-    //public $layout = 'main';
 
     public function beforeAction($action){
         if (!parent::beforeAction($action)) {

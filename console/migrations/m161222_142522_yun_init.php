@@ -50,12 +50,29 @@ class m161222_142522_yun_init extends Migration
             'status'=>$this->smallInteger(1),
         ]);
 
-
-
+        $this->createTable('file',[
+            'id' => $this->primaryKey(11),
+            'filename'=> $this->string(200),
+            'filesize'=> $this->integer(11),
+            'filetype'=> $this->smallInteger(4),
+            'dir_id'=>$this->integer(11),
+            'p_id'=> $this->integer(11),
+            'filename_real'=>$this->string(50),
+            'user_id'=> $this->integer(11),
+            'clicks'=> $this->integer(11),
+            'add_time'=>$this->dateTime(),
+            'edit_time'=>$this->dateTime(),
+            'describe'=>$this->text(),
+            'ord'=>$this->smallInteger(4),
+            'flag' => $this->smallInteger(1),
+            'status'=>$this->smallInteger(1),
+            'parent_status'=>$this->smallInteger(1)
+        ]);
     }
 
     public function down()
     {
+        $this->dropTable('file');
         $this->dropTable('dir');
         $this->dropTable('news');
         $this->dropTable('recruitment');

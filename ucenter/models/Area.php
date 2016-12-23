@@ -61,7 +61,7 @@ class Area extends \yii\db\ActiveRecord
                 throw new \yii\base\Exception('Area has installed');
             }else{
                 $arr = [
-                    'default' => '【缺省】',
+                    'default' => '[缺省]',
                     'headquarters' => '总部',
                     'sh' => '上海',
                     'sz' => '苏州',

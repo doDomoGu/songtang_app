@@ -50,9 +50,9 @@ class Business extends \yii\db\ActiveRecord
                 throw new \yii\base\Exception('Business has installed');
             }else{
                 $arr = [
-                    'default' => '【缺省】',
+                    'default' => '[缺省]',
                     'stdc' => '颂唐地产',
-                    'stdc_2' => '颂唐地产(二)',
+                    'stdc_2' => '颂唐唯亿地产',
                     'stgg' => '颂唐广告',
                     'rxsy' => '日鑫商业',
                     'hyfw' => '汉佑房屋',
@@ -74,17 +74,10 @@ class Business extends \yii\db\ActiveRecord
             return true;
         }catch (\Exception $e)
         {
-            //echo  'Dept_Business  install failed<br />';
             $message = $e->getMessage() . "\n";
-            $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
             echo $message;
             echo '<br/>';
-            /*echo '<br/><br/>';
-            var_dump($e);
-            echo '<br/><br/>';
-            var_dump($errorInfo);*/
 
-            //throw new \Exception($message, $errorInfo, (int) $e->getCode(), $e);
             return false;
         }
     }
