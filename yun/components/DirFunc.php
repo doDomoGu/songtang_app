@@ -356,7 +356,9 @@ class DirFunc extends Component {
         $dirChildrenData = NULL;
         $key = $p_id.'_'.($showLeaf==true?'1':'0').'_'.($status==1?'1':'0').'_'.$orderBy.'_'.($limit==false?'f':$limit);
 //var_dump($key);exit;
-        if(isset($cache['dirChildrenDataId'])){
+
+        ##先不要读取缓存
+        if(1!=1 && isset($cache['dirChildrenDataId'])){
             $dirChildrenDataId = $cache['dirChildrenDataId'];
             if(isset($dirChildrenDataId[$key])){
                 $dirChildrenData = $cache['dirChildrenData_'.$key];
@@ -388,7 +390,8 @@ class DirFunc extends Component {
         $cacheExist = true;
         $dirDataId = [];
         $dirData = NULL;
-        if(isset($cache['dirDataId'])){
+        ##先不要读取缓存
+        if(1!=1 && isset($cache['dirDataId'])){
             $dirDataId = $cache['dirDataId'];
             if(isset($dirDataId[$id])){
                 $dirData = $cache['dirData_'.$id];

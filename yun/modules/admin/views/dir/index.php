@@ -30,13 +30,20 @@ use yun\components\DirFunc;
                 <th scope="row"><?=$l->id?></th>
                 <!--<td><?/*=$l->ord*/?></td>-->
                 <td><?=$l->name?> <span class="badge" title="<?=DirFunc::getFullRoute($l->id)?>">i</span></td>
-                <td><?=DirFunc::getIsLeaf($l->is_leaf)?></td>
                 <td>
-                    <?=BaseHtml::a('编辑',['dir-add-and-edit','id'=>$l->id],['class'=>'btn btn-primary btn-xs'])?>
-                    <?php if($l->is_leaf==0):?>
-                        <?=BaseHtml::a('添加子目录',['dir-add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs'])?>
+                    <?php if($l->link!=''):?>
+                        <span class="label label-warning">链接</span>
                     <?php else:?>
-                        <?=BaseHtml::a('查看对应职位权限',['dir-position-permission','dir_id'=>$l->id],['class'=>'btn btn-success btn-xs'])?>
+                        <?=DirFunc::getIsLeaf($l->is_leaf)?></td>
+                    <?php endif;?>
+                <td>
+                    <?=BaseHtml::a('编辑',['add-and-edit','id'=>$l->id],['class'=>'btn btn-primary btn-xs'])?>
+                    <?php if($l->link==""):?>
+                        <?php if($l->is_leaf==0):?>
+                            <?=BaseHtml::a('添加子目录',['dir-add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs'])?>
+                        <?php else:?>
+                            <?=BaseHtml::a('查看对应职位权限',['dir-position-permission','dir_id'=>$l->id],['class'=>'btn btn-success btn-xs'])?>
+                        <?php endif;?>
                     <?php endif;?>
                 </td>
             </tr>
