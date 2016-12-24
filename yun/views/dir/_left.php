@@ -8,7 +8,7 @@
 AppAsset::addCssFile($this,'css/main/dir/_left.css');
 AppAsset::addJsFile($this,'js/main/dir-_left.js');
 
-$start = microtime(true);
+//$start = microtime(true);
 $treeData = DirFrontFunc::getTreeData($dir_id);
 
 /*$end = microtime(true);

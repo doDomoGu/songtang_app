@@ -46,7 +46,10 @@ class DirFrontFunc extends Component {
             $data .= '[';
             foreach($arr as $l){
                 $data.='{';
-                $data.="name:'".$l->name."',url:'/dir?dir_id=".$l->id."',target:'_self'";
+                if($l->link!='')
+                    $data.="name:'".$l->name."',url:'".$l->link."',target:'_blank'";
+                else
+                    $data.="name:'".$l->name."',url:'/dir?dir_id=".$l->id."',target:'_self'";
                 if($l->id == $dir_id){
                     $data.=",font:{'background-color':'black', 'color':'white'}";
                 }else if(in_array($l->id,$p_ids)){
@@ -73,7 +76,7 @@ class DirFrontFunc extends Component {
         $cache = Yii::$app->cache;
         $cacheExist = true;
         $treeDataId = [];
-        if(isset($cache['treeDataId'])){
+        if(1!=1 && isset($cache['treeDataId'])){
             $treeDataId = $cache['treeDataId'];
             if(isset($treeDataId[$dir_id])){
                 $treeData = $cache['treeData_'.$dir_id];
