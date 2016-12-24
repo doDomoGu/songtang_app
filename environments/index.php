@@ -40,6 +40,10 @@ return [
             'login/web/assets',
             'yun/runtime',
             'yun/web/assets',
+            'clientResource/runtime',
+            'clientResource/web/assets',
+            'merchantResource/runtime',
+            'merchantResource/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -50,6 +54,8 @@ return [
             'oa/config/main-local.php',
             'login/config/main-local.php',
             'yun/config/main-local.php',
+            'clientResource/config/main-local.php',
+            'merchantResource/config/main-local.php',
         ],
     ],
     'Production' => [
@@ -63,6 +69,10 @@ return [
             'login/web/assets',
             'yun/runtime',
             'yun/web/assets',
+            'clientResource/runtime',
+            'clientResource/web/assets',
+            'merchantResource/runtime',
+            'merchantResource/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -72,6 +82,8 @@ return [
             'oa/config/main-local.php',
             'login/config/main-local.php',
             'yun/config/main-local.php',
+            'clientResource/config/main-local.php',
+            'marketResource/config/main-local.php',
         ],
     ],
 ];

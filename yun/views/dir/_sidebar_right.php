@@ -1,7 +1,6 @@
 <?php
     yun\assets\AppAsset::addCssFile($this,'css/main/dir/_right.css');
     $user = Yii::$app->user->identity;
-    $position = $this->context->position;
 ?>
 <table id="right-info-table">
     <tr>

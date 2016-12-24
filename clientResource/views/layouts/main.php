@@ -48,7 +48,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="text-align">&copy; 颂唐机构 <?= date('Y') ?></p>
+        <p class="text-center">&copy; 颂唐机构 <?= date('Y') ?></p>
     </div>
 </footer>
 

@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use clientResource\assets\AppAsset;
+use merchantResource\assets\AppAsset;
 use common\widgets\Alert;
 
 AppAsset::register($this);
@@ -48,7 +48,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="text-align">&copy; 颂唐机构 <?= date('Y') ?></p>
+        <p class="text-center">&copy; 颂唐机构 <?= date('Y') ?></p>
     </div>
 </footer>
 

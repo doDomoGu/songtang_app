@@ -41,7 +41,7 @@ use yii\helpers\ArrayHelper;
         if($this->context->isAdminAuth)
             $item2 = ArrayHelper::merge($item2,[['label' => '管理中心*', 'url' => '/manage','options'=>['class'=>'user-item']]]);
         $item2 = ArrayHelper::merge($item2,[['label' => '回收站', 'url' => '/user/recycle','options'=>['class'=>'user-item']]]);
-        $item2 = ArrayHelper::merge($item2,[['label' => '退出', 'url' => '/site/logout','options'=>['class'=>'user-item']]]);
+        $item2 = ArrayHelper::merge($item2,[['label' => '退出', 'url' => Yii::$app->params['logoutUrl'],'options'=>['class'=>'user-item']]]);
         $item2 = ArrayHelper::merge($item2,['<li class="divider"></li>']);
     }else{
         $iconClass = 'glyphicon glyphicon-menu-hamburger';

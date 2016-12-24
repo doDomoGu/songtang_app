@@ -7,13 +7,14 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'OA',
+    'id' => 'client_resource',
+    'name' => '客户资源中心',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'controllerNamespace' => 'oa\controllers',
+    'controllerNamespace' => 'clientResource\controllers',
     'components' => [
         'request' => [
-            'csrfParam' => '_csrf-oa',
+            'csrfParam' => '_csrf-cr',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
