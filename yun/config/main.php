@@ -11,6 +11,7 @@ return [
     'name'=>'颂唐云',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language'=>'zh-CN',
     'controllerNamespace' => 'yun\controllers',
     'modules' => [
         'admin' => [

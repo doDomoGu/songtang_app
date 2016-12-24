@@ -96,7 +96,7 @@ class DirController extends BaseController
         $curDir = Dir::find()->where(['id'=>$dir_id,'status'=>1])->one();
 
         if($curDir){
-            //$this->dir_id = $dir_id;
+            $this->dir_id = $dir_id;
             $dirRoute = ''; //目录路径 用来在七牛上传文件时，拼接文件名
             //面包屑 & 文件路径
             $parents = DirFunc::getParents($dir_id);

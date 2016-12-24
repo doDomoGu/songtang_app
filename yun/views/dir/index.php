@@ -18,9 +18,7 @@
             <div class="icon">
                 <img src="/images/fileicon/documents.png">
             </div>
-            <div class="name" >
-                <?=CommonFunc::mySubstr($l->name,14)?>
-            </div>
+            <div class="name" ><?=CommonFunc::mySubstr($l->name,18)?></div>
         </a>
     </div>
 <?php endforeach;?>
