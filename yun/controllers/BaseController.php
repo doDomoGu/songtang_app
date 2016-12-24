@@ -50,6 +50,7 @@ class BaseController extends Controller
                 $this->toLogin();
                 return false;
             }else{
+                $this->checkAuth();
                 return true;
             }
         }else{
@@ -68,13 +69,15 @@ class BaseController extends Controller
     }
 
     //检查是否有使用这个app权限
-    private function checkAuth(){
+    private function checkAuth($redirect=false){
         $authExist = UserAppAuth::find()->where(['app'=>'yun-admin','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
         if(!$authExist){
-            if($this->getRoute()=='site/no-auth'){
-                return true;
-            }else{
-                return $this->redirect('site/no-auth');
+            if($redirect){
+                if($this->getRoute()=='site/no-auth'){
+                    return true;
+                }else{
+                    return $this->redirect('site/no-auth');
+                }
             }
         }else{
             $this->isAdminAuth = true;

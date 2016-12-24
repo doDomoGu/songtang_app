@@ -47,27 +47,27 @@
     </aside>
     <main>
         <section id="dir-list">
-            <?php /*for($i=1;$i<=count($list_dirOne);$i++):*/?><!--
-                <article class="<?/*=$i==count($list_dirOne)?'last':''*/?>">
+            <?php for($i=1;$i<=count($list_dirOne);$i++):?>
+                <article class="<?=$i==count($list_dirOne)?'last':''?>">
                     <div class="item-heading">
-                        <?/*=yii\bootstrap\Html::a($list_dirOne[$i]->name,['/dir','dir_id'=>$list_dirOne[$i]->id])*/?>
+                        <?=yii\bootstrap\Html::a($list_dirOne[$i]->name,['/dir','dir_id'=>$list_dirOne[$i]->id])?>
                     </div>
                     <div class="item-list">
                         <ul class="list-unstyled">
-                        <?php /*$j=0;foreach(${'list_'.$i} as $l):*/?>
+                        <?php $j=0;foreach(${'list_'.$i} as $l):?>
                             <li>
-                                <?/*=yii\bootstrap\Html::a($l->name,['/dir','dir_id'=>$l->id])*/?>
+                                <?=yii\bootstrap\Html::a($l->name,['/dir','dir_id'=>$l->id])?>
                             </li>
-                        <?php /*$j++;endforeach;*/?>
-                        <?php /*for($k=$j;$k<5;$k++):*/?>
+                        <?php $j++;endforeach;?>
+                        <?php for($k=$j;$k<5;$k++):?>
                             <li>
 
                             </li>
-                        <?php /*endfor;*/?>
+                        <?php endfor;?>
                         </ul>
                     </div>
                 </article>
-            --><?php /*endfor;*/?>
+            <?php endfor;?>
         </section>
         <div class="clearfix"></div>
 

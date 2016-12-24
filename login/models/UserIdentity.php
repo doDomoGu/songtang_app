@@ -18,6 +18,8 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $department;
     public $position_id;
     public $position;
+    public $join_date;
+    public $contract_date;
     public $authKey;
     public $accessToken;
     public $status;
@@ -56,6 +58,9 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 'department'=>$user->getDepartmentFullRoute(),
                 'position_id'=>$user->position_id,
                 'position'=>$user->position->name,
+                'join_date'=>$user->join_date,
+                'contract_date'=>$user->contract_date,
+                //'position'=>$user->position->name,
                 'authKey' => 'key-'.$user->id,
                 'accessToken' => 'token-'.$user->id
             ];

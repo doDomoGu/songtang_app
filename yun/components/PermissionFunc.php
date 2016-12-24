@@ -3,6 +3,7 @@ namespace yun\components;
 
 use app\models\Group;
 use app\models\User;
+use common\models\UserAppAuth;
 use yii\base\Component;
 use app\models\PositionDirPermission;
 use yii;
@@ -126,8 +127,7 @@ class PermissionFunc extends Component {
         //获取拥有的权限数组
         $typeArr = [];
 
-        $adminId = Yii::$app->controller->user->is_admin;
-        if($adminId==User::SUPER_ADMIN){
+        if(Yii::$app->controller->isAdminAuth){
             return true;
         }else{
             $pm = PositionDirPermission::find()->where(['position_id'=>$position_id,'dir_id'=>$dir_id])->all();
@@ -150,8 +150,7 @@ class PermissionFunc extends Component {
     }
 
     public static function getDirIdsOk($position_id,$permission_types){
-        $adminId = yii::$app->controller->user->is_admin;
-        if($adminId==User::SUPER_ADMIN){
+        if(Yii::$app->controller->isAdminAuth){
             return 'all';
         }else{
             $pmList = PositionDirPermission::find()
@@ -170,36 +169,22 @@ class PermissionFunc extends Component {
     }
 
     public static function isAllowUploadCommon($dir_id){
+        return true;
+
         $position_id = yii::$app->controller->user->position_id;
         $permission_type = self::UPLOAD_COMMON;
         return self::checkDirPermission($position_id,$dir_id,$permission_type);
     }
 
     public static function isAllowUploadPerson($dir_id){
+        return true;
         $position_id = yii::$app->controller->user->position_id;
         $permission_type = self::UPLOAD_PERSON;
         return self::checkDirPermission($position_id,$dir_id,$permission_type);
     }
 
-    /*public static function checkDirUploadPermission($position_id,$dir_id,$upload_type){
-        $pm = PositionDirPermission::find()->where(['position_id'=>$position_id,'dir_id'=>$dir_id])->all();
-        if(!empty($pm)){
-            //获取拥有的权限数组
-            $typeArr = [];
-            foreach($pm as $p){
-                $typeArr[] = $p->type;
-            }
-
-            if(in_array($upload_type,$typeArr)){
-                return true;
-            }
-        }
-        return false;
-    }*/
-
     public static function checkFileDownloadPermission($position_id,$file){
-        $adminId = yii::$app->controller->user->is_admin;
-        if($adminId==User::SUPER_ADMIN){
+        if(Yii::$app->controller->isAdminAuth){
             return true;
         }else{
             $dir_id = $file->dir_id;
@@ -229,8 +214,7 @@ class PermissionFunc extends Component {
     }
 
     public static function checkFileUploadPermission($position_id,$dir_id,$flag){
-        $adminId = yii::$app->controller->user->is_admin;
-        if($adminId==User::SUPER_ADMIN){
+        if(Yii::$app->controller->isAdminAuth){
             return true;
         }else{
             $typeArr = [];
