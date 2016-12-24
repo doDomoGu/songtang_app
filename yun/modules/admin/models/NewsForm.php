@@ -1,6 +1,6 @@
 <?php
 
-namespace yun\models;
+namespace yun\modules\admin\models;
 
 use Yii;
 use yii\base\Model;

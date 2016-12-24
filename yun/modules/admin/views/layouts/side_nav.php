@@ -17,13 +17,13 @@
         </li>
         <li class="menu-single <?=$this->context->id=='news'?'active':''?>">
             <a href="<?=AdminFunc::adminUrl('news')?>">
-                <span class="menu-icon glyphicon glyphicon-list"></span>
+                <span class="menu-icon glyphicon glyphicon-th-large"></span>
                 首页新闻
             </a>
         </li>
         <li class="menu-single <?=$this->context->id=='recruitment'?'active':''?>">
             <a href="<?=AdminFunc::adminUrl('recruitment')?>">
-                <span class="menu-icon glyphicon glyphicon-list"></span>
+                <span class="menu-icon glyphicon glyphicon-user"></span>
                 招聘信息
             </a>
         </li>

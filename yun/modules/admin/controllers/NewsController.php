@@ -3,7 +3,7 @@
 namespace yun\modules\admin\controllers;
 
 use yun\models\News;
-use yun\models\NewsForm;
+use yun\modules\admin\models\NewsForm;
 use Yii;
 
 

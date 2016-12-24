@@ -4,8 +4,8 @@ use yun\components\DirFunc;
  yun\assets\AppAsset::addJsFile($this,'js/manage-dir.js');
 ?>
 <?/*=BaseHtml::a('添加目录（暂时不可用）',['dir-add-and-edit'],['class'=>'btn btn-primary disabled'])*/?>
-<?=BaseHtml::a('重新生成目录缓存*',['dir-deploy-cache'],['class'=>'btn btn-warning'])?> *在修改或添加过目录项后可点击，运行时间较长非必要无需重新生成
-<p></p>
+<?/*=BaseHtml::a('重新生成目录缓存*',['dir-deploy-cache'],['class'=>'btn btn-warning'])*/?><!-- *在修改或添加过目录项后可点击，运行时间较长非必要无需重新生成
+<p></p>-->
 
 板块选择：<?=BaseHtml::dropDownList('dir-select-1',$dirLvl_1?$dirLvl_1->id:'',$dirList_1,['encode'=>false,'id'=>'dir-select-1','prompt'=>'===请选择==='])?>
 <?php if(!empty($dirList_2)):?>

@@ -3,7 +3,7 @@
 namespace yun\modules\admin\controllers;
 
 use yun\models\Recruitment;
-use yun\models\RecruitmentForm;
+use yun\modules\admin\models\RecruitmentForm;
 use Yii;
 
 
