@@ -43,7 +43,7 @@ return [
             'clientResource/runtime',
             'clientResource/web/assets',
             'merchantResource/runtime',
-            'merchantResource/assets',
+            'merchantResource/web/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -72,7 +72,7 @@ return [
             'clientResource/runtime',
             'clientResource/web/assets',
             'merchantResource/runtime',
-            'merchantResource/assets',
+            'merchantResource/web/assets',
         ],
         'setExecutable' => [
             'yii',
@@ -83,7 +83,7 @@ return [
             'login/config/main-local.php',
             'yun/config/main-local.php',
             'clientResource/config/main-local.php',
-            'marketResource/config/main-local.php',
+            'merchantResource/config/main-local.php',
         ],
     ],
 ];
