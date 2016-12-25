@@ -1,10 +1,16 @@
 <?php
     use yii\bootstrap\Modal;
     use yii\bootstrap\Progress;
+    use ucenter\models\Area;
+    use ucenter\models\Business;
+    use yii\bootstrap\BaseHtml;
 
-yun\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
-yun\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
-yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/upload_common.js');
+    yun\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
+    yun\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
+    yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/upload_common.js');
+
+    $areaItems = Area::getItems();
+    $businessItems = Business::getItems();
 ?>
 <?php
 Modal::begin([
@@ -17,7 +23,13 @@ Modal::begin([
     <div id="uploadModalContent">
         <div id="pickfile_container">
             <p>
-                <input type="file" id="pickfile">
+                地区：<?=BaseHtml::checkboxList('area-check','',$areaItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check area-check']])?>
+            </p>
+            <p>
+                业态：<?=BaseHtml::checkboxList('business-check','',$businessItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check business-check']])?>
+            </p>
+            <p>
+                <input type="file" id="pickfile" disabled="disabled">
             </p>
             <p>
                 <input type="hidden" id="fileurl" name="fileurl" value="" class="col-lg-6" />

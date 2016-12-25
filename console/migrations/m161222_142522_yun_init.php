@@ -79,10 +79,18 @@ class m161222_142522_yun_init extends Migration
             'message'=>$this->text(),
             'log_time'=>$this->dateTime()
         ]);
+
+        $this->createTable('file_attribute',[
+            'file_id'=>$this->integer(11),
+            'attr_type'=>$this->smallInteger(1),
+            'attr_id'=>$this->smallInteger(2)
+        ]);
+        $this->addPrimaryKey('pk','file_attribute',['file_id','attr_type','attr_id']);
     }
 
     public function down()
     {
+        $this->dropTable('file_attribute');
         $this->dropTable('system_log');
         $this->dropTable('file');
         $this->dropTable('dir');

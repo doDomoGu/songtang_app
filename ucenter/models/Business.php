@@ -34,6 +34,15 @@ class Business extends \yii\db\ActiveRecord
         return $list;
     }
 
+    public static function getItems(){
+        $list = self::find()->select(['id','name'])->all();
+        $arr = [];
+        foreach($list as $l){
+            $arr[$l->id] = $l->name;
+        }
+        return $arr;
+    }
+
     public static function getNameArr(){
         $list = self::find()->select(['id','name'])->all();
         $arr = [];

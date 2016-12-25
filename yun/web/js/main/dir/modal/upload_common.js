@@ -1,3 +1,13 @@
+$('.attr-check').on('click',function(){
+   if($('.attr-check:checked').length>0){
+       $('#pickfile').attr('disabled',false);
+   }else{
+       $('#pickfile').attr('disabled',true);
+   }
+});
+
+
+
 var progress_html = '';
 var filename_list = [];
 var _dir_id = $('#var_dir_id').val();
@@ -6,6 +16,8 @@ var _dir_route = $('#var_dir_route').val();
 var qiniuDomain = $('#qiniuDomain').val();
 var pickfileId = $('#pickfileId').val();
 var fileurlId = $('#fileurlId').val();
+var area_check;
+var business_check;
 var uploader = Qiniu.uploader({
     runtimes: 'html5,flash,html4',    //上传模式,依次退化
     browse_button: pickfileId,       //上传选择的点选按钮，**必需**
@@ -34,6 +46,17 @@ var uploader = Qiniu.uploader({
     init: {
         'FilesAdded': function(up, files) {
             // 文件添加进队列后,处理相关的事情
+            var area_check_tmp = new Array();
+            $('.area-check:checked').each(function(){
+                area_check_tmp.push($(this).val());
+            });
+            area_check = area_check_tmp.join(',');
+
+            var business_check_tmp = new Array();
+            $('.business-check:checked').each(function(){
+                business_check_tmp.push($(this).val());
+            });
+            business_check = business_check_tmp.join(',');
             //查询目录下文件名，防止重名
             $.ajax({
                 url: '/dir/get-filename-list',
@@ -125,7 +148,9 @@ var uploader = Qiniu.uploader({
                     filename:file.name,
                     filesize:file.size,
                     flag:1,
-                    p_id:_p_id
+                    p_id:_p_id,
+                    area_check:area_check,
+                    business_check:business_check
                 },
                 dataType:'json',
                 success: function (data) {

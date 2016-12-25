@@ -7,7 +7,9 @@ use yun\components\FileFrontFunc;
 use yun\components\FileFunc;
 use yun\components\PermissionFunc;
 use yun\components\QiniuUpload;
+use yun\models\Attribute;
 use yun\models\File;
+use yun\models\FileAttribute;
 use yun\models\News;
 use yun\models\Dir;
 use yun\models\Recruitment;
@@ -366,6 +368,8 @@ class DirController extends BaseController
         $uid = Yii::$app->user->id;
         $flag = isset($post['flag'])?$post['flag']:'';
         $filename = isset($post['filename'])?$post['filename']:'';
+        $areaCheck = isset($post['area_check'])?$post['area_check']:'';
+        $businessCheck = isset($post['business_check'])?$post['business_check']:'';
         if($dir_id>0 && $filename!='' && PermissionFunc::checkFileUploadPermission(111,$dir_id,$flag)){
 
             $fileexist = File::find()->where(['dir_id'=>$dir_id,'p_id'=>$p_id,'filename'=>$filename])->andWhere('status < 2')->one();
@@ -401,7 +405,33 @@ class DirController extends BaseController
                 $file->status = 1;
                 $file->flag = 1;*/
 
-                $file->save();
+                if($file->save()){
+                    if($areaCheck!=''){
+                        $areaCheckArr = explode(',',$areaCheck);
+                        $areaCheckArr = array_unique($areaCheckArr);
+                        foreach($areaCheckArr as $a){
+                            $fileAttr = new FileAttribute();
+                            $fileAttr->file_id = $file->id;
+                            $fileAttr->attr_type = Attribute::TYPE_AREA;
+                            $fileAttr->attr_id = $a;
+                            $fileAttr->save();
+                        }
+                    }
+
+                    if($businessCheck!=''){
+                        $businessCheckArr = explode(',',$businessCheck);
+                        $businessCheckArr = array_unique($businessCheckArr);
+                        foreach($businessCheckArr as $b){
+                            $fileAttr = new FileAttribute();
+                            $fileAttr->file_id = $file->id;
+                            $fileAttr->attr_type = Attribute::TYPE_BUSINESS;
+                            $fileAttr->attr_id = $b;
+                            $fileAttr->save();
+                        }
+                    }
+                }
+
+
                 echo json_encode(['result'=>true]);
             }else{
                 echo json_encode(['result'=>false,'msg'=>'同名文件已存在']);
