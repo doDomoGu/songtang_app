@@ -40,6 +40,13 @@ class UserAppAuth extends \yii\db\ActiveRecord
                 $m->user_id = 1;
                 $m->is_enable = 1;
                 $m->save();
+
+                $m = new UserAppAuth();
+                $m->app = 'yun-admin';
+                $m->user_id = 1;
+                $m->is_enable = 1;
+                $m->save();
+
                 echo 'UserAppAuth install finish'."<br/>";
             }
             return true;
