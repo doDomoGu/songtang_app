@@ -34,13 +34,13 @@ use yii\helpers\ArrayHelper;
 
         $item2 = [['label' => '职员资料', 'url' => '/user','options'=>['class'=>'user-item']]];
         //$item2 = ArrayHelper::merge($item2,[['label' => '每日签到', 'url' => '/user/sign','options'=>['class'=>'user-item']]]);
-        $item2 = ArrayHelper::merge($item2,[['label' => '我的上传', 'url' => '/user/file','options'=>['class'=>'user-item']]]);
-        $item2 = ArrayHelper::merge($item2,[['label' => '我的下载', 'url' => '/user/download','options'=>['class'=>'user-item']]]);
+        //$item2 = ArrayHelper::merge($item2,[['label' => '我的上传', 'url' => '/user/file','options'=>['class'=>'user-item']]]);
+        //$item2 = ArrayHelper::merge($item2,[['label' => '我的下载', 'url' => '/user/download','options'=>['class'=>'user-item']]]);
         //$item2 = ArrayHelper::merge($item2,[['label' => '我的权限', 'url' => '/user/permission-list','options'=>['class'=>'user-item']]]);
         //$item2 =  ArrayHelper::merge($item2,[['label' => '消息通知'.$messageSpan, 'url' => '/message/system','options'=>['class'=>'user-item',],'encode' => false]]);
         if($this->context->isAdminAuth)
             $item2 = ArrayHelper::merge($item2,[['label' => '管理中心*', 'url' => '/admin','options'=>['class'=>'user-item']]]);
-        $item2 = ArrayHelper::merge($item2,[['label' => '回收站', 'url' => '/user/recycle','options'=>['class'=>'user-item']]]);
+        //$item2 = ArrayHelper::merge($item2,[['label' => '回收站', 'url' => '/user/recycle','options'=>['class'=>'user-item']]]);
         $item2 = ArrayHelper::merge($item2,[['label' => '退出', 'url' => Yii::$app->params['logoutUrl'],'options'=>['class'=>'user-item']]]);
         $item2 = ArrayHelper::merge($item2,['<li class="divider"></li>']);
     }else{
@@ -67,7 +67,7 @@ $item2 = [];
     }
 
 
-    $item2 = ArrayHelper::merge($item2,[['label' => '帮助中心', 'url' => '/help','options'=>['class'=>'user-item'],'linkOptions'=>['target'=>'_blank']]]);
+    /*$item2 = ArrayHelper::merge($item2,[['label' => '帮助中心', 'url' => '/help','options'=>['class'=>'user-item'],'linkOptions'=>['target'=>'_blank']]]);*/
     $item2 = ArrayHelper::merge($item2,[['label' => '版本功能', 'url' => '/version','options'=>['class'=>'user-item'],'linkOptions'=>['target'=>'_blank']]]);
 
 
