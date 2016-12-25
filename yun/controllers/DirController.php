@@ -381,6 +381,7 @@ class DirController extends BaseController
                 $insert['clicks'] = 0;
                 $insert['ord'] = 1;
                 $insert['status'] = 1;
+                $insert['parent_status'] = 1;
                 $insert['flag'] = $flag;  //flag ：1 公共  flag :2 个人\私人
 
 
@@ -421,7 +422,7 @@ class DirController extends BaseController
         $file = File::find()->where(['id'=>$id,'status'=>1,'parent_status'=>1])->one();
 
         if($file){
-            if(PermissionFunc::checkFileDownloadPermission($this->user->position_id,$file)){
+            if(PermissionFunc::checkFileDownloadPermission(11,$file)){
 
                 $file_path = FileFrontFunc::getFilePath($file->filename_real,true);
 
