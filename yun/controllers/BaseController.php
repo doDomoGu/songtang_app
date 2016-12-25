@@ -54,6 +54,7 @@ class BaseController extends Controller
                 return true;
             }
         }else{
+            $this->checkAuth();
             return true;
         }
     }
