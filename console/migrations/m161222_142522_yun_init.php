@@ -11,13 +11,13 @@ class m161222_142522_yun_init extends Migration
 
     public function up()
     {
-        /*$this->createTable('recruitment', [
+        $this->createTable('recruitment', [
             'id'=> $this->primaryKey(5),
             'title'=> $this->string(255)->notNull(),
             'content'=> $this->text(),
             'img_url'=> $this->string(255),
             'link_url'=> $this->string(255),
-            'ord' => $this->smallInteger(4)->unsigned(),
+            'ord' => $this->smallInteger(4),
             'status' => $this->smallInteger(1),
             'add_time' => $this->dateTime(),
             'edit_time' => $this->dateTime()
@@ -29,11 +29,11 @@ class m161222_142522_yun_init extends Migration
             'content'=> $this->text(),
             'img_url'=> $this->string(255),
             'link_url'=> $this->string(255),
-            'ord' => $this->smallInteger(4)->unsigned(),
+            'ord' => $this->smallInteger(4),
             'status' => $this->smallInteger(1),
             'add_time' => $this->dateTime(),
             'edit_time' => $this->dateTime()
-        ]);*/
+        ]);
 
         $this->createTable('dir',[
             'id'=> $this->primaryKey(11),
@@ -43,8 +43,8 @@ class m161222_142522_yun_init extends Migration
             //'type'=> $this->smallInteger(4)->unsigned()->notNull(),
             'more_cate' => $this->smallInteger(1),
             'link' => $this->string(100),
-            'p_id'=>$this->integer(11)->unsigned()->notNull()->defaultValue(0),
-            'level'=>$this->integer(4)->unsigned()->notNull()->defaultValue(0),
+            'p_id'=>$this->integer(11)->notNull()->defaultValue(0),
+            'level'=>$this->integer(4)->notNull()->defaultValue(0),
             'is_leaf'=>$this->smallInteger(1),
             'is_last'=>$this->smallInteger(1),
             'ord' => $this->smallInteger(4),
@@ -86,8 +86,8 @@ class m161222_142522_yun_init extends Migration
         $this->dropTable('system_log');
         $this->dropTable('file');
         $this->dropTable('dir');
-        /*$this->dropTable('news');
-        $this->dropTable('recruitment');*/
+        $this->dropTable('news');
+        $this->dropTable('recruitment');
     }
 
 
