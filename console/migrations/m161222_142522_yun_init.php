@@ -72,8 +72,8 @@ class m161222_142522_yun_init extends Migration
 
         $this->createTable('system_log',[
             'id'=>$this->primaryKey(11),
-            'type'=>$this->smallInteger(1)->comment('日志类型:1.系统信息;2.用户记录'),
-            'level'=>$this->smallInteger(1)->comment('级别:1:trace,2:debug,3:info,4:notice,5:warn,6:error,7:fatal'),
+            'type'=>$this->smallInteger(1),//->comment('日志类型:1.系统信息;2.用户记录'),
+            'level'=>$this->smallInteger(1),//->comment('级别:1:trace,2:debug,3:info,4:notice,5:warn,6:error,7:fatal'),
             'uid'=>$this->integer(11),
             'category'=>$this->string(255),
             'message'=>$this->text(),
