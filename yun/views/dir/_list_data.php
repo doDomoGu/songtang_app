@@ -2,12 +2,12 @@
     use yii\bootstrap\Html;
     use yun\components\FileFrontFunc;
     use yun\components\PermissionFunc;
-use yun\components\CommonFunc;
+    use yun\components\CommonFunc;
 
 ?>
 <?php foreach($list as $l):?>
-    <?php $downloadCheck = PermissionFunc::checkFileDownloadPermission($this->context->user->position_id,$l);?>
-    <div class="list-item list-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=$l->uid==yii::$app->user->id?'delete-enable':'delete-disable'?>" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
+    <?php $downloadCheck = PermissionFunc::checkFileDownloadPermission(222,$l);?>
+    <div class="list-item list-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=$l->user_id==yii::$app->user->id?'delete-enable':'delete-disable'?>" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
         <div class="info">
             <div class="file-check">
                 <input type="checkbox" name="cb[]" class="file-checkbox" value="<?=$l->id?>" />
@@ -39,7 +39,7 @@ use yun\components\CommonFunc;
                         <?php else:?>
                             <?=Html::Button('<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>',['class'=> 'btn disabled'])?>
                         <?php endif;?>
-                        <?php if($l->uid==yii::$app->user->id):?>
+                        <?php if($l->user_id==yii::$app->user->id):?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'editBtn btn','data-filename'=>$l->filename,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>
@@ -48,7 +48,7 @@ use yun\components\CommonFunc;
                         <?php endif;?>
 
                     <?php else:?>
-                        <?php if($l->uid==yii::$app->user->id):?>
+                        <?php if($l->user_id==yii::$app->user->id):?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-filename'=>$l->filename,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>

@@ -53,12 +53,12 @@ class m161222_142522_yun_init extends Migration
 
         $this->createTable('file',[
             'id' => $this->primaryKey(11),
-            'filename'=> $this->string(200),
+            'filename'=> $this->string(1000),
             'filesize'=> $this->integer(11),
             'filetype'=> $this->smallInteger(4),
             'dir_id'=>$this->integer(11),
             'p_id'=> $this->integer(11),
-            'filename_real'=>$this->string(50),
+            'filename_real'=>$this->string(200),
             'user_id'=> $this->integer(11),
             'clicks'=> $this->integer(11),
             'add_time'=>$this->dateTime(),

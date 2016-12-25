@@ -1,10 +1,13 @@
 <?php
 namespace yun\controllers;
 
+use yii\data\Pagination;
 use yun\components\DirFunc;
 use yun\components\FileFrontFunc;
+use yun\components\FileFunc;
 use yun\components\PermissionFunc;
 use yun\components\QiniuUpload;
+use yun\models\File;
 use yun\models\News;
 use yun\models\Dir;
 use yun\models\Recruitment;
@@ -316,6 +319,363 @@ class DirController extends BaseController
             yii::$app->response->statusCode = 404;
             return $this->render('error');
         }
+    }
+
+
+    public function actionGetFiles(){
+        $dir_id = yii::$app->request->get('dir_id',false);
+        $p_id = yii::$app->request->get('p_id',false);
+        //$page = yii::$app->request->get('page',1);
+        $search = yii::$app->request->get('search',false);
+        $order = yii::$app->request->get('order',false);
+
+        $orderTrue = str_replace('.',' ',$order);
+        $listType = yii::$app->request->get('list_type',false);
+
+
+
+        $pageSize = $this->listStylePageSize;
+        if($listType=='grid')
+            $pageSize = $this->gridStylePageSize;
+        $count = FileFrontFunc::getFilesNum($dir_id,$p_id,$search);
+
+        $pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
+
+        $list = FileFrontFunc::getFiles($dir_id,$p_id,$pages,$orderTrue,$search);
+
+        $params['list'] = $list;
+        $params['listType'] = $listType;
+        $params['dir_id'] = $dir_id;
+        $params['p_id'] = $p_id;
+
+        //$params['start'] = intval($pageSize*($pages->page))+1;
+        $this->layout = false;
+        if($listType=='grid'){
+            $viewName = '_grid_data';
+        }else{
+            $viewName = '_list_data';
+        }
+        return $this->render($viewName,$params);
+    }
+
+    public function actionSave(){
+        $post = yii::$app->request->post();
+
+        $dir_id = isset($post['dir_id'])?$post['dir_id']:'';
+        $p_id = isset($post['p_id'])?$post['p_id']:'';
+        $uid = Yii::$app->user->id;
+        $flag = isset($post['flag'])?$post['flag']:'';
+        $filename = isset($post['filename'])?$post['filename']:'';
+        if($dir_id>0 && $filename!='' && PermissionFunc::checkFileUploadPermission(111,$dir_id,$flag)){
+
+            $fileexist = File::find()->where(['dir_id'=>$dir_id,'p_id'=>$p_id,'filename'=>$filename])->andWhere('status < 2')->one();
+            if($fileexist==false){
+                $file = new File();
+                $insert['filename'] = $filename;
+                $insert['filesize'] = isset($post['filesize'])?$post['filesize']:'';
+                $insert['filetype'] = isset($post['filetype'])?$post['filetype']:FileFrontFunc::getFileType($insert['filename']);
+                $insert['dir_id'] = $dir_id;
+                $insert['p_id'] = $p_id;
+                $insert['filename_real'] = isset($post['filename_real'])?$post['filename_real']:'';
+                $insert['user_id'] = $uid;
+                $insert['clicks'] = 0;
+                $insert['ord'] = 1;
+                $insert['status'] = 1;
+                $insert['flag'] = $flag;  //flag ：1 公共  flag :2 个人\私人
+
+
+
+                //$file->insert(true,$insert);
+                $file->setAttributes($insert);
+
+                /*$file->filename = $post['filename'];
+                $file->filesize = $post['filesize'];
+                $file->filetype = FileFrontFunc::getFileType($post['filename']);
+                $file->dir_id = $post['dir_id'];
+                $file->p_id = $post['p_id'];
+                $file->filename_real = $post['filename_real'];
+                $file->uid = yii::$app->user->id;
+                $file->clicks = 0;
+                $file->ord = 1;
+                $file->status = 1;
+                $file->flag = 1;*/
+
+                $file->save();
+                echo json_encode(['result'=>true]);
+            }else{
+                echo json_encode(['result'=>false,'msg'=>'同名文件已存在']);
+            }
+            //yii::$app->response->redirect(['/dir','dir_id'=>$post['dir_id']])->send();
+        }else{
+            echo json_encode(['result'=>false,'msg'=>'没有上传权限']);
+        }
+
+        yii::$app->end();
+
+    }
+
+    public function actionDownload(){
+        $id = yii::$app->request->get('id',0);
+        $preview = yii::$app->request->get('preview',false);
+        $imgUrl = yii::$app->request->get('imgUrl',false);
+        $file = File::find()->where(['id'=>$id,'status'=>1,'parent_status'=>1])->one();
+
+        if($file){
+            if(PermissionFunc::checkFileDownloadPermission($this->user->position_id,$file)){
+
+                $file_path = FileFrontFunc::getFilePath($file->filename_real,true);
+
+                if($preview!=false){
+                    if(in_array($file->filetype,$this->previewTypeArr)){
+                        if(in_array($file->filetype,[2,3,4,5,6])){
+                            if($imgUrl!=false){
+                                echo $file_path;
+                            }else{
+                                echo '<img width=100% src="'.$file_path.'" />';
+                            }
+                        }
+
+                    }else{
+                        echo '该文件类型暂时不支持预览<br/>'.$file_path;
+                    }
+                }else{
+
+                    FileFrontFunc::insertDownloadRecord($file,yii::$app->user->id);
+
+                    //Header("HTTP/1.1 303 See Other");
+                    /*Header("Location: $file_path");
+        var_dump($file_path);exit;
+                    Yii::$app->end();*/
+
+                    Header("Content-type: application/octet-stream;");
+                    Header("Accept-Ranges: bytes");
+                    //Header("Accept-Length: ".filesize($file_path));
+                    $filename = $file->filename;
+                    $ua = $_SERVER["HTTP_USER_AGENT"];
+                    $encoded_filename = urlencode($filename);
+                    $encoded_filename = str_replace("+", "%20", $encoded_filename);
+                    header('Content-Type: application/octet-stream');
+                    if(preg_match("/MSIE/", $ua)){
+                        header('Content-Disposition: attachment; filename="' . $encoded_filename . '"');
+                    }/*elseif(preg_match("/Firefox/", $ua)){
+                    header('Content-Disposition: attachment; filename*="utf8"' . $filename . '"');
+                }*/else{
+                        header('Content-Disposition: attachment; filename="' . $filename . '"');
+                    }
+                    header("X-Accel-Redirect: $file_path");
+                    //Header("Content-Disposition: attachment; filename=" . $file->filename);
+                    //echo $result;
+                    //echo file_get_contents($file_path);
+                    @readfile($file_path);
+
+                }
+            }else{
+                echo 'no permission';
+            }
+
+        }else{
+            echo 'no file';
+        }
+        Yii::$app->end();
+    }
+
+    public function actionDelete(){
+        $id = yii::$app->request->get('id');
+        $file = File::find()->where(['id'=>$id,'status'=>1,'user_id'=>Yii::$app->user->id])->one();
+        if($file){
+            $file->status = 0;
+            if($file->save()){
+                FileFrontFunc::updateParentStatus2($file->id);
+                Yii::$app->response->redirect(Yii::$app->request->referrer)->send();
+            }
+        }else{
+            echo '文件不存在';
+        }
+    }
+
+    public function actionMoveFile(){
+        $result = false;
+        $error_message='';
+        $new_dir_id = Yii::$app->request->post('new_dir_id');
+        $new_p_id = Yii::$app->request->post('new_p_id');
+        $file_ids = Yii::$app->request->post('file_ids');
+        $permission = false;
+        if($new_p_id>0){
+            $parent_dir = File::find()->where(['id'=>$new_p_id,'filetype'=>0])->one();
+            if($parent_dir){
+                $permission = PermissionFunc::checkFileUploadPermission($this->user->position_id,$parent_dir->dir_id,1);
+            }
+        }else{
+            $parent_dir = Dir::find()->where(['id'=>$new_dir_id,'is_leaf'=>1])->one();
+            if($parent_dir) {
+                $permission = PermissionFunc::checkFileUploadPermission($this->user->position_id, $parent_dir->id, 1);
+            }
+        }
+        //检查目录是否存在 目录dir 是否有上传权限
+        if($parent_dir){
+            if($permission){
+                if(is_array($file_ids)){
+                    //检查文件名是否重复
+                    $filenameExist = false;
+                    $files = File::find()->where(['in','id',$file_ids])->all();
+                    //files2 代表目标路径下的文件
+                    if($new_p_id>0){
+                        $files2 = File::find()->where(['p_id'=>$new_p_id])->andWhere('status < 2')->all();
+                    }else{
+                        $files2 = File::find()->where(['dir_id'=>$new_dir_id])->andWhere('status < 2')->all();
+                    }
+                    $files2Name = []; //取出所有文件名
+                    foreach($files2 as $f2){
+                        $files2Name[] = $f2->filename;
+                    }
+                    //逐一比对是否存在
+                    $filenameRepeat = [];
+                    foreach($files as $f){
+                        if(in_array($f->filename,$files2Name)){
+                            $filenameExist = true;
+                            $filenameRepeat[] = $f->filename;
+                        }
+                    }
+                    if($filenameExist){
+                        $error_message = '有文件重名 ('.implode($filenameRepeat,'|').')';
+                    }else{
+                        if($new_p_id>0) {
+                            foreach ($files as $f) {
+                                $f->dir_id = $parent_dir->dir_id;
+                                $f->p_id = $parent_dir->id;
+                                $f->save();
+                            }
+                        }else{
+                            foreach ($files as $f) {
+                                $f->dir_id = $parent_dir->id;
+                                $f->p_id = 0;
+                                $f->save();
+                            }
+                        }
+                        $result = true;
+                    }
+                }else{
+                    $error_message = '请选择要移动的文件！';
+                }
+            }else{
+                $error_message = '目录没有正确的上传权限';
+            }
+        }else{
+            $error_message = '不是底层目录或目标目录不存在';
+        }
+        $arr = [];
+        $arr['error'] = $error_message;
+        $arr['result'] = $result;
+        echo json_encode($arr);
+        Yii::$app->end();
+    }
+
+    public function actionAjaxMoveSelectDir(){
+        $p_id = Yii::$app->request->get('p_id',0);
+        $p_id3 = Yii::$app->request->get('p_id3',0);
+
+        $this->layout = false;
+
+        $parents = DirFunc::getParents($p_id);
+
+
+        $dirList = [];
+        $selected = [];
+        if(!empty($parents)){
+            $p_id2 = 0;
+            foreach($parents as $p){
+                $dirList[] =DirFunc::getDropDownList($p_id2,true,false,1);
+                $selected[] = $p->id;
+                $p_id2 = $p->id;
+            }
+            $dirList[] = DirFunc::getDropDownList($p_id2,true,false,1);
+        }else{
+            $dirList[] = DirFunc::getDropDownList($p_id,true,false,1);
+        }
+
+
+        $dir2List = [];
+        $selected2 = [];
+        $dir = Dir::find()->where(['id'=>$p_id])->one();
+        if($dir && $dir->is_leaf==1){
+            $parents2 = FileFunc::getParents($dir->id,$p_id3);
+            if(!empty($parents2)){
+                $p_id3_2 = 0;
+                foreach($parents2 as $p){
+                    $dir2List[] =FileFunc::getDropDownList($dir->id,$p_id3_2,false,1);
+                    $selected2[] = $p->id;
+                    $p_id3_2 = $p->id;
+                }
+                $dir2List[] = FileFunc::getDropDownList($dir->id,$p_id3,false,1);
+            }else{
+                $dir2List[] = FileFunc::getDropDownList($dir->id,$p_id3,false,1);
+
+            }
+        }
+
+        $params['dirList'] = $dirList;
+        $params['selected'] = $selected;
+        $params['dir2List'] = $dir2List;
+        $params['selected2'] = $selected2;
+
+        return $this->render('modal/move_dir',$params);
+    }
+
+    public function actionEditFilename(){
+        $result = false;
+        $error_message='';
+        $file_id = yii::$app->request->post('file_id');
+        $filename_new = yii::$app->request->post('filename_new');
+        $filename_new = trim($filename_new);
+        $file = File::find()->where(['id'=>$file_id,'status'=>1,'uid'=>yii::$app->user->id])->one();
+        if($file && $filename_new!=''){
+            if($file->p_id>0){
+                $exist = File::find()->where(['filename'=>$filename_new,'p_id'=>$file->p_id])->all();
+            }else{
+                $exist = File::find()->where(['filename'=>$filename_new,'dir_id'=>$file->dir_id])->all();
+            }
+            if(!empty($exist)){
+                $error_message = '文件名重名';
+            }else{
+                $file->filename = $filename_new;
+                if($file->save()){
+                    $result = true;
+                }
+            }
+
+
+        }else{
+            $error_message = '文件不存在/没有操作权限';
+        }
+        $arr = [];
+        $arr['error'] = $error_message;
+        $arr['result'] = $result;
+        echo json_encode($arr);
+        Yii::$app->end();
+    }
+
+   /* public function actionGetUptoken(){
+        $up=new QiniuUpload(yii::$app->params['qiniu-bucket']);
+        $saveKey = yii::$app->request->get('saveKey','');
+        $upToken=$up->createtoken($saveKey);
+        echo json_encode(['uptoken'=>$upToken]);exit;
+    }*/
+
+    public function actionGetFilenameList(){
+        $post = yii::$app->request->post();
+
+        $dir_id = isset($post['dir_id'])?$post['dir_id']:0;
+        $p_id = isset($post['p_id'])?$post['p_id']:0;
+
+        /*$dir_id = 7;
+        $p_id = 131;*/
+        $files = File::find()->select('filename')->where(['dir_id'=>$dir_id,'p_id'=>$p_id])->andWhere('status < 2 ')->all();
+        $arr = [];
+        foreach($files as $f){
+            $arr[] = $f->filename;
+        }
+        echo json_encode($arr);
+
     }
 
 }
