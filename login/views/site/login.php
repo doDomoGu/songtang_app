@@ -12,7 +12,7 @@
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?=Yii::$app->id. ($this->title?'_'.Html::encode($this->title):'') ?></title>
+    <title><?=Yii::$app->name. ($this->title?'_'.Html::encode($this->title):'') ?></title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -22,10 +22,13 @@
     <div class="container">
         <div class="site-login">
             <h1><?= Html::encode($this->title) ?></h1>
-
+            <div class="text-center">
+                <img src="/images/logo.png" />
+                <!--<img src="/images/songtang-united-logo.jpg" />-->
+            </div>
 
             <div class="row">
-                <div class="col-lg-5">
+                <div class="col-lg-offset-3 col-lg-5">
                     <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
                     <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
@@ -35,7 +38,7 @@
                     <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
                     <div class="form-group">
-                        <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                        <?= Html::submitButton('登录', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                     </div>
 
                     <?php ActiveForm::end(); ?>

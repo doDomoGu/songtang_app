@@ -48,7 +48,7 @@ use yii\helpers\ArrayHelper;
 
         $navbarItems = [[
             'label'=>'<span style="border:1px solid #ccc;padding:4px 10px;">登录</span><span class="active-red"></span>',
-            'url'=>['/site/login'],
+            'url'=>Yii::$app->params['loginUrl'],
             'encode'=>false
         ]];
 

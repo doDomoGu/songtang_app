@@ -7,7 +7,8 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'Login',
+    'id' => 'songtang_login',
+    'name' => '颂唐机构_登录界面',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'login\controllers',
