@@ -61,7 +61,7 @@ class FileFrontFunc extends Component {
         $files = $files->andWhere(['p_id'=>$p_id,'status'=>1]);*/
         if($search!==false)
             $files = $files->andWhere(['like','file.filename',$search]);
-        $files = $files->innerJoinWith('user')
+        $files = $files/*->innerJoinWith('user')*/
             ->orderBy($order)
             ->offset($pages->offset)
             ->limit($pages->limit)
@@ -80,7 +80,7 @@ class FileFrontFunc extends Component {
             $count = $count->where(['file.dir_id'=>$dir_id,'file.p_id'=>0,'file.status'=>1]);
         if($search!==false)
             $count = $count->andWhere(['like','file.filename',$search]);
-        return $count->innerJoinWith('user')->count();
+        return $count->/*innerJoinWith('user')->*/count();
     }
 
 

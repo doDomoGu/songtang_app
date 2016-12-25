@@ -2,9 +2,9 @@
     use yii\bootstrap\Modal;
     use yii\bootstrap\Progress;
 
-app\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
-app\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
-app\assets\AppAsset::addJsFile($this,'js/main/dir/modal/upload_common.js');
+yun\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
+yun\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
+yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/upload_common.js');
 ?>
 <?php
 Modal::begin([

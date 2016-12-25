@@ -1,8 +1,8 @@
 <?php
     use yii\bootstrap\Html;
-    use app\components\FileFrontFunc;
-    use app\components\PermissionFunc;
-    use app\components\CommonFunc;
+    use yun\components\FileFrontFunc;
+    use yun\components\PermissionFunc;
+    use yun\components\CommonFunc;
 ?>
 <?php foreach($list as $l):?>
     <?php

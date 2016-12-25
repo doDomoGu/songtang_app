@@ -1,7 +1,7 @@
 <?php
     use app\components\FileFrontFunc;
     use app\components\DirFunc;
-    app\assets\AppAsset::addCssFile($this,'css/main/dir/_rank_download.css');
+    yun\assets\AppAsset::addCssFile($this,'css/main/dir/_rank_download.css');
 
     $id = 5;
 

@@ -44,7 +44,7 @@ class User extends \yii\db\ActiveRecord
             ['username','unique'],
             [['id', 'ord', 'status', 'position_id', 'gender'], 'integer'],
             //['username','email'],
-            ['username','unique','on'=>'create', 'targetClass' => 'app\models\User', 'message' => '此用户名已经被使用。'],
+            ['username','unique','on'=>'create', 'targetClass' => self::className(), 'message' => '此用户名已经被使用。'],
             [[ 'birthday', 'join_date', 'contract_date', 'mobile', 'phone', 'describe','password_true'], 'safe']
 
         ];

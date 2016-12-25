@@ -4,7 +4,7 @@ use yii\bootstrap\NavBar;
 use yii\bootstrap\BaseHtml;
 use yii\helpers\ArrayHelper;
 
-/*app\assets\AppAsset::addCssFile($this,'css/layouts/navbar2.css');*/
+/*yun\assets\AppAsset::addCssFile($this,'css/layouts/navbar2.css');*/
 ?>
 <div class="navbar-background">
 <?php

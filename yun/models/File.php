@@ -2,6 +2,7 @@
 
 namespace yun\models;
 
+use ucenter\models\User;
 use yun\components\FileFrontFunc;
 use Yii;
 
@@ -25,7 +26,7 @@ class File extends \yii\db\ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne('app\models\User', array('id' => 'uid'));
+        return $this->hasOne(User::className(), array('id' => 'uid'));
     }
 
 

@@ -1,6 +1,6 @@
 <?php
     use yii\bootstrap\Modal;
-    app\assets\AppAsset::addJsFile($this,'js/main/dir/modal/create_dir_common.js');
+    yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/create_dir_common.js');
 ?>
 <?php
 Modal::begin([

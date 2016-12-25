@@ -1,19 +1,19 @@
 <?php
     use yii\bootstrap\Html;
-    use app\components\FileFrontFunc;
-    use app\components\PermissionFunc;
+    use yun\components\FileFrontFunc;
+    use yun\components\PermissionFunc;
     use yii\widgets\Breadcrumbs;
-
-//    app\assets\AppAsset::addCssFile($this,'css/main/dir/index.css');
-    app\assets\AppAsset::addCssFile($this,'css/main/dir/list.css');
-    app\assets\AppAsset::addJsFile($this,'js/main/dir/list.js');
+    use yun\assets\AppAsset;
+//    yun\assets\AppAsset::addCssFile($this,'css/main/dir/index.css');
+    AppAsset::addCssFile($this,'css/main/dir/list.css');
+    AppAsset::addJsFile($this,'js/main/dir/list.js');
 
     if($listType=='list'){
-        app\assets\AppAsset::addCssFile($this,'css/main/dir/list/_list_data.css');
-        app\assets\AppAsset::addJsFile($this,'js/main/dir/list/_list_data.js');
+        AppAsset::addCssFile($this,'css/main/dir/list/_list_data.css');
+        AppAsset::addJsFile($this,'js/main/dir/list/_list_data.js');
     }elseif($listType=='grid'){
-        app\assets\AppAsset::addCssFile($this,'css/main/dir/list/_grid_data.css');
-        app\assets\AppAsset::addJsFile($this,'js/main/dir/list/_grid_data.js');
+        AppAsset::addCssFile($this,'css/main/dir/list/_grid_data.css');
+        AppAsset::addJsFile($this,'js/main/dir/list/_grid_data.js');
     }
 
 

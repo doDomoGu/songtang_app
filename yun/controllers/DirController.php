@@ -151,19 +151,19 @@ class DirController extends BaseController
                 if(!in_array($order,$this->orderArr)){
                     $cache = Yii::$app->cache;
                     $cacheExist = false;
-                    if(isset($cache['dirOrder_'.$this->user->id])){
-                        if(in_array($cache['dirOrder_'.$this->user->id],$this->orderArr)){
+                    if(isset($cache['dirOrder_'.Yii::$app->user->id])){
+                        if(in_array($cache['dirOrder_'.Yii::$app->user->id],$this->orderArr)){
                             $cacheExist = true;
                         }
                     }
                     if($cacheExist){
-                        $order = $cache['dirOrder_'.$this->user->id];
+                        $order = $cache['dirOrder_'.Yii::$app->user->id];
                     }else{
                         $order = $this->orderArr[0];;
                     }
                 }else{
                     $cache = Yii::$app->cache;
-                    $cache['dirOrder_'.$this->user->id] = $order;
+                    $cache['dirOrder_'.Yii::$app->user->id] = $order;
                 }
 
 
@@ -185,19 +185,19 @@ class DirController extends BaseController
                     $cache = Yii::$app->cache;
                     $cacheExist = false;
 
-                    if(isset($cache['dirListType_'.$this->user->id])){
-                        if(in_array($cache['dirListType_'.$this->user->id],$this->listTypeArr)){
+                    if(isset($cache['dirListType_'. Yii::$app->user->id])){
+                        if(in_array($cache['dirListType_'. Yii::$app->user->id],$this->listTypeArr)){
                             $cacheExist = true;
                         }
                     }
                     if($cacheExist){
-                        $listType = $cache['dirListType_'.$this->user->id];
+                        $listType = $cache['dirListType_'. Yii::$app->user->id];
                     }else{
                         $listType = $this->listTypeArr[0];
                     }
                 }else{
                     $cache = Yii::$app->cache;
-                    $cache['dirListType_'.$this->user->id] = $listType;
+                    $cache['dirListType_'. Yii::$app->user->id] = $listType;
                 }
 
 

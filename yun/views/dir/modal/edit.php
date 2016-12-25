@@ -1,6 +1,6 @@
 <?php
     use yii\bootstrap\Modal;
-    app\assets\AppAsset::addJsFile($this,'js/main/dir/modal/edit.js');
+    yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/edit.js');
 ?>
 <?php
 Modal::begin([
