@@ -4,6 +4,13 @@
     use yun\components\PermissionFunc;
     use yii\widgets\Breadcrumbs;
     use yun\assets\AppAsset;
+    use yii\bootstrap\BaseHtml;
+    use ucenter\models\Area;
+    use ucenter\models\Business;
+
+    $areaItems = Area::getItems();
+    $businessItems = Business::getItems();
+
 //    yun\assets\AppAsset::addCssFile($this,'css/main/dir/index.css');
     AppAsset::addCssFile($this,'css/main/dir/list.css');
     AppAsset::addJsFile($this,'js/main/dir/list.js');
@@ -65,6 +72,14 @@
             <span class="loading_num"></span>
             共<?=$count?>个
         </span>
+    </div>
+    <div id="attr-check">
+        <div class="attr-one">
+            地区：<?=BaseHtml::checkboxList('area-check','',$areaItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check area-check']])?>
+        </div>
+        <div class="attr-one">
+            业态：<?=BaseHtml::checkboxList('business-check','',$businessItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check business-check']])?>
+        </div>
     </div>
     <div id="file_head" class="clearfix">
         <ul class="head_cols">

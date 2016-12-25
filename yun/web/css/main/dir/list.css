@@ -154,6 +154,26 @@
     background-position: 0 -70px;
 }
 
+
+#attr-check {
+    padding-left:15px;
+
+
+}
+
+#attr-check .attr-one{
+    background: #f7f7f7 none repeat scroll 0 0;
+    border: 1px solid #d2d2d2;
+    border-right: none;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 24px;
+    overflow: hidden;
+    list-style: none;
+    padding-left: 10px;
+    margin-bottom:4px;
+}
+
 #file_head {
     padding-left:15px;
 }
@@ -236,7 +256,7 @@
 }*/
 
 #list-main {
-    margin-top:128px;
+    margin-top:188px;
     padding-left: 15px;
 
 }
