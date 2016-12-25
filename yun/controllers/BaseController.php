@@ -31,7 +31,8 @@ class BaseController extends Controller
         $this->except = [
             'site/index',
             'site/error',
-            'site/get-qiniu-uptoken'
+            'site/get-qiniu-uptoken',
+            'version/index'
         ];
         if(!$this->checkLogin()){
             return false;
