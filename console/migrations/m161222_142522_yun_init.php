@@ -86,10 +86,19 @@ class m161222_142522_yun_init extends Migration
             'attr_id'=>$this->smallInteger(2)
         ]);
         $this->addPrimaryKey('pk','file_attribute',['file_id','attr_type','attr_id']);
+
+        $this->createTable('download_record',[
+            'id'=>$this->primaryKey(11),
+            'file_id'=>$this->integer(11),
+            'user_id'=>$this->integer(11),
+            'download_time' => $this->dateTime()
+        ]);
+
     }
 
     public function down()
     {
+        $this->dropTable('download_record');
         $this->dropTable('file_attribute');
         $this->dropTable('system_log');
         $this->dropTable('file');

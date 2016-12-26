@@ -471,7 +471,7 @@ class DirController extends BaseController
                     }
                 }else{
 
-                    FileFrontFunc::insertDownloadRecord($file,yii::$app->user->id);
+                    FileFrontFunc::insertDownloadRecord($file,Yii::$app->user->id);
 
                     //Header("HTTP/1.1 303 See Other");
                     /*Header("Location: $file_path");

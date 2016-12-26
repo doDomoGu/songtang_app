@@ -84,10 +84,10 @@ class FileFrontFunc extends Component {
     }
 
 
-    public static function insertDownloadRecord($file,$uid){
+    public static function insertDownloadRecord($file,$user_id){
         $downloadRecord = new DownloadRecord();
         $downloadRecord->file_id = $file->id;
-        $downloadRecord->uid = $uid;
+        $downloadRecord->user_id = $user_id;
         $downloadRecord->save();
 
         $file->clicks+=1;
