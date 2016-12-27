@@ -145,6 +145,10 @@ class DirController extends BaseController
 
                 $order = yii::$app->request->get('order',false);
 
+                $areaCheck = yii::$app->request->get('area_check',false);
+
+                $businessCheck = yii::$app->request->get('business_check',false);
+
                 $orderNum = 0;
 
                 if(!in_array($order,$this->orderArr)){
@@ -174,7 +178,9 @@ class DirController extends BaseController
                     $orderSelect[$n] = $this->orderNameArr[$n];
                 }
 
-
+                $areaCheck = $areaCheck!=false?Area::getCheckIdsTrue(explode(',',$areaCheck)):[];
+                $businessCheck = $businessCheck!=false?Business::getCheckIdsTrue(explode(',',$businessCheck)):[];
+                $attrSearch = ['area'=>$areaCheck,'business'=>$businessCheck];
 
                 $listType = yii::$app->request->get('list_type',false);
 
@@ -220,7 +226,7 @@ class DirController extends BaseController
                     }
                 }
                 $list = [];
-                $count = FileFrontFunc::getFilesNum($dir_id,$p_id,$search);
+                $count = FileFrontFunc::getFilesNum($dir_id,$p_id,$search,$attrSearch);
 
                 /*$pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
 
@@ -285,6 +291,7 @@ class DirController extends BaseController
                 $params['links2'] = $links2;
                 $params['orderLink'] = $orderLink;
                 $params['orderClass'] = $orderClass;
+                $params['attrSearch'] = $attrSearch;
                 $params['listType'] = $listType;
                 $params['listTypeNum'] = $listTypeNum;
                 $params['listTypeSelect'] = $listTypeSelect;
@@ -325,8 +332,8 @@ class DirController extends BaseController
 
 
         $orderTrue = str_replace('.',' ',$order);  //排序字符串 变换
-        $areaCheck = $areaCheck!=false?Area::getCheckIdsTrue(implode(',',$areaCheck)):[];
-        $businessCheck = $businessCheck!=false?Business::getCheckIdsTrue(implode(',',$businessCheck)):[];
+        $areaCheck = $areaCheck!=false?Area::getCheckIdsTrue(explode(',',$areaCheck)):[];
+        $businessCheck = $businessCheck!=false?Business::getCheckIdsTrue(explode(',',$businessCheck)):[];
         $attrSearch = ['area'=>$areaCheck,'business'=>$businessCheck];
 
         $pageSize = $this->listStylePageSize;

@@ -44,6 +44,16 @@ var grid_file_thumb = function(){
 var loading_files_flag = true;
 var list_type = $('#var_list_type').val();
 var loading_files = function(){
+    var area_check_tmp = new Array();
+    $('.area-check:checked').each(function(){
+        area_check_tmp.push($(this).val());
+    });
+    area_check = area_check_tmp.join(',');
+    var business_check_tmp = new Array();
+    $('.area-check:checked').each(function(){
+        business_check_tmp.push($(this).val());
+    });
+    business_check = business_check_tmp.join(',');
     _page = $('#var_page').val();
     _page_size = $('#var_page_size').val();
     _count = $('#var_count').val();
@@ -56,6 +66,8 @@ var loading_files = function(){
             dir_id:$('#var_dir_id').val(),
             p_id:$('#var_p_id').val(),
             order:$('#var_order').val(),
+            area_check:area_check,
+            business_check:business_check,
             page:_page,
             page_size:_page_size,
             list_type:list_type
