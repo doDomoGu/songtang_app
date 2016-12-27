@@ -111,6 +111,15 @@ class Area extends \yii\db\ActiveRecord
         }
     }
 
+    public static function getCheckIdsTrue($checkArr){
+        $return = [];
+        $list = self::find()->where(['id'=>$checkArr,'status'=>1])->all();
+        foreach($list as $l){
+            $return[] = $l->id;
+        }
+        return $return;
+    }
+
     public static function ordUp($id){
         $result = false;
         $cur = self::find()->where(['id'=>$id])->one();

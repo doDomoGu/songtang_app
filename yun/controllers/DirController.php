@@ -1,6 +1,8 @@
 <?php
 namespace yun\controllers;
 
+use ucenter\models\Area;
+use ucenter\models\Business;
 use yii\data\Pagination;
 use yun\components\DirFunc;
 use yun\components\FileFrontFunc;
@@ -66,11 +68,7 @@ class DirController extends BaseController
         if($p_id!=false && $p_id != (string)intval($p_id)){
             //验证dir_id的值是不是为纯数字  当有错误时报错
             ## 日志记录 ##
-            SystemLog::user_log(
-                SystemLog::LEVEL_WARN,
-                'dir',
-                '打开目录参数错误: p_id => '.$p_id
-            );
+            SystemLog::dirError('打开目录参数错误: p_id => '.$p_id);
             return yii::$app->runAction('/site/error');
         }else{
             if($p_id==false){
@@ -88,11 +86,7 @@ class DirController extends BaseController
             if($dir_id!=false && $dir_id != (string)intval($dir_id)){
                 //验证dir_id的值是不是为纯数字  当有错误时报错
                 ## 日志记录 ##
-                SystemLog::user_log(
-                    SystemLog::LEVEL_WARN,
-                    'dir',
-                    '打开目录参数错误: dir_id => '.$dir_id
-                );
+                SystemLog::dirError('打开目录参数错误: dir_id => '.$dir_id);
                 return yii::$app->runAction('/site/error');
             }
             $p_id = 0;
@@ -221,11 +215,7 @@ class DirController extends BaseController
                 if($parDir){
                     if(!PermissionFunc::checkFileDownloadPermission($this->user->position_id,$parDir)){
                         ## 日志记录 ##
-                        SystemLog::user_log(
-                            SystemLog::LEVEL_WARN,
-                            'dir',
-                            '没有权限打开目录('.$parDir->id.':'.DirFunc::getFileFullRoute($parDir->id).')'
-                        );
+                        SystemLog::dirError('没有权限打开目录('.$parDir->id.':'.DirFunc::getFileFullRoute($parDir->id).')');
                         yii::$app->response->redirect('/')->send();
                     }
                 }
@@ -325,25 +315,28 @@ class DirController extends BaseController
 
 
     public function actionGetFiles(){
-        $dir_id = yii::$app->request->get('dir_id',false);
-        $p_id = yii::$app->request->get('p_id',false);
-        //$page = yii::$app->request->get('page',1);
-        $search = yii::$app->request->get('search',false);
-        $order = yii::$app->request->get('order',false);
+        $dir_id = Yii::$app->request->get('dir_id',false);
+        $p_id = Yii::$app->request->get('p_id',false);
+        $search = Yii::$app->request->get('search',false);
+        $order = Yii::$app->request->get('order',false);
+        $listType = Yii::$app->request->get('list_type',false);
+        $areaCheck = Yii::$app->request->get('area_check',false);
+        $businessCheck = Yii::$app->request->get('business_check',false);
 
-        $orderTrue = str_replace('.',' ',$order);
-        $listType = yii::$app->request->get('list_type',false);
 
-
+        $orderTrue = str_replace('.',' ',$order);  //排序字符串 变换
+        $areaCheck = $areaCheck!=false?Area::getCheckIdsTrue(implode(',',$areaCheck)):[];
+        $businessCheck = $businessCheck!=false?Business::getCheckIdsTrue(implode(',',$businessCheck)):[];
+        $attrSearch = ['area'=>$areaCheck,'business'=>$businessCheck];
 
         $pageSize = $this->listStylePageSize;
         if($listType=='grid')
             $pageSize = $this->gridStylePageSize;
-        $count = FileFrontFunc::getFilesNum($dir_id,$p_id,$search);
+        $count = FileFrontFunc::getFilesNum($dir_id,$p_id,$search,$attrSearch);
 
         $pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
 
-        $list = FileFrontFunc::getFiles($dir_id,$p_id,$pages,$orderTrue,$search);
+        $list = FileFrontFunc::getFiles($dir_id,$p_id,$pages,$orderTrue,$search,$attrSearch);
 
         $params['list'] = $list;
         $params['listType'] = $listType;
@@ -361,7 +354,7 @@ class DirController extends BaseController
     }
 
     public function actionSave(){
-        $post = yii::$app->request->post();
+        $post = Yii::$app->request->post();
 
         $dir_id = isset($post['dir_id'])?$post['dir_id']:'';
         $p_id = isset($post['p_id'])?$post['p_id']:'';
@@ -399,7 +392,7 @@ class DirController extends BaseController
                 $file->dir_id = $post['dir_id'];
                 $file->p_id = $post['p_id'];
                 $file->filename_real = $post['filename_real'];
-                $file->uid = yii::$app->user->id;
+                $file->uid = Yii::$app->user->id;
                 $file->clicks = 0;
                 $file->ord = 1;
                 $file->status = 1;
@@ -436,19 +429,19 @@ class DirController extends BaseController
             }else{
                 echo json_encode(['result'=>false,'msg'=>'同名文件已存在']);
             }
-            //yii::$app->response->redirect(['/dir','dir_id'=>$post['dir_id']])->send();
+            //Yii::$app->response->redirect(['/dir','dir_id'=>$post['dir_id']])->send();
         }else{
             echo json_encode(['result'=>false,'msg'=>'没有上传权限']);
         }
 
-        yii::$app->end();
+        Yii::$app->end();
 
     }
 
     public function actionDownload(){
-        $id = yii::$app->request->get('id',0);
-        $preview = yii::$app->request->get('preview',false);
-        $imgUrl = yii::$app->request->get('imgUrl',false);
+        $id = Yii::$app->request->get('id',0);
+        $preview = Yii::$app->request->get('preview',false);
+        $imgUrl = Yii::$app->request->get('imgUrl',false);
         $file = File::find()->where(['id'=>$id,'status'=>1,'parent_status'=>1])->one();
 
         if($file){
@@ -511,7 +504,7 @@ class DirController extends BaseController
     }
 
     public function actionDelete(){
-        $id = yii::$app->request->get('id');
+        $id = Yii::$app->request->get('id');
         $file = File::find()->where(['id'=>$id,'status'=>1,'user_id'=>Yii::$app->user->id])->one();
         if($file){
             $file->status = 0;
@@ -655,10 +648,10 @@ class DirController extends BaseController
     public function actionEditFilename(){
         $result = false;
         $error_message='';
-        $file_id = yii::$app->request->post('file_id');
-        $filename_new = yii::$app->request->post('filename_new');
+        $file_id = Yii::$app->request->post('file_id');
+        $filename_new = Yii::$app->request->post('filename_new');
         $filename_new = trim($filename_new);
-        $file = File::find()->where(['id'=>$file_id,'status'=>1,'uid'=>yii::$app->user->id])->one();
+        $file = File::find()->where(['id'=>$file_id,'status'=>1,'uid'=>Yii::$app->user->id])->one();
         if($file && $filename_new!=''){
             if($file->p_id>0){
                 $exist = File::find()->where(['filename'=>$filename_new,'p_id'=>$file->p_id])->all();
@@ -686,14 +679,14 @@ class DirController extends BaseController
     }
 
    /* public function actionGetUptoken(){
-        $up=new QiniuUpload(yii::$app->params['qiniu-bucket']);
-        $saveKey = yii::$app->request->get('saveKey','');
+        $up=new QiniuUpload(Yii::$app->params['qiniu-bucket']);
+        $saveKey = Yii::$app->request->get('saveKey','');
         $upToken=$up->createtoken($saveKey);
         echo json_encode(['uptoken'=>$upToken]);exit;
     }*/
 
     public function actionGetFilenameList(){
-        $post = yii::$app->request->post();
+        $post = Yii::$app->request->post();
 
         $dir_id = isset($post['dir_id'])?$post['dir_id']:0;
         $p_id = isset($post['p_id'])?$post['p_id']:0;

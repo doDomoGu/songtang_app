@@ -46,6 +46,11 @@ class SystemLog extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), array('id' => 'uid'))->where('name like "%'.$name.'%"');
     }
 
+
+    public static function dirError($message){
+        self::user_log(self::LEVEL_ERROR,'dir',$message);
+    }
+
     public static function user_log($level,$category,$message){
         $log = new SystemLog();
         $log->type = 2;

@@ -29,6 +29,15 @@ class Business extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getCheckIdsTrue($checkArr){
+        $return = [];
+        $list = self::find()->where(['id'=>$checkArr,'status'=>1])->all();
+        foreach($list as $l){
+            $return[] = $l->id;
+        }
+        return $return;
+    }
+
     public function getRelations(){
         $list = Structure::find()->where(['aid'=>0,'bid'=>$this->id,'status'=>1])->with('department')->all();
         return $list;

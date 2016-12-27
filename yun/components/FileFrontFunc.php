@@ -1,11 +1,13 @@
 <?php
 namespace yun\components;
 
+use yun\models\Attribute;
 use yun\models\DownloadRecord;
 use yun\models\File;
 use yii\base\Component;
 use yii\helpers\BaseArrayHelper;
 use Yii;
+use yun\models\FileAttribute;
 
 class FileFrontFunc extends Component {
 
@@ -48,20 +50,9 @@ class FileFrontFunc extends Component {
             return yii::$app->params['qiniu-domain'].$path;
     }
 
-    public static function getFiles($dir_id,$p_id,$pages,$order='add_time desc',$search=''){
-        $files = File::find();
-        $dir_id = intval($dir_id);
-        $p_id = intval($p_id);
-        if($p_id>0)
-            $files = $files->where(['file.p_id'=>$p_id,'file.status'=>1]);
-        else
-            $files = $files->where(['file.dir_id'=>$dir_id,'file.p_id'=>0,'file.status'=>1]);
-
-/*        $files = $files->where(['dir_id'=>$dir_id,'status'=>1]);
-        $files = $files->andWhere(['p_id'=>$p_id,'status'=>1]);*/
-        if($search!==false)
-            $files = $files->andWhere(['like','file.filename',$search]);
-        $files = $files/*->innerJoinWith('user')*/
+    public static function getFiles($dir_id,$p_id,$pages,$order='add_time desc',$search=false,$attrSearch=[]){
+        $query = self::createQuery($dir_id,$p_id,$search,$attrSearch);
+        $files = $query/*->innerJoinWith('user')*/
             ->orderBy($order)
             ->offset($pages->offset)
             ->limit($pages->limit)
@@ -70,18 +61,49 @@ class FileFrontFunc extends Component {
         return $files;
     }
 
-    public static function getFilesNum($dir_id,$p_id,$search=false){
-        $count = File::find();
+    public static function getFilesNum($dir_id,$p_id,$search=false,$attrSearch=[]){
+        $query = self::createQuery($dir_id,$p_id,$search,$attrSearch);
+        return $query->/*innerJoinWith('user')->*/count();
+    }
+
+    private static function createQuery($dir_id,$p_id,$search=false,$attrSearch=[]){
+        $query = File::find();
         $dir_id = intval($dir_id);
         $p_id = intval($p_id);
         if($p_id>0)
-            $count = $count->where(['file.p_id'=>$p_id,'file.status'=>1]);
+            $query = $query->where(['file.p_id'=>$p_id,'file.status'=>1]);
         else
-            $count = $count->where(['file.dir_id'=>$dir_id,'file.p_id'=>0,'file.status'=>1]);
+            $query = $query->where(['file.dir_id'=>$dir_id,'file.p_id'=>0,'file.status'=>1]);
+
+        /*        $files = $files->where(['dir_id'=>$dir_id,'status'=>1]);
+                $files = $files->andWhere(['p_id'=>$p_id,'status'=>1]);*/
+        if(!empty($attrSearch)){
+            if(isset($attrSearch['area']) && !empty($attrSearch['area'])){
+                $fidArr = [];
+                $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_AREA,'attr_id'=>$attrSearch['area']])->groupBy('file_id')->all();
+                foreach($faList as $l){
+                    $fidArr[] = $l->file_id;
+                }
+                $query->andWhere(['id'=>$fidArr]);
+            }
+
+            if(isset($attrSearch['business']) && !empty($attrSearch['business'])){
+                $fidArr = [];
+                $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_BUSINESS,'attr_id'=>$attrSearch['business']])->groupBy('file_id')->all();
+                foreach($faList as $l){
+                    $fidArr[] = $l->file_id;
+                }
+                $query->andWhere(['id'=>$fidArr]);
+            }
+        }
+
         if($search!==false)
-            $count = $count->andWhere(['like','file.filename',$search]);
-        return $count->/*innerJoinWith('user')->*/count();
+            $query = $query->andWhere(['like','file.filename',$search]);
+
+        return $query;
     }
+
+
 
 
     public static function insertDownloadRecord($file,$user_id){
