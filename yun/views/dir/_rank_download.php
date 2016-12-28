@@ -1,11 +1,12 @@
 <?php
     use app\components\FileFrontFunc;
     use app\components\DirFunc;
+    use yun\models\Dir;
     yun\assets\AppAsset::addCssFile($this,'css/main/dir/_rank_download.css');
 
     $id = 5;
 
-    $dirs = \app\models\Dir::find()->where(['p_id'=>$id])->all();
+    $dirs = Dir::find()->where(['p_id'=>$id])->all();
 
     $dir_ids = [];
 

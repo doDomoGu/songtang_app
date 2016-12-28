@@ -13,14 +13,14 @@
             <?=$this->render('/dir/_left',['dir_id'=>$this->params['dir_id']])?>
         </div>
 
-        <?php if($this->params['dir_id']==5):?>
+        <?php if(1!=1 && $this->params['dir_id']==5):?>
         <?=$this->render('/dir/_rank_download')?>
         <?php else:?>
         <div id="dir-sidebar-right">
         <?=$this->render('/dir/_sidebar_right')?>
         </div>
         <?php endif;?>
-        <div id="dir-main" class="<?=$this->params['dir_id']==5?'dir-study':''?>">
+        <div id="dir-main" class="<?=1!=1 && $this->params['dir_id']==5?'dir-study':''?>">
             <?= $content ?>
         </div>
     </div>

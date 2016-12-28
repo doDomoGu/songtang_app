@@ -128,4 +128,16 @@ class DirController extends BaseController
         return $this->render('add_and_edit',$params);
     }
 
+    public function actionPermission(){
+        $dir_id = Yii::$app->request->get('dir_id',false);
+        $dir = Dir::find()->where(['id'=>$dir_id])->one();
+        if($dir){
+            $params['dir'] = $dir;
+        }else{
+            return Yii::$app->response->redirect('dir');
+        }
+
+        return $this->render('permission',$params);
+    }
+
 }

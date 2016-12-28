@@ -29,7 +29,7 @@ use yun\components\DirFunc;
             <tr>
                 <th scope="row"><?=$l->id?></th>
                 <!--<td><?/*=$l->ord*/?></td>-->
-                <td><?=$l->name?> <span class="badge" title="<?=DirFunc::getFullRoute($l->id)?>">i</span></td>
+                <td><?=$l->name?> <span class="glyphicon glyphicon-info-sign" title="<?=DirFunc::getFullRoute($l->id)?>"></span></td>
                 <td>
                     <?php if($l->link!=''):?>
                         <span class="label label-warning">链接</span>
@@ -39,10 +39,12 @@ use yun\components\DirFunc;
                 <td>
                     <?=BaseHtml::a('编辑',['add-and-edit','id'=>$l->id],['class'=>'btn btn-primary btn-xs'])?>
                     <?php if($l->link==""):?>
+                        <?=BaseHtml::a('权限设置',['permission','dir_id'=>$l->id],['class'=>'btn btn-success btn-xs'])?>
+
                         <?php if($l->is_leaf==0):?>
-                            <?=BaseHtml::a('添加子目录',['dir-add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs'])?>
+                            <?=BaseHtml::a('添加子目录',['add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs disabled'])?>
                         <?php else:?>
-                            <?=BaseHtml::a('查看对应职位权限',['dir-position-permission','dir_id'=>$l->id],['class'=>'btn btn-success btn-xs'])?>
+
                         <?php endif;?>
                     <?php endif;?>
                 </td>

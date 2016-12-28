@@ -24,7 +24,6 @@
     }
 
 
-
 ?>
 <input type="hidden" id="qiniuDomain" value="<?=yii::$app->params['qiniu-domain']?>" />
 <input type="hidden" id="pickfileId" value="pickfile" />

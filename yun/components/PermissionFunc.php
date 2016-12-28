@@ -1,11 +1,11 @@
 <?php
 namespace yun\components;
 
-use app\models\Group;
-use app\models\User;
+//use app\models\Group;
+//use app\models\User;
 use common\models\UserAppAuth;
 use yii\base\Component;
-use app\models\PositionDirPermission;
+//use app\models\PositionDirPermission;
 use yii;
 
 class PermissionFunc extends Component {

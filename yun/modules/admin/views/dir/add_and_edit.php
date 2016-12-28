@@ -3,9 +3,6 @@
     use yii\bootstrap\ActiveForm;
     use yun\components\DirFunc;
 ?>
-        <h2>
-            <?=$this->title?>
-        </h2>
         <?php $form = ActiveForm::begin([
             'id' => 'login-form',
             'options' => ['class' => 'form-horizontal'],

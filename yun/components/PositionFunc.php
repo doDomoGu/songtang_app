@@ -1,7 +1,7 @@
 <?php
 namespace yun\components;
 
-use app\models\Position;
+//use app\models\Position;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
 use yii\helpers\BaseArrayHelper;

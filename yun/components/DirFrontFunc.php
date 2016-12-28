@@ -2,7 +2,7 @@
 namespace yun\components;
 
 use yun\models\Dir;
-use app\models\Position;
+//use app\models\Position;
 use yii\base\Component;
 use yii\helpers\BaseArrayHelper;
 use Yii;

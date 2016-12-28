@@ -94,10 +94,26 @@ class m161222_142522_yun_init extends Migration
             'download_time' => $this->dateTime()
         ]);
 
+        $this->createTable('dir_permission',[
+            'dir_id'=>$this->integer(11),
+            'area_id'=>$this->integer(11),
+            'business_id'=>$this->integer(11),
+            'department_id'=>$this->integer(11),
+            'position_id'=>$this->integer(11),
+            'group_id'=>$this->integer(11),
+            'user_id'=>$this->integer(11),
+            'type' => $this->smallInteger(1),
+            'operation' => $this->smallInteger(1),
+            'mode' => $this->smallInteger(1)
+        ]);
+        $this->addPrimaryKey('pk','dir_permission',['dir_id', 'area_id', 'business_id','department_id','position_id','group_id','user_id','type','operation','mode']);
+
+
     }
 
     public function down()
     {
+        $this->dropTable('dir_permission');
         $this->dropTable('download_record');
         $this->dropTable('file_attribute');
         $this->dropTable('system_log');

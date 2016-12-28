@@ -3,10 +3,11 @@
     use yun\components\FileFrontFunc;
     use yun\components\PermissionFunc;
     use yun\components\CommonFunc;
+use yun\models\DirPermission;
 
 ?>
 <?php foreach($list as $l):?>
-    <?php $downloadCheck = PermissionFunc::checkFileDownloadPermission(222,$l);?>
+    <?php $downloadCheck = DirPermission::checkFilePermission($l,DirPermission::OPERATION_DOWNLOAD);?>
     <div class="list-item list-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=$l->user_id==yii::$app->user->id?'delete-enable':'delete-disable'?>" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
         <div class="info">
             <div class="file-check">
