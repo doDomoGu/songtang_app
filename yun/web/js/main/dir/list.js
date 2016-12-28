@@ -50,7 +50,7 @@ var loading_files = function(){
     });
     area_check = area_check_tmp.join(',');
     var business_check_tmp = new Array();
-    $('.area-check:checked').each(function(){
+    $('.business-check:checked').each(function(){
         business_check_tmp.push($(this).val());
     });
     business_check = business_check_tmp.join(',');
@@ -117,6 +117,13 @@ function scroll_loading()
         loading_files();
     }
 }
+
+$('.attr-check').on('click',function(){
+    $('#var_page').val(1);
+    $('#list-main').html('');
+    loading_files()
+});
+
 $('#list-main').on('click','.file-check',function(){
     _c = $('#list-main .file-checkbox:checked').length;
     _c2 = $('#list-main .filetype .file-checkbox:checked').length;

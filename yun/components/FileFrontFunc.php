@@ -78,23 +78,23 @@ class FileFrontFunc extends Component {
         /*        $files = $files->where(['dir_id'=>$dir_id,'status'=>1]);
                 $files = $files->andWhere(['p_id'=>$p_id,'status'=>1]);*/
         if(!empty($attrSearch)){
+            $fidArr = [];
             if(isset($attrSearch['area']) && !empty($attrSearch['area'])){
-                $fidArr = [];
                 $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_AREA,'attr_id'=>$attrSearch['area']])->groupBy('file_id')->all();
                 foreach($faList as $l){
                     $fidArr[] = $l->file_id;
                 }
-                $query->andWhere(['id'=>$fidArr]);
             }
+            $query = $query->andWhere(['id'=>$fidArr]);
 
+            $fidArr2 = [];
             if(isset($attrSearch['business']) && !empty($attrSearch['business'])){
-                $fidArr = [];
                 $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_BUSINESS,'attr_id'=>$attrSearch['business']])->groupBy('file_id')->all();
                 foreach($faList as $l){
-                    $fidArr[] = $l->file_id;
+                    $fidArr2[] = $l->file_id;
                 }
-                $query->andWhere(['id'=>$fidArr]);
             }
+            $query = $query->andWhere(['id'=>$fidArr2]);
         }
 
         if($search!==false)
