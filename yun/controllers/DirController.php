@@ -8,13 +8,10 @@ use yun\components\DirFunc;
 use yun\components\FileFrontFunc;
 use yun\components\FileFunc;
 use yun\components\PermissionFunc;
-use yun\components\QiniuUpload;
 use yun\models\Attribute;
 use yun\models\File;
 use yun\models\FileAttribute;
-use yun\models\News;
 use yun\models\Dir;
-use yun\models\Recruitment;
 use Yii;
 use yun\models\SystemLog;
 
