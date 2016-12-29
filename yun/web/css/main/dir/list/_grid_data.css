@@ -81,3 +81,10 @@
 .grid-style.list-item-hover .filename {
     text-decoration: underline;
 }
+
+.grid-style .file_attrs {
+    position:absolute;
+    right:4px;
+    top:4px;
+    text-align: right;
+}

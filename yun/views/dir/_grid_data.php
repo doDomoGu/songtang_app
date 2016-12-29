@@ -20,6 +20,23 @@
                     <?=Html::img('/images/fileicon/'.FileFrontFunc::getFileExt($l->filetype).'.png')?>
                 </span>
             <?php endif;?>
+            <div class="file_attrs">
+                <?php if(!empty($l->areaAttrs)):?>
+                    <div class="area_attrs">
+                        <?php foreach($l->areaAttrs as $a):?>
+                            <span class="label label-primary"><?=$a?></span>
+                        <?php endforeach;?>
+                    </div>
+                <?php endif;?>
+
+                <?php if(!empty($l->businessAttrs)):?>
+                    <div class="business_attrs">
+                        <?php foreach($l->businessAttrs as $b):?>
+                            <span class="label label-warning"><?=$b?></span>
+                        <?php endforeach;?>
+                    </div>
+                <?php endif;?>
+            </div>
             <div class="file-check" >
                 <input type="checkbox" name="cb[]" class="file-checkbox" value="<?=$l->id?>" />
             </div>
