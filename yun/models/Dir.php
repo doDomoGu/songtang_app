@@ -1,14 +1,19 @@
 <?php
 
 namespace yun\models;
-use yun\components\CommonFunc;
-use yun\components\DirFunc;
-//use yun\components\PositionFunc;
 use Yii;
-use yii\helpers\ArrayHelper;
+use ucenter\models\Area;
+use ucenter\models\Business;
 
 class Dir extends \yii\db\ActiveRecord
 {
+
+    const ATTR_LIMIT_ALL   = 0;  //全员
+    const ATTR_LIMIT_AREA  = 1;  //文件(file)必须要有和职员一样的地区属性或者为默认值
+    const ATTR_LIMIT_BUSINESS = 2;//文件(file)必须要有和职员一样的业态属性或者为默认值
+    const ATTR_LIMIT_AREA_BUSINESS = 3; //文件(file)必须要有和职员一样的(地区和业态)属性或者为默认值
+
+
     public $childrenIds;
     public $childrenList;
 
@@ -20,7 +25,7 @@ class Dir extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'alias', 'p_id'], 'required'],
-            [['id', 'ord', 'level', 'is_leaf', 'is_last', 'p_id', 'status'], 'integer'],
+            [['id', 'ord', 'level', 'is_leaf', 'is_last', 'p_id', 'attr_limit', 'status'], 'integer'],
             [['describe','link'], 'safe']
         ];
     }
@@ -215,5 +220,34 @@ class Dir extends \yii\db\ActiveRecord
             }
             $ord++;
         }
+    }
+
+    public static function getAttrSearch($attrLimit){
+        $areaCheck = [];
+        $businessCheck = [];
+        switch ($attrLimit){
+            case self::ATTR_LIMIT_ALL:
+                $areaCheck = Area::getIds();
+                $businessCheck = Business::getIds();
+                break;
+            case self::ATTR_LIMIT_AREA:
+                $areaCheck = [1,Yii::$app->user->identity->aid];
+                $businessCheck = Business::getIds();
+                break;
+            case self::ATTR_LIMIT_BUSINESS:
+                $areaCheck =  Area::getIds();
+                $businessCheck = [1,Yii::$app->user->identity->bid];
+                break;
+            case self::ATTR_LIMIT_AREA_BUSINESS:
+                $areaCheck =  Area::getIds();
+                $businessCheck = [1,Yii::$app->user->identity->bid];
+                break;
+        }
+
+
+        $areaCheck = $areaCheck!=false?Area::getCheckIdsTrue($areaCheck):[];
+        $businessCheck = $businessCheck!=false?Business::getCheckIdsTrue($businessCheck):[];
+        $attrSearch = ['area'=>$areaCheck,'business'=>$businessCheck];
+        return $attrSearch;
     }
 }

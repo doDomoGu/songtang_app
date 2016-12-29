@@ -52,6 +52,15 @@ class Business extends \yii\db\ActiveRecord
         return $arr;
     }
 
+    public static function getIds(){
+        $ids = [];
+        $list = self::find()->where(['status'=>1])->orderBy('ord asc')->all();
+        foreach($list as $l){
+            $ids[] = $l->id;
+        }
+        return $ids;
+    }
+
     public static function getNameArr(){
         $list = self::find()->select(['id','name'])->all();
         $arr = [];

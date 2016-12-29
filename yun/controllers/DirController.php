@@ -142,9 +142,9 @@ class DirController extends BaseController
 
                 $order = yii::$app->request->get('order',false);
 
-                $areaCheck = yii::$app->request->get('area_check',false);
+                //$areaCheck = yii::$app->request->get('area_check',false);
 
-                $businessCheck = yii::$app->request->get('business_check',false);
+                //$businessCheck = yii::$app->request->get('business_check',false);
 
                 $orderNum = 0;
 
@@ -175,9 +175,9 @@ class DirController extends BaseController
                     $orderSelect[$n] = $this->orderNameArr[$n];
                 }
 
-                $areaCheck = $areaCheck!=false?Area::getCheckIdsTrue(explode(',',$areaCheck)):[];
-                $businessCheck = $businessCheck!=false?Business::getCheckIdsTrue(explode(',',$businessCheck)):[];
-                $attrSearch = ['area'=>$areaCheck,'business'=>$businessCheck];
+                $attrSearch = Dir::getAttrSearch($curDir->attr_limit);
+
+
 
                 $listType = yii::$app->request->get('list_type',false);
 

@@ -47,6 +47,7 @@ class m161222_142522_yun_init extends Migration
             'level'=>$this->integer(4)->notNull()->defaultValue(0),
             'is_leaf'=>$this->smallInteger(1),
             'is_last'=>$this->smallInteger(1),
+            'attr_limit'=>$this->smallInteger(1),
             'ord' => $this->smallInteger(4),
             'status'=>$this->smallInteger(1),
         ]);

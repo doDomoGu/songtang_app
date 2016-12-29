@@ -63,6 +63,15 @@ class Area extends \yii\db\ActiveRecord
         return $items;
     }
 
+    public static function getIds(){
+        $ids = [];
+        $list = self::find()->where(['status'=>1])->orderBy('ord asc')->all();
+        foreach($list as $l){
+            $ids[] = $l->id;
+        }
+        return $ids;
+    }
+
     public function install() {
         try {
             $exist = self::find()->one();
