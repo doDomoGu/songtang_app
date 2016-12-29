@@ -1,10 +1,10 @@
-$('.attr-check').on('click',function(){
+/*$('.attr-check').on('click',function(){
    if($('.attr-check:checked').length>0){
        $('#pickfile').attr('disabled',false);
    }else{
        $('#pickfile').attr('disabled',true);
    }
-});
+});*/
 
 
 
@@ -46,7 +46,7 @@ var uploader = Qiniu.uploader({
     init: {
         'FilesAdded': function(up, files) {
             // 文件添加进队列后,处理相关的事情
-            var area_check_tmp = new Array();
+            /*var area_check_tmp = new Array();
             $('.area-check:checked').each(function(){
                 area_check_tmp.push($(this).val());
             });
@@ -56,7 +56,10 @@ var uploader = Qiniu.uploader({
             $('.business-check:checked').each(function(){
                 business_check_tmp.push($(this).val());
             });
-            business_check = business_check_tmp.join(',');
+            business_check = business_check_tmp.join(',');*/
+
+            area_check = $('#uploadModalContent .area-check').val();
+            business_check = $('#uploadModalContent .business-check').val();
             //查询目录下文件名，防止重名
             $.ajax({
                 url: '/dir/get-filename-list',
@@ -185,6 +188,7 @@ var uploader = Qiniu.uploader({
 
              console.log(file);
              });*/
+            //return false;
             setTimeout(function(){
                 if(_p_id>0){
                     //console.log('/dir?p_id='+_p_id);

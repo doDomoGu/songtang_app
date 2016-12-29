@@ -402,7 +402,7 @@ class DirController extends BaseController
                 $file->flag = 1;*/
 
                 if($file->save()){
-                    if($areaCheck!=''){
+                    /*if($areaCheck!=''){
                         $areaCheckArr = explode(',',$areaCheck);
                         $areaCheckArr = array_unique($areaCheckArr);
                         foreach($areaCheckArr as $a){
@@ -424,7 +424,22 @@ class DirController extends BaseController
                             $fileAttr->attr_id = $b;
                             $fileAttr->save();
                         }
+                    }*/
+                    if($areaCheck!=''){
+                        $fileAttr = new FileAttribute();
+                        $fileAttr->file_id = $file->id;
+                        $fileAttr->attr_type = Attribute::TYPE_AREA;
+                        $fileAttr->attr_id = $areaCheck;
+                        $fileAttr->save();
                     }
+                    if($businessCheck!=''){
+                        $fileAttr = new FileAttribute();
+                        $fileAttr->file_id = $file->id;
+                        $fileAttr->attr_type = Attribute::TYPE_BUSINESS;
+                        $fileAttr->attr_id = $businessCheck;
+                        $fileAttr->save();
+                    }
+
                 }
 
 

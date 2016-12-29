@@ -23,13 +23,13 @@ Modal::begin([
     <div id="uploadModalContent">
         <div id="pickfile_container">
             <p>
-                地区：<?=BaseHtml::checkboxList('area-check','',$areaItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check area-check']])?>
+                地区：<?=BaseHtml::dropDownList('area-check','',$areaItems,['class'=>'attr-check area-check'])?>
             </p>
             <p>
-                业态：<?=BaseHtml::checkboxList('business-check','',$businessItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check business-check']])?>
+                业态：<?=BaseHtml::dropDownList('business-check','',$businessItems,['class'=>'attr-check business-check'])?>
             </p>
             <p>
-                <input type="file" id="pickfile" disabled="disabled">
+                <input type="file" id="pickfile">
             </p>
             <p>
                 <input type="hidden" id="fileurl" name="fileurl" value="" class="col-lg-6" />

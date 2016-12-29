@@ -145,16 +145,13 @@
     right:10px;
     clear:both;
     top:0;
-    width:200px;
-    height:38px;
     /*display: none;*/
 }
 
 .list-style .info .filename .file_attrs .area_attrs,
 .list-style .info .filename .file_attrs .business_attrs {
-    height:16px;
-    line-height: 16px;
     float:left;
+    margin-left:2px;
     display: block;
 }
 
