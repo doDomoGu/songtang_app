@@ -27,7 +27,7 @@ class BaseController extends Controller
             return false;
         }
 
-        $this->titleSuffix = '_'.yii::$app->id;
+        $this->titleSuffix = '_'.yii::$app->name;
         $this->except = [
             'site/index',
             'site/error',

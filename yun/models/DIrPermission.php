@@ -16,15 +16,16 @@ class DirPermission extends \yii\db\ActiveRecord
 
     const OPERATION_UPLOAD      = 1;   //上传操作
     const OPERATION_DOWNLOAD    = 2;   //下载操作(预览)
-    const OPERATION_EDIT        = 3;   //编辑操作(改名,目录移动)
-    const OPERATION_DELETE      = 4;   //删除操作
+
+    const OPERATION_COOP        = 3;   //编辑操作(改名,目录移动)
+    //const OPERATION_DELETE      = 4;   //删除操作
 
     const TYPE_ALL              = 1;   //全体职员
     const TYPE_AREA             = 2;   //地区 （通配）
     const TYPE_BUSINESS         = 3;   //业态 （通配）
     //const TYPE_DEPARTMENT       = 4;   //部门 （通配）
     //const TYPE_POSITION         = 5;   //职位 （通配）
-    const TYPE_COMBINE          = 6;   // 前四个的任意组合
+    //const TYPE_COMBINE          = 6;   // 前四个的任意组合
     const TYPE_GROUP            = 7;   //权限组
     const TYPE_USER             = 8;   //单独的USER_ID
 
@@ -66,7 +67,7 @@ class DirPermission extends \yii\db\ActiveRecord
         }else{
 
             $dir_id = $file->dir_id;
-            $flag = $file->flag; //flag = 1 普通  flag = 2 私有
+            //$flag = $file->flag; //flag = 1 普通  flag = 2 私有
             $allowList = self::find()->where(['dir_id'=>$dir_id,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
             if(!empty($allowList)){
                 foreach($allowList as $a){
