@@ -1,13 +1,12 @@
 <?php
     use yii\bootstrap\Html;
     use yun\components\FileFrontFunc;
-    use yun\components\PermissionFunc;
     use yun\components\CommonFunc;
-use yun\models\DirPermission;
+    use yun\models\DirPermission;
 
 ?>
 <?php foreach($list as $l):?>
-    <?php $downloadCheck = DirPermission::checkFilePermission($l,DirPermission::OPERATION_DOWNLOAD);?>
+    <?php $downloadCheck = DirPermission::checkDirPermission($l->dir_id,DirPermission::OPERATION_DOWNLOAD);?>
     <div class="list-item list-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=$l->user_id==yii::$app->user->id?'delete-enable':'delete-disable'?>" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
         <div class="info">
             <div class="file-check">
@@ -27,6 +26,23 @@ use yun\models\DirPermission;
                     <?=CommonFunc::mySubstr($l->filename,30)?>
                 <?php endif;?>
                 </span>
+                <div class="file_attrs">
+                    <?php if(!empty($l->areaAttrs)):?>
+                        <div class="area_attrs">
+                        <?php foreach($l->areaAttrs as $a):?>
+                            <span class="label label-primary"><?=$a?></span>
+                        <?php endforeach;?>
+                        </div>
+                    <?php endif;?>
+
+                    <?php if(!empty($l->businessAttrs)):?>
+                        <div class="business_attrs">
+                        <?php foreach($l->businessAttrs as $b):?>
+                            <span class="label label-warning"><?=$b?></span>
+                        <?php endforeach;?>
+                        </div>
+                    <?php endif;?>
+                </div>
                 <div class="click_btns">
                     <?php if($l->filetype!=0):?>
                         <?php if($downloadCheck):?>

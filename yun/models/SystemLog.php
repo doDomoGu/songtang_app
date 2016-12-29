@@ -13,7 +13,7 @@ class SystemLog extends \yii\db\ActiveRecord
     }
 
     const TYPE_SYSTEM   = 1;
-    const TYPE_USER   = 2;
+    const TYPE_USER     = 2;
 
     const LEVEL_TRACE   = 1;
     const LEVEL_DEBUG   = 2;

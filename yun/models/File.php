@@ -29,6 +29,25 @@ class File extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), array('id' => 'user_id'));
     }
 
+    public function getAreaAttrs(){
+        $arr = [];
+        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_AREA])->all();
+        foreach($attrs as $a){
+            $arr[] = $a->area->name;
+        }
+        return $arr;
+    }
+
+    public function getBusinessAttrs(){
+        $arr = [];
+        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_BUSINESS])->all();
+        foreach($attrs as $a){
+            $arr[] = $a->business->name;
+        }
+        return $arr;
+    }
+
+
 
     public static function handleDeleteStatus(){
         $files = File::find()->all();

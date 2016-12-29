@@ -118,7 +118,7 @@ function scroll_loading()
     }
 }
 
-$('.attr-check').on('click',function(){
+$('#list-head .attr-check').on('click',function(){
     $('#var_page').val(1);
     $('#list-main').html('');
     loading_files()

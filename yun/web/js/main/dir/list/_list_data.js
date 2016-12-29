@@ -11,8 +11,10 @@ $('#file_head ul ').on('click','li.head_col_filename:not(".list-oncheck"), li.he
 
 $('#list-main').on('mouseenter','.list-style',function(){
     $(this).find('.click_btns').show();
+    $(this).find('.file_attrs').hide();
 }).on('mouseleave','.list-style',function(){
     $(this).find('.click_btns').hide();
+    $(this).find('.file_attrs').show();
 });
 
 

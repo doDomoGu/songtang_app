@@ -12,6 +12,7 @@ use yun\models\Attribute;
 use yun\models\File;
 use yun\models\FileAttribute;
 use yun\models\Dir;
+use yun\models\DirPermission;
 use Yii;
 use yun\models\SystemLog;
 
@@ -176,8 +177,6 @@ class DirController extends BaseController
                 }
 
                 $attrSearch = Dir::getAttrSearch($curDir->attr_limit);
-
-
 
                 $listType = yii::$app->request->get('list_type',false);
 
@@ -367,7 +366,7 @@ class DirController extends BaseController
         $filename = isset($post['filename'])?$post['filename']:'';
         $areaCheck = isset($post['area_check'])?$post['area_check']:'';
         $businessCheck = isset($post['business_check'])?$post['business_check']:'';
-        if($dir_id>0 && $filename!='' && PermissionFunc::checkFileUploadPermission(111,$dir_id,$flag)){
+        if($dir_id>0 && $filename!='' && DirPermission::checkDirPermission($dir_id,DirPermission::OPERATION_UPLOAD)){
 
             $fileexist = File::find()->where(['dir_id'=>$dir_id,'p_id'=>$p_id,'filename'=>$filename])->andWhere('status < 2')->one();
             if($fileexist==false){
@@ -449,7 +448,7 @@ class DirController extends BaseController
         $file = File::find()->where(['id'=>$id,'status'=>1,'parent_status'=>1])->one();
 
         if($file){
-            if(PermissionFunc::checkFileDownloadPermission(11,$file)){
+            if(DirPermission::checkDirPermission($file->dir_id,DirPermission::OPERATION_DOWNLOAD)){
 
                 $file_path = FileFrontFunc::getFilePath($file->filename_real,true);
 

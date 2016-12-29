@@ -60,13 +60,13 @@ class DirPermission extends \yii\db\ActiveRecord
     }
 
 
-    public static function checkFilePermission($file,$operation_id){
+    public static function checkDirPermission($dir_id,$operation_id){
         $isAllow = false;
         if(Yii::$app->controller->isAdminAuth){
             $isAllow = true;
         }else{
 
-            $dir_id = $file->dir_id;
+            //$dir_id = $file->dir_id;
             //$flag = $file->flag; //flag = 1 普通  flag = 2 私有
             $allowList = self::find()->where(['dir_id'=>$dir_id,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
             if(!empty($allowList)){
