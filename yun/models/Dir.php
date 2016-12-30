@@ -8,10 +8,10 @@ use ucenter\models\Business;
 class Dir extends \yii\db\ActiveRecord
 {
 
-    const ATTR_LIMIT_ALL   = 0;  //全员
-    const ATTR_LIMIT_AREA  = 1;  //文件(file)必须要有和职员一样的地区属性或者为默认值
-    const ATTR_LIMIT_BUSINESS = 2;//文件(file)必须要有和职员一样的业态属性或者为默认值
-    const ATTR_LIMIT_AREA_BUSINESS = 3; //文件(file)必须要有和职员一样的(地区和业态)属性或者为默认值
+    const ATTR_LIMIT_ALL   = 1;  //全员
+    const ATTR_LIMIT_AREA  = 2;  //文件(file)必须要有和职员一样的地区属性或者为缺省值
+    const ATTR_LIMIT_BUSINESS = 3;//文件(file)必须要有和职员一样的业态属性或者为缺省值
+    const ATTR_LIMIT_AREA_BUSINESS = 4; //文件(file)必须要有和职员一样的(地区和业态)属性或者为缺省值
 
 
     public $childrenIds;

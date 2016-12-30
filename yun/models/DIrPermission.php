@@ -16,8 +16,7 @@ class DirPermission extends \yii\db\ActiveRecord
 
     const OPERATION_UPLOAD      = 1;   //上传操作
     const OPERATION_DOWNLOAD    = 2;   //下载操作(预览)
-
-    const OPERATION_COOP        = 3;   //编辑操作(改名,目录移动)
+    const OPERATION_COOP        = 3;   //协同操作
     //const OPERATION_DELETE      = 4;   //删除操作
 
     const TYPE_ALL              = 1;   //全体职员
@@ -37,8 +36,12 @@ class DirPermission extends \yii\db\ActiveRecord
         ];
     }
 
-    //参数 dm : 一条dir_permission记录 ， 检测当前用户是否在这个范围里
-    private static function check($dm,$user=false){
+    /*
+     * 检测当前用户是否在这个范围里
+     * 参数 dm : 一条dir_permission记录
+     * 参数 user: 用户  默认为当前登录用户
+     */
+    private static function isInRange($dm,$user=false){
         $return = false;
         if($user===false)
             $user = Yii::$app->user->identity;
@@ -59,19 +62,23 @@ class DirPermission extends \yii\db\ActiveRecord
         return $return;
     }
 
-
-    public static function checkDirPermission($dir_id,$operation_id){
+    /*
+     * 检测是否允许执行所选操作
+     * 参数 dir_id : 目录ID
+     * 参数 operation_id : 操作类型
+     * 参数 user: 用户  默认为当前登录用户
+     */
+    public static function isAllow($dir_id,$operation_id,$user=false){
         $isAllow = false;
         if(Yii::$app->controller->isAdminAuth){
             $isAllow = true;
         }else{
-
             //$dir_id = $file->dir_id;
             //$flag = $file->flag; //flag = 1 普通  flag = 2 私有
             $allowList = self::find()->where(['dir_id'=>$dir_id,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
             if(!empty($allowList)){
                 foreach($allowList as $a){
-                    if(self::check($a)){
+                    if(self::isInRange($a)){
                         $isAllow = true;
                         break;
                     }
@@ -81,33 +88,12 @@ class DirPermission extends \yii\db\ActiveRecord
             $denyList = self::find()->where(['dir_id'=>$dir_id,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
             if(!empty($denyList)){
                 foreach($denyList as $d){
-                    if(self::check($d)){
+                    if(self::isInRange($d)){
                         $isAllow = false;
                         break;
                     }
                 }
             }
-
-
-            /*$typeArr = [];
-            if(!empty($pm)){
-                //获取拥有的权限数组
-                foreach($pm as $p){
-                    $typeArr[] = $p->type;
-                }
-            }*/
-
-            //$typeArr2 = GroupFunc::getOneDirPermissionTypes(Yii::$app->controller->user->id,$dir_id);
-
-            //$typeArr = yii\helpers\ArrayHelper::merge($typeArr,$typeArr2);
-
-//            if($flag==1){
-//                if(in_array(self::DOWNLOAD_COMMON,$typeArr))
-//                    return true;
-//            }elseif($flag==2){
-//                if($file->uid == yii::$app->user->id || in_array(self::DOWNLOAD_ALL,$typeArr))
-//                    return true;
-//            }
         }
         return $isAllow;
     }

@@ -463,7 +463,7 @@ class DirController extends BaseController
         $file = File::find()->where(['id'=>$id,'status'=>1,'parent_status'=>1])->one();
 
         if($file){
-            if(DirPermission::checkDirPermission($file->dir_id,DirPermission::OPERATION_DOWNLOAD)){
+            if(DirPermission::isAllow($file->dir_id,DirPermission::OPERATION_DOWNLOAD)){
 
                 $file_path = FileFrontFunc::getFilePath($file->filename_real,true);
 
