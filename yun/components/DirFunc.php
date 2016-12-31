@@ -85,26 +85,6 @@ class DirFunc extends Component {
     * @param integer p_id  父id
     * no return
     */
-    public static function getCatalogType($reverse=false){
-        $arr = [
-            1=>'operator',
-            2=>'resource',
-            3=>'tool',
-            4=>'project',
-            5=>'share',
-        ];
-        if($reverse){
-            $arr = array_flip($arr);
-        }
-        return $arr;
-    }
-
-    /*
-    * 函数 handleIsLast , 修改了职位信息后，批量更新is_last字段
-    *
-    * @param integer p_id  父id
-    * no return
-    */
     /*
      *  获取指定type_id 和 p_id 的当前层所有目录id和name   (既只获取一层目录)
      */
@@ -424,6 +404,27 @@ class DirFunc extends Component {
             $arr[$curDir->level] = $curDir;
             $arr2 = self::getParents($curDir->p_id);
             $arr = BaseArrayHelper::merge($arr,$arr2);
+        }
+        ksort($arr);
+        return $arr;
+    }
+
+
+    /*
+     * 函数getChildrens ,实现根据 当前p_id 递归获取全部子层级 id
+     *
+     * @param integer p_id
+     * return array
+     */
+    public static function getChildrens($p_id=0){
+        $arr = [];
+        $children = Dir::find()->where(['p_id'=>$p_id,'status'=>1])->all();
+        if(!empty($children)){
+            foreach($children as $child){
+                $arr[] = $child->id;
+                $arr2 = self::getChildrens($child->id);
+                $arr = BaseArrayHelper::merge($arr,$arr2);
+            }
         }
         ksort($arr);
         return $arr;

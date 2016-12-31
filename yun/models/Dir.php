@@ -250,4 +250,9 @@ class Dir extends \yii\db\ActiveRecord
         $attrSearch = ['area'=>$areaCheck,'business'=>$businessCheck];
         return $attrSearch;
     }
+
+
+    public static function getIds(){
+
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace yun\models;
 use Yii;
+use yun\components\DirFunc;
 
 class DirPermission extends \yii\db\ActiveRecord
 {
@@ -13,11 +14,19 @@ class DirPermission extends \yii\db\ActiveRecord
 
     const MODE_ALLOW            = 1;   //模式 允许
     const MODE_DENY             = 2;   //模式 禁止
+    const MODE_ALLOW_CN         = '允许';
+    const MODE_DENY_CN          = '禁止';
+
+
 
     const OPERATION_UPLOAD      = 1;   //上传操作
     const OPERATION_DOWNLOAD    = 2;   //下载操作(预览)
     const OPERATION_COOP        = 3;   //协同操作
     //const OPERATION_DELETE      = 4;   //删除操作
+    const OPERATION_UPLOAD_CN   = '上传';
+    const OPERATION_DOWNLOAD_CN = '下载';
+    const OPERATION_COOP_CN     = '协同';
+
 
     const TYPE_ALL              = 1;   //全体职员
     const TYPE_AREA             = 2;   //地区 （通配）
@@ -35,6 +44,41 @@ class DirPermission extends \yii\db\ActiveRecord
             [['dir_id', 'area_id', 'business_id','department_id','position_id','group_id','user_id','type','operation','mode'], 'integer'],
         ];
     }
+
+    public static function getModeName($mode){
+        if($mode==self::MODE_ALLOW){
+            $return = self::MODE_ALLOW_CN;
+        }else if($mode==self::MODE_DENY){
+            $return = self::MODE_DENY_CN;
+        }else {
+            $return = 'N/A';
+        }
+        return $return;
+    }
+
+    public static function getOperationName($oper){
+        if($oper==self::OPERATION_UPLOAD){
+            $return = self::OPERATION_UPLOAD_CN;
+        }else if($oper==self::OPERATION_DOWNLOAD){
+            $return = self::OPERATION_DOWNLOAD_CN;
+        }else if($oper==self::OPERATION_COOP){
+            $return = self::OPERATION_COOP_CN;
+        }else {
+            $return = 'N/A';
+        }
+        return $return;
+    }
+
+/*    public static function getModeName($mode){
+        if($mode==self::MODE_ALLOW){
+            $return = self::MODE_ALLOW_CN;
+        }else if($mode==self::MODE_DENY){
+            $return = self::MODE_DENY_CN;
+        }else {
+            $return = 'N/A';
+        }
+        return $return;
+    }*/
 
     /*
      * 检测当前用户是否在这个范围里
@@ -96,6 +140,19 @@ class DirPermission extends \yii\db\ActiveRecord
             }
         }
         return $isAllow;
+    }
+
+    /*
+     * 获取 权限列表
+     */
+    public static function getPmList($p_id=0){
+        //$ids = DirFunc::getChildrens($p_id);
+        $arr = [];
+        $list = DirPermission::find()->all();
+        foreach($list as $l){
+            $arr[$l->dir_id][] = $l->attributes;
+        }
+        return $arr;
     }
 
 }
