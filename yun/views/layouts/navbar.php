@@ -100,14 +100,14 @@ $item2 = [];
 
     ]);
 
-    if(!yii::$app->user->isGuest){
+    /*if(!yii::$app->user->isGuest){
         echo '<form id="nav_search_form" class="navbar-form navbar-left" role="search" action="/search">
         <div class="form-group">
           <input type="text" name="filename" class="form-control" placeholder="文件名搜索">
         </div>
         <button type="submit" class="btn btn-default">搜索</button>
       </form>';
-    }
+    }*/
 
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav pull-right'],
