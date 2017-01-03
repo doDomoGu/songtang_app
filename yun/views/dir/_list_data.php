@@ -6,7 +6,7 @@
 
 ?>
 <?php foreach($list as $l):?>
-    <?php $downloadCheck = DirPermission::isAllow($l->dir_id,DirPermission::OPERATION_DOWNLOAD);?>
+    <?php $downloadCheck = DirPermission::isFileAllow($l->dir_id,$l->id,$l->dir->attr_limit,DirPermission::OPERATION_DOWNLOAD);?>
     <div class="list-item list-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=$l->user_id==yii::$app->user->id?'delete-enable':'delete-disable'?>" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
         <div class="info">
             <div class="file-check">
@@ -56,7 +56,8 @@
                         <?php else:?>
                             <?=Html::Button('<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>',['class'=> 'btn disabled'])?>
                         <?php endif;?>
-                        <?php if($l->user_id==yii::$app->user->id):?>
+                        <?php //TODO
+                        if($l->user_id==yii::$app->user->id):?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'editBtn btn','data-filename'=>$l->filename,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>

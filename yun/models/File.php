@@ -29,6 +29,11 @@ class File extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), array('id' => 'user_id'));
     }
 
+    public function getDir()
+    {
+        return $this->hasOne(Dir::className(), array('id' => 'dir_id'));
+    }
+
     public function getAreaAttrs(){
         $arr = [];
         $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_AREA])->all();
