@@ -107,7 +107,7 @@ class DirPermission extends \yii\db\ActiveRecord
     }
 
     /*
-     * 检测是否允许执行所选操作
+     * 检测目录是否允许执行所选操作
      * 参数 dir_id : 目录ID
      * 参数 operation_id : 操作类型
      * 参数 user: 用户  默认为当前登录用户
@@ -122,7 +122,7 @@ class DirPermission extends \yii\db\ActiveRecord
             $allowList = self::find()->where(['dir_id'=>$dir_id,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
             if(!empty($allowList)){
                 foreach($allowList as $a){
-                    if(self::isInRange($a)){
+                    if(self::isInRange($a,$user)){
                         $isAllow = true;
                         break;
                     }
@@ -132,11 +132,90 @@ class DirPermission extends \yii\db\ActiveRecord
             $denyList = self::find()->where(['dir_id'=>$dir_id,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
             if(!empty($denyList)){
                 foreach($denyList as $d){
-                    if(self::isInRange($d)){
+                    if(self::isInRange($d,$user)){
                         $isAllow = false;
                         break;
                     }
                 }
+            }
+        }
+        return $isAllow;
+    }
+
+    /*
+     * 检测文件的属性是否与属性限制条件相一致
+     * 参数 file_id : 文件ID
+     * 参数 attr_limit : 文件属性限制类型
+     * 参数 user: 用户  默认为当前登录用户
+     */
+    public static function isFileAttributeAccorded($file_id,$attr_limit,$user=false){
+        $return = false;
+        if($user===false)
+            $user = Yii::$app->user->identity;
+        switch($attr_limit){
+            case Dir::ATTR_LIMIT_ALL:
+                $return = true;
+                break;
+            case Dir::ATTR_LIMIT_AREA:
+                $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_AREA])->one();
+                if($fileAttr){
+                    $attr = $fileAttr->attr_id;
+                    if($attr==Attribute::AREA_DEFAULT || $attr==$user->aid){
+                        $return = true;
+                    }
+                }
+                break;
+            case Dir::ATTR_LIMIT_BUSINESS:
+                $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_BUSINESS])->one();
+                if($fileAttr){
+                    $attr = $fileAttr->attr_id;
+                    if($attr==Attribute::BUSINESS_DEFAULT || $attr==$user->bid){
+                        $return = true;
+                    }
+                }
+                break;
+            case Dir::ATTR_LIMIT_AREA_BUSINESS:
+                $areaReturn = false;
+                $businessReturn = false;
+                $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_BUSINESS])->one();
+                if($fileAttr){
+                    $attr = $fileAttr->attr_id;
+                    if($attr==Attribute::BUSINESS_DEFAULT || $attr==$user->bid){
+                        $areaReturn = true;
+                    }
+                }
+                if($areaReturn){
+                    $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_AREA])->one();
+                    if($fileAttr){
+                        $attr = $fileAttr->attr_id;
+                        if($attr==Attribute::AREA_DEFAULT || $attr==$user->aid){
+                            $businessReturn = true;
+                        }
+                    }
+                    if($businessReturn){
+                        $return = true;
+                    }
+                }
+                break;
+        }
+
+        return $return;
+    }
+    /*
+     * 检测文件是否允许执行所选操作
+     * 参数 dir_id : 目录ID
+     * 参数 file_id : 文件ID  (dir_id 和 file_id 应该已经检验过 存在且 状态正常 此处不再做检测）
+     * 参数 attr_limit : 目录对文件属性的限制
+     * 参数 operation_id : 操作类型
+     * 参数 user: 用户  默认为当前登录用户
+     */
+    public static function isFileAllow($dir_id,$file_id,$attr_limit,$operation_id,$user=false){
+        $isAllow = false;
+        if(Yii::$app->controller->isAdminAuth){
+            $isAllow = true;
+        }else{
+            if(self::isAllow($dir_id,$operation_id,$user)){
+                $isAllow = self::isFileAttributeAccorded($file_id,$attr_limit,$user);
             }
         }
         return $isAllow;

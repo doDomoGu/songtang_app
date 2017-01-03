@@ -461,62 +461,64 @@ class DirController extends BaseController
         $preview = Yii::$app->request->get('preview',false);
         $imgUrl = Yii::$app->request->get('imgUrl',false);
         $file = File::find()->where(['id'=>$id,'status'=>1,'parent_status'=>1])->one();
-
         if($file){
-            if(DirPermission::isAllow($file->dir_id,DirPermission::OPERATION_DOWNLOAD)){
-
-                $file_path = FileFrontFunc::getFilePath($file->filename_real,true);
-
-                if($preview!=false){
-                    if(in_array($file->filetype,$this->previewTypeArr)){
-                        if(in_array($file->filetype,[2,3,4,5,6])){
-                            if($imgUrl!=false){
-                                echo $file_path;
-                            }else{
-                                echo '<img width=100% src="'.$file_path.'" />';
+            $dir = Dir::find()->where(['id'=>$file->dir_id,'status'=>1])->one();
+            if($dir){
+                if(DirPermission::isFileAllow($file->dir_id,$file->id,$dir->attr_limit,DirPermission::OPERATION_DOWNLOAD)){
+                    $file_path = FileFrontFunc::getFilePath($file->filename_real,true);
+                    if($preview!=false){
+                        if(in_array($file->filetype,$this->previewTypeArr)){
+                            if(in_array($file->filetype,[2,3,4,5,6])){
+                                if($imgUrl!=false){
+                                    echo $file_path;
+                                }else{
+                                    echo '<img width=100% src="'.$file_path.'" />';
+                                }
                             }
+
+                        }else{
+                            echo '该文件类型暂时不支持预览<br/>'.$file_path;
                         }
-
                     }else{
-                        echo '该文件类型暂时不支持预览<br/>'.$file_path;
-                    }
-                }else{
 
-                    FileFrontFunc::insertDownloadRecord($file,Yii::$app->user->id);
+                        FileFrontFunc::insertDownloadRecord($file,Yii::$app->user->id);
 
-                    //Header("HTTP/1.1 303 See Other");
-                    /*Header("Location: $file_path");
-        var_dump($file_path);exit;
-                    Yii::$app->end();*/
+                        //Header("HTTP/1.1 303 See Other");
+                        /*Header("Location: $file_path");
+            var_dump($file_path);exit;
+                        Yii::$app->end();*/
 
-                    Header("Content-type: application/octet-stream;");
-                    Header("Accept-Ranges: bytes");
-                    //Header("Accept-Length: ".filesize($file_path));
-                    $filename = $file->filename;
-                    $ua = $_SERVER["HTTP_USER_AGENT"];
-                    $encoded_filename = urlencode($filename);
-                    $encoded_filename = str_replace("+", "%20", $encoded_filename);
-                    header('Content-Type: application/octet-stream');
-                    if(preg_match("/MSIE/", $ua)){
-                        header('Content-Disposition: attachment; filename="' . $encoded_filename . '"');
-                    }/*elseif(preg_match("/Firefox/", $ua)){
+                        Header("Content-type: application/octet-stream;");
+                        Header("Accept-Ranges: bytes");
+                        //Header("Accept-Length: ".filesize($file_path));
+                        $filename = $file->filename;
+                        $ua = $_SERVER["HTTP_USER_AGENT"];
+                        $encoded_filename = urlencode($filename);
+                        $encoded_filename = str_replace("+", "%20", $encoded_filename);
+                        header('Content-Type: application/octet-stream');
+                        if(preg_match("/MSIE/", $ua)){
+                            header('Content-Disposition: attachment; filename="' . $encoded_filename . '"');
+                        }/*elseif(preg_match("/Firefox/", $ua)){
                     header('Content-Disposition: attachment; filename*="utf8"' . $filename . '"');
                 }*/else{
-                        header('Content-Disposition: attachment; filename="' . $filename . '"');
-                    }
-                    header("X-Accel-Redirect: $file_path");
-                    //Header("Content-Disposition: attachment; filename=" . $file->filename);
-                    //echo $result;
-                    //echo file_get_contents($file_path);
-                    @readfile($file_path);
+                            header('Content-Disposition: attachment; filename="' . $filename . '"');
+                        }
+                        header("X-Accel-Redirect: $file_path");
+                        //Header("Content-Disposition: attachment; filename=" . $file->filename);
+                        //echo $result;
+                        //echo file_get_contents($file_path);
+                        @readfile($file_path);
 
+                    }
+
+                }else{
+                    echo 'download/ no permission';
                 }
             }else{
-                echo 'no permission';
+                echo 'download/ no dir';
             }
-
         }else{
-            echo 'no file';
+            echo 'download/ no file';
         }
         Yii::$app->end();
     }
