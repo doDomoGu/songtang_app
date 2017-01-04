@@ -74,10 +74,42 @@
     </div>
     <div id="attr-check">
         <div class="attr-one">
-            地区：<?=BaseHtml::checkboxList('area-check',$attrSearch['area'],$areaItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check area-check']])?>
+            地区：<?php foreach($areaItems as $k=>$a):?>
+                <?php
+                    $checked = '';
+                    $disabled = '';
+                if(in_array($k,$attrSearch['area'])){
+                    $checked = 'checked="checked"';
+                }else{
+                    $disabled = 'disabled="disabled"';
+                }?>
+
+                <label>
+                    <input class="attr-check area-check" name="area-check[]" value="<?=$k?>" <?=$checked?> <?=$disabled?>  type="checkbox">
+                    <?=$a?>
+                </label>
+            <?php endforeach;?>
+
+            <?/*=BaseHtml::checkboxList('area-check',$attrSearch['area'],$areaItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check area-check']])*/?>
         </div>
         <div class="attr-one">
-            业态：<?=BaseHtml::checkboxList('business-check',$attrSearch['business'],$businessItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check business-check']])?>
+            业态：
+            <?php foreach($businessItems as $k=>$a):?>
+                <?php
+                $checked = '';
+                $disabled = '';
+                if(in_array($k,$attrSearch['business'])){
+                    $checked = 'checked="checked"';
+                }else{
+                    $disabled = 'disabled="disabled"';
+                }?>
+
+                <label>
+                    <input class="attr-check business-check" name="business-check[]" value="<?=$k?>" <?=$checked?> <?=$disabled?>  type="checkbox">
+                    <?=$a?>
+                </label>
+            <?php endforeach;?>
+            <?/*=BaseHtml::checkboxList('business-check',$attrSearch['business'],$businessItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check business-check']])*/?>
         </div>
     </div>
     <div id="file_head" class="clearfix">
