@@ -2,7 +2,9 @@
 
 namespace login\models;
 
+use common\models\UserAppAuth;
 use ucenter\models\User;
+use Yii;
 
 class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterface
 {
@@ -23,6 +25,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $authKey;
     public $accessToken;
     public $status;
+    public $isYunAdmin;
 
     /*private static $users = [
         '100' => [
@@ -45,6 +48,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     {
         $user = User::find()->where(['id'=>$id,'status'=>1])->one();
         if($user){
+            $yunAdminExist = UserAppAuth::find()->where(['app'=>'yun-admin','user_id'=>$user->id,'is_enable'=>1])->one();
             $userStatic = [
                 'id' => $user->id,
                 'username' => $user->username,
@@ -62,7 +66,8 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 'contract_date'=>$user->contract_date,
                 //'position'=>$user->position->name,
                 'authKey' => 'key-'.$user->id,
-                'accessToken' => 'token-'.$user->id
+                'accessToken' => 'token-'.$user->id,
+                'isYunAdmin' => $yunAdminExist?true:false
             ];
             return new static($userStatic);
         }

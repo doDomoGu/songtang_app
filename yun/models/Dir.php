@@ -225,25 +225,29 @@ class Dir extends \yii\db\ActiveRecord
     public static function getAttrSearch($attrLimit){
         $areaCheck = [];
         $businessCheck = [];
-        switch ($attrLimit){
-            case self::ATTR_LIMIT_ALL:
-                $areaCheck = Area::getIds();
-                $businessCheck = Business::getIds();
-                break;
-            case self::ATTR_LIMIT_AREA:
-                $areaCheck = [1,Yii::$app->user->identity->aid];
-                $businessCheck = Business::getIds();
-                break;
-            case self::ATTR_LIMIT_BUSINESS:
-                $areaCheck =  Area::getIds();
-                $businessCheck = [1,Yii::$app->user->identity->bid];
-                break;
-            case self::ATTR_LIMIT_AREA_BUSINESS:
-                $areaCheck =  Area::getIds();
-                $businessCheck = [1,Yii::$app->user->identity->bid];
-                break;
+        if(Yii::$app->user->identity->isYunAdmin){
+            $areaCheck = Area::getIds();
+            $businessCheck = Business::getIds();
+        }else{
+            switch ($attrLimit){
+                case self::ATTR_LIMIT_ALL:
+                    $areaCheck = Area::getIds();
+                    $businessCheck = Business::getIds();
+                    break;
+                case self::ATTR_LIMIT_AREA:
+                    $areaCheck = [1,Yii::$app->user->identity->aid];
+                    $businessCheck = Business::getIds();
+                    break;
+                case self::ATTR_LIMIT_BUSINESS:
+                    $areaCheck =  Area::getIds();
+                    $businessCheck = [1,Yii::$app->user->identity->bid];
+                    break;
+                case self::ATTR_LIMIT_AREA_BUSINESS:
+                    $areaCheck =  Area::getIds();
+                    $businessCheck = [1,Yii::$app->user->identity->bid];
+                    break;
+            }
         }
-
 
         $areaCheck = $areaCheck!=false?Area::getCheckIdsTrue($areaCheck):[];
         $businessCheck = $businessCheck!=false?Business::getCheckIdsTrue($businessCheck):[];
@@ -252,7 +256,7 @@ class Dir extends \yii\db\ActiveRecord
     }
 
 
-    public static function getIds(){
+   /* public static function getIds(){
 
-    }
+    }*/
 }
