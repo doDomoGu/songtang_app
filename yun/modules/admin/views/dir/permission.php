@@ -1,18 +1,47 @@
 <?php
-    use yii\helpers\Html;
-    use yii\bootstrap\ActiveForm;
     use yun\components\DirFunc;
-
-$this->title = '【'.DirFunc::getFileFullRoute($dir->id).'】 - 权限编辑'
+    use yii\bootstrap\BaseHtml;
+    use yun\models\DirPermission;
+    use ucenter\models\Area;
+    use ucenter\models\Business;
+    use yun\modules\admin\assets\AdminAsset;
+$this->title = '【'.DirFunc::getFileFullRoute($dir->id).'】 - 权限编辑';
+AdminAsset::addJsFile($this,'js/main/dir/permission.js');
 ?>
-<form id="permission-form" class="form-horizontal" action="/admin/dir/add-and-edit?id=3" method="post">
+<form id="permission-form" class="form-horizontal" action="" method="post">
 
-    <div class="form-group">
-        <label class="col-lg-2 control-label">1</label>
+<?php if(!empty($dir->dirPermission)):?>
+    <?php $i=1;foreach($dir->dirPermission as $dp):?>
+    <div class="form-group permission-one" style="background: #d1d1d1;padding:10px 0;">
+        <label class="col-lg-2 control-label"><?=$i?></label>
         <div class="col-lg-6">
-            <input id="dirform-name" class="form-control" name="DirForm[name]" value="颂唐机构及旗下品牌LOGO标志" type="text">
+            <div>
+                匹配人员类型：
+                <?=BaseHtml::dropDownList('type_'.$i,$dp->type,DirPermission::getTypeItems(),['class'=>'type-select'])?>
+            </div>
+            <div class="type_param">
+                *匹配参数(根据匹配类型不同,选择不同的参数)：
+                <span class="type_param_all"> -- </span>
+                <span class="type_param_area">地区：<?=BaseHtml::dropDownList('area_'.$i,$dp->area_id,Area::getItems())?></span>
+                <span class="type_param_business">业态：<?=BaseHtml::dropDownList('business_'.$i,$dp->business_id,Business::getItems())?></span>
+                <span class="type_param_group">权限组：<?=BaseHtml::dropDownList('group_'.$i,'',[])?></span>
+                <span class="type_param_user">职员：<?=BaseHtml::dropDownList('user_'.$i,'',[])?></span>
+            </div>
+            <div>
+                操作分类：
+                <?=BaseHtml::dropDownList('operation_'.$i,$dp->operation,DirPermission::getOperationItems())?>
+            </div>
+            <div>
+                模式类型：
+                <?=BaseHtml::dropDownList('mode_'.$i,$dp->mode,DirPermission::getModeItems())?>
+            </div>
         </div>
     </div>
+    <?php $i++;endforeach;?>
+<?php endif;?>
+
+
+
 <!--
     <div class="form-group field-dirform-name required">
         <label class="col-lg-2 control-label" for="dirform-name">名称</label>

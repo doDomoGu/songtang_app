@@ -37,11 +37,45 @@ class DirPermission extends \yii\db\ActiveRecord
     const TYPE_GROUP            = 7;   //权限组
     const TYPE_USER             = 8;   //单独的USER_ID
 
+    const TYPE_ALL_CN              = '全体职员';   //全体职员
+    const TYPE_AREA_CN             = '通配地区';   //地区 （通配）
+    const TYPE_BUSINESS_CN         = '通配业态';   //业态 （通配）
+    //const TYPE_DEPARTMENT_CN       = 4;   //部门 （通配）
+    //const TYPE_POSITION_CN         = 5;   //职位 （通配）
+    //const TYPE_COMBINE_CN          = 6;   // 前四个的任意组合
+    const TYPE_GROUP_CN            = '权限组';   //权限组
+    const TYPE_USER_CN             = '单一职员';   //单独的USER_ID
+
 
     public function rules()
     {
         return [
             [['dir_id', 'area_id', 'business_id','department_id','position_id','group_id','user_id','type','operation','mode'], 'integer'],
+        ];
+    }
+
+    public static function getTypeItems(){
+        return [
+            self::TYPE_ALL => self::TYPE_ALL_CN,
+            self::TYPE_AREA => self::TYPE_AREA_CN,
+            self::TYPE_BUSINESS => self::TYPE_BUSINESS_CN,
+            /*self::TYPE_GROUP => self::TYPE_GROUP_CN,
+            self::TYPE_USER => self::TYPE_USER_CN,*/
+        ];
+    }
+
+    public static function getModeItems(){
+        return [
+            self::MODE_ALLOW => self::MODE_ALLOW_CN,
+            self::MODE_DENY => self::MODE_DENY_CN
+        ];
+    }
+
+    public static function getOperationItems(){
+        return [
+            self::OPERATION_UPLOAD => self::OPERATION_UPLOAD_CN,
+            self::OPERATION_DOWNLOAD => self::OPERATION_DOWNLOAD_CN,
+            self::OPERATION_COOP => self::OPERATION_COOP_CN
         ];
     }
 

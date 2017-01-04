@@ -30,6 +30,11 @@ class Dir extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getDirPermission()
+    {
+        return $this->hasMany(DirPermission::className(), array('dir_id' => 'id'));
+    }
+
     public function install(){
         try {
             $exist = self::find()->one();
