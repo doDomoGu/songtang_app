@@ -215,7 +215,7 @@ class DirController extends BaseController
                 }
 
                 if($parDir){
-                    if(!PermissionFunc::checkFileDownloadPermission($this->user->position_id,$parDir)){
+                    if(!DirPermission::isFileAllow($parDir->dir_id,$parDir->id,$parDir->dir->attr_limit,DirPermission::OPERATION_DOWNLOAD)){
                         ## 日志记录 ##
                         SystemLog::dirError('没有权限打开目录('.$parDir->id.':'.DirFunc::getFileFullRoute($parDir->id).')');
                         yii::$app->response->redirect('/')->send();
@@ -366,7 +366,7 @@ class DirController extends BaseController
         $filename = isset($post['filename'])?$post['filename']:'';
         $areaCheck = isset($post['area_check'])?$post['area_check']:'';
         $businessCheck = isset($post['business_check'])?$post['business_check']:'';
-        if($dir_id>0 && $filename!='' && DirPermission::checkDirPermission($dir_id,DirPermission::OPERATION_UPLOAD)){
+        if($dir_id>0 && $filename!='' && DirPermission::isAllow($dir_id,DirPermission::OPERATION_UPLOAD)){
 
             $fileexist = File::find()->where(['dir_id'=>$dir_id,'p_id'=>$p_id,'filename'=>$filename])->andWhere('status < 2')->one();
             if($fileexist==false){

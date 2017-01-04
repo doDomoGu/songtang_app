@@ -1,6 +1,12 @@
 <?php
     use yii\bootstrap\Modal;
+    use ucenter\models\Area;
+    use ucenter\models\Business;
+    use yii\helpers\BaseHtml;
     yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/create_dir_common.js');
+
+    $areaItems = Area::getItems();
+    $businessItems = Business::getItems();
 ?>
 <?php
 Modal::begin([
@@ -11,6 +17,12 @@ Modal::begin([
 ]);
 ?>
     <div id="createDirModalContent">
+        <p style="display: none;">
+            地区：<?=BaseHtml::dropDownList('area-check','',$areaItems,['class'=>'attr-check area-check'])?>
+        </p>
+        <p style="display: none;">
+            业态：<?=BaseHtml::dropDownList('business-check','',$businessItems,['class'=>'attr-check business-check'])?>
+        </p>
         <p>
             <label>文件夹名：</label>
             <input name="dirname" class="dirname">

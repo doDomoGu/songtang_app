@@ -13,6 +13,8 @@ $('#createDirModalContent button.btn').click(function(){
                 filename:_dirname,
                 filetype:0,
                 filesize:0,
+                area_check:$('#createDirModalContent .area-check').val(),
+                business_check:$('#createDirModalContent .business-check').val(),
                 flag:1,
                 p_id:_p_id
             },

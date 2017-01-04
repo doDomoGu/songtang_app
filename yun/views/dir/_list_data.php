@@ -26,7 +26,7 @@
                     <?=CommonFunc::mySubstr($l->filename,30)?>
                 <?php endif;?>
                 </span>
-                <div class="file_attrs">
+                <div class="file_attrs <?=$l->filetype == 0?'hidden':''?>">
                     <?php if(!empty($l->areaAttrs)):?>
                         <div class="area_attrs">
                         <?php foreach($l->areaAttrs as $a):?>
