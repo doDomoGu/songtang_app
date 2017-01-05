@@ -68,7 +68,7 @@ class TaskController extends BaseController
                     $task->category_id = $category_id;
                     $task->area_id = $area_id;
                     $task->business_id = $area_id;
-                    $task->department_id = $area_id;
+                    $task->department_id = 1;
                     $task->ord = 0;
                     $task->status = 1;
                     if($task->save()){
@@ -109,6 +109,7 @@ class TaskController extends BaseController
             $type = intval(Yii::$app->request->post('type',0));
             $user_id = intval(Yii::$app->request->post('user_id',0));
             $tid = intval(Yii::$app->request->post('tid',0));
+            $enable_transfer = intval(Yii::$app->request->post('enable_transfer',0));
             if($title==''){
                 $errormsg = '名称或别名不能为空！';
             }else{
@@ -126,6 +127,7 @@ class TaskController extends BaseController
                         $flow->task_id = $tid;
                         $flow->user_id = $user_id;
                         $flow->type = $type;
+                        $flow->enable_transfer = $enable_transfer;
                         $flow->step = isset($last)?$last->step+1:1;
                         $flow->status = 1;
                         if($flow->save()){

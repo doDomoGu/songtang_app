@@ -46,6 +46,7 @@ class m161222_095203_oa_init extends Migration
             'type' => $this->smallInteger(1),
             'user_id' => $this->integer(11)->notNull(),
             'back_step' => $this->smallInteger(2),
+            'enable_transfer' => $this->smallInteger(1),
             'status' => $this->smallInteger(1)
         ]);
 

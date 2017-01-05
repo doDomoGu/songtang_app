@@ -38,8 +38,8 @@ $(function(){
 
         setTimeout(function(){
             //$('.top-alert').stop().animate({'height':0,'margin-bottom':0},2000);
-            $('#alert-section').stop().animate({'top':'-52'},2000);
-        },5000);
+            $('#alert-section').stop().animate({'top':'-52'},1000);
+        },3000);
     }
 
 });

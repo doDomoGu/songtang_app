@@ -131,4 +131,25 @@ class User extends \yii\db\ActiveRecord
     public function getPosition(){
         return $this->hasOne(Position::className(), array('id' => 'position_id'));
     }
+
+    public function getFullRoute($separator = ' > '){
+        $str = '';
+        $str .= $this->area->name.$separator;
+        $str .= $this->business->name.$separator;
+        $str .= $this->getDepartmentFullRoute().$separator;
+        $str .= $this->position->name.$separator;
+        $str .= $this->name;
+
+        return $str;
+    }
+
+    public static function getItems(){
+        $items = [];
+        $list = self::find()->where(['status'=>1])->all();
+        foreach($list as $l){
+            $items[$l->id] = $l->getFullRoute();
+        }
+
+        return $items;
+    }
 }

@@ -60,7 +60,8 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">发起人</label>
                 <div class="col-sm-6">
-                    <input class="form-control create-user-id">
+                    <?=\yii\bootstrap\BaseHtml::dropDownList('user-id','',\ucenter\models\User::getItems(),['class'=>"form-control create-user-id"])?>
+                    <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>
             <div class="form-group">

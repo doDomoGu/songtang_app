@@ -85,19 +85,16 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">所属地区</label>
                 <div class="col-sm-6">
-                    <select class="form-control create-area-select">
-                    </select>
+                    <?=\yii\bootstrap\BaseHtml::dropDownList('area-select','',\ucenter\models\Area::getItems(),['class'=>"form-control create-area-select"])?>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">所属业态</label>
-                <div class="col-sm-6" style="padding-top: 7px;">
-                    <select class="form-control create-business-select">
-                        <option value="">---</option>
-                    </select>
+                <div class="col-sm-6">
+                    <?=\yii\bootstrap\BaseHtml::dropDownList('business-select','',\ucenter\models\Business::getItems(),['class'=>"form-control create-business-select"])?>
                 </div>
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label class="col-sm-4 control-label label2">所属部门</label>
                 <div class="col-sm-6">
                     <select class="form-control create-department-select">
@@ -105,7 +102,7 @@ Modal::begin([
                     </select>
                     <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
-            </div>
+            </div>-->
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-6">
                     <button type="button" class="btn btn-success" id="create-btn">提交</button>

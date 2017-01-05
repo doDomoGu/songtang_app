@@ -49,13 +49,15 @@ class ApplyController extends BaseController
             if($task){
                 $flows = Flow::find()->where(['task_id'=>$task_id])->all();
                 if(!empty($flows)){
-                    $html.='<h3>申请表预览：</h3>';
+                    $html.='<h1>申请表预览：</h1>';
+                    $html.='<h3>对应地区：'.($task->area->name).'  对应业态：'.($task->business->name).'</h3>';
                     foreach($flows as $f){
                         $htmlOne = '<li>';
                         $htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
                         $htmlOne.= '<div>标题：'.$f->title.'</div>';
                         $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
-                        $htmlOne.= '<div>操作人：'.$f->user->name.'</div>';
+                        $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
+                        $htmlOne.= '<div>操作人：'.$f->user->getFullRoute().'</div>';
                         $htmlOne.= '</li>';
                         $html .= $htmlOne;
                     }
@@ -89,7 +91,12 @@ class ApplyController extends BaseController
             if($apply){
                 $result = true;
                 //1.发起申请
-                $html = '<li><div>发起申请</div><div>操作人：<b>'.$apply->applyUser->name.'</b> 时间：<b>'.$apply->add_time.' </b></div></li>';
+                $html = '<li>' .
+                    '<div>发起申请</div>' .
+                    '<div>操作人：<b>'.$apply->applyUser->name.'</b> ' .
+                    '时间：<b>'.$apply->add_time.' </b></div><div>备注信息：'.$apply->message.'</div>' .
+                    '</li>';
+
 
                 //2.操作记录
                 $records = ApplyRecord::find()->where(['apply_id'=>$id])->all();

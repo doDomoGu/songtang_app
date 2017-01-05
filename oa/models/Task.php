@@ -1,6 +1,8 @@
 <?php
 
 namespace oa\models;
+use ucenter\models\Area;
+use ucenter\models\Business;
 use Yii;
 //oa 任务表 (即预先分配好的oa流程环节)
 class Task extends \yii\db\ActiveRecord
@@ -32,6 +34,16 @@ class Task extends \yii\db\ActiveRecord
 
     public function getCategory(){
         return $this->hasOne(TaskCategory::className(), array('id' => 'category_id'));
+    }
+
+
+
+    public function getArea(){
+        return $this->hasOne(Area::className(), array('id' => 'area_id'));
+    }
+
+    public function getBusiness(){
+        return $this->hasOne(Business::className(), array('id' => 'business_id'));
     }
 
 }
