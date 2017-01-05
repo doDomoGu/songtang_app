@@ -17,15 +17,10 @@ AppMobileAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-
-<div class="wrap" style="height:1000px;">
-    <div class="container">
-        <section id="main">
-            <?= $content ?>
-        </section>
-    </div>
+<div style="height:1000px;">
+    <?= $content ?>
 </div>
-<?=$this->render('footer')?>
+<?=$this->render('tabbar')?>
 
 <?php $this->endBody() ?>
 </body>
