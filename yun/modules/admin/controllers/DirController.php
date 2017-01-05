@@ -10,6 +10,8 @@ use yun\modules\admin\models\DirForm;
 class DirController extends BaseController
 {
 
+    public $enableCsrfValidation = false;
+
     public function actionIndex()
     {
         $this->view->title = '板块目录 - 列表';

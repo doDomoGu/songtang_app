@@ -1,6 +1,7 @@
 <?php
 namespace oa\controllers;
 
+use common\components\CommonFunc;
 use ucenter\models\User;
 use Yii;
 use yii\web\Controller;
@@ -45,12 +46,12 @@ $s=5/0;
 
             //$this->setNavItems(); //设置导航栏
 
-            //$this->isMobile = CommonFunc::isMobile(); //根据设备属性判断是否为移动用户
+            $this->isMobile = CommonFunc::isMobile(); //根据设备属性判断是否为移动用户
 
             //如果是移动设备
-            /*if($this->isMobile){
-                $this->layout = 'main_web';
-            }*/
+            if($this->isMobile){
+                $this->layout = 'mobile/main';
+            }
 
             return true;
         }
