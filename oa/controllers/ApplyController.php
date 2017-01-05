@@ -182,16 +182,16 @@ class ApplyController extends BaseController
         return $this->render('related',$params);
     }
 
-    /*//完结事项
-    public function actionRelated(){
+    //完结事项
+    public function actionDone(){
         //检索出所有与你相关的流程  按task_id分组
-        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
+        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->orderBy('step desc')->select(['task_id','step'])->all();
         if(!empty($flow)){
-            $taskIds = [];
             foreach($flow as $f){
-                $taskIds[] = $f->task_id;
+                $apply = Apply::find()->where(['task_id'=>$f->task_id])->andWhere(['>','flow_step',$f->step])->one();
+                $list[] = $apply;
             }
-            $list = Apply::find()->where(['task_id'=>$taskIds])->orderBy('add_time desc')->all();
+
         }else{
             $list = [];
         }
@@ -199,7 +199,7 @@ class ApplyController extends BaseController
 
         $params['list'] = $list;
         return $this->render('related',$params);
-    }*/
+    }
 
 
     public function actionDo(){

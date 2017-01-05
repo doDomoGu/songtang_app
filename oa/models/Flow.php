@@ -39,6 +39,7 @@ class Flow extends \yii\db\ActiveRecord
             'type' => '操作类型',
             'user_id' => '指定操作人',
             'back_step' => '指定打回的步骤数', //操作类型为 1 approval审核 和 3 execute执行才用到
+            'enable_transfer'=>'是否允许转发',
             'status' => '状态'
         ];
     }
