@@ -14,6 +14,31 @@ use Yii;
 
 class ApplyController extends BaseController
 {
+    public function actionCreate222(){
+        $model = new ApplyCreateForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $new = new Apply();
+            $new->attributes = $model->attributes;
+            $new->user_id = Yii::$app->user->id;
+            $new->flow_step = 1;
+            $new->add_time = date('Y-m-d H:i:s');
+            $new->edit_time = date('Y-m-d H:i:s');
+            $new->status = 1;
+            if($new->save()){
+                //Yii::$app->session->setFlash()
+                return $this->redirect('/');
+            }
+        }
+        $params['model'] = $model;
+        $params['tasks'] = Func::getTasksByUid(Yii::$app->user->id);
+        return $this->render('create',$params);
+    }
+
+
+    /*
+     * 发起申请 填写页面
+     */
     public function actionCreate(){
         $model = new ApplyCreateForm();
 
@@ -33,6 +58,38 @@ class ApplyController extends BaseController
         $params['model'] = $model;
         $params['tasks'] = Func::getTasksByUid(Yii::$app->user->id);
         return $this->render('create',$params);
+    }
+
+    /*
+     * 发起申请 提交操作
+     */
+
+    public function actionDoCreate(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $post = Yii::$app->request->post();
+            $n = new Apply();
+            $n->title = $post['title'];
+            $n->task_id  = $post['task_id'];
+            $n->message  = $post['message'];
+            $n->user_id = Yii::$app->user->id;
+            $n->flow_step = 1;
+            $n->add_time = date('Y-m-d H:i:s');
+            $n->edit_time = date('Y-m-d H:i:s');
+            $n->status = 1;
+            if($n->save()){
+                Yii::$app->getSession()->setFlash('success','发起申请成功！');
+                $result = true;
+            }else{
+                $errormsg = '发起申请失败!';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 
     /*
@@ -202,7 +259,10 @@ class ApplyController extends BaseController
     }
 
 
-    public function actionDo(){
+    /*
+     * 操作办事 界面
+     */
+    public function actionOperation(){
         $id = Yii::$app->request->get('id',false);
         $apply = Apply::find()->where(['id'=>$id])->one();
         if($apply){
@@ -240,21 +300,55 @@ class ApplyController extends BaseController
                 $model = new ApplyDoForm();
                 $model->result = 1;
 
-                if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+                $params['model'] = $model;
+                $params['apply'] = $apply;
+                $params['flow'] = $flow;
+                $params['html'] = $html;
+                $params['html2'] = $html2;
+                return $this->render('do',$params);
+            }else{
+                echo '申请表流程错误!';
+                return false;
+            }
+        }else{
+            echo '申请表ID错误!';
+            return false;
+        }
+    }
+
+
+    /*
+     * 操作办事  提交操作
+     */
+    public function actionDoOperation(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $post = Yii::$app->request->post();
+            $apply = Apply::find()->where(['id'=>$post['apply_id']])->one();
+            if($apply){
+                $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step,'user_id'=>Yii::$app->user->id])->one();
+                if($flow){
                     $record = new ApplyRecord();
-                    $record->attributes = $model->attributes;
+                    $record->result = $post['result'];
+                    $record->message = $post['message'];
                     $record->apply_id = $apply->id;
                     $record->flow_id = $flow->id;
                     $record->add_time = date('Y-m-d H:i:s');
                     if($record->save()){
                         //操作类型为 1 approval审核 和 3 execute执行  结果为0 进行打回操作
                         if($record->result==0 && in_array($flow->type,[Flow::TYPE_APPROVAL,Flow::TYPE_EXECUTE])){
-                            if($flow->back_step==0){
+
+                            $apply->status = Apply::STATUS_FAILURE;
+
+                            //打回就直接置为失败
+                            /*if($flow->back_step==0){
                                 //打回到发起者 改为失败状态
                                 $apply->status = Apply::STATUS_FAILURE;
                             }else{
                                 $apply->flow_step = $flow->back_step;
-                            }
+                            }*/
                         }else{
                             //查找是否还有后续流程
                             $exist = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$flow->step])->one();
@@ -266,22 +360,23 @@ class ApplyController extends BaseController
                             }
                         }
                         $apply->save();
-
-                        //Yii::$app->session->setFlash()
-                        return $this->redirect('/apply/todo');
+                        Yii::$app->getSession()->setFlash('success','操作成功！');
+                        $result = true;
+                    }else{
+                        $errormsg = '操作失败，请重试!';
                     }
+                }else{
+                    $errormsg = '申请表流程错误!';
                 }
-                $params['model'] = $model;
-                $params['apply'] = $apply;
-                $params['flow'] = $flow;
-                $params['html'] = $html;
-                $params['html2'] = $html2;
-                return $this->render('do',$params);
+            }else{
+                $errormsg = '申请表ID错误!';
             }
+        }else{
+            $errormsg = '操作错误，请重试!';
         }
-
-
-
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 
 }
