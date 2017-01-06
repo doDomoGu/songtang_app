@@ -314,8 +314,8 @@ class ApplyController extends BaseController
             //3.剩余未完成操作
             $html2 = '';
             $curStep = $apply->flow_step;
-            $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$curStep])->all();
-            foreach($flow as $f){
+            $flowNotDo = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$curStep])->all();
+            foreach($flowNotDo as $f){
                 $htmlOne = '<li class="not-do">';
                 $htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
                 $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
@@ -332,10 +332,15 @@ class ApplyController extends BaseController
                 $params['model'] = $model;
                 $params['apply'] = $apply;
                 $params['flow'] = $flow;
+                $params['records'] = $records;
+                $params['flowNotDo'] = $flowNotDo;
                 $params['html'] = $html;
                 $params['html2'] = $html2;
-                $this->tabbar_on = 1;
-                return $this->render('operation',$params);
+                if($this->isMobile){
+                    $this->tabbar_on = 1;
+                    return $this->render('mobile/operation',$params);
+                }else
+                    return $this->render('operation',$params);
             }else{
                 echo '申请表流程错误!';
                 return false;
