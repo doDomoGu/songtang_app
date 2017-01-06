@@ -9,11 +9,11 @@
                 <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
                 <p class="weui-tabbar__label">申请</p>
             </a>
-            <a href="javascript:;" class="weui-tabbar__item">
+            <a href="/site/ggg232113" class="weui-tabbar__item">
                 <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
                 <p class="weui-tabbar__label">事项</p>
             </a>
-            <a href="javascript:;" class="weui-tabbar__item">
+            <a href="/site/test" class="weui-tabbar__item">
                 <img src="./images/icon_tabbar.png" alt="" class="weui-tabbar__icon">
                 <p class="weui-tabbar__label">XX</p>
             </a>
