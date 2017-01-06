@@ -40,11 +40,22 @@ class SiteController extends BaseController
             $param = ['title'=>'test-test'];
             Sms::insertWithTemplate($mobile,$scenario,$param);
         }*/
-        return $this->render('index');
+        if($this->isMobile)
+            return $this->render('index_mobile');
+        else
+            return $this->render('index');
     }
 
-    public function actionTest(){
-        return $this->render('test');
+    public function actionApply(){
+        return $this->render('apply');
+    }
+
+    public function actionWork(){
+        return $this->render('work');
+    }
+
+    public function actionMe(){
+        return $this->render('me');
     }
 
 }
