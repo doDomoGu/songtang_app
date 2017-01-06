@@ -56,5 +56,15 @@ return [
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
+        'log' => [
+            'targets' => [
+                'sms'=>[
+                    'class' => 'yii\log\DbTarget',  //使用数据库记录日志
+                    'levels' => ['error', 'warning'],
+                    'categories' => ['sms'],
+                    'logTable'=> 'log_sms'
+                ]
+            ]
+        ]
     ],
 ];
