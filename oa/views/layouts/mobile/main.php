@@ -15,9 +15,9 @@ AppMobileAsset::register($this);
     <title><?=Yii::$app->id. ($this->title?'_'.Html::encode($this->title):'') ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+<body ontouchstart>
 <?php $this->beginBody() ?>
-<div style="height:1000px;">
+<div class="container js_container" style="height:1000px;">
     <?= $content ?>
 </div>
 <?=$this->render('tabbar')?>
