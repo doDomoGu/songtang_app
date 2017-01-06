@@ -13,9 +13,11 @@ class BaseController extends Controller
     public $layout = 'main';    //布局文件
     public $viewName = '';      //视图文件
     public $isMobile = false;   //表示是否为移动用户
+    public $tabbar_on = 0;      //移动端导航栏激活标志
     public $except = [
         'site/error'
     ];
+
 
     public function beforeAction($action){
         //$this->addUserHistory();  //记录用户访问日志

@@ -217,7 +217,11 @@ class ApplyController extends BaseController
         }
 
         $params['list'] = $list;
-        return $this->render('todo',$params);
+        if($this->isMobile){
+            $this->tabbar_on = 1;
+            return $this->render('mobile/todo',$params);
+        }else
+            return $this->render('todo',$params);
     }
 
     //相关事项

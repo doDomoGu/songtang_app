@@ -17,7 +17,7 @@ AppMobileAsset::register($this);
 </head>
 <body ontouchstart>
 <?php $this->beginBody() ?>
-<div class="container js_container" style="height:1000px;">
+<div class="container js_container" style="padding-bottom: 60px;">
     <?= $content ?>
 </div>
 <?=$this->render('tabbar')?>
