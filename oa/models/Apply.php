@@ -52,4 +52,69 @@ class Apply extends \yii\db\ActiveRecord
     public function getTask(){
         return $this->hasOne(Task::className(), array('id' => 'task_id'));
     }
+
+
+    public static function getTodoList($getCount=false){
+        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->all();
+        if(!empty($flow)){
+            $query = Apply::find()->where(['status'=>self::STATUS_NORMAL]);
+            //使用 任务id和流程步骤数 搜索当前的申请表中匹配的
+            $or = [];
+            foreach($flow as $f){
+                $or[] = '(task_id = "'.$f->task_id.'" and flow_step = "'.$f->step.'")';
+            }
+            $condition = implode(' or ',$or);
+            $query = $query->andWhere($condition);
+
+            if($getCount){
+                $return = $query->count();
+            }else{
+                //按时间倒序
+                $return = $query->orderBy('add_time desc')->all();
+            }
+        }else{
+            if($getCount){
+                $return = 0;
+            }else{
+                $return = [];
+            }
+        }
+        return $return;
+    }
+
+    public static function getDoneList($getCount=false){
+        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->orderBy('step desc')->select(['task_id','step'])->all();
+        $list = [];
+        if(!empty($flow)){
+            foreach($flow as $f){
+                $applyList = Apply::find()->where(['task_id'=>$f->task_id,'status'=>self::STATUS_NORMAL])->andWhere(['>','flow_step',$f->step])->all();
+                if(!empty($applyList))
+                    $list = array_merge($list,$applyList);
+            }
+        }
+        if($getCount){
+            $return = count($list);
+        }else{
+            $return = $list;
+        }
+        return $return;
+    }
+
+    public static function getFinishList($getCount=false){
+        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select(['task_id'])->all();
+        $list = [];
+        if(!empty($flow)){
+            foreach($flow as $f){
+                $applyList = Apply::find()->where(['task_id'=>$f->task_id,'status'=>self::STATUS_SUCCESS])->all();
+                if(!empty($applyList))
+                    $list = array_merge($list,$applyList);
+            }
+        }
+        if($getCount){
+            $return = count($list);
+        }else{
+            $return = $list;
+        }
+        return $return;
+    }
 }

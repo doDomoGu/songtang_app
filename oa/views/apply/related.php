@@ -38,17 +38,17 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
 
     </section>
 <?php
-Modal::begin([
+/*Modal::begin([
     'header' => '申请表详情',
     'id'=>'infoModal',
     //'size'=>'modal-lg',
     'options'=>['style'=>'margin-top:120px;'],
 ]);
-?>
+*/?><!--
     <div id="infoContent">
         <div class="content"></div>
         <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
     </div>
-<?php
-Modal::end();
-?>
+--><?php
+/*Modal::end();
+*/?>

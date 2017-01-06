@@ -202,19 +202,7 @@ class ApplyController extends BaseController
 
     //待办事项
     public function actionTodo(){
-        //检索出所有与你相关的流程
-        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->all();
-        if(!empty($flow)){
-            $list = Apply::find();
-            //使用 任务id和流程步骤数 搜索当前的申请表中匹配的
-            foreach($flow as $f){
-                $list= $list->orWhere(['task_id'=>$f->task_id,'flow_step'=>$f->step]);
-            }
-            //按时间倒序
-            $list = $list->orderBy('add_time desc')->all();
-        }else{
-            $list = [];
-        }
+        $list = Apply::getTodoList();
 
         $params['list'] = $list;
         if($this->isMobile){
@@ -240,26 +228,36 @@ class ApplyController extends BaseController
 
 
         $params['list'] = $list;
-        return $this->render('related',$params);
+        if($this->isMobile){
+            $this->tabbar_on = 1;
+            return $this->render('mobile/related',$params);
+        }else
+            return $this->render('related',$params);
+    }
+
+    //办结事项
+    public function actionDone(){
+        //检索出所有与你相关的流程  按task_id分组
+
+        $list = Apply::getDoneList();
+        $params['list'] = $list;
+        if($this->isMobile){
+            $this->tabbar_on = 1;
+            return $this->render('mobile/done',$params);
+        }else
+            return $this->render('done',$params);
     }
 
     //完结事项
-    public function actionDone(){
+    public function actionFinish(){
         //检索出所有与你相关的流程  按task_id分组
-        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->orderBy('step desc')->select(['task_id','step'])->all();
-        if(!empty($flow)){
-            foreach($flow as $f){
-                $apply = Apply::find()->where(['task_id'=>$f->task_id])->andWhere(['>','flow_step',$f->step])->one();
-                $list[] = $apply;
-            }
-
-        }else{
-            $list = [];
-        }
-
-
+        $list = Apply::getFinishList();
         $params['list'] = $list;
-        return $this->render('related',$params);
+        if($this->isMobile){
+            $this->tabbar_on = 1;
+            return $this->render('mobile/finish',$params);
+        }else
+            return $this->render('done',$params);
     }
 
 
