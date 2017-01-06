@@ -7,7 +7,7 @@ $this->title = '办结事项';
 <div class="weui-cells">
 <?php if(!empty($list)):?>
     <?php foreach($list as $l):?>
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a class="weui-cell weui-cell_access" href="/apply/info?id=<?=$l->id?>">
         <div class="weui-cell__bd">
             <p><h4 class="weui-media-box__title"><?=$l->title?></h4>
             <p class="weui-media-box__desc"><?=$l->message?></p></p>

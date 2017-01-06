@@ -288,6 +288,33 @@ class ApplyController extends BaseController
 
 
     /*
+     * 流程信息 界面
+     */
+    public function actionInfo(){
+        $id = Yii::$app->request->get('id',false);
+        $apply = Apply::find()->where(['id'=>$id])->one();
+        if($apply){
+
+            $records = ApplyRecord::find()->where(['apply_id'=>$id])->all();
+            $curStep = $apply->flow_step;
+            $flowNotDo = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
+
+
+            $params['apply'] = $apply;
+            $params['records'] = $records;
+            $params['flowNotDo'] = $flowNotDo;
+            if($this->isMobile){
+                $this->tabbar_on = 1;
+                return $this->render('mobile/info',$params);
+            }else
+                echo 'not found';exit;
+        }else{
+            echo '申请表ID错误!';
+            return false;
+        }
+    }
+
+    /*
      * 操作办事 界面
      */
     public function actionOperation(){

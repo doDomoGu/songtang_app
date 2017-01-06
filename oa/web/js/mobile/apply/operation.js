@@ -19,9 +19,9 @@ $(function(){
             },
             success: function (data) {
                 if(data.result){
-                    $('#dialog-operation-success').show();
+                    $('#dialog-success').show();
                 }else{
-                    $('#dialog-operation-failure').show();
+                    $('#dialog-failure').show();
                     //$('.task-preview').html(data.errormsg).show();
 
                 }
