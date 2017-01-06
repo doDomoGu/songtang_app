@@ -96,6 +96,35 @@ class ApplyController extends BaseController
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 
+
+    /*
+     * get-task-list 发起申请界面中，根据地区和业态选项获取可用来的申请的任务列表
+     * 返回 html
+     */
+    public function actionGetTaskList(){
+        $errormsg = '';
+        $result = false;
+        $html = '';
+        if(Yii::$app->request->isAjax){
+            $area_id = trim(Yii::$app->request->post('area_id',0));
+            $business_id = trim(Yii::$app->request->post('business_id',0));
+            $list = Task::getList($area_id,$business_id);
+            $html .='<option value="">==请选择==</option>';
+            if(!empty($list)){
+                foreach($list as $k=>$v){
+                    $html.='<option value="'.$k.'">'.$v.'</option>';
+                }
+            }
+            $result = true;
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html];
+    }
+
+
     /*
      * get-task-preview 获取申请任务的预览信息
      * 返回 html

@@ -46,4 +46,37 @@ class Task extends \yii\db\ActiveRecord
         return $this->hasOne(Business::className(), array('id' => 'business_id'));
     }
 
+    /*
+     * 获取可发起申请的任务列表
+     * 参数 area_id
+     * 参数 business_id
+     * 参数 user_id
+     * return  ['id1'=>'title1',...***]
+     */
+    public static function getList($area_id,$business_id,$user_id=false){
+        $return = [];
+        //有效的task列表
+        $query = Task::find()->where(['status'=>1,'set_complete'=>1]);
+        if($area_id>0){
+            $query = $query->andWhere(['area_id'=>$area_id]);
+        }
+        if($business_id>0){
+            $query = $query->andWhere(['business_id'=>$business_id]);
+        }
+        $tasks = $query->all();
+        $taskIds = [];
+        foreach($tasks as $t){
+            $taskIds[] = $t->id;
+        }
+        if($user_id==false)
+            $user_id = Yii::$app->user->id;
+
+        $list = TaskApplyUser::find()->where(['user_id'=>$user_id,'task_id'=>$taskIds])->all();
+        foreach($list as $l){
+            $return[$l->task_id] = $l->task->category->name.'|'.$l->task->title;
+        }
+        return $return;
+    }
+
+
 }

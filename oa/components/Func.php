@@ -22,8 +22,11 @@ class Func extends Component {
         }
         $list = TaskApplyUser::find()->where(['user_id'=>$user_id,'task_id'=>$taskIds])->all();
         foreach($list as $l){
-            $return[$l->task_id] = $l->task->title;
+            $return[$l->task_id] = $l->task->area->name.'|'.$l->task->business->name.'|'.$l->task->category->name.'|'.$l->task->title;
         }
         return $return;
     }
+
+
+
 }
