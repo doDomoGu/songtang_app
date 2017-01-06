@@ -53,6 +53,15 @@ class Apply extends \yii\db\ActiveRecord
         return $this->hasOne(Task::className(), array('id' => 'task_id'));
     }
 
+    public static function getMyApplyList($getCount=false){
+        $query = self::find()->where(['user_id'=>Yii::$app->user->id]);
+        if($getCount)
+            $return = $query->count();
+        else
+            $return = $query->orderBy('add_time desc')->all();
+        return $return;
+    }
+
 
     public static function getTodoList($getCount=false){
         $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->all();

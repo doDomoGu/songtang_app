@@ -57,7 +57,11 @@ class ApplyController extends BaseController
         }
         $params['model'] = $model;
         $params['tasks'] = Func::getTasksByUid(Yii::$app->user->id);
-        return $this->render('create',$params);
+        if($this->isMobile){
+            $this->tabbar_on = 2;
+            return $this->render('mobile/create',$params);
+        }else
+            return $this->render('create',$params);
     }
 
     /*
@@ -194,10 +198,13 @@ class ApplyController extends BaseController
 
     //我的申请
     public function actionMy(){
-        $list = Apply::find()->where(['user_id'=>Yii::$app->user->id])->orderBy('add_time desc')->all();
+        $list = Apply::getMyApplyList();
 
-        $params['list'] = $list;
-        return $this->render('my',$params);
+        $params['list'] = $list;if($this->isMobile){
+            $this->tabbar_on = 2;
+            return $this->render('mobile/my',$params);
+        }else
+            return $this->render('my',$params);
     }
 
     //待办事项
