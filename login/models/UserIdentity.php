@@ -89,6 +89,10 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
 
     public static function findByUsername($username)
     {
+        if(substr($username,-13)!='@songtang.net'){
+            $username = $username.'@songtang.net';
+        }
+
         $user = User::find()->where(['username'=>$username])->one();
         if($user){
             $userStatic = [

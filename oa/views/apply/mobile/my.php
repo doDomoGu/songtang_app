@@ -9,8 +9,9 @@ $this->title = '我的申请';
     <?php foreach($list as $l):?>
     <a class="weui-cell weui-cell_access" href="javascript:;">
         <div class="weui-cell__bd">
-            <p><h4 class="weui-media-box__title"><?=$l->title?></h4>
-            <p class="weui-media-box__desc"><?=$l->message?></p></p>
+            <h4 class="weui-media-box__title"><?=$l->title?></h4>
+            <p class="weui-media-box__desc" style="color:#333;">申请时间：<?=$l->add_time?></p>
+            <p class="weui-media-box__desc"><?=$l->message?></p>
         </div>
         <div class="weui-cell__ft"></div>
     </a>

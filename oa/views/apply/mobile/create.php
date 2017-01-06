@@ -55,7 +55,7 @@
         </div>
         <div class="weui-cell__bd">
             <textarea class="weui-textarea data-message" placeholder="请输入文本" rows="3"></textarea>
-            <div class="weui-textarea-counter"><span>0</span>/200</div>
+
         </div>
     </div>
     <div class="weui-btn-area">
