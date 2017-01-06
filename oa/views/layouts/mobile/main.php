@@ -10,7 +10,7 @@ AppMobileAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <?= Html::csrfMetaTags() ?>
     <title><?=Yii::$app->id. ($this->title?'_'.Html::encode($this->title):'') ?></title>
     <?php $this->head() ?>
