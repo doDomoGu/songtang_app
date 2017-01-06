@@ -214,17 +214,7 @@ class ApplyController extends BaseController
 
     //相关事项
     public function actionRelated(){
-        //检索出所有与你相关的流程  按task_id分组
-        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
-        if(!empty($flow)){
-            $taskIds = [];
-            foreach($flow as $f){
-                $taskIds[] = $f->task_id;
-            }
-            $list = Apply::find()->where(['task_id'=>$taskIds])->orderBy('add_time desc')->all();
-        }else{
-            $list = [];
-        }
+        $list = Apply::getRelatedList();
 
 
         $params['list'] = $list;
@@ -269,7 +259,7 @@ class ApplyController extends BaseController
         $apply = Apply::find()->where(['id'=>$id])->one();
         if($apply){
             //1.发起申请
-            $html = '<li><div>发起申请</div><div>操作人：<b>'.$apply->applyUser->name.'</b> 时间：<b>'.$apply->add_time.' </b></div></li>';
+            $html = '<li><div>发起申请</div><div>操作人：<b>'.$apply->applyUser->name.'</b> 时间：<b>'.$apply->add_time.' </b></div><div>申请信息：<b>'.$apply->message.'</b></div></li>';
 
             //2.操作记录
             $records = ApplyRecord::find()->where(['apply_id'=>$id])->all();
@@ -278,7 +268,7 @@ class ApplyController extends BaseController
                     $htmlOne = '<li>';
                     $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
                     $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
-                    $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
+                    $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> </div><div>结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
                     $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
                     $htmlOne.= '</li>';
                     $html .= $htmlOne;
@@ -308,7 +298,8 @@ class ApplyController extends BaseController
                 $params['flow'] = $flow;
                 $params['html'] = $html;
                 $params['html2'] = $html2;
-                return $this->render('do',$params);
+                $this->tabbar_on = 1;
+                return $this->render('operation',$params);
             }else{
                 echo '申请表流程错误!';
                 return false;

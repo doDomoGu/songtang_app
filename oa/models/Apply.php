@@ -117,4 +117,40 @@ class Apply extends \yii\db\ActiveRecord
         }
         return $return;
     }
+
+    public static function getRelatedList($getCount=false){
+        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
+        if(!empty($flow)){
+            $taskIds = [];
+            foreach($flow as $f){
+                $taskIds[] = $f->task_id;
+            }
+
+            $todoList = self::getTodoList();
+            $doneList = self::getDoneList();
+            $finishList = self::getFinishList();
+            $notInIds = [];
+            foreach($todoList as $l){
+                $notInIds[] = $l->id;
+            }
+            foreach($doneList as $l){
+                $notInIds[] = $l->id;
+            }
+            foreach($finishList as $l){
+                $notInIds[] = $l->id;
+            }
+
+            $query = Apply::find()->where(['task_id'=>$taskIds])->andWhere(['not in','id',$notInIds])->orderBy('add_time desc');
+            if($getCount)
+                $return = $query->count();
+            else
+                $return = $query->all();
+        }else{
+            if($getCount)
+                $return = 0;
+            else
+                $return = [];
+        }
+        return $return;
+    }
 }

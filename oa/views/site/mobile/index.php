@@ -4,6 +4,7 @@
     $todoCount = Apply::getTodoList(true);
     $doneCount = Apply::getDoneList(true);
     $finishCount = Apply::getFinishList(true);
+    $relatedCount = Apply::getRelatedList(true);
 ?>
 <div class="weui-cells">
     <a class="weui-cell weui-cell_access" href="/apply/todo">
@@ -37,7 +38,7 @@
         <div class="weui-cell__bd">
             <p>相关事项</p>
         </div>
-        <div class="weui-cell__ft"></div>
+        <div class="weui-cell__ft"><?=$relatedCount>0?$relatedCount:''?> &nbsp;</div>
     </a>
 </div>
 <br/>
