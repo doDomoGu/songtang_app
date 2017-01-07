@@ -1,6 +1,7 @@
 <?php
 
 namespace yun\models;
+use yun\models\DirPermission;
 use Yii;
 use ucenter\models\Area;
 use ucenter\models\Business;
