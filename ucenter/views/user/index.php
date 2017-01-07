@@ -5,13 +5,16 @@ use yii\bootstrap\Html;
     //app\assets\AppAsset::addJsFile($this,'js/main/structure/index.js');
 ?>
 <section>
+    <div style="margin-bottom: 10px;">
+        <?=Html::a('新增职员','/user/add-and-edit',['class'=>'btn btn-success'])?>
+    </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
             <th>#</th>
             <th>用户名</th>
             <th>姓名</th>
-            <th width="200">地区 <?=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])?></th>
-            <th>业态 <?=$aid>0?Html::dropDownList('business-select',$bid,$bArr2,['prompt'=>'----','id'=>'business-select']):''?></th>
+            <th>地区 <?/*=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])*/?></th>
+            <th>业态 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr2,['prompt'=>'----','id'=>'business-select']):''*/?></th>
             <th>部门</th>
             <th>职位</th>
             <th>性别</th>

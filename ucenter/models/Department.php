@@ -41,6 +41,16 @@ class Department extends \yii\db\ActiveRecord
         return $arr;
     }
 
+    public static function getItems(){
+        $items = [];
+
+        $list = self::getList();
+        foreach($list as $l){
+            $items[$l->id] = $l->name;
+        }
+        return $items;
+    }
+
     public static function getChildrenIds($p_id){
         $list = self::find()->where(['p_id'=>$p_id])->all();
         $arr = [];

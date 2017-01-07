@@ -42,7 +42,7 @@ class User extends \yii\db\ActiveRecord
         return [
             [['username', 'password', 'name', 'ord', 'status'], 'required'],
             ['username','unique'],
-            [['id', 'ord', 'status', 'position_id', 'gender'], 'integer'],
+            [['id', 'ord', 'status', 'aid','bid','did','position_id', 'gender'], 'integer'],
             //['username','email'],
             ['username','unique','on'=>'create', 'targetClass' => self::className(), 'message' => '此用户名已经被使用。'],
             [[ 'birthday', 'join_date', 'contract_date', 'mobile', 'phone', 'describe','password_true'], 'safe']
@@ -90,7 +90,7 @@ class User extends \yii\db\ActiveRecord
 
                 foreach($arr as $a){
                     $m = new User();
-                    $m->username = $a[0];
+                    $m->username = $a[0].'@songtang.net';
                     $m->password = md5('123123');
                     $m->password_true = '123123';
                     $m->aid = 1;
