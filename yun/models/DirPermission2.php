@@ -1,8 +1,7 @@
 <?php
-
 namespace yun\models;
+
 use Yii;
-use yun\components\DirFunc;
 
 class DirPermission extends \yii\db\ActiveRecord
 {
