@@ -15,8 +15,8 @@ AppMobileAsset::register($this);
     <title><?=Yii::$app->id. ($this->title?'_'.Html::encode($this->title):'') ?></title>
     <?php $this->head() ?>
 </head>
-<body ontouchstart>
-<?php $this->beginBody() ?>
+<body ontouchstart  style="background-color: #eeeeee;">
+<?php $this->beginBody()?>
 <div class="container js_container" style="padding-bottom: 60px;">
     <?= $content ?>
 </div>

@@ -26,6 +26,13 @@
                 <div class="weui-cell__ft"></div>
             </div>
         <?php $i++;endforeach;?>
+    <?php else:?>
+        <div class="weui-cell" >
+            <div class="weui-cell__bd">
+                <p class="weui-media-box__desc">无</p>
+            </div>
+            <div class="weui-cell__ft"></div>
+        </div>
     <?php endif;?>
 </div>
 <div class="weui-cells__title">未处理流程</div>
@@ -40,6 +47,13 @@
                 <div class="weui-cell__ft"></div>
             </div>
         <?php endforeach;?>
+    <?php else:?>
+        <div class="weui-cell" >
+            <div class="weui-cell__bd">
+                <p class="weui-media-box__desc">无</p>
+            </div>
+            <div class="weui-cell__ft"></div>
+        </div>
     <?php endif;?>
 </div>
 

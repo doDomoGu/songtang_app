@@ -7,7 +7,7 @@ $this->title = '我的申请';
 <div class="weui-cells">
 <?php if(!empty($list)):?>
     <?php foreach($list as $l):?>
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a class="weui-cell weui-cell_access" href="/apply/info?id=<?=$l->id?>">
         <div class="weui-cell__bd">
             <h4 class="weui-media-box__title"><?=$l->title?></h4>
             <p class="weui-media-box__desc" style="color:#333;">申请时间：<?=$l->add_time?></p>
