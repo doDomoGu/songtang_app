@@ -12,8 +12,8 @@ return [
     'qiniu-accessKey' => 'A9vqV-lyLBGKTkGpMBEkfqyUevJN-TKVi57jNpt-',
     'qiniu-secretKey' => 'zCOYX5Uu31qAEpmJ7ZRndPnVlm-56CAH9Kq3gW-K',
     'qiniu-bucket' => 'songtangyun',
-    'qiniu-domain'=> 'http://ojh4ydms2.bkt.clouddn.com',
-    'qiniu-domain-beaut'=> 'http://ojh4ydms2.bkt.clouddn.com',
+    'qiniu-domain'=> 'http://ojh4ydms2.bkt.clouddn.com/',
+    'qiniu-domain-beaut'=> 'http://ojh4ydms2.bkt.clouddn.com/',
     //'qiniu-domain' => 'http://7xnt87.com1.z0.glb.clouddn.com/',
     //'qiniu-domain-beaut' => 'http://yun-source.songtang.net/',
 
