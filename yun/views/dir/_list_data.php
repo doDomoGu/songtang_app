@@ -27,17 +27,17 @@
                 <?php endif;?>
                 </span>
                 <div class="file_attrs <?=$l->filetype == 0?'hidden':''?>">
-                    <?php if(!empty($l->areaAttrs)):?>
+                    <?php if(!empty($l->areaAttrs2)):?>
                         <div class="area_attrs">
-                        <?php foreach($l->areaAttrs as $a):?>
+                        <?php foreach($l->areaAttrs2 as $a):?>
                             <span class="label label-primary"><?=$a?></span>
                         <?php endforeach;?>
                         </div>
                     <?php endif;?>
 
-                    <?php if(!empty($l->businessAttrs)):?>
+                    <?php if(!empty($l->businessAttrs2)):?>
                         <div class="business_attrs">
-                        <?php foreach($l->businessAttrs as $b):?>
+                        <?php foreach($l->businessAttrs2 as $b):?>
                             <span class="label label-warning"><?=$b?></span>
                         <?php endforeach;?>
                         </div>

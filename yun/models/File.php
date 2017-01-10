@@ -43,11 +43,35 @@ class File extends \yii\db\ActiveRecord
         return $arr;
     }
 
+    public function getAreaAttrs2(){
+        $arr = [];
+        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_AREA])->all();
+        foreach($attrs as $a){
+            if($a->attr_id==1)
+                $arr[] = '全员';
+            else
+                $arr[] = $a->area->name;
+        }
+        return $arr;
+    }
+
     public function getBusinessAttrs(){
         $arr = [];
         $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_BUSINESS])->all();
         foreach($attrs as $a){
             $arr[] = $a->business->name;
+        }
+        return $arr;
+    }
+
+    public function getBusinessAttrs2(){
+        $arr = [];
+        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_BUSINESS])->all();
+        foreach($attrs as $a){
+            if($a->attr_id==1)
+                $arr[] = '全员';
+            else
+                $arr[] = $a->business->name;
         }
         return $arr;
     }
