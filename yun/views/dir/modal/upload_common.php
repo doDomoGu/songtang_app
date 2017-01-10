@@ -9,8 +9,8 @@
     yun\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
     yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/upload_common.js');
 
-    $areaItems = Area::getItems();
-    $businessItems = Business::getItems();
+    $areaItems = Area::getItems(true);
+    $businessItems = Business::getItems(true);
 ?>
 <?php
 Modal::begin([

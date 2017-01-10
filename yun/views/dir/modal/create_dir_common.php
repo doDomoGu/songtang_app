@@ -5,8 +5,8 @@
     use yii\helpers\BaseHtml;
     yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/create_dir_common.js');
 
-    $areaItems = Area::getItems();
-    $businessItems = Business::getItems();
+    $areaItems = Area::getItems(true);
+    $businessItems = Business::getItems(true);
 ?>
 <?php
 Modal::begin([

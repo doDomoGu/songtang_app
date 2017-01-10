@@ -43,13 +43,16 @@ class Business extends \yii\db\ActiveRecord
         return $list;
     }
 
-    public static function getItems(){
-        $list = self::find()->select(['id','name'])->all();
-        $arr = [];
+    public static function getItems($foreground=false){
+        $items = [];
+        $list = self::find()->where(['status'=>1])->orderBy('ord asc')->all();
         foreach($list as $l){
-            $arr[$l->id] = $l->name;
+            $items[$l->id] = $l->name;
         }
-        return $arr;
+        if($foreground){
+            $items[1] = '全员';
+        }
+        return $items;
     }
 
     public static function getIds(){

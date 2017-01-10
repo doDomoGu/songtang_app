@@ -8,8 +8,8 @@
     use ucenter\models\Area;
     use ucenter\models\Business;
 
-    $areaItems = Area::getItems();
-    $businessItems = Business::getItems();
+    $areaItems = Area::getItems(true);
+    $businessItems = Business::getItems(true);
 
 //    yun\assets\AppAsset::addCssFile($this,'css/main/dir/index.css');
     AppAsset::addCssFile($this,'css/main/dir/list.css');

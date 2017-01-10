@@ -1,8 +1,8 @@
 <?php
     use oa\assets\AppMobileAsset;
     $this->title = '发起申请';
-    $areaItems = \ucenter\models\Area::getItems();
-    $businessItems = \ucenter\models\Business::getItems();
+    $areaItems = \ucenter\models\Area::getItems(true);
+    $businessItems = \ucenter\models\Business::getItems(true);
 
     AppMobileAsset::addJsFile($this,'js/mobile/apply/create.js');
 ?>
