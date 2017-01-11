@@ -36,6 +36,8 @@ return [
             'ucenter/web/assets',
             'oa/runtime',
             'oa/web/assets',
+            'api/runtime',
+            'api/web/assets',
             'login/runtime',
             'login/web/assets',
             'yun/runtime',
@@ -52,6 +54,7 @@ return [
         'setCookieValidationKey' => [
             'ucenter/config/main-local.php',
             'oa/config/main-local.php',
+            'api/config/main-local.php',
             'login/config/main-local.php',
             'yun/config/main-local.php',
             'clientResource/config/main-local.php',
@@ -65,6 +68,8 @@ return [
             'ucenter/web/assets',
             'oa/runtime',
             'oa/web/assets',
+            'api/runtime',
+            'api/web/assets',
             'login/runtime',
             'login/web/assets',
             'yun/runtime',
@@ -80,6 +85,7 @@ return [
         'setCookieValidationKey' => [
             'ucenter/config/main-local.php',
             'oa/config/main-local.php',
+            'api/config/main-local.php',
             'login/config/main-local.php',
             'yun/config/main-local.php',
             'clientResource/config/main-local.php',

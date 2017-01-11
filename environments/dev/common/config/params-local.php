@@ -8,7 +8,7 @@ return [
     'oaAppAdminUrl' => 'http://oa.localsongtang.net/admin',
     'yunAppUrl' => 'http://yun.localsongtang.net',
     'yunAppAdminUrl' => 'http://yun.localsongtang.net/admin',
-
+    'apiAppUrl'=> 'http://api.localsongtang.net',
 
     'qiniu-accessKey' => '1nwvYZqaucoH14DZTD41GkKM1JmksrjlfNafgdu_',
     'qiniu-secretKey' => 'sV_VSSqbypX7XxoahfacjdQtoFVxr7BiLXFBrGV4',

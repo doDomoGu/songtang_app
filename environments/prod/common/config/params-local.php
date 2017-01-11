@@ -8,6 +8,7 @@ return [
     'oaAppAdminUrl' => 'http://oa.songtang.net/admin',
     'yunAppUrl' => 'http://yun.songtang.net',
     'yunAppAdminUrl' => 'http://yun.songtang.net/admin',
+    'apiAppUrl'=> 'https://api.songtang.net',
 
     'qiniu-accessKey' => 'A9vqV-lyLBGKTkGpMBEkfqyUevJN-TKVi57jNpt-',
     'qiniu-secretKey' => 'zCOYX5Uu31qAEpmJ7ZRndPnVlm-56CAH9Kq3gW-K',
