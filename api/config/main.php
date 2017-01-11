@@ -12,6 +12,11 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'api\controllers',
+    'modules' => [
+        'ucenter' => [
+            'class' => 'api\modules\ucenter\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-api',
@@ -33,7 +38,11 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-            ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['ucenter/user']
+                ],
+            ]
         ],
 
     ],
