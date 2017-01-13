@@ -4,7 +4,7 @@ namespace common\models;
 
 use Yii;
 
-class WxUserSession extends \yii\db\ActiveRecord
+class UserWxSession extends \yii\db\ActiveRecord
 {
     public $db = 'db';
     public function attributeLabels(){

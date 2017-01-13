@@ -2,33 +2,31 @@
 namespace api\controllers;
 
 use Yii;
-use yii\web\Controller;
 
-/**
- * Site controller
- */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
-        ];
-    }
 
-    /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
+
     public function actionIndex()
     {
-        return $this->render('index');
+        $errFile = '/Users/doDomoGu/dev0/api.log';
+        $get = Yii::$app->request->get();
+        $post = Yii::$app->request->post();
+
+
+        $result = json_encode(['get'=>$get,'post'=>$post]);
+        error_log(date('Y-m-d H:i:s').'  '.$result."\n",3,$errFile);
+
+        return ['get'=>$get,'post'=>$post];
+
+
+        /*return ['222','333'];
+$g = Yii::$app->request->get();
+$p = Yii::$app->request->post();
+        var_dump($g);echo '<br/>';
+        var_dump($p);echo '<br/>';
+
+
+        Yii::$app->end();*/
     }
 }

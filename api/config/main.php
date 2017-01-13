@@ -16,6 +16,9 @@ return [
         'ucenter' => [
             'class' => 'api\modules\ucenter\Module',
         ],
+        'login' => [
+            'class' => 'api\modules\login\Module',
+        ],
     ],
     'components' => [
         'request' => [
@@ -42,6 +45,8 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['ucenter/user']
                 ],
+                'site/<param:.*+>' => 'site/index',
+                'user/<param:.*+>' => 'user/index'
             ]
         ],
 
