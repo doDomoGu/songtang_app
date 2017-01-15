@@ -30,6 +30,21 @@ class Area extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getArr(){
+        return [
+            'default' => '[缺省]',
+            'headquarters' => '总部',
+            'sh' => '上海',
+            'sz' => '苏州',
+            'wx' => '无锡',
+            'nj' => '南京',
+            'ah' => '安徽',
+            'hf' => '合肥',
+            'hhht' => '呼和浩特'
+        ];
+    }
+
+
     public function getRelations(){
         $list = Structure::find()->where(['aid'=>$this->id,'did'=>0,'status'=>1])->with('business')->all();
         return $list;
@@ -74,6 +89,7 @@ class Area extends \yii\db\ActiveRecord
         }
         return $ids;
     }
+
 
     public function install() {
         try {

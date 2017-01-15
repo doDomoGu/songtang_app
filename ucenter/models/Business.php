@@ -29,6 +29,18 @@ class Business extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getArr(){
+        return [
+            'default' => '[缺省]',
+            'stdc' => '颂唐地产',
+            'stdc_2' => '颂唐唯亿地产',
+            'stgg' => '颂唐广告',
+            'rxsy' => '日鑫商业',
+            'hyfw' => '汉佑房屋',
+            'hhjj' => '鸿汉经纪',
+        ];
+    }
+
     public static function getCheckIdsTrue($checkArr){
         $return = [];
         $list = self::find()->where(['id'=>$checkArr,'status'=>1])->all();
