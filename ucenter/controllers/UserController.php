@@ -135,6 +135,8 @@ class UserController extends BaseController
                     /*echo $result[$i][$j];
                     echo '<Br/>';
                     echo '<Br/>';*/
+                    $result[$i][$j] = trim($result[$i][$j]);
+
                 }
 
                 $area = $result[$i][1];
@@ -296,7 +298,7 @@ echo '===============<Br/>';
             return 0;
         }
         $p_id = $posBase->id;
-        $posTrue = Department::find()->where(['p_id'=>$p_id,'name'=>$pos])->one();
+        $posTrue = Position::find()->where(['p_id'=>$p_id,'name'=>$pos])->one();
         if(!$posTrue){
             $posTrue = new Position();
             $posTrue->name = $pos;
