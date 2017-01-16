@@ -131,7 +131,7 @@ class UserController extends BaseController
 
         $list = User::find()->groupBy(['bid','did'])->select(['bid','did'])->all();
         foreach($list as $l){
-            $this->structAdd(0,$l->bid,$dArr[$l->did]);
+            $this->structAdd(0,$l->bid,isset($dArr[$l->did])?$dArr[$l->did]:0);
         }
 
 
@@ -139,7 +139,7 @@ class UserController extends BaseController
 
         $list = User::find()->groupBy(['aid','bid','did'])->select(['aid','bid','did'])->all();
         foreach($list as $l){
-            $this->structAdd($l->aid,$l->bid,$dArr[$l->did]);
+            $this->structAdd($l->aid,$l->bid,isset($dArr[$l->did])?$dArr[$l->did]:0);
         }
 
     }
