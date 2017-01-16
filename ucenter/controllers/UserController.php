@@ -110,7 +110,43 @@ class UserController extends BaseController
     }
 
 
-    public function actionImport(){
+    public function actionImportAll(){
+        $exist = User::find()->where(['>','id',10000])->one();
+        if($exist){
+            echo 'has imported';exit;
+        }
+
+
+        header("Content-Type: text/html; charset=UTF-8");
+
+        $arr = ['sh','sz','szgg','wx','nj','hf','hhht'];
+
+        foreach($arr as $a){
+            $handle = fopen('../users/import/'.$a.'.csv','r');
+            $this->import($handle);
+        }
+        /*上海*/
+        //$handle = fopen('../users/import/sh.csv','r');
+
+        /*苏州*/
+        //$handle = fopen('../users/import/sz.csv','r');
+        //$handle = fopen('../users/import/szgg.csv','r');
+
+        /*无锡*/
+        //$handle = fopen('../users/import/wx.csv','r');
+
+        /*南京*/
+        //$handle = fopen('../users/import/nj.csv','r');
+
+        /*合肥*/
+        //$handle = fopen('../users/import/hf.csv','r');
+
+        /*呼和浩特*/
+        //$handle = fopen('../users/import/hhht.csv','r');
+    }
+
+
+    public function import($handle){
 
         /*上海*/
         //$handle = fopen('../users/import/sh.csv','r');
@@ -129,9 +165,9 @@ class UserController extends BaseController
         //$handle = fopen('../users/import/hf.csv','r');
 
         /*呼和浩特*/
-        $handle = fopen('../users/import/hhht.csv','r');
+        //$handle = fopen('../users/import/hhht.csv','r');
 
-        header("Content-Type: text/html; charset=UTF-8");
+
         //$handle = fopen($file['tmp_name'], 'r');
         $data = [];
         $usernameList = [];
@@ -211,11 +247,11 @@ class UserController extends BaseController
                     }
                 }
 
-echo '===============<Br/>';
+echo '===============<Br/><Br/><Br/><Br/>';
             }
         }
 
-        exit;
+        //exit;
 
     }
 
