@@ -109,8 +109,66 @@ class UserController extends BaseController
         return $this->render('add_and_edit',$params);
     }
 
+    public function actionStructUpdate(){
+        //地区和业态关系
+        $list = User::find()->groupBy(['aid','bid'])->select(['aid','bid'])->all();
+        foreach($list as $l){
+            $this->structAdd($l->aid,$l->bid,0);
+        }
+
+
+        //业态和部门关系
+        //获取一级部门 id列表
+        $departs = Department::find()->all();
+        $dArr = [];
+        foreach($departs as $d){
+            if($d->p_id>0){
+                $dArr[$d->id] = $d->p_id;
+            }else{
+                $dArr[$d->id] = $d->id;
+            }
+        }
+
+        $list = User::find()->groupBy(['bid','did'])->select(['bid','did'])->all();
+        foreach($list as $l){
+            $this->structAdd(0,$l->bid,$dArr[$l->did]);
+        }
+
+
+        //整套设置
+
+        $list = User::find()->groupBy(['aid','bid','did'])->select(['aid','bid','did'])->all();
+        foreach($list as $l){
+            $this->structAdd($l->aid,$l->bid,$dArr[$l->did]);
+        }
+
+    }
+
+    public function structAdd($aid,$bid,$did){
+        $n = Structure::find()->where(['aid'=>$aid,'bid'=>$bid,'did'=>$did])->one();
+        if(!$n){
+            $n = new Structure();
+            $n->aid = $aid;
+            $n->bid = $bid;
+            $n->did = $did;
+            $n->ord = 1;
+            $n->status = 1;
+            $n->save();
+        }
+    }
+
 
     public function actionImportAll(){
+        if(Yii::$app->request->get('remove')==1){
+            User::deleteAll(['>','id',10000]);
+            Department::deleteAll(['>','id',8]);
+            Position::deleteAll(['>','id',7]);
+            Structure::deleteAll();
+
+exit;
+        }
+
+
         $exist = User::find()->where(['>','id',10000])->one();
         if($exist){
             echo 'has imported';exit;
