@@ -111,7 +111,26 @@ class UserController extends BaseController
 
 
     public function actionImport(){
-        $handle = fopen('../users/122.csv','r');
+
+        /*上海*/
+        //$handle = fopen('../users/import/sh.csv','r');
+
+        /*苏州*/
+        //$handle = fopen('../users/import/sz.csv','r');
+        //$handle = fopen('../users/import/szgg.csv','r');
+
+        /*无锡*/
+        //$handle = fopen('../users/import/wx.csv','r');
+
+        /*南京*/
+        //$handle = fopen('../users/import/nj.csv','r');
+
+        /*合肥*/
+        //$handle = fopen('../users/import/hf.csv','r');
+
+        /*呼和浩特*/
+        $handle = fopen('../users/import/hhht.csv','r');
+
         header("Content-Type: text/html; charset=UTF-8");
         //$handle = fopen($file['tmp_name'], 'r');
         $data = [];
@@ -122,12 +141,11 @@ class UserController extends BaseController
         $len_result = count($result);
         //var_dump($len_result);
         if($len_result>0){
-            $aidArr = array_flip(Area::getArr());
-            $bidArr = array_flip(Business::getArr());
+            //$aidArr = array_flip(Area::getArr());
+            //$bidArr = array_flip(Business::getArr());
 
 
 
-            //用户名(邮箱)、姓名、职位、性别、生日、手机、座机、入职日期、合同到期日期
             for ($i = 2; $i < $len_result; $i++) { //循环获取各字段值
                 foreach($result[$i] as $j => $v){
                     //$result[$i][$j] = iconv(mb_detect_encoding($v, mb_detect_order(), true), 'utf-8', $v);
@@ -152,12 +170,6 @@ class UserController extends BaseController
 
 
 
-                $aid = $this->handleArea($area);
-                $bid = $this->handleBusiness($business);
-                $did = $this->handleDepart($depart,$depart2);
-                $position_id = $this->handlePos($pos,$pos2);
-                $sex = $this->handleSex($sex);
-
 
                 var_dump($area);echo '<br/>';
                 var_dump($business);echo '<br/>';
@@ -170,29 +182,34 @@ class UserController extends BaseController
                 var_dump($sex);echo '<br/>';
                 var_dump($pos2);echo '<br/>';
 
-                if($position_id>0){
-                    $exist = User::find()->where(['username'=>$email])->one();
-                    if(!$exist){
-                        $n = new User();
-                        $n->username = $email;
-                        $n->password = md5('123123');
-                        $n->password_true = '123123';
-                        $n->name = $name;
-                        $n->aid = $aid;
-                        $n->bid = $bid;
-                        $n->did = $did;
-                        $n->position_id = $position_id;
-                        $n->gender = $sex;
-                        $n->mobile = $mobile;
-                        $n->ord = 99;
-                        $n->status = 1;
-                        $n->save();
+
+                if($name!=''){
+                    $aid = $this->handleArea($area);
+                    $bid = $this->handleBusiness($business);
+                    $did = $this->handleDepart($depart,$depart2);
+                    $position_id = $this->handlePos($pos,$pos2);
+                    $sex = $this->handleSex($sex);
+
+                    if($position_id>0){
+                        $exist = User::find()->where(['username'=>$email])->one();
+                        if(!$exist){
+                            $n = new User();
+                            $n->username = $email;
+                            $n->password = md5('123123');
+                            $n->password_true = '123123';
+                            $n->name = $name;
+                            $n->aid = $aid;
+                            $n->bid = $bid;
+                            $n->did = $did;
+                            $n->position_id = $position_id;
+                            $n->gender = $sex;
+                            $n->mobile = $mobile;
+                            $n->ord = 99;
+                            $n->status = 1;
+                            $n->save();
+                        }
                     }
                 }
-
-
-
-
 
 echo '===============<Br/>';
             }
