@@ -45,8 +45,8 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['ucenter/user']
                 ],
-                'site/<param:.*+>' => 'site/index',
-                'user/<param:.*+>' => 'user/index'
+                //'site/<param:.*+>' => 'site/index',
+                //'user/<param:.*+>' => 'user/index'
             ]
         ],
 
