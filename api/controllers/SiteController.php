@@ -9,7 +9,7 @@ class SiteController extends BaseController
 
     public function actionIndex()
     {
-        $errFile = '/Users/doDomoGu/dev0/api.log';
+        $errFile = __DIR__.'/../runtime/logs/api.log';
         $get = Yii::$app->request->get();
         $post = Yii::$app->request->post();
 
