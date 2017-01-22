@@ -19,15 +19,24 @@ class CommonFunc extends Component {
                 $helpMethod = 'help'.$funcName;
 
                 if(!method_exists($class,$helpMethod)){
-                    echo $className::className().' :: '.$helpMethod.' :not exist';exit;
+                    echo $className::className().'::'.$helpMethod.' => not exist';exit;
                 }
 
-                $list[] = ['act-url'=>$actionUrl,'help-method'=>$helpMethod,'method'=>$l];
+                $list[] = ['act-url'=>$actionUrl,'help-method'=>$helpMethod,'act-method'=>$l];
 
                 //echo $l.'<br/>';
                 //$class->$l(); echo '<br/>';
 
             }
+        }
+
+        foreach($list as $l){
+            echo '============<br/>';
+            echo $l['act-url'].'<br/>';
+            $class->$l['act-method'](); echo '<br/>';
+            $class->$l['help-method'](); echo '<br/>';
+
+
         }
 
         //var_dump($actionList);exit;

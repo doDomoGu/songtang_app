@@ -1,8 +1,8 @@
 <?php
-$classList  = ['User','Task','Help'];
+$classList  = ['User','Task'];
 foreach($classList as $c){
     echo $c,'<br/>';
     \api\components\CommonFunc::getHelp($c);
-    echo '==========<br/>';
+    echo '==========<br/><br/><Br/>';
 }
 exit;

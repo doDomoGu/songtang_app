@@ -2,13 +2,15 @@
 namespace api\controllers;
 
 use Yii;
-use yii\web\Controller;
 
-class TaskController extends Controller
+class TaskController extends BaseController
 {
-    public function actionIndex()
-    {
-        echo 'user';
+    public function actionIndex(){
+        echo 'task index';
        // Yii::$app->end();
+    }
+
+    public function helpIndex(){
+        echo 'Help : task index';
     }
 }

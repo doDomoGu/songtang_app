@@ -2,35 +2,51 @@
 namespace api\controllers;
 
 use Yii;
-use yii\web\Controller;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
-    public function actionInd1234567890exDss()
+    public function beforeAction($action)
     {
-        echo 'user';exit;
+        if (parent::beforeAction($action)) {
+            $this->allowArr = [
+                'get'=>['id'=>'int'],
+                'change'=>['id'=>'int','name'=>'str']
+            ];
+            $this->requireArr = [
+                'get'=>['id'],
+                'change'=>['id','name'],
+                'add'=>['name']
+            ];
+
+            $this->handleRequestParams();
+            return true;
+        }
+
+        return false;
+    }
+
+    public function actionGet(){
+        //$user_id = Yii::$app->request->post('')
+    }
+
+    public function helpGet(){
+        echo 'Help : user get';//exit;
         //Yii::$app->end();
     }
 
-    public function helpInd1234567890exDss()
-    {
-        echo 'help-user';exit;
-        //Yii::$app->end();
+    public function actionChange(){
+        echo 'user change';
+    }
+    
+    public function helpChange(){
+        echo 'Help : user change';
     }
 
-    public function actionIndex2Rss()
-    {
-        echo 'user222';
-        //Yii::$app->end();
+    public function actionAdd(){
+        echo 'user add';
     }
 
-    public function actionIndex3Rsad()
-    {
-        echo 'user333';
-        //Yii::$app->end();
-    }
-
-    public function help(){
-
+    public function helpAdd(){
+        echo 'Help : user add';
     }
 }
