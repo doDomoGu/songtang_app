@@ -33,7 +33,7 @@ class CommonFunc extends Component {
         foreach($list as $l){
             echo '============<br/>';
             echo $l['act-url'].'<br/>';
-            $class->$l['act-method'](); echo '<br/>';
+            //$class->$l['act-method'](); echo '<br/>';
             $class->$l['help-method'](); echo '<br/>';
 
 

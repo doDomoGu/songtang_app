@@ -1,5 +1,5 @@
 <?php
-$classList  = ['User','Task'];
+$classList  = ['user','oa'];
 foreach($classList as $c){
     echo $c,'<br/>';
     \api\components\CommonFunc::getHelp($c);

@@ -1,7 +1,6 @@
 <?php
 namespace api\controllers;
 
-use Qiniu\Http\Response;
 use Yii;
 
 class SiteController extends BaseController
