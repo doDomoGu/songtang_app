@@ -1,6 +1,7 @@
 <?php
 namespace api\controllers;
 
+use Qiniu\Http\Response;
 use Yii;
 
 class SiteController extends BaseController
@@ -28,5 +29,19 @@ $p = Yii::$app->request->post();
 
 
         Yii::$app->end();*/
+    }
+
+    public function actionError(){
+        $result = ['error_response'=>
+            [
+                'code'=>404,
+                'msg'=>'非法请求'
+            ]
+        ];
+        $response=Yii::$app->response;
+        $response->format= \yii\web\Response::FORMAT_JSON;
+        $response->data = $result;
+
+        return $response->send();
     }
 }
