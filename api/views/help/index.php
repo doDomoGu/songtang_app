@@ -1,7 +1,7 @@
 <?php
-$classList  = ['user','oa'];
+$classList  = ['User','Oa'];
 foreach($classList as $c){
-    echo $c,'<br/>';
+    echo strtolower($c),'<br/>';
     \api\components\CommonFunc::getHelp($c);
     echo '==========<br/><br/><Br/>';
 }
