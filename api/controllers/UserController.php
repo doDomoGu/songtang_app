@@ -21,8 +21,12 @@ class UserController extends BaseController
 
             if($this->handleRequestParams()==false){
 
-                $result =  ['result'=>'failure','error'=>$this->error];
-
+                $result =   ['error_response'=>
+                    [
+                        'code'=>400,
+                        'msg'=>$this->msg
+                    ]
+                ];
                 return $this->afterAction($action,$result);
 
             }
@@ -37,13 +41,24 @@ class UserController extends BaseController
     public function actionGet(){
         $id = $this->rParams['id'];
         $user = User::find()->where(['id'=>$id])->one();
-        return ['user_get_response'=>[
-            'info'=>[
-                'username'=>$user->username,
-                'name' => $user->name,
+        if($user){
+            return ['user_get_response'=>
+                [
+                    'info'=>[
+                        'username'=>$user->username,
+                        'name' => $user->name,
+                    ]
                 ]
-            ]
-        ];
+            ];
+        }else{
+            return ['error_response'=>
+                [
+                    'code'=>400,
+                    'msg'=>'用户没找到'
+                ]
+            ];
+        }
+
     }
 
     public function helpGet(){

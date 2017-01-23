@@ -11,7 +11,7 @@ class BaseController extends Controller
     public $rParams = [];  //从客户端 请求的参数
     public $allowArr = [];   //允许提交的参数   第一层下标为action名  第二层下标为参数键名 值为规定的数据格式
     public $requireArr = []; //必须提交的参数   第一层下标为action名  值为参数键名
-    public $error = '';
+    public $msg;
 
     //
     public function beforeAction($action){
@@ -62,16 +62,16 @@ class BaseController extends Controller
 
         //验证参数是否设置正确 不矛盾
         if(count(array_intersect($allowKeys,$requireKeys)) != count($requireKeys)){
-            $this->error = '方法参数设置错误';
+            $this->msg = '方法参数设置错误';
             return false;
         }else{
             //验证没有提交多余的参数
             if(count(array_intersect($allowKeys,$requestKeys)) != count($requestKeys)){
-                $this->error = '请求参数错误 （多余参数）';
+                $this->msg = '请求参数错误 （多余参数）';
                 return false;
             }else{
                 if(count(array_intersect($requestKeys,$requireKeys)) != count($requireKeys)){
-                    $this->error = '请求参数错误 （必填参数没有）';
+                    $this->msg = '请求参数错误 （必填参数没有）';
                     return false;
                 }else{
                     //TODO 格式验证
