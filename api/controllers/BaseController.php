@@ -8,9 +8,11 @@ use yii\web\Response;
 
 class BaseController extends Controller
 {
-    public $requestParams = [];  //从客户端 请求的参数
+    public $rParams = [];  //从客户端 请求的参数
     public $allowArr = [];   //允许提交的参数   第一层下标为action名  第二层下标为参数键名 值为规定的数据格式
     public $requireArr = []; //必须提交的参数   第一层下标为action名  值为参数键名
+    public $error = '';
+
     //
     public function beforeAction($action){
         if (parent::beforeAction($action)) {
@@ -43,34 +45,50 @@ class BaseController extends Controller
      */
     public function handleRequestParams(){
         $act = $this->action->id;
-        $allowArr = isset($this->allowArr[$act])?$this->allowArr[$act]:[];
-        $requireArr = isset($this->requireArr[$act])?$this->requireArr[$act]:[];
+        $allowArr = isset($this->allowArr[$act])?$this->allowArr[$act]:[];   //允许的参数
+        $requireArr = isset($this->requireArr[$act])?$this->requireArr[$act]:[];  //必填的参数
         //$post = Yii::$app->request->post();
-        $post = Yii::$app->request->get();
+
+
+        $get = Yii::$app->request->get();  //请求的参数
+        $post = Yii::$app->request->post();  //请求的参数
+        $request = array_merge($get,$post);
+
+
+
+        $allowKeys = array_keys($allowArr);
+        $requireKeys = $requireArr;
+        $requestKeys = array_keys($request);
 
         //验证参数是否设置正确 不矛盾
-        
+        if(count(array_intersect($allowKeys,$requireKeys)) != count($requireKeys)){
+            $this->error = '方法参数设置错误';
+            return false;
+        }else{
+            //验证没有提交多余的参数
+            if(count(array_intersect($allowKeys,$requestKeys)) != count($requestKeys)){
+                $this->error = '请求参数错误 （多余参数）';
+                return false;
+            }else{
+                if(count(array_intersect($requestKeys,$requireKeys)) != count($requireKeys)){
+                    $this->error = '请求参数错误 （必填参数没有）';
+                    return false;
+                }else{
+                    //TODO 格式验证
+                    $this->rParams = $request;
 
 
-
-
-        if(!empty($allowArr)){
-            //过滤allow
-            $allowKeys = array_intersect(array_keys($post),array_keys($allowArr));
-            var_dump($allowKeys);
+                    return true;
+                }
+            }
         }
-echo 1;
-        exit;
+
     }
 
     public function afterAction($action,$result){
-        if (!parent::beforeAction($action)) {
-            echo 'after action';
-            return false;
-        }else{
-            $response=Yii::$app->response;
-            $response->format=Response::FORMAT_JSON;
-            $response->data = $result;
-        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data = $result;
     }
+
 }

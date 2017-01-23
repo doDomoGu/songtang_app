@@ -1,6 +1,7 @@
 <?php
 namespace api\controllers;
 
+use ucenter\models\User;
 use Yii;
 
 class UserController extends BaseController
@@ -18,7 +19,15 @@ class UserController extends BaseController
                 'add'=>['name']
             ];
 
-            $this->handleRequestParams();
+            if($this->handleRequestParams()==false){
+
+                $result =  ['result'=>'failure','error'=>$this->error];
+
+                return $this->afterAction($action,$result);
+
+            }
+
+
             return true;
         }
 
@@ -26,7 +35,15 @@ class UserController extends BaseController
     }
 
     public function actionGet(){
-        //$user_id = Yii::$app->request->post('')
+        $id = $this->rParams['id'];
+        $user = User::find()->where(['id'=>$id])->one();
+        return ['user_get_response'=>[
+            'info'=>[
+                'username'=>$user->username,
+                'name' => $user->name,
+                ]
+            ]
+        ];
     }
 
     public function helpGet(){
