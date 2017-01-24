@@ -6,6 +6,8 @@
 # phpstorm project files
 .idea
 
+runtime/*
+
 # netbeans project files
 nbproject
 
