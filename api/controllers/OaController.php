@@ -21,7 +21,7 @@ class OaController extends BaseController{
                 'name'=>'str'
             ]
         ];
-    public $equireArr = [
+    public $requireArr = [
             'apply-get'=>[
                 'id'
             ],

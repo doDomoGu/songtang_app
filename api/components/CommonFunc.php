@@ -19,8 +19,21 @@ class CommonFunc extends Component {
         $list = [];
 
         foreach($actionList as $act){
+            $allowParam = !empty($class->allowArr[$act])?$class->allowArr[$act]:[];
+            $requireParam = !empty($class->requireArr[$act])?$class->requireArr[$act]:[];
+            $param = '';
+            foreach($allowParam as $k=>$rule){
+                if(in_array($k,$requireParam)){
+                    $param .=' * ';
+                }
+                $param.= $k .' : '.$rule;
+                $param.='<Br/>';
+            }
+
+
             $list[] = [
                 'title'=>$act,
+                'param'=>$param,
                 'desc'=>$class->getHelp($act)
             ];
         }

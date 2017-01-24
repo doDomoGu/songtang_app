@@ -1,6 +1,6 @@
 <?php
 use api\components\CommonFunc;
-$classList  = ['Oa'/*,'User'*/];
+$classList  = ['Oa','User'];
 ?>
 
 <?php foreach($classList as $c):?>
@@ -19,7 +19,8 @@ $classList  = ['Oa'/*,'User'*/];
         <tbody>
         <?php foreach($list as $l):?>
             <tr>
-                <td><?=$l['title']?></td>
+                <td class="col-lg-3"><?=strtolower($c).'/'.$l['title']?></td>
+                <td class="col-lg-3"><?=$l['param']?></td>
                 <td><?=$l['desc']?></td>
             </tr>
         <?php endforeach;?>
