@@ -19,7 +19,18 @@ class BaseController extends Controller
             //TODO  访问日志
 
             //TODO  其他逻辑代码
-            //echo 'base controller';
+
+            if($this->handleRequestParams()==false){
+
+                $result =   ['error_response'=>
+                    [
+                        'code'=>400,
+                        'msg'=>$this->msg
+                    ]
+                ];
+                return $this->afterAction($action,$result);
+
+            }
             return true;
         }
 

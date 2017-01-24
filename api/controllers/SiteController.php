@@ -2,8 +2,9 @@
 namespace api\controllers;
 
 use Yii;
+use yii\base\Controller;
 
-class SiteController extends BaseController
+class SiteController extends Controller
 {
 
 
@@ -12,22 +13,16 @@ class SiteController extends BaseController
         $errFile = __DIR__.'/../runtime/logs/api.log';
         $get = Yii::$app->request->get();
         $post = Yii::$app->request->post();
+        $result= ['get'=>$get,'post'=>$post];
 
+        error_log(date('Y-m-d H:i:s').'  '.json_encode($result)."\n",3,$errFile);
 
-        $result = json_encode(['get'=>$get,'post'=>$post]);
-        error_log(date('Y-m-d H:i:s').'  '.$result."\n",3,$errFile);
+        $response=Yii::$app->response;
+        $response->format= \yii\web\Response::FORMAT_JSON;
+        $response->data = $result;
 
-        return ['get'=>$get,'post'=>$post];
+        $response->send();
 
-
-        /*return ['222','333'];
-$g = Yii::$app->request->get();
-$p = Yii::$app->request->post();
-        var_dump($g);echo '<br/>';
-        var_dump($p);echo '<br/>';
-
-
-        Yii::$app->end();*/
     }
 
     public function actionError(){
@@ -41,6 +36,6 @@ $p = Yii::$app->request->post();
         $response->format= \yii\web\Response::FORMAT_JSON;
         $response->data = $result;
 
-        return $response->send();
+        $response->send();
     }
 }

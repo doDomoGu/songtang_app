@@ -6,6 +6,30 @@ use Yii;
 class OaController extends BaseController{
     public $helpTitle = 'OA API';
 
+    public $allowArr = [
+            'apply-get'=>[
+                'id'=>'int'
+            ],
+            'apply-create'=>[
+                'title'=>'str',
+                'task_id'=>'int',
+                'message'=>'str',
+                'user_id'=>'int'
+            ],
+            'change'=>[
+                'id'=>'int',
+                'name'=>'str'
+            ]
+        ];
+    public $equireArr = [
+            'apply-get'=>[
+                'id'
+            ],
+            'apply-create'=>[
+                'title'
+            ],
+        ];
+
     public function actions()
     {
         return [
@@ -45,34 +69,4 @@ class OaController extends BaseController{
 
         return $msg;
     }
-
-
-    public function beforeAction($action){
-        if (parent::beforeAction($action)) {
-            $this->allowArr = [
-                'apply-get'=>['id'=>'int'],
-                'apply-create'=>['title'=>'str','task_id'=>'int','message'=>'str','user_id'=>'int'],
-                'change'=>['id'=>'int','name'=>'str']
-            ];
-            $this->requireArr = [
-                'apply-get'=>['id'],
-                'apply-create'=>['title'],
-            ];
-
-            if($this->handleRequestParams()==false){
-
-                $result =   ['error_response'=>
-                    [
-                        'code'=>400,
-                        'msg'=>$this->msg
-                    ]
-                ];
-                return $this->afterAction($action,$result);
-
-            }
-            return true;
-        }
-        return false;
-    }
-
 }
