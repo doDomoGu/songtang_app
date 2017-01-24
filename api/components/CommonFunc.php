@@ -6,40 +6,29 @@ use yii;
 
 class CommonFunc extends Component {
     public static function getHelp($className){
-        $className = '\api\controllers\\'.$className.'Controller';
+        $return = [];
 
-        $funcList = get_class_methods($className::className());
-        $class = new $className('user',false);
+        $class = '\api\controllers\\'.$className.'Controller';
+
+        $class = new $class($className,false);
+
+        $actionList = array_keys($class->actions());
+
+        $return['title'] = $class->helpTitle;
 
         $list = [];
-        foreach($funcList as $l){
-            if(substr($l,0,6)=='action' && strlen($l)>6 && $l!='actions'){
-                $funcName = substr($l,6);
-                $actionUrl = self::funcNameTrans($funcName);
-                $helpMethod = 'help'.$funcName;
 
-                if(!method_exists($class,$helpMethod)){
-                    echo $className::className().'::'.$helpMethod.' => not exist';exit;
-                }
-
-                $list[] = ['act-url'=>$actionUrl,'help-method'=>$helpMethod,'act-method'=>$l];
-
-                //echo $l.'<br/>';
-                //$class->$l(); echo '<br/>';
-
-            }
+        foreach($actionList as $act){
+            $list[] = [
+                'title'=>$act,
+                'desc'=>$class->getHelp($act)
+            ];
         }
 
-        foreach($list as $l){
-            echo '============<br/>';
-            echo $l['act-url'].'<br/>';
-            //$class->$l['act-method'](); echo '<br/>';
-            $class->$l['help-method'](); echo '<br/>';
+        $return['list'] = $list;
 
 
-        }
-
-        //var_dump($actionList);exit;
+        return $return ;
 
     }
 
@@ -55,6 +44,14 @@ class CommonFunc extends Component {
 
             $new .= ($i != 0 && ($num >= 65 && $num <= 90) && (($pre >= 97 && $pre <= 122)||($pre>=48 && $pre<=57))) ? "-{$str[$i]}" : $str[$i];
         }
+
+        return strtolower($new);
+    }
+
+
+    public static function actNameTrans($str){
+        $tmp = explode('-',$str);
+
 
         return strtolower($new);
     }

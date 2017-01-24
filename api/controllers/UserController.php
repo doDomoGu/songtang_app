@@ -6,6 +6,8 @@ use Yii;
 
 class UserController extends BaseController
 {
+    public $helpTitle = 'User API';
+
     public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
@@ -62,7 +64,7 @@ class UserController extends BaseController
     }
 
     public function helpGet(){
-        echo 'Help : user get';//exit;
+        return 'Help : user get';//exit;
         //Yii::$app->end();
     }
 
@@ -71,7 +73,7 @@ class UserController extends BaseController
     }
     
     public function helpChange(){
-        echo 'Help : user change';
+        return 'Help : user change';
     }
 
     public function actionAdd(){
@@ -79,6 +81,6 @@ class UserController extends BaseController
     }
 
     public function helpAdd(){
-        echo 'Help : user add';
+        return 'Help : user add';
     }
 }
