@@ -2,8 +2,8 @@
 namespace api\modules\ucenter\controllers;
 //include_once '../../common/extensions/qiniu-crypt/wxBizDataCrypt.php';
 
-use common\models\UserWxOpenid;
-use common\models\WxUserSession;
+use ucenter\models\UserWxOpenid;
+use ucenter\models\WxUserSession;
 use ucenter\models\User;
 use yii\rest\ActiveController;
 use yii\web\Response;

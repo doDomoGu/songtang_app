@@ -1,12 +1,15 @@
 <?php
 
-namespace common\models;
+namespace ucenter\models;
 
 use Yii;
 
 class UserAppAuth extends \yii\db\ActiveRecord
 {
-    public $db = 'db';
+    public static function getDb(){
+        return Yii::$app->db_ucenter;
+    }
+
     public function attributeLabels(){
         return [
             'app'=>'app名称',

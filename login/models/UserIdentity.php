@@ -2,7 +2,7 @@
 
 namespace login\models;
 
-use common\models\UserAppAuth;
+use ucenter\models\UserAppAuth;
 use ucenter\models\User;
 use Yii;
 

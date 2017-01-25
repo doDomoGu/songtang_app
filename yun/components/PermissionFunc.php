@@ -3,7 +3,7 @@ namespace yun\components;
 
 //use app\models\Group;
 //use app\models\User;
-use common\models\UserAppAuth;
+use ucenter\models\UserAppAuth;
 use yii\base\Component;
 //use app\models\PositionDirPermission;
 use yii;

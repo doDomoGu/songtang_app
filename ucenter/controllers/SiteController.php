@@ -8,7 +8,7 @@ use ucenter\models\Department;
 use ucenter\models\Position;
 use ucenter\models\Structure;
 use ucenter\models\User;
-use common\models\UserAppAuth;
+use ucenter\models\UserAppAuth;
 use Yii;
 //use ucenter\models\LoginForm;
 use yii\web\Response;

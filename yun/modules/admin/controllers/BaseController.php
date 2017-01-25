@@ -4,7 +4,7 @@ namespace yun\modules\admin\controllers;
 use yun\modules\admin\components\AdminFunc;
 use Yii;
 use yii\web\Controller;
-use common\models\UserAppAuth;
+use ucenter\models\UserAppAuth;
 
 class  BaseController extends Controller
 {

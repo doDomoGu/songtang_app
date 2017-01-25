@@ -1,7 +1,7 @@
 <?php
 namespace yun\controllers;
 
-use common\models\UserAppAuth;
+use ucenter\models\UserAppAuth;
 use yun\components\PermissionFunc;
 use yun\models\MessageUser;
 use yun\models\Position;

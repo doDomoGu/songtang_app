@@ -1,8 +1,8 @@
 <?php
 namespace api\modules\login\controllers;
 
-use common\models\UserWxOpenid;
-use common\models\UserWxSession;
+use ucenter\models\UserWxOpenid;
+use ucenter\models\UserWxSession;
 use ucenter\models\User;
 use yii\rest\ActiveController;
 use yii\web\Response;

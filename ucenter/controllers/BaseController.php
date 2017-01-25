@@ -1,7 +1,7 @@
 <?php
 namespace ucenter\controllers;
 
-use common\models\UserAppAuth;
+use ucenter\models\UserAppAuth;
 use Yii;
 use yii\web\Controller;
 

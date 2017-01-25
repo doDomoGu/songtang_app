@@ -1,12 +1,14 @@
 <?php
 
-namespace common\models;
+namespace ucenter\models;
 
 use Yii;
 
 class UserWxOpenid extends \yii\db\ActiveRecord
 {
-    public $db = 'db';
+    public static function getDb(){
+        return Yii::$app->db_ucenter;
+    }
     public function attributeLabels(){
         return [
             'appid'=>'appID',
