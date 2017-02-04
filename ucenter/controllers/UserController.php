@@ -109,7 +109,7 @@ class UserController extends BaseController
         return $this->render('add_and_edit',$params);
     }
 
-    public function actionStructUpdate(){
+    public function action8000gt5(){
         //地区和业态关系
         $list = User::find()->groupBy(['aid','bid'])->select(['aid','bid'])->all();
         foreach($list as $l){
@@ -178,9 +178,9 @@ exit;
         header("Content-Type: text/html; charset=UTF-8");
 
         $arr = ['sh','sz','szgg','wx','nj','hf','hhht'];
-
+        $arr = ['sh'];
         foreach($arr as $a){
-            $handle = fopen('../users/import/'.$a.'.csv','r');
+            $handle = fopen('../users/import2/'.$a.'.csv','r');
             $this->import($handle);
         }
         /*上海*/

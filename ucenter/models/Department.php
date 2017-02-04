@@ -69,7 +69,7 @@ class Department extends \yii\db\ActiveRecord
                 throw new \yii\base\Exception('Department has installed');
             } else {
                 $arr = [
-                    ['a' => 'default', 'n' => '【缺省】'],
+                    ['a' => 'default', 'n' => '[缺省]'],
                     ['a' => 'fzgkzx', 'n' => '发展管控中心'],
                     ['a' => 'xzgkzx', 'n' => '行政管控中心'],
                     ['a' => 'cwgkzx', 'n' => '财务管控中心'],

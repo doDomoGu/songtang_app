@@ -115,8 +115,8 @@ foreach($list as $l){
         $n = new Department();
         $n->install();
 
-        $n = new Structure();
-        $n->install();
+//        $n = new Structure();
+//        $n->install();
 
         $n = new Position();
         $n->install();

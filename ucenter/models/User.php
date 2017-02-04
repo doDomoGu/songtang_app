@@ -59,6 +59,7 @@ class User extends \yii\db\ActiveRecord
 
 
                 $m = new User();
+                $m->id= 10000;
                 $m->username = 'admin@songtang.net';
                 $m->password = md5('123123');
                 $m->password_true = '123123';
@@ -70,7 +71,7 @@ class User extends \yii\db\ActiveRecord
                 $m->ord = 1;
                 $m->status = 1;
                 $m->save();
-                $arr = [
+                /*$arr = [
                     ['zj','张总监'],
                     ['zjl','张总经理'],
                     ['zj2','王总监'],
@@ -101,7 +102,7 @@ class User extends \yii\db\ActiveRecord
                     $m->ord = 1;
                     $m->status = 1;
                     $m->save();
-                }
+                }*/
                 echo 'User install finish'."<br/>";
             }
             return true;
