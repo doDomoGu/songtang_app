@@ -63,7 +63,7 @@ class Position extends \yii\db\ActiveRecord
                     'zj' => '总监',
                     'jl' => '经理',
                     'zg' => '主管',
-                    'ptzy' => '普通职员'
+                    'zy' => '专员'
                 ];
                 $ord = 1;
                 foreach($arr as $k=>$v) {
