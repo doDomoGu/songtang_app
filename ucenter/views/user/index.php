@@ -1,6 +1,7 @@
 <?php
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
+use common\components\CommonFunc;
     $this->title = '职员管理';
     //app\assets\AppAsset::addJsFile($this,'js/main/structure/index.js');
 ?>
@@ -32,9 +33,9 @@ use yii\bootstrap\Html;
                 <td><?=$bArr[$l->bid]?></td>
                 <td><?=\ucenter\models\Department::getFullRoute([$l->did])?></td>
                 <td><?=$pArr[$l->position_id]?></td>
-                <td><?=$l->gender?></td>
+                <td><?=CommonFunc::getGenderCn($l->gender)?></td>
                 <td><?=$l->birthday?></td>
-                <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
+                <td><?=CommonFunc::getStatusCn($l->status)?></td>
                 <td>
                     <?/*=Html::a('添加业态','script:void(0)',['data-pid'=>$l->aid,'data-pname'=>$aArr[$l->aid],'data-type'=>'area','data-toggle'=>"modal",'data-target'=>"#addModal",'class'=>'btn btn-xs btn-success'])*/?>
                 </td>
