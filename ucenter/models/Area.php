@@ -40,7 +40,7 @@ class Area extends \yii\db\ActiveRecord
             'nj' => '南京',
             'ah' => '安徽',
             'hf' => '合肥',
-            'hhht' => '呼和浩特'
+            'nmg' => '内蒙古'
         ];
     }
 

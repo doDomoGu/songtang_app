@@ -59,6 +59,7 @@ class Position extends \yii\db\ActiveRecord
                 $arr = [
                     'dsz' => '董事长',
                     'zjl' => '总经理',
+                    'fzjl' => '副总经理',
                     'zj' => '总监',
                     'jl' => '经理',
                     'zg' => '主管',
