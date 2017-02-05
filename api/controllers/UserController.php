@@ -9,12 +9,14 @@ class UserController extends BaseController{
 
     public $allowArr = [
             'info-get'=>['id'=>'int'],
-            'change'=>['id'=>'int','name'=>'str']
+            'wx-code-to-session'=>['code'=>'str'],
+            'wx-encrypted-data'=>['session_key'=>'str','encryptedData'=>'str','iv'=>'str']
         ];
     public $requireArr = [
             'info-get'=>['id'],
-            'change'=>['id','name'],
-            'add'=>['name']
+            'wx-code-to-session'=>['code'],
+            'wx-encrypted-data'=>['session_key','encryptedData','iv']
+            //'add'=>['name']
         ];
 
     public function actions()
@@ -22,6 +24,12 @@ class UserController extends BaseController{
         return [
             'info-get'=>[
                 'class'=>'api\controllers\user\info\get',
+            ],
+            'wx-code-to-session'=>[
+                'class'=>'api\controllers\user\wx\codeToSession',
+            ],
+            'wx-encrypted-data'=>[
+                'class'=>'api\controllers\user\wx\encryptedData',
             ],
         ];
     }
