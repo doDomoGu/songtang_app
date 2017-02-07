@@ -9,13 +9,17 @@ class UserController extends BaseController{
 
     public $allowArr = [
             'info-get'=>['id'=>'int'],
+            'login'=>['username'=>'str','password'=>'str'],
             'wx-code-to-session'=>['code'=>'str'],
-            'wx-encrypted-data'=>['session_key'=>'str','encryptedData'=>'str','iv'=>'str']
+            'wx-encrypted-data'=>['session_key'=>'str','encryptedData'=>'str','iv'=>'str'],
+            'wx-bind-user'=>['user_id'=>'str','openid'=>'str']
         ];
     public $requireArr = [
             'info-get'=>['id'],
+            'login'=>['username','password'],
             'wx-code-to-session'=>['code'],
-            'wx-encrypted-data'=>['session_key','encryptedData','iv']
+            'wx-encrypted-data'=>['session_key','encryptedData','iv'],
+            'wx-bind-user'=>['user_id','openid']
             //'add'=>['name']
         ];
 
@@ -25,11 +29,17 @@ class UserController extends BaseController{
             'info-get'=>[
                 'class'=>'api\controllers\user\info\get',
             ],
+            'login'=>[
+                'class'=>'api\controllers\user\login\index',
+            ],
             'wx-code-to-session'=>[
                 'class'=>'api\controllers\user\wx\codeToSession',
             ],
             'wx-encrypted-data'=>[
                 'class'=>'api\controllers\user\wx\encryptedData',
+            ],
+            'wx-bind-user'=>[
+                'class'=>'api\controllers\user\wx\bindUser',
             ],
         ];
     }
