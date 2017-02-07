@@ -11,27 +11,34 @@ class index extends Action {
         $username = $this->controller->rParams['username'];
         $password = $this->controller->rParams['password'];
 
-
-        $user = User::find()->where(['username'=>$username])->one();
-        if(!$user){
-            $msg = '该用户名不存在';
+        if($username==''){
+            $msg = '用户名不能为空';
         }else{
-            if(!$user->validatePassword($password)){
-                $msg = '用户名或者密码错误';
+            if(substr($username,-13)!='@songtang.net'){
+                $username .='@songtang.net';
+            }
+            $user = User::find()->where(['username'=>$username])->one();
+            if(!$user){
+                $msg = '该用户名不存在';
             }else{
-                if($user->status!=1){
-                    $msg = '该用户被禁用';
+                if(!$user->validatePassword($password)){
+                    $msg = '用户名或者密码错误';
                 }else{
-                    $success = true;
+                    if($user->status!=1){
+                        $msg = '该用户被禁用';
+                    }else{
+                        $success = true;
+                    }
                 }
             }
         }
 
 
+
         if($success){
-            return ['user_get_response'=>
+            return ['user_login_response'=>
                 [
-                    'info'=>[
+                    'userinfo'=>[
                         'user_id'=>$user->id,
                         'username'=>$user->username,
                         'name' => $user->name,
