@@ -13,6 +13,7 @@ class UserController extends BaseController{
             'wx-code-to-session'=>['code'=>'str'],
             'wx-encrypted-data'=>['session_key'=>'str','encryptedData'=>'str','iv'=>'str'],
             'wx-bind-user'=>['user_id'=>'str','session_3rd'=>'str'],
+            'wx-unbind-user'=>['user_id'=>'str','session_3rd'=>'str'],
             'wx-get-3rd-session'=>['code'=>'str']
         ];
     public $requireArr = [
@@ -21,6 +22,7 @@ class UserController extends BaseController{
             'wx-code-to-session'=>['code'],
             'wx-encrypted-data'=>['session_key','encryptedData','iv'],
             'wx-bind-user'=>['user_id','session_3rd'],
+            'wx-unbind-user'=>['user_id','session_3rd'],
             'wx-get-3rd-session'=>['code']
             //'add'=>['name']
         ];
@@ -46,6 +48,9 @@ class UserController extends BaseController{
             'wx-bind-user'=>[
                 'class'=>'api\controllers\user\wx\bindUser',
             ],
+            'wx-unbind-user'=>[
+                'class'=>'api\controllers\user\wx\unbindUser',
+            ]
         ];
     }
 
