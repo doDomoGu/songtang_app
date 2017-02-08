@@ -19,6 +19,9 @@ class OaController extends BaseController{
             'change'=>[
                 'id'=>'int',
                 'name'=>'str'
+            ],
+            'task-getall'=>[
+                'apply_user'=>'int'
             ]
         ];
     public $requireArr = [
