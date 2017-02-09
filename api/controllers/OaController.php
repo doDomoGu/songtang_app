@@ -14,7 +14,8 @@ class OaController extends BaseController{
                 'title'=>'str',
                 'task_id'=>'int',
                 'message'=>'str',
-                'user_id'=>'int'
+                'user_id'=>'int',
+                'session_3rd'=>'str'
             ],
             'change'=>[
                 'id'=>'int',
@@ -22,6 +23,9 @@ class OaController extends BaseController{
             ],
             'task-getall'=>[
                 'apply_user'=>'int'
+            ],
+            'apply-getall'=>[
+                'user_id'=>'int'
             ]
         ];
     public $requireArr = [

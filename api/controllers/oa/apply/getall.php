@@ -8,7 +8,17 @@ class getall extends Action {
     public function run() {
         $errormsg = '';
         $result = false;
-        $apply = Apply::find()->all();
+
+        $user_id = $this->controller->rParams['user_id'];
+
+
+        $query = Apply::find();
+        if($user_id>0){
+
+            $query = $query->andWhere(['user_id'=>$user_id]);
+        }
+
+        $apply = $query->all();
         if(!empty($apply)){
             $result = true;
             $list = [];
