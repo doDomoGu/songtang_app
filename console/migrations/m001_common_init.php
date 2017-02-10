@@ -2,13 +2,11 @@
 
 use yii\db\Migration;
 
-class m161128_194427_common_init extends Migration
+class m001_common_init extends Migration
 {
     //db 默认 common
-    public function up()
-    {
-
-
+    public function up(){
+return true;
         $this->createTable('global_config',[
             'id'=>$this->primaryKey(11),
             'name'=>$this->string(255)->notNull(),
@@ -16,6 +14,9 @@ class m161128_194427_common_init extends Migration
             'title'=>$this->string(255),
             'configable'=>$this->smallInteger(1)
         ]);
+
+
+
         $this->createTable('sms',[
             'id'=>$this->primaryKey(11),
             'user_id'=>$this->integer(11),

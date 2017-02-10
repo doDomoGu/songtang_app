@@ -1,11 +1,13 @@
 <?php
-
 namespace ucenter\models;
 
 use Yii;
-//地区
-class Area extends \yii\db\ActiveRecord
-{
+
+//District      地区 (地方,行政划分)
+
+class District extends \yii\db\ActiveRecord{
+    const DEFAULT_ID = '';
+
 
     public static function getDb(){
         return Yii::$app->db_ucenter;
@@ -32,15 +34,14 @@ class Area extends \yii\db\ActiveRecord
 
     public static function getArr(){
         return [
-            'default' => '[缺省]',
-            'headquarters' => '总部',
+            'default' => '--',
+            'hq' => '总部',
             'sh' => '上海',
             'sz' => '苏州',
             'wx' => '无锡',
             'nj' => '南京',
-            'ah' => '安徽',
             'hf' => '合肥',
-            'nmg' => '内蒙古'
+            'hhht' => '呼和浩特'
         ];
     }
 
@@ -69,14 +70,14 @@ class Area extends \yii\db\ActiveRecord
         return $arr;
     }
 
-    public static function getItems($foreground=false){
+    public static function getItems($frontend=false){
         $items = [];
         $list = self::find()->where(['status'=>1])->orderBy('ord asc')->all();
         foreach($list as $l){
             $items[$l->id] = $l->name;
         }
-        if($foreground){
-            $items[1] = '全员';
+        if($frontend){  //前台 默认值显示设置
+            $items[] = '全员';
         }
         return $items;
     }
@@ -110,7 +111,7 @@ class Area extends \yii\db\ActiveRecord
                 ];
                 $ord = 1;
                 foreach($arr as $k=>$v) {
-                    $m = new Area();
+                    $m = new self();
                     $m->name = $v;
                     $m->alias = $k;
                     $m->ord = $ord;
@@ -118,23 +119,15 @@ class Area extends \yii\db\ActiveRecord
                     $m->save();
                     $ord++;
                 }
-                echo 'Area install finish'."<br/>";
+                echo 'District install finish'."<br/>";
             }
             return true;
         }catch (\Exception $e)
         {
-            //echo  'Dept_Area  install failed<br />';
             $message = $e->getMessage() . "\n";
             $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
             echo $message;
             echo '<br/>';
-
-            /*echo '<br/><br/>';
-            var_dump($e);
-            echo '<br/><br/>';
-            var_dump($errorInfo);*/
-
-            //throw new \Exception($message, $errorInfo, (int) $e->getCode(), $e);
             return false;
         }
     }
