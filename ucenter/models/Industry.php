@@ -3,8 +3,9 @@
 namespace ucenter\models;
 
 use Yii;
-//业态
-class Business extends \yii\db\ActiveRecord
+//Industry      行业 (产业)
+
+class Industry extends \yii\db\ActiveRecord
 {
     public static function getDb(){
         return Yii::$app->db_ucenter;
@@ -31,13 +32,12 @@ class Business extends \yii\db\ActiveRecord
 
     public static function getArr(){
         return [
-            'default' => '[缺省]',
-            'stdc' => '颂唐地产',
-            'stdc_2' => '颂唐唯亿地产',
-            'stgg' => '颂唐广告',
-            'rxsy' => '日鑫商业',
-            'hyfw' => '汉佑房屋',
-            'hhjj' => '鸿汉经纪',
+            'default' => '--',
+            'dc' => '地产',
+            'gg' => '广告',
+            'sy' => '商业',
+            'fw' => '房屋',
+            'jj' => '经纪',
         ];
     }
 
@@ -62,7 +62,8 @@ class Business extends \yii\db\ActiveRecord
             $items[$l->id] = $l->name;
         }
         if($foreground){
-            $items[1] = '全员';
+            $default = self::find()->where(['alias'=>'default'])->one();
+            $items[$default->id] = '全员';
         }
         return $items;
     }
@@ -89,20 +90,12 @@ class Business extends \yii\db\ActiveRecord
         try {
             $exist = self::find()->one();
             if ($exist) {
-                throw new \yii\base\Exception('Business has installed');
+                throw new \yii\base\Exception('Industry has installed');
             }else{
-                $arr = [
-                    'default' => '[缺省]',
-                    'stdc' => '颂唐地产',
-                    'stdc_2' => '颂唐唯亿地产',
-                    'stgg' => '颂唐广告',
-                    'rxsy' => '日鑫商业',
-                    'hyfw' => '汉佑房屋',
-                    'hhjj' => '鸿汉经纪',
-                ];
+                $arr = self::getArr();
                 $ord = 1;
                 foreach ($arr as $k => $v) {
-                    $m = new Business();
+                    $m = new self();
                     $m->name = $v;
                     $m->alias = $k;
                     $m->ord = $ord;
@@ -111,7 +104,7 @@ class Business extends \yii\db\ActiveRecord
                     $ord++;
                 }
 
-                echo 'Business install finish' . "<br/>";
+                echo 'Industry install finish' . "<br/>";
             }
             return true;
         }catch (\Exception $e)

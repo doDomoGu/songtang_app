@@ -6,7 +6,7 @@ class m001_common_init extends Migration
 {
     //db 默认 common
     public function up(){
-return true;
+
         $this->createTable('global_config',[
             'id'=>$this->primaryKey(11),
             'name'=>$this->string(255)->notNull(),

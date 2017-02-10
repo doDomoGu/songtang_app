@@ -2,13 +2,10 @@
 namespace ucenter\models;
 
 use Yii;
+//Company       公司
 
-//District      地区 (地方,行政划分)
-
-class District extends \yii\db\ActiveRecord{
-    const DEFAULT_ID = '';
-
-
+class Company extends \yii\db\ActiveRecord
+{
     public static function getDb(){
         return Yii::$app->db_ucenter;
     }
@@ -26,7 +23,7 @@ class District extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['name', 'alias', 'ord', 'status'], 'required'],
+            [['name', 'ord', 'status'], 'required'],
             [['id', 'ord', 'status'], 'integer'],
             [['name','alias'],'safe'],
         ];
@@ -35,48 +32,36 @@ class District extends \yii\db\ActiveRecord{
     public static function getArr(){
         return [
             'default' => '--',
-            'hq' => '总部',
-            'sh' => '上海',
-            'sz' => '苏州',
-            'wx' => '无锡',
-            'nj' => '南京',
-            'hf' => '合肥',
-            'hhht' => '呼和浩特'
+            'stdc' => '颂唐地产',
+            'stwydc' => '颂唐唯亿地产',
+            'stgg' => '颂唐广告',
+            'rxsy' => '日鑫商业',
+            'hyfw' => '汉佑房屋',
+            'hhjj' => '鸿汉经纪',
         ];
     }
 
+    public static function getCheckIdsTrue($checkArr){
+        $return = [];
+        $list = self::find()->where(['id'=>$checkArr,'status'=>1])->all();
+        foreach($list as $l){
+            $return[] = $l->id;
+        }
+        return $return;
+    }
 
     public function getRelations(){
-        $list = Structure::find()->where(['aid'=>$this->id,'did'=>0,'status'=>1])->with('business')->all();
+        $list = Structure::find()->where(['aid'=>0,'bid'=>$this->id,'status'=>1])->with('department')->all();
         return $list;
     }
 
-    public static function getNameArr(){
-        $list = self::find()->select(['id','name'])->all();
-        $arr = [];
-        foreach($list as $l){
-            $arr[$l->id] = $l->name;
-        }
-        return $arr;
-    }
-
-
-    public static function getRelationsArr($aid){
-        $list = Structure::find()->where(['aid'=>$aid,'did'=>0,'status'=>1])->with('business')->all();
-        $arr = [];
-        foreach($list as $l){
-            $arr[$l->bid] = $l->business->name;
-        }
-        return $arr;
-    }
-
-    public static function getItems($frontend=false){
+    public static function getItems($foreground=false){
         $items = [];
         $list = self::find()->where(['status'=>1])->orderBy('ord asc')->all();
         foreach($list as $l){
             $items[$l->id] = $l->name;
         }
-        if($frontend){  //前台 默认值显示设置
+        if($foreground){
             $default = self::find()->where(['alias'=>'default'])->one();
             $items[$default->id] = '全员';
         }
@@ -92,16 +77,24 @@ class District extends \yii\db\ActiveRecord{
         return $ids;
     }
 
+    public static function getNameArr(){
+        $list = self::find()->select(['id','name'])->all();
+        $arr = [];
+        foreach($list as $l){
+            $arr[$l->id] = $l->name;
+        }
+        return $arr;
+    }
 
     public function install() {
         try {
             $exist = self::find()->one();
-            if($exist){
-                throw new \yii\base\Exception('District has installed');
+            if ($exist) {
+                throw new \yii\base\Exception('Company has installed');
             }else{
                 $arr = self::getArr();
                 $ord = 1;
-                foreach($arr as $k=>$v) {
+                foreach ($arr as $k => $v) {
                     $m = new self();
                     $m->name = $v;
                     $m->alias = $k;
@@ -110,27 +103,20 @@ class District extends \yii\db\ActiveRecord{
                     $m->save();
                     $ord++;
                 }
-                echo 'District install finish'."<br/>";
+
+                echo 'Company install finish' . "<br/>";
             }
             return true;
         }catch (\Exception $e)
         {
             $message = $e->getMessage() . "\n";
-            $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
             echo $message;
             echo '<br/>';
+
             return false;
         }
     }
 
-    public static function getCheckIdsTrue($checkArr){
-        $return = [];
-        $list = self::find()->where(['id'=>$checkArr,'status'=>1])->all();
-        foreach($list as $l){
-            $return[] = $l->id;
-        }
-        return $return;
-    }
 
     public static function ordUp($id){
         $result = false;
@@ -207,5 +193,4 @@ class District extends \yii\db\ActiveRecord{
         }
         return $result;
     }
-
 }
