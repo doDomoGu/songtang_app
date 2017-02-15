@@ -15,7 +15,8 @@ use common\components\CommonFunc;
             <th>用户名</th>
             <th>姓名</th>
             <th>地区 <?/*=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])*/?></th>
-            <th>业态 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr2,['prompt'=>'----','id'=>'business-select']):''*/?></th>
+            <th>行业 <?/*=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])*/?></th>
+            <th>公司 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr2,['prompt'=>'----','id'=>'business-select']):''*/?></th>
             <th>部门</th>
             <th>职位</th>
             <th>性别</th>
@@ -29,10 +30,11 @@ use common\components\CommonFunc;
                 <td><?=$l->id?></td>
                 <td><?=$l->username?></td>
                 <td><?=$l->name?></td>
-                <td><?=$aArr[$l->aid]?></td>
-                <td><?=$bArr[$l->bid]?></td>
-                <td><?=\ucenter\models\Department::getFullRoute([$l->did])?></td>
-                <td><?=$pArr[$l->position_id]?></td>
+                <td><?=$districtArr[$l->district_id]?></td>
+                <td><?=$industryArr[$l->industry_id]?></td>
+                <td><?=$companyArr[$l->company_id]?></td>
+                <td><?=\ucenter\models\Department::getFullRoute([$l->department_id])?></td>
+                <td><?=$positionArr[$l->position_id]?></td>
                 <td><?=CommonFunc::getGenderCn($l->gender)?></td>
                 <td><?=$l->birthday?></td>
                 <td><?=CommonFunc::getStatusCn($l->status)?></td>

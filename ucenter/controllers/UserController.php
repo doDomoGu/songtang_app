@@ -21,13 +21,15 @@ class UserController extends BaseController
 
 
         $params['list'] = $list;
-        $params['aArr'] = Area::getNameArr();
-        $params['bArr'] = Business::getNameArr();
-        $params['pArr'] = Position::getNameArr();
-        $params['bArr2'] = Area::getRelationsArr($aid);
+        $params['districtArr'] = District::getNameArr();
+        $params['industryArr'] = Industry::getNameArr();
+        $params['companyArr'] = Company::getNameArr();
+        $params['departmentArr'] = Department::getNameArr();
+        $params['positionArr'] = Position::getNameArr();
+        //$params['bArr2'] = Area::getRelationsArr($aid);
 
-        $params['aid'] = $aid;
-        $params['bid'] = $bid;
+        //$params['aid'] = $aid;
+        //$params['bid'] = $bid;
 
         return $this->render('index',$params);
     }
@@ -191,8 +193,8 @@ exit;
 
         header("Content-Type: text/html; charset=UTF-8");
 
-        $arr = ['sh','sz','szgg','wx','nj','hf','nmg'];
-        //$arr = ['sh'];
+        //$arr = ['sh','sz','szgg','wx','nj','hf','nmg'];
+        $arr = ['sh'];
         foreach($arr as $a){
             $handle = fopen('../users/import3/'.$a.'.csv','r');
             $this->import($handle);
