@@ -1,5 +1,4 @@
 <?php
-
 namespace ucenter\models;
 
 use Yii;
@@ -14,13 +13,10 @@ class Structure extends \yii\db\ActiveRecord
 
     public function attributeLabels(){
         return [
-            'aid' => '地区',
-            'bid' => '业态',
-            'did' => '部门',
-            /*'class_p_id' => '父ID',
-            'class_level' => '级数',
-
-            'is_last' => '是否排序最后',*/
+            'district_id' => '地区',
+            'industry_id' => '行业',
+            'company_id' => '公司',
+            'department_id' => '部门',
             'ord' => '排序',
             'status' => '状态'
         ];
@@ -29,7 +25,7 @@ class Structure extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'aid', 'bid', 'did','ord', 'status'], 'integer'],
+            [[ 'district_id', 'industry_id', 'company_id', 'department_id', 'ord', 'status'], 'integer'],
         ];
     }
 
@@ -43,7 +39,7 @@ class Structure extends \yii\db\ActiveRecord
                     'default'=>[
                         'default'=>['default']
                     ],
-                    'headquarters'=>[
+                    'hq'=>[
                         'default'=>[
                             'fzgkzx',
                             'xzgkzx',
@@ -203,12 +199,16 @@ class Structure extends \yii\db\ActiveRecord
         return $arr;
     }
 
-    public function getBusiness(){
-        return $this->hasOne('ucenter\models\Business', array('id' => 'bid'));
+    public function getIndustry(){
+        return $this->hasOne(Industry::className(), array('id' => 'industry_id'));
+    }
+
+    public function getCompany(){
+        return $this->hasOne(Company::className(), array('id' => 'company_id'));
     }
 
     public function getDepartment(){
-        return $this->hasOne('ucenter\models\Department', array('id' => 'did'));
+        return $this->hasOne(Department::className(), array('id' => 'department_id'));
     }
 
 

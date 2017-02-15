@@ -12,11 +12,13 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $username;
     public $password;
     public $name;
-    public $aid;
-    public $area;
-    public $bid;
-    public $business;
-    public $did;
+    public $district_id;
+    public $district;
+    public $industry_id;
+    public $industry;
+    public $company_id;
+    public $company;
+    public $department_id;
     public $department;
     public $position_id;
     public $position;
@@ -54,11 +56,13 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 'username' => $user->username,
                 'password' => $user->password,
                 'name'=>$user->name,
-                'aid'=>$user->aid,
-                'area'=>$user->area->name,
-                'bid'=>$user->bid,
-                'business'=>$user->business->name,
-                'did'=>$user->did,
+                'district_id'=>$user->district_id,
+                'district'=>$user->district->name,
+                'industry_id'=>$user->industry_id,
+                'industry'=>$user->industry->name,
+                'company_id'=>$user->company_id,
+                'company'=>$user->company->name,
+                'department_id'=>$user->department_id,
                 'department'=>$user->getDepartmentFullRoute(),
                 'position_id'=>$user->position_id,
                 'position'=>$user->position->name,

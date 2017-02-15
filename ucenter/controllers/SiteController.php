@@ -4,7 +4,10 @@ namespace ucenter\controllers;
 
 use ucenter\models\Area;
 use ucenter\models\Business;
+use ucenter\models\Company;
 use ucenter\models\Department;
+use ucenter\models\District;
+use ucenter\models\Industry;
 use ucenter\models\Position;
 use ucenter\models\Structure;
 use ucenter\models\User;
@@ -106,10 +109,13 @@ foreach($list as $l){
     }
 
     public function actionInstall(){
-        $n = new Area();
+        $n = new District();
         $n->install();
 
-        $n = new Business();
+        $n = new Industry();
+        $n->install();
+
+        $n = new Company();
         $n->install();
 
         $n = new Department();

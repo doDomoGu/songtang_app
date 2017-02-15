@@ -21,9 +21,10 @@ class User extends \yii\db\ActiveRecord
             'password' => '密码',
             'password_true' => '密码22',
             'name' => '姓名',
-            'aid' => '地区id',
-            'bid' => '业态id',
-            'did' => '部门id',
+            'district_id' => '地区id',
+            'industry_id' => '行业id',
+            'company_id' => '公司id',
+            'department_id' => '部门id',
             'position_id' => '职位id',
             'gender' => '性别',
             'birthday' => '生日',
@@ -42,7 +43,7 @@ class User extends \yii\db\ActiveRecord
         return [
             [['username', 'password', 'name', 'ord', 'status'], 'required'],
             ['username','unique'],
-            [['id', 'ord', 'status', 'aid','bid','did','position_id', 'gender'], 'integer'],
+            [['id', 'ord', 'status', 'district_id','industry_id','company_id','department_id','position_id', 'gender'], 'integer'],
             //['username','email'],
             ['username','unique','on'=>'create', 'targetClass' => self::className(), 'message' => '此用户名已经被使用。'],
             [[ 'birthday', 'join_date', 'contract_date', 'mobile', 'phone', 'describe','password_true'], 'safe']
@@ -56,18 +57,22 @@ class User extends \yii\db\ActiveRecord
             if($exist){
                 throw new \yii\base\Exception('User has installed');
             }else{
-
+                $district = District::find()->where(['alias'=>'default'])->one();
+                $industry = Industry::find()->where(['alias'=>'default'])->one();
+                $company = Company::find()->where(['alias'=>'default'])->one();
+                $department = Department::find()->where(['alias'=>'default'])->one();
+                $position = Position::find()->where(['alias'=>'default','p_id'=>0])->one();
 
                 $m = new User();
-                $m->id= 10000;
                 $m->username = 'admin@songtang.net';
                 $m->password = md5('123123');
                 $m->password_true = '123123';
-                $m->aid = 1;
-                $m->bid = 1;
-                $m->did = 1;
+                $m->district_id = $district->id;
+                $m->industry_id = $industry->id;
+                $m->company_id = $company->id;
+                $m->department_id = $department->id;
                 $m->name = '管理员';
-                $m->position_id = 1;
+                $m->position_id = $position->id;
                 $m->ord = 1;
                 $m->status = 1;
                 $m->save();
@@ -117,16 +122,20 @@ class User extends \yii\db\ActiveRecord
     }
 
 
-    public function getArea(){
-        return $this->hasOne(Area::className(), array('id' => 'aid'));
+    public function getDistrict(){
+        return $this->hasOne(District::className(), array('id' => 'district_id'));
     }
 
-    public function getBusiness(){
-        return $this->hasOne(Business::className(), array('id' => 'bid'));
+    public function getIndustry(){
+        return $this->hasOne(Industry::className(), array('id' => 'industry_id'));
+    }
+
+    public function getCompany(){
+        return $this->hasOne(Company::className(), array('id' => 'company_id'));
     }
 
     public function getDepartmentFullRoute($separator=' > '){
-        return Department::getFullRoute($this->did,$separator);
+        return Department::getFullRoute($this->department_id,$separator);
     }
 
     public function getPosition(){
@@ -135,8 +144,9 @@ class User extends \yii\db\ActiveRecord
 
     public function getFullRoute($separator = ' > '){
         $str = '';
-        $str .= $this->area->name.$separator;
-        $str .= $this->business->name.$separator;
+        $str .= $this->district->name.$separator;
+        $str .= $this->industry->name.$separator;
+        $str .= $this->company->name.$separator;
         $str .= $this->getDepartmentFullRoute().$separator;
         $str .= $this->position->name.$separator;
         $str .= $this->name;

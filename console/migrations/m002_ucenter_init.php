@@ -25,7 +25,7 @@ class m002_ucenter_init extends Migration
             'status'=> $this->smallInteger(1)->notNull()->defaultValue(1),
         ]);
 
-        $this->execute('alter table `district` auto_increment = 10001');
+        $this->execute('alter table `district` auto_increment = 10000');
 
         $this->createTable('industry', [
             'id' => $this->primaryKey(),
@@ -35,7 +35,7 @@ class m002_ucenter_init extends Migration
             'status'=> $this->smallInteger(1)->notNull()->defaultValue(1),
         ]);
 
-        $this->execute('alter table `industry` auto_increment = 10001');
+        $this->execute('alter table `industry` auto_increment = 10000');
 
         $this->createTable('company', [
             'id' => $this->primaryKey(),
@@ -45,7 +45,7 @@ class m002_ucenter_init extends Migration
             'status'=> $this->smallInteger(1)->notNull()->defaultValue(1),
         ]);
 
-        $this->execute('alter table `company` auto_increment = 10001');
+        $this->execute('alter table `company` auto_increment = 10000');
 
         $this->createTable('department', [
             'id' => $this->primaryKey(),
@@ -58,7 +58,7 @@ class m002_ucenter_init extends Migration
 
         $this->createIndex('unique','department',['alias','p_id'],true);
 
-        $this->execute('alter table `department` auto_increment = 10001');
+        $this->execute('alter table `department` auto_increment = 10000');
 
         $this->createTable('structure', [
             'district_id'=> $this->integer(11)->notNull()->defaultValue(0),
@@ -79,6 +79,8 @@ class m002_ucenter_init extends Migration
             'status'=> $this->smallInteger(1)->notNull()->defaultValue(1),
         ]);
         $this->createIndex('unique','position',['alias','p_id'],true);
+
+        $this->execute('alter table `position` auto_increment = 10000');
 
         $this->createTable('user', [
             'id' => $this->primaryKey(),
@@ -102,6 +104,7 @@ class m002_ucenter_init extends Migration
             'status' => $this->smallInteger(1)->notNull()->defaultValue(1)
         ]);
 
+        $this->execute('alter table `user` auto_increment = 10000');
 
         $this->createTable('user_app_auth',[
             'app'=> $this->string(20)->notNull(),
@@ -110,7 +113,6 @@ class m002_ucenter_init extends Migration
         ]);
         $this->addPrimaryKey('pk','user_app_auth',['app','user_id']);
         $this->createIndex('app_name','user_app_auth','app');
-
 
         $this->createTable('user_wx_session',[
             'app_id'=>$this->string(49)->notNull(),

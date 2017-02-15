@@ -4,11 +4,11 @@ use common\components\CommonFunc;
 use yii\bootstrap\Html;
 
 $this->title = '参数设置 - 地区';
-ucenter\assets\AppAsset::addJsFile($this,'js/main/setting/area.js');
+ucenter\assets\AppAsset::addJsFile($this,'js/main/setting/district.js');
 
 ?>
 <div style="margin-bottom: 10px;">
-    <?=Html::a('新增地区','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+    <?=Html::a('新增地区','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success','disabled'=>true])?>
 </div>
 <section class="panel">
     <div class="panel-body">
@@ -18,7 +18,7 @@ ucenter\assets\AppAsset::addJsFile($this,'js/main/setting/area.js');
                 <th>#</th>
                 <th>名称</th>
                 <th>别名</th>
-                <th>相关业态</th>
+                <th>相关行业</th>
                 <th width="300">排序</th>
                 <th>状态</th>
                 <th>操作</th>
@@ -31,9 +31,10 @@ ucenter\assets\AppAsset::addJsFile($this,'js/main/setting/area.js');
                     <td><?=$l->name?></td>
                     <td><?=$l->alias?></td>
                     <td>
-                        <?php if(!empty($l->relations)):?>
-                            <?php foreach($l->relations as $r):?>
-                                <?=$r->business->name?><br/>
+                        <?php $relations = $l->industryRelations?>
+                        <?php if(!empty($relations)):?>
+                            <?php foreach($relations as $r):?>
+                                <?=$r->industry->name?><br/>
                             <?php endforeach;?>
                         <?php else:?>
                             --

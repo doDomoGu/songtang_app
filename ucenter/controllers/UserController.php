@@ -1,8 +1,9 @@
 <?php
 namespace ucenter\controllers;
 
-use ucenter\models\Area;
-use ucenter\models\Business;
+use ucenter\models\District;
+use ucenter\models\Industry;
+use ucenter\models\Company;
 use ucenter\models\Department;
 use ucenter\models\Position;
 use ucenter\models\Structure;
@@ -110,10 +111,16 @@ class UserController extends BaseController
     }
 
     public function actionStructUpdate(){
-        //地区和业态关系
-        $list = User::find()->groupBy(['aid','bid'])->select(['aid','bid'])->all();
+        //地区和行业关系
+        $list = User::find()->groupBy(['district_id','industry_id'])->select(['district_id','industry_id'])->all();
         foreach($list as $l){
-            $this->structAdd($l->aid,$l->bid,0);
+            $this->structAdd($l->district_id,$l->industry_id,0,0);
+        }
+
+        //行业和公司关系
+        $list = User::find()->groupBy(['industry_id','company_id'])->select(['industry_id','company_id'])->all();
+        foreach($list as $l){
+            $this->structAdd(0,$l->industry_id,$l->company_id,0);
         }
 
 
@@ -129,28 +136,35 @@ class UserController extends BaseController
             }
         }
 
-        $list = User::find()->groupBy(['bid','did'])->select(['bid','did'])->all();
+        $list = User::find()->groupBy(['company_id','department_id'])->select(['company_id','department_id'])->all();
         foreach($list as $l){
-            $this->structAdd(0,$l->bid,isset($dArr[$l->did])?$dArr[$l->did]:0);
+            $this->structAdd(0,0,$l->company_id,isset($dArr[$l->department_id])?$dArr[$l->department_id]:0);
         }
 
 
         //整套设置
 
-        $list = User::find()->groupBy(['aid','bid','did'])->select(['aid','bid','did'])->all();
+        $list = User::find()->groupBy(['district_id','industry_id','company_id','department_id'])
+            ->select(['district_id','industry_id','company_id','department_id'])->all();
         foreach($list as $l){
-            $this->structAdd($l->aid,$l->bid,isset($dArr[$l->did])?$dArr[$l->did]:0);
+            $this->structAdd($l->district_id,$l->industry_id,$l->company_id,isset($dArr[$l->department_id])?$dArr[$l->department_id]:0);
         }
 
     }
 
-    public function structAdd($aid,$bid,$did){
-        $n = Structure::find()->where(['aid'=>$aid,'bid'=>$bid,'did'=>$did])->one();
+    public function structAdd($district_id,$industry_id,$company_id,$department_id){
+        $n = Structure::find()->where([
+            'district_id'=>$district_id,
+            'industry_id'=>$industry_id,
+            'company_id'=>$company_id,
+            'department_id'=>$department_id
+        ])->one();
         if(!$n){
             $n = new Structure();
-            $n->aid = $aid;
-            $n->bid = $bid;
-            $n->did = $did;
+            $n->district_id = $district_id;
+            $n->industry_id = $industry_id;
+            $n->company_id = $company_id;
+            $n->department_id = $department_id;
             $n->ord = 1;
             $n->status = 1;
             $n->save();
@@ -180,7 +194,7 @@ exit;
         $arr = ['sh','sz','szgg','wx','nj','hf','nmg'];
         //$arr = ['sh'];
         foreach($arr as $a){
-            $handle = fopen('../users/import2/'.$a.'.csv','r');
+            $handle = fopen('../users/import3/'.$a.'.csv','r');
             $this->import($handle);
         }
         /*上海*/
@@ -251,22 +265,24 @@ exit;
 
                 }
 
-                $area = $result[$i][1];
-                $business = $result[$i][2];
-                $depart = $result[$i][3];
-                $depart2 = $result[$i][4];
-                $pos = $result[$i][5];
-                $name = $result[$i][6];
-                $email = $result[$i][7];
-                $sex = $result[$i][8];
-                $mobile = $result[$i][9];
-                $pos2 = $result[$i][11];
+                $district = $result[$i][1];
+                $industry = $result[$i][2];
+                $company = $result[$i][3];
+                $depart = $result[$i][4];
+                $depart2 = $result[$i][5];
+                $pos = $result[$i][6];
+                $name = $result[$i][7];
+                $email = $result[$i][8];
+                $sex = $result[$i][9];
+                $mobile = $result[$i][10];
+                $pos2 = $result[$i][12];
 
 
 
 
-                var_dump($area);echo '<br/>';
-                var_dump($business);echo '<br/>';
+                var_dump($district);echo '<br/>';
+                var_dump($industry);echo '<br/>';
+                var_dump($company);echo '<br/>';
                 var_dump($depart);echo '<br/>';
                 var_dump($depart2);echo '<br/>';
                 var_dump($pos);echo '<br/>';
@@ -278,9 +294,10 @@ exit;
 
 
                 if($name!=''){
-                    $aid = $this->handleArea($area);
-                    $bid = $this->handleBusiness($business);
-                    $did = $this->handleDepart($depart,$depart2);
+                    $district_id = $this->handleDistrict($district);
+                    $industry_id = $this->handleIndustry($industry);
+                    $company_id = $this->handleCompany($company);
+                    $department_id = $this->handleDepart($depart,$depart2);
                     $position_id = $this->handlePos($pos,$pos2);
                     $sex = $this->handleSex($sex);
 
@@ -292,9 +309,10 @@ exit;
                             $n->password = md5('123123');
                             $n->password_true = '123123';
                             $n->name = $name;
-                            $n->aid = $aid;
-                            $n->bid = $bid;
-                            $n->did = $did;
+                            $n->district_id = $district_id;
+                            $n->industry_id = $industry_id;
+                            $n->company_id = $company_id;
+                            $n->department_id = $department_id;
                             $n->position_id = $position_id;
                             $n->gender = $sex;
                             $n->mobile = $mobile;
@@ -326,13 +344,13 @@ echo '===============<Br/><Br/><Br/><Br/>';
         return $out;
     }
 
-    public function handleArea($area){
-        if($area=='')
-            $area = '[缺省]';
-        $a = Area::find()->where(['name'=>$area])->one();
+    public function handleDistrict($dis){
+        if($dis=='')
+            $dis = '--';
+        $a = District::find()->where(['name'=>$dis])->one();
         if(!$a){
-            $a = new Area();
-            $a->name = $area;
+            $a = new District();
+            $a->name = $dis;
             $a->alias = time().rand(0,100).rand(0,100).rand(0,100);
             $a->ord = 1;
             $a->status = 1;
@@ -353,13 +371,28 @@ echo '===============<Br/><Br/><Br/><Br/>';
         return $return;
     }
 
-    public function handleBusiness($business){
-        if($business=='')
-            $business = '[缺省]';
-        $a = Business::find()->where(['name'=>$business])->one();
+    public function handleIndustry($ind){
+        if($ind=='')
+            $ind = '--';
+        $a = Industry::find()->where(['name'=>$ind])->one();
         if(!$a){
-            $a = new Business();
-            $a->name = $business;
+            $a = new Industry();
+            $a->name = $ind;
+            $a->alias = time().rand(0,100).rand(0,100).rand(0,100);
+            $a->ord = 1;
+            $a->status = 1;
+            $a->save();
+        }
+        return $a->id;
+    }
+
+    public function handleCompany($com){
+        if($com=='')
+            $com = '--';
+        $a = Company::find()->where(['name'=>$com])->one();
+        if(!$a){
+            $a = new Company();
+            $a->name = $com;
             $a->alias = time().rand(0,100).rand(0,100).rand(0,100);
             $a->ord = 1;
             $a->status = 1;
@@ -370,7 +403,7 @@ echo '===============<Br/><Br/><Br/><Br/>';
 
     public function handleDepart($depart,$depart2){
         if($depart==''){
-            $depart = '[缺省]';
+            $depart = '--';
             $depart2 = '';
         }
         $d1 = Department::find()->where(['name'=>$depart])->one();

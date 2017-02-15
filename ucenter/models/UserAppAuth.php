@@ -32,21 +32,24 @@ class UserAppAuth extends \yii\db\ActiveRecord
             if($exist){
                 throw new \yii\base\Exception('UserAppAuth has installed');
             }else{
+                $adminUser = User::find()->where(['username'=>'admin@songtang.net'])->one();
+
+
                 $m = new UserAppAuth();
                 $m->app = 'ucenter';
-                $m->user_id = 1;
+                $m->user_id = $adminUser->id;
                 $m->is_enable = 1;
                 $m->save();
 
                 $m = new UserAppAuth();
                 $m->app = 'oa-admin';
-                $m->user_id = 1;
+                $m->user_id = $adminUser->id;
                 $m->is_enable = 1;
                 $m->save();
 
                 $m = new UserAppAuth();
                 $m->app = 'yun-admin';
-                $m->user_id = 1;
+                $m->user_id = $adminUser->id;
                 $m->is_enable = 1;
                 $m->save();
 

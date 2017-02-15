@@ -46,9 +46,13 @@ class District extends \yii\db\ActiveRecord{
     }
 
 
-    public function getRelations(){
-        $list = Structure::find()->where(['aid'=>$this->id,'did'=>0,'status'=>1])->with('business')->all();
-        return $list;
+    public function getIndustryRelations(){
+        return Structure::find()->where([
+            'district_id'=>$this->id,
+            'company_id'=>0,
+            'department_id'=>0,
+            'status'=>1
+        ])->with('industry')->all();
     }
 
     public static function getNameArr(){
@@ -60,12 +64,12 @@ class District extends \yii\db\ActiveRecord{
         return $arr;
     }
 
-
-    public static function getRelationsArr($aid){
-        $list = Structure::find()->where(['aid'=>$aid,'did'=>0,'status'=>1])->with('business')->all();
+    //获得与地区相关的行业
+    public static function getIndustryRelationsArr($aid){
+        $list = Structure::find()->where(['aid'=>$aid,'did'=>0,'status'=>1])->with('industry')->all();
         $arr = [];
         foreach($list as $l){
-            $arr[$l->bid] = $l->business->name;
+            $arr[$l->industry_id] = $l->industry->name;
         }
         return $arr;
     }

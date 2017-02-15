@@ -50,9 +50,13 @@ class Company extends \yii\db\ActiveRecord
         return $return;
     }
 
-    public function getRelations(){
-        $list = Structure::find()->where(['aid'=>0,'bid'=>$this->id,'status'=>1])->with('department')->all();
-        return $list;
+    public function getDepartmentRelations(){
+        return Structure::find()->where([
+            'district_id'=>0,
+            'industry_id'=>0,
+            'company_id'=>$this->id,
+            'status'=>1
+        ])->with('department')->all();
     }
 
     public static function getItems($foreground=false){

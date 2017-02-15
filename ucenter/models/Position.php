@@ -57,6 +57,7 @@ class Position extends \yii\db\ActiveRecord
                 throw new \yii\base\Exception('Position has installed');
             }else{
                 $arr = [
+                    'default' => '--',
                     'dsz' => '董事长',
                     'zjl' => '总经理',
                     'fzjl' => '副总经理',
