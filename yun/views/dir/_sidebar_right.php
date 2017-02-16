@@ -19,12 +19,16 @@
         <td><?=$user->contract_date?></td>
     </tr>
     <tr>
-        <td>地方</td>
-        <td><?=$user->area?></td>
+        <td>地区</td>
+        <td><?=$user->district?></td>
     </tr>
     <tr>
-        <td>业态</td>
-        <td><?=$user->business?></td>
+        <td>行业</td>
+        <td><?=$user->industry?></td>
+    </tr>
+    <tr>
+        <td>公司</td>
+        <td><?=$user->company?></td>
     </tr>
     <tr>
         <td>部门</td>
@@ -34,12 +38,12 @@
         <td>职位</td>
         <td><?=$user->position?></td>
     </tr>
-    <tr>
+    <!--<tr>
         <td>职责</td>
         <td>查看详情</td>
     </tr>
     <tr>
         <td>积分</td>
         <td>0</td>
-    </tr>
+    </tr>-->
 </table>

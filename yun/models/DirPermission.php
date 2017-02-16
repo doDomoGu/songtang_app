@@ -28,8 +28,8 @@ class DirPermission extends \yii\db\ActiveRecord
 
 
     const TYPE_ALL              = 1;   //全体职员
-    const TYPE_AREA             = 2;   //地区 （通配）
-    const TYPE_BUSINESS         = 3;   //业态 （通配）
+    const TYPE_DISTRICT         = 2;   //地区 （通配）
+    const TYPE_INDUSTRY         = 3;   //行业 （通配）
     //const TYPE_DEPARTMENT       = 4;   //部门 （通配）
     //const TYPE_POSITION         = 5;   //职位 （通配）
     //const TYPE_COMBINE          = 6;   // 前四个的任意组合
@@ -37,8 +37,8 @@ class DirPermission extends \yii\db\ActiveRecord
     const TYPE_USER             = 8;   //单独的USER_ID
 
     const TYPE_ALL_CN              = '全体职员';   //全体职员
-    const TYPE_AREA_CN             = '通配地区';   //地区 （通配）
-    const TYPE_BUSINESS_CN         = '通配业态';   //业态 （通配）
+    const TYPE_DISTRICT_CN         = '通配地区';   //地区 （通配）
+    const TYPE_INDUSTRY_CN         = '通配行业';   //业态 （通配）
     //const TYPE_DEPARTMENT_CN       = 4;   //部门 （通配）
     //const TYPE_POSITION_CN         = 5;   //职位 （通配）
     //const TYPE_COMBINE_CN          = 6;   // 前四个的任意组合
@@ -49,15 +49,15 @@ class DirPermission extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dir_id', 'area_id', 'business_id','department_id','position_id','group_id','user_id','type','operation','mode'], 'integer'],
+            [['dir_id', 'district_id', 'industry_id','company_id','department_id','position_id','group_id','user_id','type','operation','mode'], 'integer'],
         ];
     }
 
     public static function getTypeItems(){
         return [
             self::TYPE_ALL => self::TYPE_ALL_CN,
-            self::TYPE_AREA => self::TYPE_AREA_CN,
-            self::TYPE_BUSINESS => self::TYPE_BUSINESS_CN,
+            self::TYPE_DISTRICT => self::TYPE_DISTRICT_CN,
+            self::TYPE_INDUSTRY => self::TYPE_INDUSTRY_CN,
             /*self::TYPE_GROUP => self::TYPE_GROUP_CN,
             self::TYPE_USER => self::TYPE_USER_CN,*/
         ];
@@ -126,12 +126,12 @@ class DirPermission extends \yii\db\ActiveRecord
             case self::TYPE_ALL:
                 $return = true;
                 break;
-            case self::TYPE_AREA:
-                if($dm->area_id>0 && $dm->area_id == $user->aid)
+            case self::TYPE_DISTRICT:
+                if($dm->district_id>0 && $dm->district_id == $user->district_id)
                     $return = true;
                 break;
-            case self::TYPE_BUSINESS:
-                if($dm->business_id>0 && $dm->business_id == $user->bid)
+            case self::TYPE_INDUSTRY:
+                if($dm->industry_id>0 && $dm->industry_id == $user->industry_id)
                     $return = true;
                 break;
         }
@@ -190,19 +190,19 @@ class DirPermission extends \yii\db\ActiveRecord
                 $return = true;
                 break;
             case Dir::ATTR_LIMIT_AREA:
-                $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_AREA])->one();
+                $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_DISTRICT])->one();
                 if($fileAttr){
                     $attr = $fileAttr->attr_id;
-                    if($attr==Attribute::AREA_DEFAULT || $attr==$user->aid){
+                    if($attr==Attribute::DISTRICT_DEFAULT || $attr==$user->district_id){
                         $return = true;
                     }
                 }
                 break;
             case Dir::ATTR_LIMIT_BUSINESS:
-                $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_BUSINESS])->one();
+                $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_INDUSTRY])->one();
                 if($fileAttr){
                     $attr = $fileAttr->attr_id;
-                    if($attr==Attribute::BUSINESS_DEFAULT || $attr==$user->bid){
+                    if($attr==Attribute::INDUSTRY_DEFAULT || $attr==$user->industry_id){
                         $return = true;
                     }
                 }

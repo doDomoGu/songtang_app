@@ -1,6 +1,8 @@
 <?php
 
 namespace yun\models;
+use ucenter\models\District;
+use ucenter\models\Industry;
 use yun\models\DirPermission;
 use Yii;
 use ucenter\models\Area;
@@ -10,9 +12,9 @@ class Dir extends \yii\db\ActiveRecord
 {
 
     const ATTR_LIMIT_ALL   = 1;  //全员
-    const ATTR_LIMIT_AREA  = 2;  //文件(file)必须要有和职员一样的地区属性或者为缺省值
-    const ATTR_LIMIT_BUSINESS = 3;//文件(file)必须要有和职员一样的业态属性或者为缺省值
-    const ATTR_LIMIT_AREA_BUSINESS = 4; //文件(file)必须要有和职员一样的(地区和业态)属性或者为缺省值
+    const ATTR_LIMIT_DISTRICT  = 2;  //文件(file)必须要有和职员一样的地区属性或者为缺省值
+    const ATTR_LIMIT_INDUSTRY = 3;//文件(file)必须要有和职员一样的业态属性或者为缺省值
+    const ATTR_LIMIT_DISTRICT_INDUSTRY = 4; //文件(file)必须要有和职员一样的(地区和业态)属性或者为缺省值
 
 
     public $childrenIds;
@@ -229,35 +231,36 @@ class Dir extends \yii\db\ActiveRecord
     }
 
     public static function getAttrSearch($attrLimit){
-        $areaCheck = [];
-        $businessCheck = [];
+        $districtCheck = [];
+        $industryCheck = [];
         if(Yii::$app->user->identity->isYunAdmin){
-            $areaCheck = Area::getIds();
-            $businessCheck = Business::getIds();
+            $districtCheck = District::getIds();
+            $industryCheck = Industry::getIds();
         }else{
             switch ($attrLimit){
                 case self::ATTR_LIMIT_ALL:
-                    $areaCheck = Area::getIds();
-                    $businessCheck = Business::getIds();
+                    $districtCheck = District::getIds();
+                    $industryCheck = Industry::getIds();
                     break;
-                case self::ATTR_LIMIT_AREA:
-                    $areaCheck = [1,Yii::$app->user->identity->aid];
-                    $businessCheck = Business::getIds();
+                case self::ATTR_LIMIT_DISTRICT:
+                    $districtCheck = [Attribute::DISTRICT_DEFAULT,Yii::$app->user->identity->district_id];
+                    $industryCheck = Industry::getIds();
                     break;
-                case self::ATTR_LIMIT_BUSINESS:
-                    $areaCheck =  Area::getIds();
-                    $businessCheck = [1,Yii::$app->user->identity->bid];
+                case self::ATTR_LIMIT_INDUSTRY:
+                    $districtCheck =  District::getIds();
+                    $industryCheck = [Attribute::INDUSTRY_DEFAULT,Yii::$app->user->identity->industry_id];
                     break;
-                case self::ATTR_LIMIT_AREA_BUSINESS:
-                    $areaCheck =  Area::getIds();
-                    $businessCheck = [1,Yii::$app->user->identity->bid];
+                case self::ATTR_LIMIT_DISTRICT_INDUSTRY:
+                    //$districtCheck =  District::getIds();
+                    $districtCheck = [Attribute::DISTRICT_DEFAULT,Yii::$app->user->identity->district_id];
+                    $industryCheck = [Attribute::INDUSTRY_DEFAULT,Yii::$app->user->identity->industry_id];
                     break;
             }
         }
 
-        $areaCheck = $areaCheck!=false?Area::getCheckIdsTrue($areaCheck):[];
-        $businessCheck = $businessCheck!=false?Business::getCheckIdsTrue($businessCheck):[];
-        $attrSearch = ['area'=>$areaCheck,'business'=>$businessCheck];
+        $districtCheck = $districtCheck!=false?District::getCheckIdsTrue($districtCheck):[];
+        $industryCheck = $industryCheck!=false?Industry::getCheckIdsTrue($industryCheck):[];
+        $attrSearch = ['district'=>$districtCheck,'industry'=>$industryCheck];
         return $attrSearch;
     }
 

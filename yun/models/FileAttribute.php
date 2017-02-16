@@ -2,8 +2,8 @@
 
 namespace yun\models;
 
-use ucenter\models\Area;
-use ucenter\models\Business;
+use ucenter\models\District;
+use ucenter\models\Industry;
 use Yii;
 
 class FileAttribute extends \yii\db\ActiveRecord
@@ -21,14 +21,14 @@ class FileAttribute extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getArea()
+    public function getDistrict()
     {
-        return $this->hasOne(Area::className(), array('id' => 'attr_id'));
+        return $this->hasOne(District::className(), array('id' => 'attr_id'));
     }
 
-    public function getBusiness()
+    public function getIndustry()
     {
-        return $this->hasOne(Business::className(), array('id' => 'attr_id'));
+        return $this->hasOne(Industry::className(), array('id' => 'attr_id'));
     }
 
 

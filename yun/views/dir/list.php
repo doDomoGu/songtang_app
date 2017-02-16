@@ -5,11 +5,11 @@
     use yii\widgets\Breadcrumbs;
     use yun\assets\AppAsset;
     use yii\bootstrap\BaseHtml;
-    use ucenter\models\Area;
-    use ucenter\models\Business;
+    use ucenter\models\District;
+    use ucenter\models\Industry;
 
-    $areaItems = Area::getItems(true);
-    $businessItems = Business::getItems(true);
+    $districtItems = District::getItems(true);
+    $industryItems = Industry::getItems(true);
 
 //    yun\assets\AppAsset::addCssFile($this,'css/main/dir/index.css');
     AppAsset::addCssFile($this,'css/main/dir/list.css');
@@ -74,18 +74,18 @@
     </div>
     <div id="attr-check">
         <div class="attr-one">
-            地区：<?php foreach($areaItems as $k=>$a):?>
+            地区：<?php foreach($districtItems as $k=>$a):?>
                 <?php
                     $checked = '';
                     $disabled = '';
-                if(in_array($k,$attrSearch['area'])){
+                if(in_array($k,$attrSearch['district'])){
                     $checked = 'checked="checked"';
                 }else{
                     $disabled = 'disabled="disabled"';
                 }?>
 
                 <label>
-                    <input class="attr-check area-check" name="area-check[]" value="<?=$k?>" <?=$checked?> <?=$disabled?>  type="checkbox">
+                    <input class="attr-check district-check" name="district-check[]" value="<?=$k?>" <?=$checked?> <?=$disabled?>  type="checkbox">
                     <?=$a?>
                 </label>
             <?php endforeach;?>
@@ -93,19 +93,19 @@
             <?/*=BaseHtml::checkboxList('area-check',$attrSearch['area'],$areaItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check area-check']])*/?>
         </div>
         <div class="attr-one">
-            业态：
-            <?php foreach($businessItems as $k=>$a):?>
+            行业：
+            <?php foreach($industryItems as $k=>$a):?>
                 <?php
                 $checked = '';
                 $disabled = '';
-                if(in_array($k,$attrSearch['business'])){
+                if(in_array($k,$attrSearch['industry'])){
                     $checked = 'checked="checked"';
                 }else{
                     $disabled = 'disabled="disabled"';
                 }?>
 
                 <label>
-                    <input class="attr-check business-check" name="business-check[]" value="<?=$k?>" <?=$checked?> <?=$disabled?>  type="checkbox">
+                    <input class="attr-check industry-check" name="industry-check[]" value="<?=$k?>" <?=$checked?> <?=$disabled?>  type="checkbox">
                     <?=$a?>
                 </label>
             <?php endforeach;?>

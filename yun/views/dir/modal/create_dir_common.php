@@ -1,12 +1,12 @@
 <?php
     use yii\bootstrap\Modal;
-    use ucenter\models\Area;
-    use ucenter\models\Business;
+    use ucenter\models\District;
+    use ucenter\models\Industry;
     use yii\helpers\BaseHtml;
     yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/create_dir_common.js');
 
-    $areaItems = Area::getItems(true);
-    $businessItems = Business::getItems(true);
+    $districtItems = District::getItems(true);
+    $industryItems = Industry::getItems(true);
 ?>
 <?php
 Modal::begin([
@@ -17,11 +17,11 @@ Modal::begin([
 ]);
 ?>
     <div id="createDirModalContent">
-        <p style="display: none;">
-            地区：<?=BaseHtml::dropDownList('area-check','',$areaItems,['class'=>'attr-check area-check'])?>
+        <p>
+            地区：<?=BaseHtml::dropDownList('district-check','',$districtItems,['class'=>'attr-check district-check'])?>
         </p>
-        <p style="display: none;">
-            业态：<?=BaseHtml::dropDownList('business-check','',$businessItems,['class'=>'attr-check business-check'])?>
+        <p>
+            行业：<?=BaseHtml::dropDownList('industry-check','',$industryItems,['class'=>'attr-check industry-check'])?>
         </p>
         <p>
             <label>文件夹名：</label>

@@ -5,10 +5,11 @@ use Yii;
 
 class Attribute extends \yii\db\ActiveRecord
 {
-    const TYPE_AREA = 1;
-    const TYPE_BUSINESS = 2;
+    const TYPE_DISTRICT = 1;
+    const TYPE_INDUSTRY = 2;
+    //const TYPE_COMPANY  = 3;
 
 
-    const AREA_DEFAULT = 1;
-    const BUSINESS_DEFAULT = 1;
+    const DISTRICT_DEFAULT = 1;
+    const INDUSTRY_DEFAULT = 1;
 }
