@@ -3,11 +3,11 @@ use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
 use common\components\CommonFunc;
 
-$this->title = '参数设置 - 业态';
+$this->title = '参数设置 - 公司';
 ucenter\assets\AppAsset::addJsFile($this,'js/main/setting/business.js');
 ?>
 <div style="margin-bottom: 10px;">
-    <?=Html::a('新增业态','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+    <?=Html::a('新增公司','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
 </div>
 <section class="panel">
     <div class="panel-body">

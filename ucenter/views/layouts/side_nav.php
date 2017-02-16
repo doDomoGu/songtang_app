@@ -35,14 +35,19 @@
             </a>
             
             <ul class="sub-menu-list collapse <?=$this->context->id=='setting'?'in':''?>" id="system-collapse">
-                <li class="<?=$this->context->id=='setting' && $this->context->action->id=='area'?'active':''?>">
-                    <a href="/setting/area">
+                <li class="<?=$this->context->id=='setting' && $this->context->action->id=='district'?'active':''?>">
+                    <a href="/setting/district">
                         地区
                     </a>
                 </li>
-                <li class="<?=$this->context->id=='setting' && $this->context->action->id=='business'?'active':''?>">
-                    <a href="/setting/business">
-                        业态
+                <li class="<?=$this->context->id=='setting' && $this->context->action->id=='industry'?'active':''?>">
+                    <a href="/setting/industry">
+                        行业
+                    </a>
+                </li>
+                <li class="<?=$this->context->id=='setting' && $this->context->action->id=='company'?'active':''?>">
+                    <a href="/setting/company">
+                        公司
                     </a>
                 </li>
                 <li class="<?=$this->context->id=='setting' && $this->context->action->id=='department'?'active':''?>">

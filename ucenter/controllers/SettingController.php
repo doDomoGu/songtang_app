@@ -2,9 +2,10 @@
 
 namespace ucenter\controllers;
 
-use ucenter\models\Area;
-use ucenter\models\Business;
+use ucenter\models\Company;
 use ucenter\models\Department;
+use ucenter\models\District;
+use ucenter\models\Industry;
 use ucenter\models\Position;
 use ucenter\models\Structure;
 use yii\web\Response;
@@ -12,14 +13,14 @@ use Yii;
 
 class SettingController extends BaseController
 {
-    public function actionArea(){
-        $list = Area::find()->orderBy('status desc,ord asc')->all();
+    public function actionDistrict(){
+        $list = District::find()->orderBy('status desc,ord asc')->all();
 
-        $count = Area::find()->where(['status'=>1])->count();
+        $count = District::find()->where(['status'=>1])->count();
         $params['list'] = $list;
         $params['count'] = $count;
 
-        return $this->render('area',$params);
+        return $this->render('district',$params);
     }
 
     public function actionAreaCreate(){
@@ -433,14 +434,14 @@ class SettingController extends BaseController
 
 
 
-    public function actionBusiness(){
+    public function actionIndustry(){
 
-        $list = Business::find()->orderBy('status desc,ord asc')->all();
+        $list = Industry::find()->orderBy('status desc,ord asc')->all();
 
-        $count = Business::find()->where(['status'=>1])->count();
+        $count = Industry::find()->where(['status'=>1])->count();
         $params['list'] = $list;
         $params['count'] = $count;
-        return $this->render('business',$params);
+        return $this->render('industry',$params);
     }
 
     public function actionBusinessCreate(){
@@ -469,6 +470,17 @@ class SettingController extends BaseController
         $response=Yii::$app->response;
         $response->format=Response::FORMAT_JSON;
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+
+    public function actionCompany(){
+
+        $list = Company::find()->orderBy('status desc,ord asc')->all();
+
+        $count = Company::find()->where(['status'=>1])->count();
+        $params['list'] = $list;
+        $params['count'] = $count;
+        return $this->render('company',$params);
     }
 
     public function actionDepartment(){
