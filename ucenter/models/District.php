@@ -65,8 +65,13 @@ class District extends \yii\db\ActiveRecord{
     }
 
     //获得与地区相关的行业
-    public static function getIndustryRelationsArr($aid){
-        $list = Structure::find()->where(['aid'=>$aid,'did'=>0,'status'=>1])->with('industry')->all();
+    public static function getIndustryRelationsArr($district_id){
+        $list = Structure::find()->where([
+            'district_id'=>$district_id,
+            'company_id'=>0,
+            'department_id'=>0,
+            'status'=>1
+        ])->with('industry')->all();
         $arr = [];
         foreach($list as $l){
             $arr[$l->industry_id] = $l->industry->name;

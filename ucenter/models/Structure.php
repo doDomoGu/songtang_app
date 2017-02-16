@@ -146,24 +146,60 @@ class Structure extends \yii\db\ActiveRecord
         return $return;
     }
 
+    public function getIndustryList(){
+        $list = Structure::find()
+            ->where(['district_id'=>$this->district_id,'status'=>1])
+            ->andWhere(['>','industry_id',0])
+            ->groupBy('district_id,industry_id')
+            ->with('industry')
+            ->all();
+        return $list;
+    }
 
-    public function getBusinessRelations(){
-        $list = Structure::find()->where(['aid'=>$this->aid,'did'=>0,'status'=>1])->all();
+    public function getCompanyList(){
+        $list = Structure::find()
+            ->where(['district_id'=>$this->district_id,'industry_id'=>$this->industry_id,'status'=>1])
+            ->andWhere(['>','company_id',0])
+            ->groupBy('district_id,industry_id,company_id')
+            ->with('company')
+            ->all();
+        return $list;
+    }
+
+
+
+    public function getIndustryRelations(){
+        $list = Structure::find()->where(['district_id'=>$this->district_id,'company_id'=>0,'department_id'=>0,'status'=>1])->with('industry')->all();
+        return $list;
+    }
+
+    public function getCompanyRelations(){
+        $list = Structure::find()->where(['district_id'=>$this->district_id,'industry_id'=>$this->industry_id,'department_id'=>0,'status'=>1])->andWhere(['>','company_id',0])->with('company')->all();
+        return $list;
+    }
+
+    public function getDepartmentList(){
+        $list = $this->getDepartmentRelationsRecursion($this->district_id,$this->industry_id,$this->company_id,0,1);
         return $list;
     }
 
     public function getDepartmentRelations(){
-        $list = $this->getDepartmentRelationsRecursion($this->aid,$this->bid,0,1);
-
+        $list = $this->getDepartmentRelationsRecursion($this->district_id,$this->industry_id,$this->company_id,0,1);
         //$list = Department::find()->where(['aid'=>$this->aid,'bid'=>$this->bid,'status'=>1,'p_id'=>0])->andWhere(['>','cid',0])->all();
 
 
         return $list;
     }
 
-    public function getDepartmentRelationsRecursion($aid,$bid,$p_id,$level){
+    public function getDepartmentRelationsRecursion($district_id,$industry_id,$company_id,$p_id,$level){
         $arr = [];
-        $list = Structure::find()->where(['aid'=>$aid,'bid'=>$bid,'status'=>1,'did'=>Department::getChildrenIds($p_id)])->with('department')->all();
+        $list = Structure::find()->where([
+            'district_id'=>$district_id,
+            'industry_id'=>$industry_id,
+            'company_id'=>$company_id,
+            'status'=>1,
+            'department_id'=>Department::getChildrenIds($p_id)
+        ])->with('department')->all();
         if(!empty($list)){
             $count = count($list);
             $i = 1;
@@ -180,14 +216,15 @@ class Structure extends \yii\db\ActiveRecord
                         $prefix .= '├─ ';
                     }
                 }
-                $l2->aid = $l->aid;
-                $l2->bid = $l->bid;
-                $l2->did = $l->did;
+                $l2->district_id = $l->district_id;
+                $l2->industry_id = $l->industry_id;
+                $l2->company_id = $l->company_id;
+                $l2->department_id = $l->department_id;
                 $l2->name = $prefix . $l->department->name;
                 $l2->status = $l->status;
                 $arr[] = $l2;
 
-                $children = $this->getDepartmentRelationsRecursion($l2->aid,$l2->bid,$l->did,$level+1);
+                $children = $this->getDepartmentRelationsRecursion($l2->district_id,$l2->industry_id,$l2->company_id,$l2->department_id,$level+1);
                 if(!empty($children)){
                     $arr = ArrayHelper::merge($arr,$children);
                 }
@@ -197,6 +234,10 @@ class Structure extends \yii\db\ActiveRecord
         }
 
         return $arr;
+    }
+
+    public function getDistrict(){
+        return $this->hasOne(District::className(), array('id' => 'district_id'));
     }
 
     public function getIndustry(){

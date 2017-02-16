@@ -3,7 +3,10 @@ namespace ucenter\controllers;
 
 use ucenter\models\Area;
 use ucenter\models\Business;
+use ucenter\models\Company;
 use ucenter\models\Department;
+use ucenter\models\District;
+use ucenter\models\Industry;
 use ucenter\models\Structure;
 use Yii;
 use yii\web\Response;
@@ -11,24 +14,24 @@ use yii\web\Response;
 class StructureController extends BaseController
 {
     public function actionIndex(){
-        $aid = Yii::$app->request->get('aid',false);
-        $bid = Yii::$app->request->get('bid',false);
-
+        $district_id = Yii::$app->request->get('district_id',false);
+        $industry_id = Yii::$app->request->get('industry_id',false);
         $list = Structure::find();
-        if($aid>0)
-            $list = $list->where(['aid'=>$aid]);
+        if($district_id>0)
+            $list = $list->where(['district_id'=>$district_id]);
         else
-            $list = $list->where(['>','aid',0]);
+            $list = $list->where(['>','district_id',0]);
 
-        $list = $list->/*andWhere(['did'=>0])->*/groupBy('aid')->all();
+        $list = $list->/*andWhere(['did'=>0])->*/groupBy('district_id')->with('district')->all();
 
         $params['list'] = $list;
-        $params['aArr'] = Area::getNameArr();
-        $params['bArr'] = Business::getNameArr();
-        //$params['dArr'] = Department::getNameArr();
-        $params['aid']  = $aid;
-        $params['bid']  = $bid;
-        $params['bArr2'] = Area::getRelationsArr($aid);
+        $params['districtArr'] = District::getNameArr();
+        $params['industryArr'] = Industry::getNameArr();
+        $params['companyArr'] = Company::getNameArr();
+        //$params['deparmentArr'] = Department::getNameArr();
+        $params['district_id']  = $district_id;
+        $params['industry_id']  = $industry_id;
+        $params['industryArr2'] = District::getIndustryRelationsArr($district_id);
 
         return $this->render('index',$params);
     }
