@@ -10,6 +10,6 @@ class Attribute extends \yii\db\ActiveRecord
     //const TYPE_COMPANY  = 3;
 
 
-    const DISTRICT_DEFAULT = 1;
-    const INDUSTRY_DEFAULT = 1;
+    const DISTRICT_DEFAULT = 10000;
+    const INDUSTRY_DEFAULT = 10000;
 }

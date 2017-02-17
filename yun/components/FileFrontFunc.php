@@ -79,8 +79,8 @@ class FileFrontFunc extends Component {
                 $files = $files->andWhere(['p_id'=>$p_id,'status'=>1]);*/
         if(!empty($attrSearch)){
             $fidArr = [];
-            if(isset($attrSearch['area']) && !empty($attrSearch['area'])){
-                $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_AREA,'attr_id'=>$attrSearch['area']])->groupBy('file_id')->all();
+            if(isset($attrSearch['district']) && !empty($attrSearch['district'])){
+                $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_DISTRICT,'attr_id'=>$attrSearch['district']])->groupBy('file_id')->all();
                 foreach($faList as $l){
                     $fidArr[] = $l->file_id;
                 }
@@ -88,8 +88,8 @@ class FileFrontFunc extends Component {
             $query = $query->andWhere(['id'=>$fidArr]);
 
             $fidArr2 = [];
-            if(isset($attrSearch['business']) && !empty($attrSearch['business'])){
-                $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_BUSINESS,'attr_id'=>$attrSearch['business']])->groupBy('file_id')->all();
+            if(isset($attrSearch['industry']) && !empty($attrSearch['industry'])){
+                $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_INDUSTRY,'attr_id'=>$attrSearch['industry']])->groupBy('file_id')->all();
                 foreach($faList as $l){
                     $fidArr2[] = $l->file_id;
                 }

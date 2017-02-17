@@ -16,8 +16,8 @@ var _dir_route = $('#var_dir_route').val();
 var qiniuDomain = $('#qiniuDomain').val();
 var pickfileId = $('#pickfileId').val();
 var fileurlId = $('#fileurlId').val();
-var area_check;
-var business_check;
+var district_check;
+var industry_check;
 var uploader = Qiniu.uploader({
     runtimes: 'html5,flash,html4',    //上传模式,依次退化
     browse_button: pickfileId,       //上传选择的点选按钮，**必需**
@@ -58,8 +58,8 @@ var uploader = Qiniu.uploader({
             });
             business_check = business_check_tmp.join(',');*/
 
-            area_check = $('#uploadModalContent .area-check').val();
-            business_check = $('#uploadModalContent .business-check').val();
+            district_check = $('#uploadModalContent .district-check').val();
+            industry_check = $('#uploadModalContent .industry-check').val();
             //查询目录下文件名，防止重名
             $.ajax({
                 url: '/dir/get-filename-list',
@@ -152,8 +152,8 @@ var uploader = Qiniu.uploader({
                     filesize:file.size,
                     flag:1,
                     p_id:_p_id,
-                    area_check:area_check,
-                    business_check:business_check
+                    district_check:district_check,
+                    industry_check:industry_check
                 },
                 dataType:'json',
                 success: function (data) {
@@ -189,16 +189,16 @@ var uploader = Qiniu.uploader({
              console.log(file);
              });*/
             //return false;
-            setTimeout(function(){
-                if(_p_id>0){
-                    //console.log('/dir?p_id='+_p_id);
-                    location.href='/dir?p_id='+_p_id;
-                }else if(_dir_id>0){
-                    //console.log('/dir?dir_id='+_dir_id);
-
-                    location.href='/dir?dir_id='+_dir_id;
-                }
-            },1000);
+            // setTimeout(function(){
+            //     if(_p_id>0){
+            //         //console.log('/dir?p_id='+_p_id);
+            //         location.href='/dir?p_id='+_p_id;
+            //     }else if(_dir_id>0){
+            //         //console.log('/dir?dir_id='+_dir_id);
+            //
+            //         location.href='/dir?dir_id='+_dir_id;
+            //     }
+            // },1000);
 
 
 

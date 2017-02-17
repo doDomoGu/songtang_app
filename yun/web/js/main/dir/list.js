@@ -44,16 +44,16 @@ var grid_file_thumb = function(){
 var loading_files_flag = true;
 var list_type = $('#var_list_type').val();
 var loading_files = function(){
-    var area_check_tmp = new Array();
-    $('.area-check:checked').each(function(){
-        area_check_tmp.push($(this).val());
+    var district_check_tmp = new Array();
+    $('.district-check:checked').each(function(){
+        district_check_tmp.push($(this).val());
     });
-    area_check = area_check_tmp.join(',');
-    var business_check_tmp = new Array();
-    $('.business-check:checked').each(function(){
-        business_check_tmp.push($(this).val());
+    district_check = district_check_tmp.join(',');
+    var industry_check_tmp = new Array();
+    $('.industry-check:checked').each(function(){
+        industry_check_tmp.push($(this).val());
     });
-    business_check = business_check_tmp.join(',');
+    industry_check = industry_check_tmp.join(',');
     _page = $('#var_page').val();
     _page_size = $('#var_page_size').val();
     _count = $('#var_count').val();
@@ -66,8 +66,8 @@ var loading_files = function(){
             dir_id:$('#var_dir_id').val(),
             p_id:$('#var_p_id').val(),
             order:$('#var_order').val(),
-            area_check:area_check,
-            business_check:business_check,
+            district_check:district_check,
+            industry_check:industry_check,
             page:_page,
             page_size:_page_size,
             list_type:list_type

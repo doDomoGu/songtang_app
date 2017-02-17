@@ -1,6 +1,6 @@
 <?php
     use yii\bootstrap\Modal;
-    use yii\bootstrap\Progress;
+    //use yii\bootstrap\Progress;
     use ucenter\models\District;
     use ucenter\models\Industry;
     use yii\bootstrap\BaseHtml;

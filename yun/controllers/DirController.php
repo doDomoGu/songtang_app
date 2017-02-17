@@ -3,6 +3,8 @@ namespace yun\controllers;
 
 use ucenter\models\Area;
 use ucenter\models\Business;
+use ucenter\models\District;
+use ucenter\models\Industry;
 use yii\data\Pagination;
 use yun\components\DirFunc;
 use yun\components\FileFrontFunc;
@@ -323,14 +325,13 @@ class DirController extends BaseController
         $search = Yii::$app->request->get('search',false);
         $order = Yii::$app->request->get('order',false);
         $listType = Yii::$app->request->get('list_type',false);
-        $areaCheck = Yii::$app->request->get('area_check',false);
-        $businessCheck = Yii::$app->request->get('business_check',false);
-
+        $districtCheck = Yii::$app->request->get('district_check',false);
+        $industryCheck = Yii::$app->request->get('industry_check',false);
 
         $orderTrue = str_replace('.',' ',$order);  //排序字符串 变换
-        $areaCheck = $areaCheck!=false?Area::getCheckIdsTrue(explode(',',$areaCheck)):[];
-        $businessCheck = $businessCheck!=false?Business::getCheckIdsTrue(explode(',',$businessCheck)):[];
-        $attrSearch = ['area'=>$areaCheck,'business'=>$businessCheck];
+        $districtCheck = $districtCheck!=false?District::getCheckIdsTrue(explode(',',$districtCheck)):[];
+        $industryCheck = $industryCheck!=false?Industry::getCheckIdsTrue(explode(',',$industryCheck)):[];
+        $attrSearch = ['district'=>$districtCheck,'industry'=>$industryCheck];
 
         $pageSize = $this->listStylePageSize;
         if($listType=='grid')
@@ -364,8 +365,8 @@ class DirController extends BaseController
         $uid = Yii::$app->user->id;
         $flag = isset($post['flag'])?$post['flag']:'';
         $filename = isset($post['filename'])?$post['filename']:'';
-        $areaCheck = isset($post['area_check'])?$post['area_check']:'';
-        $businessCheck = isset($post['business_check'])?$post['business_check']:'';
+        $districtCheck = isset($post['district_check'])?$post['district_check']:'';
+        $industryCheck = isset($post['industry_check'])?$post['industry_check']:'';
         if($dir_id>0 && $filename!='' && DirPermission::isAllow($dir_id,DirPermission::OPERATION_UPLOAD)){
 
             $fileexist = File::find()->where(['dir_id'=>$dir_id,'p_id'=>$p_id,'filename'=>$filename])->andWhere('status < 2')->one();
@@ -425,18 +426,18 @@ class DirController extends BaseController
                             $fileAttr->save();
                         }
                     }*/
-                    if($areaCheck!=''){
+                    if($districtCheck!=''){
                         $fileAttr = new FileAttribute();
                         $fileAttr->file_id = $file->id;
-                        $fileAttr->attr_type = Attribute::TYPE_AREA;
-                        $fileAttr->attr_id = $areaCheck;
+                        $fileAttr->attr_type = Attribute::TYPE_DISTRICT;
+                        $fileAttr->attr_id = $districtCheck;
                         $fileAttr->save();
                     }
-                    if($businessCheck!=''){
+                    if($industryCheck!=''){
                         $fileAttr = new FileAttribute();
                         $fileAttr->file_id = $file->id;
-                        $fileAttr->attr_type = Attribute::TYPE_BUSINESS;
-                        $fileAttr->attr_id = $businessCheck;
+                        $fileAttr->attr_type = Attribute::TYPE_INDUSTRY;
+                        $fileAttr->attr_id = $industryCheck;
                         $fileAttr->save();
                     }
 

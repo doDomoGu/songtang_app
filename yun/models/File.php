@@ -34,44 +34,44 @@ class File extends \yii\db\ActiveRecord
         return $this->hasOne(Dir::className(), array('id' => 'dir_id'));
     }
 
-    public function getAreaAttrs(){
+    public function getDistrictAttrs(){
         $arr = [];
-        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_AREA])->all();
+        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_DISTRICT])->all();
         foreach($attrs as $a){
-            $arr[] = $a->area->name;
+            $arr[] = $a->district->name;
         }
         return $arr;
     }
 
     public function getAreaAttrs2(){
         $arr = [];
-        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_AREA])->all();
+        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_DISTRICT])->all();
         foreach($attrs as $a){
             if($a->attr_id==1)
                 $arr[] = '全员';
             else
-                $arr[] = $a->area->name;
+                $arr[] = $a->district->name;
         }
         return $arr;
     }
 
-    public function getBusinessAttrs(){
+    public function getIndustryAttrs(){
         $arr = [];
-        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_BUSINESS])->all();
+        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_INDUSTRY])->all();
         foreach($attrs as $a){
-            $arr[] = $a->business->name;
+            $arr[] = $a->industry->name;
         }
         return $arr;
     }
 
     public function getBusinessAttrs2(){
         $arr = [];
-        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_BUSINESS])->all();
+        $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_INDUSTRY])->all();
         foreach($attrs as $a){
             if($a->attr_id==1)
                 $arr[] = '全员';
             else
-                $arr[] = $a->business->name;
+                $arr[] = $a->industry->name;
         }
         return $arr;
     }

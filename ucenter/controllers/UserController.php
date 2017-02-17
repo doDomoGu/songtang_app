@@ -113,14 +113,20 @@ class UserController extends BaseController
     }
 
     public function actionStructUpdate(){
+        if(Yii::$app->request->get('del')==1){
+            Structure::deleteAll();//exit;
+        }
+
+        $districtDefault = District::find()->where(['alias'=>'default'])->one();
+
         //地区和行业关系
-        $list = User::find()->groupBy(['district_id','industry_id'])->select(['district_id','industry_id'])->all();
+        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['district_id','industry_id'])->select(['district_id','industry_id'])->all();
         foreach($list as $l){
             $this->structAdd($l->district_id,$l->industry_id,0,0);
         }
 
         //行业和公司关系
-        $list = User::find()->groupBy(['industry_id','company_id'])->select(['industry_id','company_id'])->all();
+        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['industry_id','company_id'])->select(['industry_id','company_id'])->all();
         foreach($list as $l){
             $this->structAdd(0,$l->industry_id,$l->company_id,0);
         }
@@ -138,7 +144,7 @@ class UserController extends BaseController
             }
         }
 
-        $list = User::find()->groupBy(['company_id','department_id'])->select(['company_id','department_id'])->all();
+        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['company_id','department_id'])->select(['company_id','department_id'])->all();
         foreach($list as $l){
             $this->structAdd(0,0,$l->company_id,isset($dArr[$l->department_id])?$dArr[$l->department_id]:0);
         }
@@ -146,7 +152,7 @@ class UserController extends BaseController
 
         //整套设置
 
-        $list = User::find()->groupBy(['district_id','industry_id','company_id','department_id'])
+        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['district_id','industry_id','company_id','department_id'])
             ->select(['district_id','industry_id','company_id','department_id'])->all();
         foreach($list as $l){
             $this->structAdd($l->district_id,$l->industry_id,$l->company_id,isset($dArr[$l->department_id])?$dArr[$l->department_id]:0);
