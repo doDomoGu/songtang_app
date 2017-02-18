@@ -62,12 +62,14 @@
                 </li>
             </ul>
         </li>
+        <?php if(Yii::$app->user->identity->isSuperAdmin):?>
         <li class="menu-single <?=$this->context->id=='user-app-auth'?'active':''?>">
             <a href="/user-app-auth">
                 <span class="menu-icon glyphicon glyphicon-credit-card"></span>
                 用户应用权限
             </a>
         </li>
+        <?php endif;?>
         <!--<li class="menu-list <?/*=$this->context->id=='pos-setting'?'nav-active':''*/?>">
             <a href="javascript:void(0);" class="<?/*=$this->context->id=='pos-setting'?'':'collapsed'*/?>">
                 <span class="menu-icon glyphicon glyphicon-cog"></span>

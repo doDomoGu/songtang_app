@@ -7,6 +7,19 @@ use Yii;
 
 class UserAppAuthController extends BaseController
 {
+    public function beforeAction($action){
+        //$this->addUserHistory();  //记录用户访问日志
+        if (!parent::beforeAction($action)) {
+            return false;
+        }else{
+            if(Yii::$app->user->identity->isSuperAdmin){
+                return true;
+            }else{
+                echo 'no auth';exit;
+            }
+        }
+    }
+
     public function actionIndex(){
         $appArr = UserAppAuth::getAppArr();
         $list = [];
