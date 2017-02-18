@@ -18,41 +18,61 @@
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <div class="container">
-        <div class="site-login">
-            <h1><?= Html::encode($this->title) ?></h1>
-            <div class="text-center">
-                <img src="/images/logo.png" />
-                <!--<img src="/images/songtang-united-logo.jpg" />-->
-            </div>
+<div class="wrap" id="login">
+    <section class="head-logo">
+        <img src="/images/logo.png" />
+    </section>
 
-            <div class="row">
-                <div class="col-lg-offset-3 col-lg-5">
-                    <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-
-                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-
-                    <?= $form->field($model, 'password')->passwordInput() ?>
-
-                    <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
-                    <div class="form-group">
-                        <?= Html::submitButton('登录', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-                    </div>
-
-                    <?php ActiveForm::end(); ?>
-                </div>
-            </div>
+    <section class="main">
+        <div class="middle-image">
+            <img src="/images/site-login/middle.png" />
         </div>
-    </div>
+        <div class="motto">
+            <span class="motto-1">一站式地产专业服务商</span>
+            <span class="motto-2">www.songtang.net</span>
+        </div>
+
+        <div class="login-form">
+            <?php $form = ActiveForm::begin([
+                'id' => 'login-form',
+                'fieldConfig' => [
+                    'template' => "{input}{error}"
+                ]
+            ]); ?>
+
+            <?= $form->field($model, 'username',[
+                'inputTemplate' => '{input}',
+                'inputOptions'=>['placeholder' => 'Username | 用户名','autocomplete'=>'off']
+            ])->textInput() ?>
+
+            <?= $form->field($model, 'password',[
+                'inputTemplate' => '{input}',
+                'inputOptions'=>['placeholder' => 'Password | 密码','autocomplete'=>'off','class' => 'form-control password-input'],
+
+            ])->passwordInput() ?>
+
+            <input type="submit" class="submit-btn" value="登录" />
+
+           <!-- <?/*= $form->field($model, 'username')->textInput(['autofocus' => true]) */?>
+
+            <?/*= $form->field($model, 'password')->passwordInput() */?>
+
+            <?/*= $form->field($model, 'rememberMe')->checkbox() */?>
+
+            <div class="form-group">
+                <?/*= Html::submitButton('登录', ['class' => 'btn btn-primary', 'name' => 'login-button']) */?>
+            </div>-->
+
+            <?php ActiveForm::end(); ?>
+        </div>
+    </section>
 </div>
 <footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+    <!--<div class="container">
+        <p class="pull-left">&copy; My Company <?/*= date('Y') */?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
+        <p class="pull-right"><?/*= Yii::powered() */?></p>
+    </div>-->
 </footer>
 
 <?php $this->endBody() ?>

@@ -9,11 +9,15 @@
         </li>
         <li>
             <span class="col">地区：</span>
-            <span class="val"><?=Yii::$app->user->getIdentity()->area?></span>
+            <span class="val"><?=Yii::$app->user->identity->district?></span>
         </li>
         <li>
-            <span class="col">业态：</span>
-            <span class="val"><?=Yii::$app->user->getIdentity()->business?></span>
+            <span class="col">行业：</span>
+            <span class="val"><?=Yii::$app->user->getIdentity()->industry?></span>
+        </li>
+        <li>
+            <span class="col">公司：</span>
+            <span class="val"><?=Yii::$app->user->getIdentity()->company?></span>
         </li>
         <li>
             <span class="col">部门：</span>
