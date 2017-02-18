@@ -67,7 +67,7 @@
         </div>
     </section>
 </div>
-<footer class="footer">
+<footer class="footer login-footer">
     <!--<div class="container">
         <p class="pull-left">&copy; My Company <?/*= date('Y') */?></p>
 
