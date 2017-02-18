@@ -142,6 +142,16 @@ class User extends \yii\db\ActiveRecord
         return $this->hasOne(Position::className(), array('id' => 'position_id'));
     }
 
+    public function getFullPositionRoute($separator = ' > '){
+        $str = '';
+        $str .= $this->district->name.$separator;
+        $str .= $this->industry->name.$separator;
+        $str .= $this->company->name.$separator;
+        $str .= $this->getDepartmentFullRoute().$separator;
+        $str .= $this->position->name;
+        return $str;
+    }
+
     public function getFullRoute($separator = ' > '){
         $str = '';
         $str .= $this->district->name.$separator;

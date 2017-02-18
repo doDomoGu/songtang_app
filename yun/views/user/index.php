@@ -34,7 +34,9 @@
                 </tr>
                 <tr>
                     <td class="text-right">职位</td>
-                    <td><?/*=PositionFunc::getFullRoute($user->position_id)*/?></td>
+                    <td>
+                        <?=$user->getFullPositionRoute()?>
+                    </td>
                 </tr>
                 <tr>
                     <td class="text-right">性别</td>

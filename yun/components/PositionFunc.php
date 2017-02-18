@@ -2,6 +2,7 @@
 namespace yun\components;
 
 //use app\models\Position;
+use ucenter\models\Position;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
 use yii\helpers\BaseArrayHelper;
