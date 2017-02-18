@@ -35,6 +35,15 @@ class UserAppAuth extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getAppCnArr(){
+        return [
+            'ucenter-admin'=>'职员信息管理',
+            'yun-admin'=>'颂唐云后台',
+            'yun-frontend'=>'颂唐云前台',
+            'oa-admin'=>'OA后台'
+        ];
+    }
+
     public static function hasAuth($user_id,$app){
         $exist = self::find()->where(['user_id'=>$user_id,'app'=>$app])->one();
         if($exist)

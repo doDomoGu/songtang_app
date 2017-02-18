@@ -19,9 +19,9 @@ use common\components\CommonFunc;
     }
 </style>
 <section>
-    <!--<div style="margin-bottom: 10px;">
-        <?/*=Html::a('新增职员','/user/add-and-edit',['class'=>'btn btn-success'])*/?>
-    </div>-->
+    <div style="margin-bottom: 10px;">
+        <?=Html::Button('添加用户权限',['value'=>'','class'=> 'btn btn-success','id'=>'modalButton','data-toggle'=>"modal",'data-target'=>"#addModal"])?>
+    </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
             <th width="60">职员ID</th>
@@ -84,29 +84,19 @@ Modal::begin([
             <input class="bid-value" type="hidden" />
             <input class="p_id-value" type="hidden" />
             <div class="form-group">
-                <label class="col-sm-4 control-label label1">地区</label>
-                <div class="col-sm-6" style="padding-top: 7px;">
-                    <span class="aname-text"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label label1">业态</label>
-                <div class="col-sm-6" style="padding-top: 7px;">
-                    <span class="bname-text"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label label1">部门路径</label>
-                <div class="col-sm-6" style="padding-top: 7px;">
-                    <span class="pname-text"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label label2">部门选择</label>
+                <label class="col-sm-4 control-label label1">用户ID</label>
                 <div class="col-sm-6">
-                    <select class="form-control new-did-select">
+                    <input class="form-control user-id" id="add-user-id">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">应用名称</label>
+                <div class="col-sm-6">
+                    <select class="form-control app-select" id="add-app">
+                        <?php foreach(\ucenter\models\UserAppAuth::getAppCnArr() as $v=>$a):?>
+                            <option value="<?=$v?>"><?=$a?></option>
+                        <?php endforeach;?>
                     </select>
-                    <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>
             <div class="form-group">

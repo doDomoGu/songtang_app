@@ -31,19 +31,23 @@ class UserAppAuthController extends BaseController
         $user_id = Yii::$app->request->get('user_id',false);
         $app = Yii::$app->request->get('app',false);
         $act = Yii::$app->request->get('act',false);
-        if(in_array($act,['add','del'])){
+        if(in_array($act,['add','del','new'])){
             if(in_array($app,UserAppAuth::getAppArr())){
                 $user = User::find()->where(['id'=>$user_id])->one();
                 if($user){
                     $existAuth = UserAppAuth::hasAuth($user_id,$app);
-                    if($act=='add'){
+                    if($act=='add' || $act=='new'){
                         if(!$existAuth){
                             $n = new UserAppAuth();
                             $n->user_id = $user_id;
                             $n->app = $app;
                             $n->is_enable = 1;
                             $n->save();
-                            $this->redirect('/user-app-auth');
+                            if($act == 'new'){
+                                echo json_encode(['success'=>true]);
+                            }else{
+                                $this->redirect('/user-app-auth');
+                            }
                         }else{
                             echo 'has exist';exit;
                         }
