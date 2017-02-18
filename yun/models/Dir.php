@@ -3,6 +3,7 @@
 namespace yun\models;
 use ucenter\models\District;
 use ucenter\models\Industry;
+use ucenter\models\UserAppAuth;
 use yun\models\DirPermission;
 use Yii;
 use ucenter\models\Area;
@@ -233,7 +234,8 @@ class Dir extends \yii\db\ActiveRecord
     public static function getAttrSearch($attrLimit){
         $districtCheck = [];
         $industryCheck = [];
-        if(Yii::$app->user->identity->isYunAdmin){
+        $hasAuth = UserAppAuth::hasAuth(Yii::$app->user->id,'yun-frontend');
+        if($hasAuth){
             $districtCheck = District::getIds();
             $industryCheck = Industry::getIds();
         }else{

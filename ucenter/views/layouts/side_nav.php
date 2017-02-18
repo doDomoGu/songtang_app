@@ -10,19 +10,19 @@
     <ul class="nav nav-pills nav-stacked">
         <li class="menu-single <?=$this->context->id=='site'?'active':''?>">
             <a href="/">
-                <span class="menu-icon glyphicon glyphicon-inbox"></span>
+                <span class="menu-icon glyphicon glyphicon-home"></span>
                 仪表盘
             </a>
         </li>
         <li class="menu-single <?=$this->context->id=='user'?'active':''?>">
             <a href="/user">
-                <span class="menu-icon glyphicon glyphicon-inbox"></span>
+                <span class="menu-icon glyphicon glyphicon-user"></span>
                 职员管理
             </a>
         </li>
         <li class="menu-single <?=$this->context->id=='structure'?'active':''?>">
             <a href="/structure">
-                <span class="menu-icon glyphicon glyphicon-inbox"></span>
+                <span class="menu-icon glyphicon glyphicon-list"></span>
                 组织结构
             </a>
         </li>
@@ -61,6 +61,12 @@
                     </a>
                 </li>
             </ul>
+        </li>
+        <li class="menu-single <?=$this->context->id=='user-app-auth'?'active':''?>">
+            <a href="/user-app-auth">
+                <span class="menu-icon glyphicon glyphicon-credit-card"></span>
+                用户应用权限
+            </a>
         </li>
         <!--<li class="menu-list <?/*=$this->context->id=='pos-setting'?'nav-active':''*/?>">
             <a href="javascript:void(0);" class="<?/*=$this->context->id=='pos-setting'?'':'collapsed'*/?>">

@@ -26,6 +26,26 @@ class UserAppAuth extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getAppArr(){
+        return [
+            'ucenter-admin',
+            'yun-admin',
+            'yun-frontend',
+            'oa-admin'
+        ];
+    }
+
+    public static function hasAuth($user_id,$app){
+        $exist = self::find()->where(['user_id'=>$user_id,'app'=>$app])->one();
+        if($exist)
+            return true;
+        else
+            return false;
+    }
+
+
+
+
     public function install() {
         try {
             $exist = self::find()->one();
@@ -64,5 +84,9 @@ class UserAppAuth extends \yii\db\ActiveRecord
             echo '<br/>';
             return false;
         }
+    }
+
+    public function getUser(){
+        return $this->hasOne(User::className(), array('id' => 'user_id'));
     }
 }

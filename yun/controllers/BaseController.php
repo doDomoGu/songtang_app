@@ -72,8 +72,8 @@ class BaseController extends Controller
 
     //检查是否有使用这个app权限
     private function checkAuth($redirect=false){
-        $authExist = UserAppAuth::find()->where(['app'=>'yun-admin','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
-        if(!$authExist){
+        $hasAuth = UserAppAuth::hasAuth(Yii::$app->user->id,'yun-frontend');
+        if(!$hasAuth){
             if($redirect){
                 if($this->getRoute()=='site/no-auth'){
                     return true;

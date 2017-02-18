@@ -26,6 +26,7 @@ class BaseController extends Controller
         'site/install'
     ];
 
+
     public function beforeAction($action){
         //$this->addUserHistory();  //记录用户访问日志
         if (!parent::beforeAction($action)) {
@@ -89,7 +90,7 @@ $s=5/0;
 
     //检查是否有使用这个app权限
     private function checkAuth(){
-        $authExist = UserAppAuth::find()->where(['app'=>'ucenter','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
+        $authExist = UserAppAuth::find()->where(['app'=>'ucenter-admin','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
         if(!$authExist){
             if($this->getRoute()=='site/no-auth'){
                 return true;

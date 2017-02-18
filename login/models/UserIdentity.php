@@ -27,7 +27,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $authKey;
     public $accessToken;
     public $status;
-    public $isYunAdmin;
+    public $isSuperAdmin;
 
     /*private static $users = [
         '100' => [
@@ -48,9 +48,9 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
 
     public static function findIdentity($id)
     {
+        $superAdminArr = [10000];
         $user = User::find()->where(['id'=>$id,'status'=>1])->one();
         if($user){
-            $yunAdminExist = UserAppAuth::find()->where(['app'=>'yun-admin','user_id'=>$user->id,'is_enable'=>1])->one();
             $userStatic = [
                 'id' => $user->id,
                 'username' => $user->username,
@@ -71,7 +71,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 //'position'=>$user->position->name,
                 'authKey' => 'key-'.$user->id,
                 'accessToken' => 'token-'.$user->id,
-                'isYunAdmin' => $yunAdminExist?true:false
+                'isSuperAdmin' => in_array($user->id,$superAdminArr)?true:false
             ];
             return new static($userStatic);
         }
