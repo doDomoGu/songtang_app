@@ -7,8 +7,12 @@ use common\components\CommonFunc;
     ucenter\assets\AppAsset::addJsFile($this,'js/main/user-app-auth/index.js');
 ?>
 <style>
+    a.set-auth {
+        cursor: pointer;
+    }
     a.is-enable {
         color:#00B83F;
+
     }
     a.is-disable {
         color:#800000;
@@ -35,9 +39,13 @@ use common\components\CommonFunc;
                 <td><?=$user->username?></td>
                 <td><?=$user->name?></td>
                 <td style="background:#eaeaea;">
+                    <?php if($user->id == '10000'):?>
+                        <span style="color:#00B83F;">启用</span>
+                    <?php else:?>
                     <?=in_array('ucenter-admin',$auth)?
                         '<a class="set-auth is-enable" data-user ="'.$user->id.'" data-app="ucenter-admin" data-act="del">启用</a>':
                         '<a class="set-auth is-disable" data-user ="'.$user->id.'" data-app="ucenter-admin" data-act="add">禁用</a>'?>
+                    <?php endif;?>
                 </td>
                 <td style="background:#eaeaea;">
                     <?=in_array('yun-frontend',$auth)?
