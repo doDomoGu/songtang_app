@@ -1,8 +1,9 @@
 <?php
 
 namespace oa\models;
-use ucenter\models\Area;
-use ucenter\models\Business;
+use ucenter\models\Company;
+use ucenter\models\District;
+use ucenter\models\Industry;
 use Yii;
 //oa 任务表 (即预先分配好的oa流程环节)
 class Task extends \yii\db\ActiveRecord
@@ -16,8 +17,9 @@ class Task extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => '任务名称',
             'category_id' => '任务分类',
-            'area_id' => '锁定地区',
-            'business_id' => '锁定业态',
+            'district_id' => '锁定地区',
+            'industry_id' => '锁定行业',
+            'company_id' => '锁定公司',
             'department_id' => '锁定部门',
             'ord' => '排序',
             'status' => '状态'
@@ -28,7 +30,7 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['ord', 'category_id', 'status', 'area_id', 'business_id', 'department_id'], 'integer'],
+            [['ord', 'category_id', 'status', 'district_id', 'industry_id', 'company_id', 'department_id'], 'integer'],
         ];
     }
 
@@ -38,30 +40,38 @@ class Task extends \yii\db\ActiveRecord
 
 
 
-    public function getArea(){
-        return $this->hasOne(Area::className(), array('id' => 'area_id'));
+    public function getDistrict(){
+        return $this->hasOne(District::className(), array('id' => 'district_id'));
     }
 
-    public function getBusiness(){
-        return $this->hasOne(Business::className(), array('id' => 'business_id'));
+    public function getIndustry(){
+        return $this->hasOne(Industry::className(), array('id' => 'industry_id'));
+    }
+
+    public function getCompany(){
+        return $this->hasOne(Company::className(), array('id' => 'company_id'));
     }
 
     /*
      * 获取可发起申请的任务列表
-     * 参数 area_id
-     * 参数 business_id
+     * 参数 district_id
+     * 参数 industry_id
+     * 参数 company_id
      * 参数 user_id
      * return  ['id1'=>'title1',...***]
      */
-    public static function getList($area_id,$business_id,$user_id=false){
+    public static function getList($district_id,$industry_id,$company_id,$user_id=false){
         $return = [];
         //有效的task列表
         $query = Task::find()->where(['status'=>1,'set_complete'=>1]);
-        if($area_id>0){
-            $query = $query->andWhere(['area_id'=>$area_id]);
+        if($district_id>0){
+            $query = $query->andWhere(['district_id'=>$district_id]);
         }
-        if($business_id>0){
-            $query = $query->andWhere(['business_id'=>$business_id]);
+        if($industry_id>0){
+            $query = $query->andWhere(['industry_id'=>$industry_id]);
+        }
+        if($company_id>0){
+            $query = $query->andWhere(['company_id'=>$company_id]);
         }
         $tasks = $query->all();
         $taskIds = [];

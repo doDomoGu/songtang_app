@@ -8,3 +8,30 @@
 .task-preview li div.task-preview-step {
     background: #cfcddc;
 }
+
+.panel-default {
+    border-radius: 0;
+    border:none;
+}
+
+.panel-default > .panel-heading {
+    background: #d3d3d4;
+    text-align: center;
+    border-radius: 0;
+
+}
+
+.panel-default > .panel-heading > h3 {
+    margin:0;
+    vertical-align: baseline;
+    line-height: 36px;
+}
+
+.panel-default > .panel-body {
+    border:none;
+}
+
+.btn.btn-primary {
+    background: #c7000a;
+    border-color: #c7000a;
+}

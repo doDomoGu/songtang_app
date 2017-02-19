@@ -106,9 +106,10 @@ class ApplyController extends BaseController
         $result = false;
         $html = '';
         if(Yii::$app->request->isAjax){
-            $area_id = trim(Yii::$app->request->post('area_id',0));
-            $business_id = trim(Yii::$app->request->post('business_id',0));
-            $list = Task::getList($area_id,$business_id);
+            $district_id = trim(Yii::$app->request->post('district_id',0));
+            $industry_id = trim(Yii::$app->request->post('industry_id',0));
+            $company_id = trim(Yii::$app->request->post('company_id',0));
+            $list = Task::getList($district_id,$industry_id,$company_id);
             $html .='<option value="">==请选择==</option>';
             if(!empty($list)){
                 foreach($list as $k=>$v){

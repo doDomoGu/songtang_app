@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/create.js');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/create.css');
 $this->title = '发起申请';
@@ -8,7 +9,7 @@ $this->title = '发起申请';
 
 <section class="panel panel-default">
     <div class="panel-heading">
-        <h3><?=$this->title?></h3>
+        <h3><?=Html::img('/images/main/apply/create-icon.png')?> &nbsp;&nbsp;&nbsp;<?=$this->title?></h3>
     </div>
     <div class="panel-body">
 
