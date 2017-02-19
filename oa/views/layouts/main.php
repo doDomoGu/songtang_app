@@ -25,7 +25,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 <?php
 NavBar::begin([
-    'brandLabel' => Yii::$app->id,
+    'brandLabel' => Html::img('/images/logo.png'),
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar-default navbar-fixed-top',
@@ -38,7 +38,7 @@ NavBar::begin([
     $menuItems[] = ['label' => '待办事项', 'url' => Url::to('/apply/todo'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/todo'||$this->context->getRoute()=='apply/do'?true:false];
     $menuItems[] = ['label' => '相关事项', 'url' => Url::to('/apply/related'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/related'?true:false];
     $menuItems[] = ['label' => '办结事项', 'url' => Url::to('/apply/done'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/done'?true:false];
-    $menuItems[] = ['label' => '安全退出', 'url' => Yii::$app->params['logoutUrl']];
+    $menuItems[] = ['label' => '安全退出', 'url' => Yii::$app->params['logoutUrl'],'options'=>['class'=>'nav-exit-btn'],];
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav navbar-right','id'=>'top-nav'],
 
