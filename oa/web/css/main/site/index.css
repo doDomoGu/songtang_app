@@ -1,0 +1,37 @@
+.task-category {
+    overflow: hidden;
+    margin-top:20px;
+}
+
+.task-category.task-first {
+    margin-top:0;
+}
+
+.task-category .category-heading {
+    background:#e57e7e;
+    text-align: center;
+    padding:10px;
+}
+
+.task-category .category-heading h3 {
+    margin:0;
+}
+
+.task-category .category-list {
+    clear:both;
+}
+
+.task-category .category-list li {
+    list-style:none;
+    background: #ffbcbc;
+    width:304px;
+    margin-right:4px;
+    margin-top:4px;
+    float:left;
+    padding:10px;
+    text-align: center;
+}
+
+.task-category .category-list li.li-3rd {
+    margin-right:0;
+}
