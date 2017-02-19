@@ -65,7 +65,7 @@ class UserAppAuth extends \yii\db\ActiveRecord
 
 
                 $m = new UserAppAuth();
-                $m->app = 'ucenter';
+                $m->app = 'ucenter-admin';
                 $m->user_id = $adminUser->id;
                 $m->is_enable = 1;
                 $m->save();
@@ -78,6 +78,12 @@ class UserAppAuth extends \yii\db\ActiveRecord
 
                 $m = new UserAppAuth();
                 $m->app = 'yun-admin';
+                $m->user_id = $adminUser->id;
+                $m->is_enable = 1;
+                $m->save();
+
+                $m = new UserAppAuth();
+                $m->app = 'yun-frontend';
                 $m->user_id = $adminUser->id;
                 $m->is_enable = 1;
                 $m->save();

@@ -33,11 +33,17 @@ class Industry extends \yii\db\ActiveRecord
     public static function getArr(){
         return [
             'default' => '--',
+            'stjg'=>'颂唐机构',
             'dc' => '地产',
-            'gg' => '广告',
-            'sy' => '商业',
-            'fw' => '房屋',
             'jj' => '经纪',
+            'fw' => '房屋',
+            'zy' => '置业',
+            'gg' => '广告',
+            'gg2' => '公关',
+            'hd' => '互动',
+            'sy' => '商业',
+            'jz' => '建筑',
+            'wy' => '物业',
         ];
     }
 

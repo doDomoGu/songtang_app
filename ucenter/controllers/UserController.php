@@ -120,13 +120,13 @@ class UserController extends BaseController
         $districtDefault = District::find()->where(['alias'=>'default'])->one();
 
         //地区和行业关系
-        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['district_id','industry_id'])->select(['district_id','industry_id'])->all();
+        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['district_id','industry_id'])->select(['district_id','industry_id'])->orderBy('district_id,industry_id')->all();
         foreach($list as $l){
             $this->structAdd($l->district_id,$l->industry_id,0,0);
         }
 
         //行业和公司关系
-        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['industry_id','company_id'])->select(['industry_id','company_id'])->all();
+        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['industry_id','company_id'])->select(['industry_id','company_id'])->orderBy('industry_id,company_id')->all();
         foreach($list as $l){
             $this->structAdd(0,$l->industry_id,$l->company_id,0);
         }
@@ -144,7 +144,7 @@ class UserController extends BaseController
             }
         }
 
-        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['company_id','department_id'])->select(['company_id','department_id'])->all();
+        $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['company_id','department_id'])->select(['company_id','department_id'])->orderBy('company_id,department_id')->all();
         foreach($list as $l){
             $this->structAdd(0,0,$l->company_id,isset($dArr[$l->department_id])?$dArr[$l->department_id]:0);
         }
@@ -153,7 +153,7 @@ class UserController extends BaseController
         //整套设置
 
         $list = User::find()->where(['>','district_id',$districtDefault->id])->groupBy(['district_id','industry_id','company_id','department_id'])
-            ->select(['district_id','industry_id','company_id','department_id'])->all();
+            ->select(['district_id','industry_id','company_id','department_id'])->orderBy('district_id,industry_id,company_id,department_id')->all();
         foreach($list as $l){
             $this->structAdd($l->district_id,$l->industry_id,$l->company_id,isset($dArr[$l->department_id])?$dArr[$l->department_id]:0);
         }
@@ -181,14 +181,14 @@ class UserController extends BaseController
 
 
     public function actionImportAll(){
-        if(Yii::$app->request->get('remove')==1){
+        /*if(Yii::$app->request->get('remove')==1){
             User::deleteAll(['>','id',10000]);
             Department::deleteAll(['>','id',8]);
             Position::deleteAll(['>','id',7]);
             Structure::deleteAll();
 
 exit;
-        }
+        }*/
 
 
         $exist = User::find()->where(['>','id',10000])->one();
@@ -199,8 +199,7 @@ exit;
 
         header("Content-Type: text/html; charset=UTF-8");
 
-        //$arr = ['sh','sz','szgg','wx','nj','hf','nmg'];
-        $arr = ['sh'];
+        $arr = ['sh','sz','szgg','wx','nj','hf','hhht'];
         foreach($arr as $a){
             $handle = fopen('../users/import3/'.$a.'.csv','r');
             $this->import($handle);

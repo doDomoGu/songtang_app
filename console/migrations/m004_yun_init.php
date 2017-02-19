@@ -97,8 +97,9 @@ class m004_yun_init extends Migration
 
         $this->createTable('dir_permission',[
             'dir_id'=>$this->integer(11),
-            'area_id'=>$this->integer(11),
-            'business_id'=>$this->integer(11),
+            'district_id'=>$this->integer(11),
+            'industry_id'=>$this->integer(11),
+            'company_id'=>$this->integer(11),
             'department_id'=>$this->integer(11),
             'position_id'=>$this->integer(11),
             'group_id'=>$this->integer(11),
@@ -107,7 +108,7 @@ class m004_yun_init extends Migration
             'operation' => $this->smallInteger(1),
             'mode' => $this->smallInteger(1)
         ]);
-        $this->addPrimaryKey('pk','dir_permission',['dir_id', 'area_id', 'business_id','department_id','position_id','group_id','user_id','type','operation','mode']);
+        $this->addPrimaryKey('pk','dir_permission',['dir_id', 'district_id', 'industry_id','company_id','department_id','position_id','group_id','user_id','type','operation','mode']);
 
 
     }
