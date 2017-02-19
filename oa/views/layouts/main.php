@@ -38,7 +38,7 @@ NavBar::begin([
     $menuItems[] = ['label' => '待办事项', 'url' => Url::to('/apply/todo'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/todo'||$this->context->getRoute()=='apply/do'?true:false];
     $menuItems[] = ['label' => '相关事项', 'url' => Url::to('/apply/related'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/related'?true:false];
     $menuItems[] = ['label' => '办结事项', 'url' => Url::to('/apply/done'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/done'?true:false];
-    $menuItems[] = ['label' => '安全退出', 'url' => Yii::$app->params['logoutUrl'],'options'=>['class'=>'nav-exit-btn'],];
+    $menuItems[] = ['label' => '安全退出', 'url' => Yii::$app->params['logoutUrl'],'options'=>['class'=>'nav-exit-btn']];
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav navbar-right','id'=>'top-nav'],
 
@@ -56,11 +56,23 @@ NavBar::end();
     </div>
 </div>
 <footer class="footer">
-    <div class="container">
-        <p class="text-center">&copy; 颂唐机构 <?= date('Y') ?></p>
+    <!--<div class="container">
+        <p class="pull-left">&copy; My Company </p>
+
+        <p class="pull-right"></p>
+    </div>-->
+    <div class=" text-center">
+        <div class="logo-line">
+            <img src="/images/footer.png" style="width:1140px;">
+        </div>
+        <!--<div class="txt-line">
+            Tel: 021-50103599  Fax: 021-50103598  Email: songtang@126.com
+        </div>
+        <div class="txt-line">
+            地址：上海市-闵行区-中春路9988号 Add: No. 9988, Zhongchun Road, Minhang District, Shanghai
+        </div>-->
     </div>
 </footer>
-
 <?php $this->endBody() ?>
 </body>
 </html>
