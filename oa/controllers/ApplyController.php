@@ -52,7 +52,7 @@ class ApplyController extends BaseController
             $new->status = 1;
             if($new->save()){
                 //Yii::$app->session->setFlash()
-                return $this->redirect('/');
+                return $this->redirect('/apply/my');
             }
         }
         $params['model'] = $model;

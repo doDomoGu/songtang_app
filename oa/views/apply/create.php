@@ -29,7 +29,7 @@ $this->title = '发起申请';
 ])->dropDownList($tasks,['prompt'=>'==请选择==','class'=>['form-control task-select']])  ?>
 
 
-<?= $form->field($model, 'message')->textarea() ?>
+<?= $form->field($model, 'message')->textarea(['rows'=>10]) ?>
 
 <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">

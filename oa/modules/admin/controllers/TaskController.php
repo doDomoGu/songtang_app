@@ -7,8 +7,9 @@ use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
 use oa\modules\admin\components\AdminFunc;
-use ucenter\models\Area;
-use ucenter\models\Business;
+use ucenter\models\Company;
+use ucenter\models\District;
+use ucenter\models\Industry;
 use ucenter\models\Position;
 use ucenter\models\User;
 use Yii;
@@ -37,10 +38,11 @@ class TaskController extends BaseController
 
 
         $params['list'] = $list;
-        $params['aArr'] = Area::getNameArr();
-        $params['bArr'] = Business::getNameArr();
+        $params['districtArr'] = District::getNameArr();
+        $params['industryArr'] = Industry::getNameArr();
+        $params['companyArr'] = Company::getNameArr();
         $params['pArr'] = Position::getNameArr();
-        $params['bArr2'] = Area::getRelationsArr($aid);
+        $params['industryArr2'] = District::getIndustryRelationsArr($aid);
 
         $params['aid'] = $aid;
         $params['bid'] = $bid;
@@ -53,7 +55,9 @@ class TaskController extends BaseController
         $result = false;
         if(Yii::$app->request->isAjax){
             $title = trim(Yii::$app->request->post('title',false));
-            $area_id = intval(Yii::$app->request->post('area_id',1));
+            $district_id = intval(Yii::$app->request->post('district_id',10001));
+            $industry_id = intval(Yii::$app->request->post('industry_id',10002));
+            $company_id = intval(Yii::$app->request->post('company_id',10001));
             $category_id = intval(Yii::$app->request->post('category_id',0));
             //AREA BUSINESS DEPARTMENT  TODO
             if($title==''){
@@ -66,8 +70,9 @@ class TaskController extends BaseController
                     $task = new Task();
                     $task->title = $title;
                     $task->category_id = $category_id;
-                    $task->area_id = $area_id;
-                    $task->business_id = $area_id;
+                    $task->district_id = $district_id;
+                    $task->industry_id = $industry_id;
+                    $task->company_id = $company_id;
                     $task->department_id = 1;
                     $task->ord = 0;
                     $task->status = 1;

@@ -8,8 +8,9 @@ $(function () {
             dataType: 'json',
             data: {
                 title: $('#createContent .create-title').val(),
-                area_id: $('#createContent .create-area-select').val(),
-                business_id: $('#createContent .create-business-select').val(),
+                district_id: $('#createContent .create-district-select').val(),
+                industry_id: $('#createContent .create-industry-select').val(),
+                company_id: $('#createContent .create-company-select').val(),
                 category_id: $('#createContent .create-category-select').val()
             },
             success: function (data) {

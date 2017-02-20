@@ -16,7 +16,8 @@
             <th>标题</th>
             <th>分类</th>
             <th width="200">所属地区 <?/*=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])*/?></th>
-            <th>所属业态 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
+            <th>所属行业 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
+            <th>所属公司 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
             <th>所属部门</th>
             <th>状态</th>
             <th>设置</th>
@@ -28,8 +29,9 @@
                 <td><?=$l->id?></td>
                 <td><?=$l->title?></td>
                 <td><?=$l->category->name?></td>
-                <td><?=$l->area_id>0?$aArr[$l->area_id]:'--'?></td>
-                <td><?=$l->business_id>0?$bArr[$l->business_id]:'--'?></td>
+                <td><?=$l->district_id>0?$districtArr[$l->district_id]:'--'?></td>
+                <td><?=$l->industry_id>0?$industryArr[$l->industry_id]:'--'?></td>
+                <td><?=$l->company_id>0?$companyArr[$l->company_id]:'--'?></td>
                 <td><?=\ucenter\models\Department::getFullRoute([$l->department_id])?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>
@@ -85,13 +87,19 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">所属地区</label>
                 <div class="col-sm-6">
-                    <?=\yii\bootstrap\BaseHtml::dropDownList('area-select','',\ucenter\models\Area::getItems(),['class'=>"form-control create-area-select"])?>
+                    <?=\yii\bootstrap\BaseHtml::dropDownList('district-select','',\ucenter\models\District::getItems(),['class'=>"form-control create-district-select"])?>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-4 control-label label1">所属业态</label>
+                <label class="col-sm-4 control-label label1">所属行业</label>
                 <div class="col-sm-6">
-                    <?=\yii\bootstrap\BaseHtml::dropDownList('business-select','',\ucenter\models\Business::getItems(),['class'=>"form-control create-business-select"])?>
+                    <?=\yii\bootstrap\BaseHtml::dropDownList('industry-select','',\ucenter\models\Industry::getItems(),['class'=>"form-control create-industry-select"])?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">所属公司</label>
+                <div class="col-sm-6">
+                    <?=\yii\bootstrap\BaseHtml::dropDownList('company-select','',\ucenter\models\Company::getItems(),['class'=>"form-control create-company-select"])?>
                 </div>
             </div>
             <!--<div class="form-group">

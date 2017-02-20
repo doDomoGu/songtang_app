@@ -58,3 +58,19 @@
 .panel-default > .panel-body table th.last {
     padding:0;
 }
+
+.panel-default > .panel-body table td{
+    padding:0 4px 0 0;
+}
+
+.panel-default > .panel-body td span{
+    background: #e6e6e6;
+    display:block;
+    padding:8px;
+    height:40px;
+    text-align: center;
+}
+
+.panel-default > .panel-body table td.last {
+    padding:0;
+}
