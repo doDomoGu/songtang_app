@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m003_oa_init extends Migration
+class m004_oa_init extends Migration
 {
     public function init(){
         $this->db = Yii::$app->db_oa;
