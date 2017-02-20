@@ -33,7 +33,7 @@ class DirPermission extends \yii\db\ActiveRecord
     //const TYPE_DEPARTMENT       = 4;   //部门 （通配）
     //const TYPE_POSITION         = 5;   //职位 （通配）
     //const TYPE_COMBINE          = 6;   // 前四个的任意组合
-    const TYPE_GROUP            = 7;   //权限组
+    const TYPE_GROUP            = 7;   //权限用户组
     const TYPE_USER             = 8;   //单独的USER_ID
 
     const TYPE_ALL_CN              = '全体职员';   //全体职员

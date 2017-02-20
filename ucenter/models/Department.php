@@ -70,6 +70,7 @@ class Department extends \yii\db\ActiveRecord
             } else {
                 $arr = [
                     ['a' => 'default', 'n' => '--'],
+                    ['a' => 'ds', 'n' => '董事'],
                     ['a' => 'fzgkzx', 'n' => '发展管控中心'],
                     ['a' => 'xzgkzx', 'n' => '行政管控中心'],
                     ['a' => 'cwgkzx', 'n' => '财务管控中心'],
