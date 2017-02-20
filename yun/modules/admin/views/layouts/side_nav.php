@@ -33,6 +33,12 @@
                 板块目录
             </a>
         </li>
+        <li class="menu-single <?=$this->context->id=='user-group-permission'?'active':''?>">
+            <a href="<?=AdminFunc::adminUrl('user-group-permission')?>">
+                <span class="menu-icon glyphicon glyphicon-hdd"></span>
+                用户组权限
+            </a>
+        </li>
         <!--<li class="menu-list <?/*=$this->context->id=='task'?'nav-active':''*/?>">
             <a href="javascript:void(0);" class="<?/*=$this->context->id=='task'?'':'collapsed'*/?>">
                 <span class="menu-icon glyphicon glyphicon-cog"></span>
