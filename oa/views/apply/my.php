@@ -9,16 +9,16 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
 ?>
 <section class="panel panel-default">
     <div class="panel-heading">
-        <h3><?=$this->title?></h3>
+        <h3><?=Html::img('/images/main/apply/my-icon.png')?> &nbsp;&nbsp;&nbsp;<?=$this->title?></h3>
     </div>
     <div class="panel-body">
-        <table class="table table-bordered table-striped">
+        <table>
             <tr>
-                <th>#</th>
-                <th>标题</th>
-                <th>任务表</th>
-                <th>申请时间</th>
-                <th>操作</th>
+                <th><span>#</span></th>
+                <th><span>标题</span></th>
+                <th><span>任务表</span></th>
+                <th><span>申请时间</span></th>
+                <th class="last"><span>操作</span></th>
             </tr>
             <tbody>
             <?php foreach($list as $l):?>

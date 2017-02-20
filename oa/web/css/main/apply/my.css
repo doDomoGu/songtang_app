@@ -9,3 +9,52 @@
 #infoContent > .content >li.not-do {
     background: #ffedce;
 }
+
+.panel-default {
+    border-radius: 0;
+    border:none;
+}
+
+.panel-default > .panel-heading {
+    background: #d3d3d4;
+    text-align: center;
+    border-radius: 0;
+
+}
+
+.panel-default > .panel-heading > h3 {
+    margin:0;
+    vertical-align: baseline;
+    line-height: 36px;
+}
+
+.panel-default > .panel-body {
+    border:none;
+}
+
+.btn.btn-primary {
+    background: #c7000a;
+    border-color: #c7000a;
+}
+
+.panel-default .panel-body table {
+    background: #fff;
+    border:none;
+    width:100%;
+}
+
+.panel-default > .panel-body table th{
+    padding:0 4px 0 0;
+}
+
+.panel-default > .panel-body th span{
+    background: #e57e7e;
+    display:block;
+    padding:8px;
+    height:40px;
+    text-align: center;
+}
+
+.panel-default > .panel-body table th.last {
+    padding:0;
+}
