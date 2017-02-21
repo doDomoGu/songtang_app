@@ -49,7 +49,7 @@ class DirPermission extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dir_id', 'district_id', 'industry_id','company_id','department_id','position_id','group_id','user_id','type','operation','mode'], 'integer'],
+            [['dir_id', 'param_id','type','operation','mode'], 'integer'],
         ];
     }
 

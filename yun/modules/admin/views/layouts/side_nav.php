@@ -33,33 +33,28 @@
                 板块目录
             </a>
         </li>
-        <li class="menu-single <?=$this->context->id=='user-group-permission'?'active':''?>">
-            <a href="<?=AdminFunc::adminUrl('user-group-permission')?>">
+
+        <li class="menu-list <?=$this->context->id=='permission'?'nav-active':''?>">
+            <a href="javascript:void(0);" class="<?=$this->context->id=='permission'?'':'collapsed'?>">
                 <span class="menu-icon glyphicon glyphicon-hdd"></span>
-                用户组权限
-            </a>
-        </li>
-        <!--<li class="menu-list <?/*=$this->context->id=='task'?'nav-active':''*/?>">
-            <a href="javascript:void(0);" class="<?/*=$this->context->id=='task'?'':'collapsed'*/?>">
-                <span class="menu-icon glyphicon glyphicon-cog"></span>
-                任务设置
+                目录权限
                 <span class="sub-menu-collapsed glyphicon glyphicon-plus"></span>
                 <span class="sub-menu-collapsed-in glyphicon glyphicon-minus"></span>
             </a>
 
-            <ul class="sub-menu-list collapse <?/*=$this->context->id=='task'?'in':''*/?>" id="system-collapse">
-                <li class="<?/*=$this->context->id=='task' && $this->context->action->id=='category'?'active':''*/?>">
-                    <a href="<?/*=AdminFunc::adminUrl('task/category')*/?>">
-                        分类
+            <ul class="sub-menu-list collapse <?=$this->context->id=='permission'?'in':''?>" id="system-collapse">
+                <li class="<?=$this->context->id=='permission' && $this->context->action->id=='user'?'active':''?>">
+                    <a href="<?=AdminFunc::adminUrl('permission/user')?>">
+                        用户
                     </a>
                 </li>
-                <li class="<?/*=$this->context->id=='task' && $this->context->action->id=='index'?'active':''*/?>">
-                    <a href="<?/*=AdminFunc::adminUrl('task')*/?>">
-                        任务表
+                <li class="<?=$this->context->id=='permission' && $this->context->action->id=='user-group'?'active':''?>">
+                    <a href="<?=AdminFunc::adminUrl('permission/user-group')?>">
+                        用户组
                     </a>
                 </li>
             </ul>
-        </li>-->
+        </li>
         <li class="menu-single">
             <a href="<?=Yii::$app->params['logoutUrl']?>">
                 <span class="menu-icon glyphicon glyphicon-log-out"></span>

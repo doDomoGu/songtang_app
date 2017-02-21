@@ -29,26 +29,32 @@ class Position extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getChildren(){
-        $arr = [];
-        $list = self::find()->where(['p_id'=>$this->id,'status'=>1])->all();
-        if(!empty($list)){
-            $count = count($list);
-            $i = 1;
-            foreach($list as $l){
-                $prefix = '&emsp;';
-                if ($count == $i) {
-                    $prefix .= '└─ ';
-                } else {
-                    $prefix .= '├─ ';
-                }
-                $l->name = $prefix . $l->name;
-                $arr[] = $l;
-                $i++;
-            }
-        }
-        return $arr;
+    public static function getChildren($p_id)
+    {
+        $list = self::find()->where(['p_id' => $p_id])->orderBy('ord asc')->all();
+        return $list;
     }
+
+//    public function getChildren(){
+//        $arr = [];
+//        $list = self::find()->where(['p_id'=>$this->id,'status'=>1])->all();
+//        if(!empty($list)){
+//            $count = count($list);
+//            $i = 1;
+//            foreach($list as $l){
+//                $prefix = '&emsp;';
+//                if ($count == $i) {
+//                    $prefix .= '└─ ';
+//                } else {
+//                    $prefix .= '├─ ';
+//                }
+//                $l->name = $prefix . $l->name;
+//                $arr[] = $l;
+//                $i++;
+//            }
+//        }
+//        return $arr;
+//    }
 
     public function install() {
         try {
