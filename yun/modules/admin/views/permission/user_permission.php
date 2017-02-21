@@ -37,10 +37,10 @@ function showStatus($bool){
                 <td><?=$l->name?></td>
                 <td width="120" class="text-center"><?=showStatus($l->attr_limit==1)?></td>
                 <?php
-                    $up1 = DirPermission::isAllow($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_UPLOAD,$user);
-                    $up2 = DirPermission::isAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT,DirPermission::OPERATION_UPLOAD,$user);
-                    $down1 = DirPermission::isAllow($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_DOWNLOAD,$user);
-                    $down2 = DirPermission::isAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT,DirPermission::OPERATION_DOWNLOAD,$user);
+                    $up1 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_UPLOAD,$user,true);
+                    $up2 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT,DirPermission::OPERATION_UPLOAD,$user,true);
+                    $down1 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_DOWNLOAD,$user,true);
+                    $down2 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT,DirPermission::OPERATION_DOWNLOAD,$user,true);
                 ?>
                 <td width="120" class="text-center"><?=showStatus($up1)?></span></td>
                 <td width="120" class="text-center"><?=showStatus($up2)?></span></td>

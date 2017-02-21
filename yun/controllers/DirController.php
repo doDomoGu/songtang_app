@@ -362,95 +362,114 @@ class DirController extends BaseController
 
         $dir_id = isset($post['dir_id'])?$post['dir_id']:'';
         $p_id = isset($post['p_id'])?$post['p_id']:'';
+        $user = Yii::$app->user->identity;
         $uid = Yii::$app->user->id;
         $flag = isset($post['flag'])?$post['flag']:'';
         $filename = isset($post['filename'])?$post['filename']:'';
         $districtCheck = isset($post['district_check'])?$post['district_check']:'';
         $industryCheck = isset($post['industry_check'])?$post['industry_check']:'';
-        if($dir_id>0 && $filename!='' && DirPermission::isAllow($dir_id,DirPermission::OPERATION_UPLOAD)){
+        //$companyCheck = 10000;
+        if($districtCheck == $user->district_id
+            && $industryCheck == $user->industry_id){
+            $allowPermissionType = [0,1];
+        }else{
+            $allowPermissionType = [0];
+        }
 
-            $fileexist = File::find()->where(['dir_id'=>$dir_id,'p_id'=>$p_id,'filename'=>$filename])->andWhere('status < 2')->one();
-            if($fileexist==false){
-                $file = new File();
-                $insert['filename'] = $filename;
-                $insert['filesize'] = isset($post['filesize'])?$post['filesize']:'';
-                $insert['filetype'] = isset($post['filetype'])?$post['filetype']:FileFrontFunc::getFileType($insert['filename']);
-                $insert['dir_id'] = $dir_id;
-                $insert['p_id'] = $p_id;
-                $insert['filename_real'] = isset($post['filename_real'])?$post['filename_real']:'';
-                $insert['user_id'] = $uid;
-                $insert['clicks'] = 0;
-                $insert['ord'] = 1;
-                $insert['status'] = 1;
-                $insert['parent_status'] = 1;
-                $insert['flag'] = $flag;  //flag ：1 公共  flag :2 个人\私人
-
-
-
-                //$file->insert(true,$insert);
-                $file->setAttributes($insert);
-
-                /*$file->filename = $post['filename'];
-                $file->filesize = $post['filesize'];
-                $file->filetype = FileFrontFunc::getFileType($post['filename']);
-                $file->dir_id = $post['dir_id'];
-                $file->p_id = $post['p_id'];
-                $file->filename_real = $post['filename_real'];
-                $file->uid = Yii::$app->user->id;
-                $file->clicks = 0;
-                $file->ord = 1;
-                $file->status = 1;
-                $file->flag = 1;*/
-
-                if($file->save()){
-                    /*if($areaCheck!=''){
-                        $areaCheckArr = explode(',',$areaCheck);
-                        $areaCheckArr = array_unique($areaCheckArr);
-                        foreach($areaCheckArr as $a){
-                            $fileAttr = new FileAttribute();
-                            $fileAttr->file_id = $file->id;
-                            $fileAttr->attr_type = Attribute::TYPE_AREA;
-                            $fileAttr->attr_id = $a;
-                            $fileAttr->save();
-                        }
-                    }
-
-                    if($businessCheck!=''){
-                        $businessCheckArr = explode(',',$businessCheck);
-                        $businessCheckArr = array_unique($businessCheckArr);
-                        foreach($businessCheckArr as $b){
-                            $fileAttr = new FileAttribute();
-                            $fileAttr->file_id = $file->id;
-                            $fileAttr->attr_type = Attribute::TYPE_BUSINESS;
-                            $fileAttr->attr_id = $b;
-                            $fileAttr->save();
-                        }
-                    }*/
-                    if($districtCheck!=''){
-                        $fileAttr = new FileAttribute();
-                        $fileAttr->file_id = $file->id;
-                        $fileAttr->attr_type = Attribute::TYPE_DISTRICT;
-                        $fileAttr->attr_id = $districtCheck;
-                        $fileAttr->save();
-                    }
-                    if($industryCheck!=''){
-                        $fileAttr = new FileAttribute();
-                        $fileAttr->file_id = $file->id;
-                        $fileAttr->attr_type = Attribute::TYPE_INDUSTRY;
-                        $fileAttr->attr_id = $industryCheck;
-                        $fileAttr->save();
-                    }
-
+        if($dir_id>0 && $filename!=''){
+            $allowUpload = false;
+            foreach($allowPermissionType as $t){
+                if(DirPermission::isDirAllow($dir_id,$t,DirPermission::OPERATION_UPLOAD)){
+                    $allowUpload = true;
                 }
+            }
+
+            if($allowUpload){
+                $fileexist = File::find()->where(['dir_id'=>$dir_id,'p_id'=>$p_id,'filename'=>$filename])->andWhere('status < 2')->one();
+                if($fileexist==false){
+                    $file = new File();
+                    $insert['filename'] = $filename;
+                    $insert['filesize'] = isset($post['filesize'])?$post['filesize']:'';
+                    $insert['filetype'] = isset($post['filetype'])?$post['filetype']:FileFrontFunc::getFileType($insert['filename']);
+                    $insert['dir_id'] = $dir_id;
+                    $insert['p_id'] = $p_id;
+                    $insert['filename_real'] = isset($post['filename_real'])?$post['filename_real']:'';
+                    $insert['user_id'] = $uid;
+                    $insert['clicks'] = 0;
+                    $insert['ord'] = 1;
+                    $insert['status'] = 1;
+                    $insert['parent_status'] = 1;
+                    $insert['flag'] = $flag;  //flag ：1 公共  flag :2 个人\私人
 
 
-                echo json_encode(['result'=>true]);
+
+                    //$file->insert(true,$insert);
+                    $file->setAttributes($insert);
+
+                    /*$file->filename = $post['filename'];
+                    $file->filesize = $post['filesize'];
+                    $file->filetype = FileFrontFunc::getFileType($post['filename']);
+                    $file->dir_id = $post['dir_id'];
+                    $file->p_id = $post['p_id'];
+                    $file->filename_real = $post['filename_real'];
+                    $file->uid = Yii::$app->user->id;
+                    $file->clicks = 0;
+                    $file->ord = 1;
+                    $file->status = 1;
+                    $file->flag = 1;*/
+
+                    if($file->save()){
+                        /*if($areaCheck!=''){
+                            $areaCheckArr = explode(',',$areaCheck);
+                            $areaCheckArr = array_unique($areaCheckArr);
+                            foreach($areaCheckArr as $a){
+                                $fileAttr = new FileAttribute();
+                                $fileAttr->file_id = $file->id;
+                                $fileAttr->attr_type = Attribute::TYPE_AREA;
+                                $fileAttr->attr_id = $a;
+                                $fileAttr->save();
+                            }
+                        }
+
+                        if($businessCheck!=''){
+                            $businessCheckArr = explode(',',$businessCheck);
+                            $businessCheckArr = array_unique($businessCheckArr);
+                            foreach($businessCheckArr as $b){
+                                $fileAttr = new FileAttribute();
+                                $fileAttr->file_id = $file->id;
+                                $fileAttr->attr_type = Attribute::TYPE_BUSINESS;
+                                $fileAttr->attr_id = $b;
+                                $fileAttr->save();
+                            }
+                        }*/
+                        if($districtCheck!=''){
+                            $fileAttr = new FileAttribute();
+                            $fileAttr->file_id = $file->id;
+                            $fileAttr->attr_type = Attribute::TYPE_DISTRICT;
+                            $fileAttr->attr_id = $districtCheck;
+                            $fileAttr->save();
+                        }
+                        if($industryCheck!=''){
+                            $fileAttr = new FileAttribute();
+                            $fileAttr->file_id = $file->id;
+                            $fileAttr->attr_type = Attribute::TYPE_INDUSTRY;
+                            $fileAttr->attr_id = $industryCheck;
+                            $fileAttr->save();
+                        }
+
+                    }
+
+
+                    echo json_encode(['result'=>true]);
+                }else{
+                    echo json_encode(['result'=>false,'msg'=>'同名文件已存在']);
+                }
             }else{
-                echo json_encode(['result'=>false,'msg'=>'同名文件已存在']);
+                echo json_encode(['result'=>false,'msg'=>'没有上传权限']);
             }
             //Yii::$app->response->redirect(['/dir','dir_id'=>$post['dir_id']])->send();
         }else{
-            echo json_encode(['result'=>false,'msg'=>'没有上传权限']);
+            echo json_encode(['result'=>false,'msg'=>'目录参数错误或者文件名为空']);
         }
 
         Yii::$app->end();
