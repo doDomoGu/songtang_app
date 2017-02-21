@@ -43,12 +43,12 @@
             </a>
 
             <ul class="sub-menu-list collapse <?=$this->context->id=='permission'?'in':''?>" id="system-collapse">
-                <li class="<?=$this->context->id=='permission' && $this->context->action->id=='user'?'active':''?>">
+                <li class="<?=$this->context->id=='permission' && substr($this->context->action->id,0,4)=='user' && substr($this->context->action->id,0,10)!='user-group'?'active':''?>">
                     <a href="<?=AdminFunc::adminUrl('permission/user')?>">
                         用户
                     </a>
                 </li>
-                <li class="<?=$this->context->id=='permission' && $this->context->action->id=='user-group'?'active':''?>">
+                <li class="<?=$this->context->id=='permission' && substr($this->context->action->id,0,10)=='user-group'?'active':''?>">
                     <a href="<?=AdminFunc::adminUrl('permission/user-group')?>">
                         用户组
                     </a>

@@ -35,7 +35,7 @@ class m005_yun_permission extends Migration
             'group_id'=> $this->integer(11)->notNull(),
             'user_id'=> $this->integer(11)->notNull()
         ]);
-        $this->addPrimaryKey('pk','group_user',['group_id','user_id']);
+        $this->addPrimaryKey('pk','user_group_user',['group_id','user_id']);
 
         //用户通配关联
         $this->createTable('user_wildcard', [

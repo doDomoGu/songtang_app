@@ -8,6 +8,9 @@ use ucenter\models\Industry;
 use ucenter\models\Position;
 use ucenter\models\User;
 use Yii;
+use yun\components\DirFrontFunc;
+use yun\components\DirFunc;
+use yun\models\Dir;
 use yun\models\UserGroup;
 
 class PermissionController extends BaseController
@@ -24,6 +27,20 @@ class PermissionController extends BaseController
         $params['positionArr'] = Position::getNameArr();
 
         return $this->render('user',$params);
+    }
+
+    public function actionUserPermission(){
+        $user_id = Yii::$app->request->get('user_id',0);
+
+        $user = User::find()->where(['id'=>$user_id])->one();
+
+        $dirList = DirFunc::getListArr(0,true,true);
+
+        $params['dirList'] = $dirList;
+
+        $params['user'] = $user;
+
+        return $this->render('user_permission',$params);
     }
 
 

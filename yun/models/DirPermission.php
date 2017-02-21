@@ -16,6 +16,8 @@ class DirPermission extends \yii\db\ActiveRecord
     const MODE_ALLOW_CN         = '允许';
     const MODE_DENY_CN          = '禁止';
 
+    const PERMISSION_TYPE_NORMAL = 1;   //常规（不限制）
+    const PERMISSION_TYPE_ATTR_LIMIT = 2; //限制文件属性(地区,行业,公司)和用户属性保持一致
 
 
     const OPERATION_UPLOAD      = 1;   //上传操作
@@ -28,22 +30,14 @@ class DirPermission extends \yii\db\ActiveRecord
 
 
     const TYPE_ALL              = 1;   //全体职员
-    const TYPE_DISTRICT         = 2;   //地区 （通配）
-    const TYPE_INDUSTRY         = 3;   //行业 （通配）
-    //const TYPE_DEPARTMENT       = 4;   //部门 （通配）
-    //const TYPE_POSITION         = 5;   //职位 （通配）
-    //const TYPE_COMBINE          = 6;   // 前四个的任意组合
+    const TYPE_USER             = 2;   //全体职员
+    const TYPE_WILDCARD         = 3;   // 前四个的任意组合
     const TYPE_GROUP            = 7;   //权限用户组
-    const TYPE_USER             = 8;   //单独的USER_ID
 
     const TYPE_ALL_CN              = '全体职员';   //全体职员
-    const TYPE_DISTRICT_CN         = '通配地区';   //地区 （通配）
-    const TYPE_INDUSTRY_CN         = '通配行业';   //业态 （通配）
-    //const TYPE_DEPARTMENT_CN       = 4;   //部门 （通配）
-    //const TYPE_POSITION_CN         = 5;   //职位 （通配）
-    //const TYPE_COMBINE_CN          = 6;   // 前四个的任意组合
-    const TYPE_GROUP_CN            = '权限组';   //权限组
     const TYPE_USER_CN             = '单一职员';   //单独的USER_ID
+    const TYPE_WILDCARD_CN         = '通配';       //地区/行业/公司等等属性 通配
+    const TYPE_GROUP_CN            = '用户组';     //用户组
 
 
     public function rules()
@@ -56,10 +50,9 @@ class DirPermission extends \yii\db\ActiveRecord
     public static function getTypeItems(){
         return [
             self::TYPE_ALL => self::TYPE_ALL_CN,
-            self::TYPE_DISTRICT => self::TYPE_DISTRICT_CN,
-            self::TYPE_INDUSTRY => self::TYPE_INDUSTRY_CN,
-            /*self::TYPE_GROUP => self::TYPE_GROUP_CN,
-            self::TYPE_USER => self::TYPE_USER_CN,*/
+            self::TYPE_USER => self::TYPE_USER_CN,
+            self::TYPE_WILDCARD => self::TYPE_WILDCARD_CN,
+            self::TYPE_GROUP => self::TYPE_GROUP_CN
         ];
     }
 
@@ -122,17 +115,27 @@ class DirPermission extends \yii\db\ActiveRecord
         $return = false;
         if($user===false)
             $user = Yii::$app->user->identity;
-        switch($dm->type){
+        switch($dm->user_match_type){
             case self::TYPE_ALL:
                 $return = true;
                 break;
-            case self::TYPE_DISTRICT:
-                if($dm->district_id>0 && $dm->district_id == $user->district_id)
+            case self::TYPE_WILDCARD:
+                $userWildcard = UserWildcard::find()->where(['id'=>$dm->user_match_param_id])->one();
+                foreach($userWildcard->users as $u){
+                    if($u->id==$user->id)
+                        $return = true;
+                }
+                break;
+            case self::TYPE_USER:
+                if($dm->user_match_param_id == $user->id)
                     $return = true;
                 break;
-            case self::TYPE_INDUSTRY:
-                if($dm->industry_id>0 && $dm->industry_id == $user->industry_id)
-                    $return = true;
+            case self::TYPE_GROUP:
+                $userGroup = UserGroup::find()->where(['id'=>$dm->user_match_param_id])->one();
+                foreach($userGroup->users as $u){
+                    if($u->user_id==$user->id)
+                        $return = true;
+                }
                 break;
         }
 
@@ -142,36 +145,35 @@ class DirPermission extends \yii\db\ActiveRecord
     /*
      * 检测目录是否允许执行所选操作
      * 参数 dir_id : 目录ID
+     * 参数 permission_type : 权限类型，1常规不限制， 2限制文件属性(地区,行业,公司)和用户属性保持一致
      * 参数 operation_id : 操作类型
      * 参数 user: 用户  默认为当前登录用户
      */
-    public static function isAllow($dir_id,$operation_id,$user=false){
+    public static function isAllow($dir_id,$permission_type,$operation_id,$user=false){
         $isAllow = false;
-        if(Yii::$app->controller->isAdminAuth){
+        /*if(Yii::$app->controller->isAdminAuth){
             $isAllow = true;
-        }else{
-            //$dir_id = $file->dir_id;
-            //$flag = $file->flag; //flag = 1 普通  flag = 2 私有
-            $allowList = self::find()->where(['dir_id'=>$dir_id,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
+        }else{*/
+            $allowList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
             if(!empty($allowList)){
                 foreach($allowList as $a){
                     if(self::isInRange($a,$user)){
-                        $isAllow = true;
+                        $isAllow = true; //有一条允许就允许
                         break;
                     }
                 }
             }
 
-            $denyList = self::find()->where(['dir_id'=>$dir_id,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
+            $denyList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
             if(!empty($denyList)){
                 foreach($denyList as $d){
                     if(self::isInRange($d,$user)){
-                        $isAllow = false;
+                        $isAllow = false; //有一条禁止就禁止
                         break;
                     }
                 }
             }
-        }
+        /*}*/
         return $isAllow;
     }
 
