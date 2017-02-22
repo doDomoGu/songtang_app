@@ -92,7 +92,7 @@ class UserController extends BaseController
 
     public function actionFile(){
         $this->view->title = '我的上传';
-        $list = File::find()->where(['uid'=>$this->user->id])->andWhere(['>','filetype',0]);
+        $list = File::find()->where(['user_id'=>$this->user->id])->andWhere(['>','filetype',0]);
         $count = $list->count();
         $pageSize = 10;
         $pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
@@ -109,7 +109,7 @@ class UserController extends BaseController
 
     public function actionDownload(){
         $this->view->title = '我的下载';
-        $list = DownloadRecord::find()->where(['uid'=>$this->user->id]);
+        $list = DownloadRecord::find()->where(['user_id'=>$this->user->id]);
         $count = $list->count();
         $pageSize = 10;
         $pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
@@ -126,8 +126,8 @@ class UserController extends BaseController
 
     public function actionRecycle(){
         $this->view->title = '回收站';
-        //$list = File::find()->where(['uid'=>$this->user->id])->andWhere(['>','filetype',0]);
-        //$list = File::find()->where(['uid'=>$this->user->id])->andWhere('status <2 and (status = 0 or parent_status = 0)')/*->andWhere(['>','filetype',0])*/;
+        //$list = File::find()->where(['user_id'=>$this->user->id])->andWhere(['>','filetype',0]);
+        //$list = File::find()->where(['user_id'=>$this->user->id])->andWhere('status <2 and (status = 0 or parent_status = 0)')/*->andWhere(['>','filetype',0])*/;
         $list = File::find()->where(['user_id'=>$this->user->id])->andWhere('status = 0  and  parent_status = 1')/*->andWhere(['>','filetype',0])*/;
         $count = $list->count();
         $pageSize = 10;
@@ -145,7 +145,7 @@ class UserController extends BaseController
 
     public function actionDoRecycle(){
         $file_id = yii::$app->request->get('id',false);
-        $file = File::find()->where(['uid'=>$this->user->id,'status'=>0,'id'=>$file_id])->one();
+        $file = File::find()->where(['user_id'=>$this->user->id,'status'=>0,'id'=>$file_id])->one();
         if($file){
             $file->status = 1;
             if($file->save()){
@@ -159,7 +159,7 @@ class UserController extends BaseController
     }
     public function actionDoRecycleDelete(){
         $file_id = yii::$app->request->get('id',false);
-        $file = File::find()->where(['uid'=>$this->user->id,'status'=>0,'id'=>$file_id])->one();
+        $file = File::find()->where(['user_id'=>$this->user->id,'status'=>0,'id'=>$file_id])->one();
         if($file){
             $file->status = 2;
             if($file->save()){
@@ -173,7 +173,7 @@ class UserController extends BaseController
     }
 
     public function actionDoRecycleDeleteAll(){
-        $files = File::find()->where(['uid'=>$this->user->id])->andWhere('status = 0  and  parent_status = 1')->all();
+        $files = File::find()->where(['user_id'=>$this->user->id])->andWhere('status = 0  and  parent_status = 1')->all();
         foreach($files as $f){
             $f->status = 2;
             if($f->save()){
@@ -217,12 +217,12 @@ class UserController extends BaseController
 
         $signTodayFlag = false;
 
-        $signToday = UserSign::find()->where(['uid'=>$this->user->id,'y'=>date('Y'),'m'=>date('m'),'d'=>date('d')])->one();
+        $signToday = UserSign::find()->where(['user_id'=>$this->user->id,'y'=>date('Y'),'m'=>date('m'),'d'=>date('d')])->one();
         if($signToday!=NULL){
             $signTodayFlag = true;
         }
 
-        $signs = UserSign::find()->where(['uid'=>$this->user->id,'y'=>$y,'m'=>$m])->all();
+        $signs = UserSign::find()->where(['user_id'=>$this->user->id,'y'=>$y,'m'=>$m])->all();
         $signList = [];
         foreach($signs as $s){
             $signList[] = $s->d;
@@ -264,12 +264,12 @@ class UserController extends BaseController
         if($isHoliday){
             $result = 3;
         }else{
-            $sign = UserSign::find()->where(['uid'=>$this->user->id,'y'=>$y,'m'=>$m,'d'=>$d])->one();
+            $sign = UserSign::find()->where(['user_id'=>$this->user->id,'y'=>$y,'m'=>$m,'d'=>$d])->one();
             if($sign!=NULL){
                 $result = 2;
             }else{
                 $newSign = new UserSign();
-                $newSign->uid = $this->user->id;
+                $newSign->user_id = $this->user->id;
                 $newSign->y = $y;
                 $newSign->m = $m;
                 $newSign->d = $d;

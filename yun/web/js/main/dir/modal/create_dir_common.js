@@ -1,4 +1,6 @@
 $('#createDirModalContent button.btn').click(function(){
+    district_check = $('#createDirModalContent .district-check').val();
+    industry_check = $('#createDirModalContent .industry-check').val();
     _dirname = $('#createDirModalContent .dirname').val();
     /*console.log(_dirname);*/
     if(_dirname!=''){
@@ -13,8 +15,8 @@ $('#createDirModalContent button.btn').click(function(){
                 filename:_dirname,
                 filetype:0,
                 filesize:0,
-                area_check:$('#createDirModalContent .area-check').val(),
-                business_check:$('#createDirModalContent .business-check').val(),
+                district_check:district_check,
+                industry_check:industry_check,
                 flag:1,
                 p_id:_p_id
             },

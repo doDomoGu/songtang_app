@@ -13,7 +13,7 @@ class TestController extends Controller
         foreach($dbList as $dbname){
             $testDbname = 'test_'.$dbname;
             $db->createCommand('DROP DATABASE if exists '.$testDbname)->execute();
-            $db->createCommand('CREATE DATABASE '.$testDbname)->execute();
+            $db->createCommand('CREATE DATABASE '.$testDbname.' DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;')->execute();
 
             $db->createCommand('use '.$dbname)->execute();
             $tables = $db->createCommand('show tables;')->queryAll();
