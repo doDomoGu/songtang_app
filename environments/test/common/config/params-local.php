@@ -1,14 +1,14 @@
 <?php
 return [
-    'loginUrl'=>'http://login.testsongtang.net',
-    'logoutUrl'=>'http://login.testsongtang.net/site/logout',
+    'loginUrl'=>'http://login.sina.com',
+    'logoutUrl'=>'http://login.sina.com/site/logout',
 
-    'ucenterAppUrl' => 'http://ucenter.testsongtang.net',
-    'oaAppUrl' => 'http://oa.testsongtang.net',
-    'oaAppAdminUrl' => 'http://oa.testsongtang.net/admin',
-    'yunAppUrl' => 'http://yun.testsongtang.net',
-    'yunAppAdminUrl' => 'http://yun.testsongtang.net/admin',
-    'apiAppUrl'=> 'https://api.testsongtang.net',
+    'ucenterAppUrl' => 'http://ucenter.sina.com',
+    'oaAppUrl' => 'http://oa.sina.com',
+    'oaAppAdminUrl' => 'http://oa.sina.com/admin',
+    'yunAppUrl' => 'http://yun.sina.com',
+    'yunAppAdminUrl' => 'http://yun.sina.com/admin',
+    'apiAppUrl'=> 'https://api.sina.com',
 
     'qiniu-accessKey' => '1nwvYZqaucoH14DZTD41GkKM1JmksrjlfNafgdu_',
     'qiniu-secretKey' => 'sV_VSSqbypX7XxoahfacjdQtoFVxr7BiLXFBrGV4',

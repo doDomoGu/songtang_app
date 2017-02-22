@@ -35,14 +35,15 @@ return [
             'enableAutoLogin' => true,
             //'loginUrl' => '/',
             'idParam'=>'_test_songtang_user_identity',
-            'identityCookie' => ['name' => '_test_identity-frontend', 'httpOnly' => true,'domain' => '.testsongtang.net','path'=>'/'],
+            'identityCookie' => ['name' => '_test_identity-frontend', 'httpOnly' => true,'domain' => '.sina.com','path'=>'/'],
         ],
         'session' => [
             'class'=>'yii\web\Session',
             // this is the name of the session cookie used for login on the frontend
             //'name' => 'advanced-frontend',
             'cookieParams' => [
-                'domain' => '.testsongtang.net',
+                'domain' => '.sina.com',
+                //'domain' => '.testsongtang.net',
                 'lifetime' => 0,
                 'httpOnly' => true,
                 'path' => '/',
