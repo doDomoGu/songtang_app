@@ -28,6 +28,10 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $accessToken;
     public $status;
     public $isSuperAdmin;
+    public $isUcenterAdmin;
+    public $isYunAdmin;
+    public $isYunFrontend;
+    public $isOaAdmin;
 
     /*private static $users = [
         '100' => [
@@ -48,9 +52,14 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
 
     public static function findIdentity($id)
     {
-        $superAdminArr = [10000];
         $user = User::find()->where(['id'=>$id,'status'=>1])->one();
         if($user){
+            $superAdminArr = [10000];
+            $appAuthList = UserAppAuth::find()->where(['user_id'=>$user->id])->all();
+            $appAuthArr = [];
+            foreach($appAuthList as $a){
+                $appAuthArr[] = $a->app;
+            }
             $userStatic = [
                 'id' => $user->id,
                 'username' => $user->username,
@@ -71,7 +80,11 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 //'position'=>$user->position->name,
                 'authKey' => 'key-'.$user->id,
                 'accessToken' => 'token-'.$user->id,
-                'isSuperAdmin' => in_array($user->id,$superAdminArr)?true:false
+                'isSuperAdmin' => in_array($user->id,$superAdminArr)?true:false,
+                'isUcenterAdmin' => in_array('ucenter-admin',$appAuthArr)?true:false,
+                'isYunAdmin' => in_array('yun-admin',$appAuthArr)?true:false,
+                'isYunFrontend' => in_array('yun-frontend',$appAuthArr)?true:false,
+                'isOaAdmin' => in_array('oa-admin',$appAuthArr)?true:false,
             ];
             return new static($userStatic);
         }

@@ -151,7 +151,7 @@ class DirPermission extends \yii\db\ActiveRecord
      */
     public static function isDirAllow($dir_id,$permission_type,$operation_id,$user=false,$ignoreAdmin=false){
         $isAllow = false;
-        if(!$ignoreAdmin && Yii::$app->controller->isAdminAuth){
+        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontend){
             $isAllow = true;
         }else{
             $allowList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
@@ -188,7 +188,7 @@ class DirPermission extends \yii\db\ActiveRecord
      */
     public static function isFileAllow($dir_id,$file_id,$operation_id,$user=false,$ignoreAdmin=false){
         $isAllow = false;
-        if(!$ignoreAdmin && Yii::$app->controller->isAdminAuth){
+        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontend){
             $isAllow = true;
         }else{
             //查看目录的attr_limit  如果是0 则需要isDirAllow 的permissionType 为0  如果是1 则isDirAllow的perssiomType 为 0或1 都可以

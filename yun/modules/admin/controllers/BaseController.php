@@ -10,7 +10,6 @@ class  BaseController extends Controller
 {
     public $mobileNavItems = [];  //手机端导航栏 选项
     public $except = [];
-    public $hasAuth = false;
 
     public function beforeAction($action){
         if (!parent::beforeAction($action)) {
@@ -54,15 +53,13 @@ class  BaseController extends Controller
 
     //检查是否有使用这个app权限
     private function checkAuth(){
-        $authExist = UserAppAuth::find()->where(['app'=>'yun-admin','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
-        if(!$authExist){
+        if(!Yii::$app->user->identity->isYunAdmin){
             if('/'.$this->getRoute()==AdminFunc::adminUrl('default/no-auth')){
                 return true;
             }else{
                 return $this->redirect(AdminFunc::adminUrl('default/no-auth'));
             }
         }else{
-            $this->hasAuth = true;
             return true;
         }
     }

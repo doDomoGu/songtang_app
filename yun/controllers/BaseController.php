@@ -20,7 +20,6 @@ class BaseController extends Controller
     //public $messageNum = 0;
     public $previewTypeArr = [2,3,4,5,6];
     public $except = [];  //未登录也可以访问的页面 排除
-    public $isAdminAuth = false;
 
     public function beforeAction($action){
         if (!parent::beforeAction($action)) {
@@ -82,7 +81,6 @@ class BaseController extends Controller
                 }
             }
         }else{
-            $this->isAdminAuth = true;
             return true;
         }
     }
