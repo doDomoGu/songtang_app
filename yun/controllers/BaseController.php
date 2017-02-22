@@ -50,6 +50,7 @@ class BaseController extends Controller
                 $this->toLogin();
                 return false;
             }else{
+                $this->user = Yii::$app->user->identity;
                 $this->checkAuth();
                 return true;
             }

@@ -1,9 +1,10 @@
 <?php
-    use app\components\DirFunc;
+    use yun\components\DirFunc;
     use yii\bootstrap\BaseHtml;
-    use app\components\FileFrontFunc;
-    app\assets\AppAsset::addCssFile($this,'css/main/user/file.css');
-    app\assets\AppAsset::addJsFile($this,'js/main/user/recycle.js');
+    use yun\components\FileFrontFunc;
+    use yun\components\CommonFunc;
+    yun\assets\AppAsset::addCssFile($this,'css/main/user/file.css');
+    yun\assets\AppAsset::addJsFile($this,'js/main/user/recycle.js');
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><h1><?=$this->title?></h1>
@@ -33,7 +34,7 @@
                     <th scope="row"><?=$l->id?></th>
                     <td>
                         <span title="<?=$l->filename?>">
-                            <?=\app\components\CommonFunc::mySubstr($l->filename,18)?>
+                            <?=CommonFunc::mySubstr($l->filename,18)?>
                         </span>
                     </td>
                     <td><?php if($l->filetype==0):?>
@@ -46,7 +47,7 @@
                     <td>
                         <?php $dirRoute = DirFunc::getFileFullRoute($l->dir_id,$l->p_id);?>
                         <span title="<?=$dirRoute?>">
-                            <?=\app\components\CommonFunc::mySubstr($dirRoute,18)?>
+                            <?=CommonFunc::mySubstr($dirRoute,18)?>
                         </span>
                     </td>
                     <td>
