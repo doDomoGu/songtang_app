@@ -28,7 +28,6 @@ class BaseController extends Controller
 
         $this->titleSuffix = '_'.yii::$app->name;
         $this->except = [
-            'site/index',
             'site/error',
             'site/get-qiniu-uptoken',
             'version/index'

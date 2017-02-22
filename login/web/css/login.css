@@ -1,0 +1,113 @@
+/*.site-login {
+    padding: 60px 0 120px;
+}*/
+
+#site-login header {
+    background: #fff;
+    border-top:40px solid #3A3A3C;
+    padding:14px 0;
+}
+
+#site-login header .logo {
+    width:240px;
+
+}
+
+#site-login footer {
+    background: #3A3A3C;
+    color:#fff;
+    font-size:24px;
+    padding:40px 0;
+}
+
+#login-form-section article {
+    height:203px;
+    overflow: hidden;
+}
+
+#login-form {
+    padding-top:30px;
+    height:70px;
+}
+
+input,button,select,textarea{outline:none}
+
+input:focus{outline:none;border: 0;box-shadow: none;}
+
+.form-control:focus {outline:none;border: 0;box-shadow: none;}
+.has-error .form-control#loginform-username,
+.has-success .form-control#loginform-username,
+.has-error .form-control#loginform-password,
+.has-success .form-control#loginform-password {outline:none;border: 0;box-shadow: none;}
+
+.form-group {
+    width:200px;
+    float:left;
+    padding:0;
+    margin:0;
+}
+.form-group input {
+    width:200px;
+    height:40px;
+    padding: 0 30px;
+}
+
+#form-input-group {
+    width:400px;
+    margin:0 auto;
+}
+
+#form-input-group .submit-btn {
+    position: absolute;
+    margin-left:-1px;
+    /*margin-top:-2px;*/
+    height:40px;
+    border:none;
+    background: #ccc;
+    padding:4px 10px;
+    color:#000;
+}
+
+#form-input-group .submit-btn:hover {
+    background: #bbb;
+}
+
+#loginform-username {
+    background: #000000;
+    border:0;
+    border-radius: 0;
+    color:#f9f9f9;
+    font-size:16px;
+    -webkit-box-shadow: 0 0 0 1000px #000 inset!important;
+    -webkit-text-fill-color: #f9f9f9;
+}
+
+input#loginform-username:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #000 inset!important;
+    -webkit-text-fill-color: #f9f9f9!important;
+}
+
+#loginform-password {
+    border:0;
+    border-radius: 0;
+    font-size:16px;
+    background: #f9f9f9;
+    color:#111111;
+    -webkit-box-shadow: 0 0 0 1000px #f9f9f9 inset!important;
+    -webkit-text-fill-color: #111111;
+
+}
+
+input#loginform-password:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #f9f9f9 inset!important;
+    -webkit-text-fill-color: #111111!important;
+}
+
+body {
+    /*background: #9b1316;*/
+    background: #ED1B23;
+}
+
+.has-error .help-block {
+    color:#fff;
+}

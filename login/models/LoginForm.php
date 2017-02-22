@@ -16,7 +16,7 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            [['username', 'password'], 'required'],
+            [['username', 'password'], 'required','message'=>'请填写{attribute}'],
             ['rememberMe', 'boolean'],
             ['password', 'validatePassword'],
         ];
@@ -24,7 +24,7 @@ class LoginForm extends Model
 
     public function attributeLabels(){
         return [
-            'username' => '用户名(邮箱)',
+            'username' => '用户名',
             'password' => '密码',
             'rememberMe' => '记住我',
         ];

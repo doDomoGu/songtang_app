@@ -1,84 +1,93 @@
 <?php
-    use yii\helpers\Html;
-    use login\assets\AppAsset;
-    use yii\bootstrap\ActiveForm;
+use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Html;
 
-    AppAsset::register($this);
+use login\assets\AppAsset;
+
+AppAsset::register($this);  /* 注册appAsset */
+AppAsset::addCssFile($this,'css/login.css');
+AppAsset::addJsFile($this,'js/login.js');
 ?>
-<?php $this->beginPage() ?>
+
+<?php
+
+?>
+<?php $this->beginPage(); /* 页面开始标志位 */ ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?=Yii::$app->name. ($this->title?'_'.Html::encode($this->title):'') ?></title>
+    <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
 <body>
-<?php $this->beginBody() ?>
+<?php $this->beginBody(); /* body开始标志位 */ ?>
+<section id="site-login">
+    <header class="text-center">
+        <img class="logo" src="/images/logo.png" />
+    </header>
 
-<div class="wrap" id="login">
-    <section class="head-logo">
-        <img src="/images/logo.png" />
-    </section>
 
-    <section class="main">
-        <div class="middle-image">
-            <img src="/images/site-login/middle.png" />
-        </div>
-        <div class="motto">
-            <span class="motto-1">一站式地产专业服务商</span>
-            <span class="motto-2">www.songtang.net</span>
-        </div>
+    <!--<p class="line-1 text-center">一站式地产综合服务商 http://www.songtang.net</p>
+    <p class="line-2 text-center">China's Glory United</p>-->
+    <section id="login-form-section">
+        <article class="text-center">
+            <img src="/images/site-login/word2.png" style="width:500px;"/>
 
-        <div class="login-form">
+
             <?php $form = ActiveForm::begin([
                 'id' => 'login-form',
+                'options' => [/*'class' => 'form-horizontal',*/'autocomplete'=>'off'],
+                //'enableAjaxValidation'=>false,
+                //'enableClientValidation'=>false,
                 'fieldConfig' => [
-                    'template' => "{input}{error}"
-                ]
+                    //'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-4\">{error}</div>",
+                    'template' => "{input}{error}",
+                    'labelOptions' => ['class' => 'col-lg-2 col-lg-offset-3 control-label'],
+                ],
             ]); ?>
+            <section id="form-input-group">
+                <input style="display:none" />
+                <?= $form->field($model, 'username',[
+                    'inputTemplate' => '{input}',
+                    'inputOptions'=>['placeholder' => 'Username | 用户名','autocomplete'=>'off']
+                ])->textInput() ?>
+                <input style="display:none">
+                <input style="display:none">
+                <input style="display:none">
+                <input style="display:none">
+                <?= $form->field($model, 'password',[
+                    'inputTemplate' => '{input}',
+                    'inputOptions'=>['placeholder' => 'Password | 密码','autocomplete'=>'off']
+                ])->passwordInput() ?>
+                <input type="submit" class="submit-btn" value="登录" />
+                <?/*=$model->getFirstError('username')*/?>
+            </section>
+            <?/*= $form->field($model, 'rememberMe')->checkbox([
+            'template' => "<div class=\"col-lg-offset-5 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
+        ]) */?>
 
-            <?= $form->field($model, 'username',[
-                'inputTemplate' => '{input}',
-                'inputOptions'=>['placeholder' => 'Username | 用户名','autocomplete'=>'off']
-            ])->textInput() ?>
-
-            <?= $form->field($model, 'password',[
-                'inputTemplate' => '{input}',
-                'inputOptions'=>['placeholder' => 'Password | 密码','autocomplete'=>'off','class' => 'form-control password-input'],
-
-            ])->passwordInput() ?>
-
-            <input type="submit" class="submit-btn" value="登录" />
-
-           <!-- <?/*= $form->field($model, 'username')->textInput(['autofocus' => true]) */?>
-
-            <?/*= $form->field($model, 'password')->passwordInput() */?>
-
-            <?/*= $form->field($model, 'rememberMe')->checkbox() */?>
-
-            <div class="form-group">
+            <!--<div class="form-group hidden">
+            <div class="col-lg-offset-5 col-lg-7">
                 <?/*= Html::submitButton('登录', ['class' => 'btn btn-primary', 'name' => 'login-button']) */?>
-            </div>-->
+            </div>
+        </div>-->
+
 
             <?php ActiveForm::end(); ?>
-        </div>
+        </article>
     </section>
-</div>
-<footer class="footer login-footer">
-    <!--<div class="container">
-        <p class="pull-left">&copy; My Company <?/*= date('Y') */?></p>
-
-        <p class="pull-right"><?/*= Yii::powered() */?></p>
-    </div>-->
-</footer>
-
-<?php $this->endBody() ?>
+    <footer class="text-center">
+        Since 1993
+    </footer>
+</section>
+<?php $this->endBody(); /* body结束标志位 */ ?>
 </body>
 </html>
-<?php $this->endPage() ?>
+<?php $this->endPage(); /* 页面结束标志位 */ ?>
+
 
 
 

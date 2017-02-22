@@ -11,6 +11,7 @@ return [
     'name' => '颂唐机构_登录界面',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language'=> 'zh-CN',
     'controllerNamespace' => 'login\controllers',
     'components' => [
         'request' => [
