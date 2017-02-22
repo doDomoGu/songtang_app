@@ -546,7 +546,7 @@ class SiteController extends BaseController
 
         $rcHHHT = 110;
         $rcHHHTUser = [
-            'haijun'
+            'yangjie'
         ];
         echo 'rcHHHT =====<br/>';
         $usergroup = new UserGroup();
