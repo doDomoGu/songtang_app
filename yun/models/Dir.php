@@ -234,8 +234,7 @@ class Dir extends \yii\db\ActiveRecord
     public static function getAttrSearch($attrLimit){
         $districtCheck = [];
         $industryCheck = [];
-        $hasAuth = UserAppAuth::hasAuth(Yii::$app->user->id,'yun-frontend');
-        if($hasAuth){
+        if(Yii::$app->user->identity->isYunFrontend){
             $districtCheck = District::getIds();
             $industryCheck = Industry::getIds();
         }else{
