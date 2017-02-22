@@ -269,4 +269,15 @@ class Dir extends \yii\db\ActiveRecord
    /* public static function getIds(){
 
     }*/
+
+    public static function getParents($id){
+        $return = [];
+        $cur = self::find()->where(['id'=>$id])->one();
+        if($cur && $cur->p_id>0){
+            $parents = self::getParents($cur->p_id);
+            $return = array_merge([$cur->p_id],$parents);
+        }
+
+        return $return;
+    }
 }

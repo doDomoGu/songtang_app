@@ -43,7 +43,7 @@ class DirPermission extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dir_id', 'param_id','type','operation','mode'], 'integer'],
+            [['dir_id', 'permission_type','user_match_type','user_match_param_id','operation','mode'], 'integer'],
         ];
     }
 
@@ -154,6 +154,8 @@ class DirPermission extends \yii\db\ActiveRecord
         if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontend){
             $isAllow = true;
         }else{
+            $parents = Dir::getParents($dir_id);
+
             $allowList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
             if(!empty($allowList)){
                 foreach($allowList as $a){
@@ -163,6 +165,20 @@ class DirPermission extends \yii\db\ActiveRecord
                     }
                 }
             }
+            if($isAllow==false && !empty($parents)){  //递归父目录
+                foreach($parents as $p_id){
+                    $allowList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
+                    if(!empty($allowList)){
+                        foreach($allowList as $a){
+                            if(self::isInRange($a,$user)){
+                                $isAllow = true; //有一条允许就允许
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
 
             $denyList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
             if(!empty($denyList)){
@@ -170,6 +186,20 @@ class DirPermission extends \yii\db\ActiveRecord
                     if(self::isInRange($d,$user)){
                         $isAllow = false; //有一条禁止就禁止
                         break;
+                    }
+                }
+            }
+
+            if($isAllow==true && !empty($parents)){ //递归父目录
+                foreach($parents as $p_id){
+                    $denyList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
+                    if(!empty($denyList)){
+                        foreach($denyList as $d){
+                            if(self::isInRange($d,$user)){
+                                $isAllow = false; //有一条禁止就禁止
+                                break;
+                            }
+                        }
                     }
                 }
             }

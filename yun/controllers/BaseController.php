@@ -10,6 +10,7 @@ use ucenter\models\User;
 use Yii;
 use yii\web\Controller;
 
+
 class BaseController extends Controller
 {
     public $titleSuffix;

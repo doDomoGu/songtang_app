@@ -11,6 +11,7 @@ use Yii;
 use yun\components\DirFrontFunc;
 use yun\components\DirFunc;
 use yun\models\Dir;
+use yun\models\DirPermission;
 use yun\models\UserGroup;
 
 class PermissionController extends BaseController
