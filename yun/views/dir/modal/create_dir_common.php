@@ -17,10 +17,10 @@ Modal::begin([
 ]);
 ?>
     <div id="createDirModalContent">
-        <p>
+        <p style="display: none;">
             地区：<?=BaseHtml::dropDownList('district-check','',$districtItems,['class'=>'attr-check district-check'])?>
         </p>
-        <p>
+        <p style="display: none;">
             行业：<?=BaseHtml::dropDownList('industry-check','',$industryItems,['class'=>'attr-check industry-check'])?>
         </p>
         <p>

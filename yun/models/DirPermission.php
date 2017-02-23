@@ -300,4 +300,20 @@ class DirPermission extends \yii\db\ActiveRecord
         return $arr;
     }
 
+
+    public static function hasPermissionType($dir_id,$operation_id,$user){
+        $isNormal = self::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_NORMAL,$operation_id,$user);
+        if($isNormal){
+            return DirPermission::PERMISSION_TYPE_NORMAL;
+        }else{
+            $isAttrLimit = self::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT,$operation_id,$user);
+            if($isAttrLimit){
+                return DirPermission::PERMISSION_TYPE_ATTR_LIMIT;
+            }else{
+                return false;
+            }
+        }
+
+    }
+
 }

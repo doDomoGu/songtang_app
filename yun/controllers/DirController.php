@@ -178,6 +178,9 @@ class DirController extends BaseController
                     $orderSelect[$n] = $this->orderNameArr[$n];
                 }
 
+
+
+
                 $attrSearch = Dir::getAttrSearch($curDir->attr_limit==NULL?Dir::ATTR_LIMIT_ALL:$curDir->attr_limit);
 
                 $listType = yii::$app->request->get('list_type',false);
@@ -365,10 +368,16 @@ class DirController extends BaseController
         $uid = Yii::$app->user->id;
         $flag = isset($post['flag'])?$post['flag']:'';
         $filename = isset($post['filename'])?$post['filename']:'';
-        $districtCheck = isset($post['district_check'])?$post['district_check']:'';
-        $industryCheck = isset($post['industry_check'])?$post['industry_check']:'';
-        //$companyCheck = 10000;
-        if($districtCheck == $user->district_id
+
+        if($post['filetype']==0){
+            $districtCheck = 10000;
+            $industryCheck = 10000;
+        }else{
+            $districtCheck = isset($post['district_check'])?$post['district_check']:'';
+            $industryCheck = isset($post['industry_check'])?$post['industry_check']:'';
+        }
+
+        if($districtCheck!=10000 && $districtCheck == $user->district_id
             && $industryCheck == $user->industry_id){
             $allowPermissionType = [DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::PERMISSION_TYPE_ATTR_LIMIT];
         }else{
