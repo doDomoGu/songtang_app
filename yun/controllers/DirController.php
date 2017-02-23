@@ -178,7 +178,7 @@ class DirController extends BaseController
                     $orderSelect[$n] = $this->orderNameArr[$n];
                 }
 
-                $attrSearch = Dir::getAttrSearch($curDir->attr_limit);
+                $attrSearch = Dir::getAttrSearch($curDir->attr_limit==NULL?Dir::ATTR_LIMIT_ALL:$curDir->attr_limit);
 
                 $listType = yii::$app->request->get('list_type',false);
 
@@ -332,7 +332,6 @@ class DirController extends BaseController
         $districtCheck = $districtCheck!=false?District::getCheckIdsTrue(explode(',',$districtCheck)):[];
         $industryCheck = $industryCheck!=false?Industry::getCheckIdsTrue(explode(',',$industryCheck)):[];
         $attrSearch = ['district'=>$districtCheck,'industry'=>$industryCheck];
-
         $pageSize = $this->listStylePageSize;
         if($listType=='grid')
             $pageSize = $this->gridStylePageSize;
@@ -371,9 +370,9 @@ class DirController extends BaseController
         //$companyCheck = 10000;
         if($districtCheck == $user->district_id
             && $industryCheck == $user->industry_id){
-            $allowPermissionType = [0,1];
+            $allowPermissionType = [DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::PERMISSION_TYPE_ATTR_LIMIT];
         }else{
-            $allowPermissionType = [0];
+            $allowPermissionType = [DirPermission::PERMISSION_TYPE_NORMAL];
         }
 
         if($dir_id>0 && $filename!=''){

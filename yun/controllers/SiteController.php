@@ -111,6 +111,16 @@ class SiteController extends BaseController
             $dp->save();
         }
 
+        $xz = 14;
+        $dp = new DirPermission();
+        $dp->dir_id = $xz;
+        $dp->permission_type = DirPermission::PERMISSION_TYPE_ATTR_LIMIT;
+        $dp->user_match_type = DirPermission::TYPE_ALL;
+        $dp->user_match_param_id = 0;
+        $dp->operation =DirPermission::OPERATION_DOWNLOAD;
+        $dp->mode = DirPermission::MODE_ALLOW;
+        $dp->save();
+
 
 
         $fawu = [22];
