@@ -87,7 +87,7 @@ class SiteController extends BaseController
             exit;
         }
 
-        $all = [72,83,103];
+        $all = [2,72,83,103];
         foreach($all as $a){
             $dp = new DirPermission();
             $dp->dir_id = $a;
