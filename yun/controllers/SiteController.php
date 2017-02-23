@@ -86,6 +86,33 @@ class SiteController extends BaseController
             echo 'auth installed';
             exit;
         }
+
+        $all = [72,83,103];
+        foreach($all as $a){
+            $dp = new DirPermission();
+            $dp->dir_id = $a;
+            $dp->permission_type = DirPermission::PERMISSION_TYPE_NORMAL;
+            $dp->user_match_type = DirPermission::TYPE_ALL;
+            $dp->user_match_param_id = 0;
+            $dp->operation =DirPermission::OPERATION_DOWNLOAD;
+            $dp->mode = DirPermission::MODE_ALLOW;
+            $dp->save();
+        }
+
+        $uploadAll = [105];
+        foreach($uploadAll as $a){
+            $dp = new DirPermission();
+            $dp->dir_id = $a;
+            $dp->permission_type = DirPermission::PERMISSION_TYPE_NORMAL;
+            $dp->user_match_type = DirPermission::TYPE_ALL;
+            $dp->user_match_param_id = 0;
+            $dp->operation =DirPermission::OPERATION_UPLOAD;
+            $dp->mode = DirPermission::MODE_ALLOW;
+            $dp->save();
+        }
+
+
+
         $fawu = [22];
         $fawuUser = [
             'zhaoning',
