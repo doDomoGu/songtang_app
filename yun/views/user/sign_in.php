@@ -1,6 +1,6 @@
 <?php
     use yii\helpers\BaseHtml;
-    app\assets\AppAsset::addCssFile($this,'css/main/user/sign_in.css');
+    yun\assets\AppAsset::addCssFile($this,'css/main/user/sign_in.css');
 ?>
 <section>
     <?php if($result == 1):?>

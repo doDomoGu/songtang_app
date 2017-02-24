@@ -1,8 +1,8 @@
 <?php
     use yii\helpers\BaseHtml;
-    use app\components\CommonFunc;
-    app\assets\AppAsset::addCssFile($this,'css/main/user/sign.css');
-    app\assets\AppAsset::addJsFile($this,'js/main/user/sign.js');
+    use yun\components\CommonFunc;
+    yun\assets\AppAsset::addCssFile($this,'css/main/user/sign.css');
+    yun\assets\AppAsset::addJsFile($this,'js/main/user/sign.js');
 ?>
 <section id="sidebar-right">
     <div class="sign-btn">

@@ -29,7 +29,7 @@
                     <td>
                         <?=$user->username?>
                         &nbsp;&nbsp;
-                       <!-- <a class="btn btn-xs btn-primary " href="<?/*=Yii::$app->urlManager->createUrl(['user/change-password']);*/?>">修改密码</a>-->
+                        <a class="btn btn-xs btn-primary " href="<?=Yii::$app->urlManager->createUrl(['user/change-password']);?>">修改密码</a>
                     </td>
                 </tr>
                 <tr>

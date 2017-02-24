@@ -2,19 +2,21 @@
 
 namespace yun\controllers;
 
+use yun\models\UserChangePwdForm;
 use yun\components\CommonFunc;
 use yun\components\DirFunc;
 use yun\components\FileFrontFunc;
 use yun\models\Dir;
 //use yun\models\DownloadRecord;
+use yun\models\DownloadRecord;
 use yun\models\File;
-use yun\models\PositionDirPermission;
 //use yun\models\UserSign;
 use Yii;
 use ucenter\models\User;
 /*use yun\models\UserChangePwdForm;
 use yun\models\UserChangeHeadImgForm;*/
 use yii\data\Pagination;
+use yun\models\UserSign;
 
 
 class UserController extends BaseController
@@ -39,7 +41,7 @@ class UserController extends BaseController
             $user->password_true = $model->password_new;
             if($user->save()){
                 Yii::$app->user->logout();
-                Yii::$app->response->redirect('/site/login')->send();
+                Yii::$app->response->redirect(Yii::$app->params['loginUrl'])->send();
             }
         }
         $params['model'] = $model;

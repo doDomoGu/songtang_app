@@ -1,7 +1,7 @@
 <?php
-    use app\components\DirFunc;
+    use yun\components\DirFunc;
     use yii\bootstrap\BaseHtml;
-    app\assets\AppAsset::addCssFile($this,'css/main/user/file.css');
+    yun\assets\AppAsset::addCssFile($this,'css/main/user/file.css');
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><h1><?=$this->title?></h1></div>
