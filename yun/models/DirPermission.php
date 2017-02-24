@@ -18,14 +18,17 @@ class DirPermission extends \yii\db\ActiveRecord
 
     const PERMISSION_TYPE_NORMAL = 1;   //常规（不限制）
     const PERMISSION_TYPE_ATTR_LIMIT = 2; //限制文件属性(地区,行业,公司)和用户属性保持一致
+//    const PERMISSION_TYPE_ATTR_LIMIT_DISTRICT = 2; //限制文件属性(地区,行业,公司)和用户属性保持一致
+//    const PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY = 3; //限制文件属性(地区,行业,公司)和用户属性保持一致
+//    const PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY = 4; //限制文件属性(地区,行业,公司)和用户属性保持一致
 
 
     const OPERATION_UPLOAD      = 1;   //上传操作
     const OPERATION_DOWNLOAD    = 2;   //下载操作(预览)
     const OPERATION_COOP        = 3;   //协同操作
     //const OPERATION_DELETE      = 4;   //删除操作
-    const OPERATION_UPLOAD_CN   = '上传';
-    const OPERATION_DOWNLOAD_CN = '下载';
+    const OPERATION_UPLOAD_CN   = '上传';  //编辑 删除
+    const OPERATION_DOWNLOAD_CN = '下载';  //查看
     const OPERATION_COOP_CN     = '协同';
 
 
@@ -145,7 +148,7 @@ class DirPermission extends \yii\db\ActiveRecord
     /*
      * 检测目录是否允许执行所选操作
      * 参数 dir_id : 目录ID
-     * 参数 permission_type : 权限类型，1常规不限制， 2限制文件属性(地区,行业,公司)和用户属性保持一致
+     * 参数 permission_type : 权限类型，1常规不限制， 2 3 4 限制文件属性(地区,行业,公司)和用户属性保持一致
      * 参数 operation_id : 操作类型
      * 参数 user: 用户  默认为当前登录用户
      */
@@ -221,22 +224,28 @@ class DirPermission extends \yii\db\ActiveRecord
         if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontend){
             $isAllow = true;
         }else{
-            //查看目录的attr_limit  如果是0 则需要isDirAllow 的permissionType 为0  如果是1 则isDirAllow的perssiomType 为 0或1 都可以
-            $dir = Dir::find()->where(['id'=>$dir_id])->one();
-            $attr_limit = $dir->attr_limit;
-            $isDirAllow = false;
-            if($attr_limit == 0){
-                if(self::isDirAllow($dir_id,0,$operation_id,$user,$ignoreAdmin)){
-                    $isDirAllow = true;
-                }
-            }elseif($attr_limit == 1){
-                if(self::isDirAllow($dir_id,0,$operation_id,$user,$ignoreAdmin) || self::isDirAllow($dir_id,1,$operation_id,$user,$ignoreAdmin)){
-                    $isDirAllow = true;
-                }
-            }
-            if($isDirAllow){
+            if(self::isDirAllow($dir_id,self::PERMISSION_TYPE_NORMAL,$operation_id,$user,$ignoreAdmin)){
+                $isAllow = true;
+            }elseif(self::isDirAllow($dir_id,self::PERMISSION_TYPE_ATTR_LIMIT,$operation_id,$user,$ignoreAdmin)){
                 $isAllow = self::isFileAttributeAccorded($file_id,$user);
             }
+
+            //查看目录的attr_limit  如果是0 则需要isDirAllow 的permissionType 为0  如果是1 则isDirAllow的perssiomType 为 0或1 都可以
+//            $dir = Dir::find()->where(['id'=>$dir_id])->one();
+//            $attr_limit = $dir->attr_limit;
+//            $isDirAllow = false;
+//            if($attr_limit == 0){
+//                if(self::isDirAllow($dir_id,0,$operation_id,$user,$ignoreAdmin)){
+//                    $isDirAllow = true;
+//                }
+//            }elseif($attr_limit == 1){
+//                if(self::isDirAllow($dir_id,0,$operation_id,$user,$ignoreAdmin) || self::isDirAllow($dir_id,1,$operation_id,$user,$ignoreAdmin)){
+//                    $isDirAllow = true;
+//                }
+//            }
+//            if($isDirAllow){
+//                $isAllow = self::isFileAttributeAccorded($file_id,$user);
+//            }
         }
         return $isAllow;
     }
@@ -301,19 +310,19 @@ class DirPermission extends \yii\db\ActiveRecord
     }
 
 
-    public static function hasPermissionType($dir_id,$operation_id,$user){
-        $isNormal = self::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_NORMAL,$operation_id,$user);
-        if($isNormal){
-            return DirPermission::PERMISSION_TYPE_NORMAL;
-        }else{
-            $isAttrLimit = self::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT,$operation_id,$user);
-            if($isAttrLimit){
-                return DirPermission::PERMISSION_TYPE_ATTR_LIMIT;
-            }else{
-                return false;
-            }
-        }
-
-    }
+//    public static function hasPermissionType($dir_id,$operation_id,$user){
+//        $isNormal = self::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_NORMAL,$operation_id,$user);
+//        if($isNormal){
+//            return DirPermission::PERMISSION_TYPE_NORMAL;
+//        }else{
+//            $isAttrLimit = self::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT,$operation_id,$user);
+//            if($isAttrLimit){
+//                return DirPermission::PERMISSION_TYPE_ATTR_LIMIT;
+//            }else{
+//                return false;
+//            }
+//        }
+//
+//    }
 
 }
