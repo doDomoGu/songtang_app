@@ -62,10 +62,4 @@ class CommonFunc extends Component {
     }
 
 
-    public static function actNameTrans($str){
-        $tmp = explode('-',$str);
-
-
-        return strtolower($new);
-    }
 }

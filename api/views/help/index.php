@@ -1,6 +1,6 @@
 <?php
 use api\components\CommonFunc;
-$classList  = ['Oa','User'];
+$classList  = ['Oa','User','Yun'];
 ?>
 
 <?php foreach($classList as $c):?>

@@ -40,14 +40,6 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['ucenter/user']
-                ],
-                //'site/<param:.*+>' => 'site/index',
-                //'user/<param:.*+>' => 'user/index'
-            ]
         ],
 
     ],
