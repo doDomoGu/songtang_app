@@ -17,10 +17,11 @@ class DirPermission extends \yii\db\ActiveRecord
     const MODE_DENY_CN          = '禁止';
 
     const PERMISSION_TYPE_NORMAL = 1;   //常规（不限制）
-    const PERMISSION_TYPE_ATTR_LIMIT = 2; //限制文件属性(地区,行业,公司)和用户属性保持一致
-//    const PERMISSION_TYPE_ATTR_LIMIT_DISTRICT = 2; //限制文件属性(地区,行业,公司)和用户属性保持一致
-//    const PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY = 3; //限制文件属性(地区,行业,公司)和用户属性保持一致
-//    const PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY = 4; //限制文件属性(地区,行业,公司)和用户属性保持一致
+//    const PERMISSION_TYPE_ATTR_LIMIT = 2; //限制文件属性(地区,行业)和用户属性保持一致
+    const PERMISSION_TYPE_ATTR_LIMIT_DISTRICT = 2; //只限制地区属性  包含了 4
+    const PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY = 3; //只限制行业属性  包含了 4
+    const PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY = 4; //限制文件属性(地区,行业)和用户属性保持一致
+
 
 
     const OPERATION_UPLOAD      = 1;   //上传操作
@@ -56,6 +57,15 @@ class DirPermission extends \yii\db\ActiveRecord
             self::TYPE_USER => self::TYPE_USER_CN,
             self::TYPE_WILDCARD => self::TYPE_WILDCARD_CN,
             self::TYPE_GROUP => self::TYPE_GROUP_CN
+        ];
+    }
+
+    public static function getPermissionTypeArr(){
+        return [
+            self::PERMISSION_TYPE_NORMAL,
+            self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,
+            self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY,
+            self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY
         ];
     }
 
@@ -148,7 +158,10 @@ class DirPermission extends \yii\db\ActiveRecord
     /*
      * 检测目录是否允许执行所选操作
      * 参数 dir_id : 目录ID
-     * 参数 permission_type : 权限类型，1常规不限制， 2 3 4 限制文件属性(地区,行业,公司)和用户属性保持一致
+     * 参数 [Array|String] permission_type :   权限类型，1常规不限制， 2 3 4 限制文件属性(地区,行业,公司)和用户属性保持一致
+     * ['and'=>array(1,2...)] 表示这些权限要都有
+     * ['or'=>array(1,2,....)] 表示有其一即可
+     * 1/2/3    单一数字，表示单一权限
      * 参数 operation_id : 操作类型
      * 参数 user: 用户  默认为当前登录用户
      */
@@ -157,57 +170,135 @@ class DirPermission extends \yii\db\ActiveRecord
         if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontend){
             $isAllow = true;
         }else{
-            $parents = Dir::getParents($dir_id);
+            if($user===false)
+                $user = Yii::$app->user->identity;
 
-            $allowList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
-            if(!empty($allowList)){
-                foreach($allowList as $a){
-                    if(self::isInRange($a,$user)){
-                        $isAllow = true; //有一条允许就允许
-                        break;
+            $parents = Dir::getParents($dir_id);  //父目录数组 用作递归
+
+            $act = 'and';
+            if(is_array($permission_type)){
+                if(isset($permission_type['or'])){
+                    $act = 'or';
+                    $typeArr = $permission_type['or'];
+                }else{
+                    $typeArr = $permission_type['and'];
+                }
+            }else{
+                $typeArr = [$permission_type];
+            }
+
+            foreach($typeArr as $pt){
+                $isAllow2 = false;
+                $ptArr = self::expandPermissionType($pt);
+
+
+                $allowList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
+                if(!empty($allowList)){
+                    foreach($allowList as $a){
+                        if(self::isInRange($a,$user)){
+                            $isAllow2 = true; //有一条允许就允许
+                            break;
+                        }
                     }
                 }
-            }
-            if($isAllow==false && !empty($parents)){  //递归父目录
-                foreach($parents as $p_id){
-                    $allowList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
-                    if(!empty($allowList)){
-                        foreach($allowList as $a){
-                            if(self::isInRange($a,$user)){
-                                $isAllow = true; //有一条允许就允许
-                                break;
+                if($isAllow2==false && !empty($parents)){  //递归父目录
+                    foreach($parents as $p_id){
+                        $allowList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
+                        if(!empty($allowList)){
+                            foreach($allowList as $a){
+                                if(self::isInRange($a,$user)){
+                                    $isAllow2 = true; //有一条允许就允许
+                                    break;
+                                }
                             }
                         }
                     }
                 }
-            }
 
 
-            $denyList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
-            if(!empty($denyList)){
-                foreach($denyList as $d){
-                    if(self::isInRange($d,$user)){
-                        $isAllow = false; //有一条禁止就禁止
-                        break;
+                $denyList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
+                if(!empty($denyList)){
+                    foreach($denyList as $d){
+                        if(self::isInRange($d,$user)){
+                            $isAllow2 = false; //有一条禁止就禁止
+                            break;
+                        }
                     }
                 }
-            }
 
-            if($isAllow==true && !empty($parents)){ //递归父目录
-                foreach($parents as $p_id){
-                    $denyList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$permission_type,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
-                    if(!empty($denyList)){
-                        foreach($denyList as $d){
-                            if(self::isInRange($d,$user)){
-                                $isAllow = false; //有一条禁止就禁止
-                                break;
+                if($isAllow2==true && !empty($parents)){ //递归父目录
+                    foreach($parents as $p_id){
+                        $denyList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
+                        if(!empty($denyList)){
+                            foreach($denyList as $d){
+                                if(self::isInRange($d,$user)){
+                                    $isAllow2 = false; //有一条禁止就禁止
+                                    break;
+                                }
                             }
                         }
+                    }
+                }
+                $isAllow = $isAllow2;
+                if($act == 'or' ){
+                    if($isAllow2==true){
+                        break;
+                    }
+                }elseif($act == 'and'){
+                    if(($isAllow2)==false){
+                        break;
                     }
                 }
             }
         }
         return $isAllow;
+    }
+
+    private static function expandPermissionType($type){
+        $arr = [$type];
+        if(in_array($type,[self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY])){
+            $arr[] = self::PERMISSION_TYPE_NORMAL;
+        }elseif(in_array($type,[self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY])){
+            $arr[] = self::PERMISSION_TYPE_NORMAL;
+            $arr[] = self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT;
+            $arr[] = self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY;
+        }
+        return $arr;
+    }
+
+    /*
+     * 获取目录拥有的最高权限
+     */
+    public static function getTopPermission($dir_id,$operation_id,$user=false,$ignoreAdmin=false){
+        $permission = false;
+        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontend){
+            $permission = self::PERMISSION_TYPE_NORMAL;
+        }else{
+            $pTypeNormal = self::isDirAllow($dir_id,self::PERMISSION_TYPE_NORMAL,$operation_id,$user,true);
+
+            if($pTypeNormal){
+                $permission = self::PERMISSION_TYPE_NORMAL;
+            }else {
+                $pTypeDistrict = self::isDirAllow($dir_id, self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT, $operation_id, $user, true);
+
+                $pTypeIndustry = self::isDirAllow($dir_id, self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY, $operation_id, $user, true);
+
+                if($pTypeDistrict || $pTypeIndustry){
+                    if($pTypeDistrict){
+                        $permission = self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT;
+                    }
+                    if($pTypeIndustry){
+                        $permission = $permission!=false?array_merge([self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY],[$permission]):self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY;
+                    }
+                }else{
+                    $pTypeDistrictIndustry = self::isDirAllow($dir_id,self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY,$operation_id,$user,true);
+                    if($pTypeDistrictIndustry){
+                        $permission = self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY;
+                    }
+                }
+            }
+        }
+        return $permission;
     }
 
 

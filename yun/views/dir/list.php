@@ -31,7 +31,7 @@
 <div id="list-head">
     <div id='buttons' class="clearfix">
         <div id="left_btns">
-        <?php if(DirPermission::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_UPLOAD)):?>
+        <?php if(DirPermission::isDirAllow($dir_id,['or'=>DirPermission::getPermissionTypeArr()],DirPermission::OPERATION_UPLOAD)):?>
             <?=Html::Button('<span aria-hidden="true" class="glyphicon glyphicon-upload"></span> 上传',['value'=>'','class'=> 'btn btn-success','id'=>'modalButton','data-toggle'=>"modal",'data-target'=>"#uploadCommonModal"])?>
             <?=Html::Button('<span aria-hidden="true" class="glyphicon glyphicon-folder-open"></span> 新建文件夹',['value'=>'','class'=> 'btn btn-default','id'=>'modalButtonDir','data-toggle'=>"modal",'data-target'=>"#createDirCommonModal"])?>
         <?php else:?>
