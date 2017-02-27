@@ -21,15 +21,15 @@ class FileAttribute extends \yii\db\ActiveRecord
         ];
     }
 
-//    public function getDistrict()
-//    {
-//        return $this->hasOne(District::className(), array('id' => 'attr_id'));
-//    }
-//
-//    public function getIndustry()
-//    {
-//        return $this->hasOne(Industry::className(), array('id' => 'attr_id'));
-//    }
+    public function getDistrict()
+    {
+        return $this->hasOne(District::className(), array('id' => 'attr_id'));
+    }
+
+    public function getIndustry()
+    {
+        return $this->hasOne(Industry::className(), array('id' => 'attr_id'));
+    }
 
 
 
