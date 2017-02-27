@@ -81,7 +81,7 @@ class DirController extends BaseController
         //如果parDir存在 , 给dir_id赋值
         if($p_id!==false && $parDir && $parDir->dir_id>0){
             $dir_id = $parDir->dir_id;
-        }else{//如果parDir部存在 , 取url中dir_id参数
+        }else{//如果parDir不存在 , 取url中dir_id参数
             $dir_id = Yii::$app->request->get('dir_id',false);
             if($dir_id!=false && $dir_id != (string)intval($dir_id)){
                 //验证dir_id的值是不是为纯数字  当有错误时报错
@@ -91,6 +91,13 @@ class DirController extends BaseController
             }
             $p_id = 0;
         }
+/*
+
+        $p_id = Yii::$app->request->get('p_id',false);
+        $dir_id = Yii::$app->request->get('dir_id',false);
+*/
+
+
 
         $curDir = Dir::find()->where(['id'=>$dir_id,'status'=>1])->one();
 
@@ -220,7 +227,7 @@ class DirController extends BaseController
                 }
 
                 if($parDir){
-                    if(!DirPermission::isFileAllow($parDir->dir_id,$parDir->id,$parDir->dir->attr_limit,DirPermission::OPERATION_DOWNLOAD)){
+                    if(!DirPermission::isFileAllow($parDir->dir_id,$parDir->id,DirPermission::OPERATION_DOWNLOAD)){
                         ## 日志记录 ##
                         SystemLog::dirError('没有权限打开目录('.$parDir->id.':'.DirFunc::getFileFullRoute($parDir->id).')');
                         yii::$app->response->redirect('/')->send();
