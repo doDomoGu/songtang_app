@@ -238,7 +238,8 @@ class Dir extends \yii\db\ActiveRecord
             $industryCheck = Industry::getIds();
         }else{
             switch ($attrLimit){
-                case DirPermission::PERMISSION_TYPE_NORMAL || [DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY]:
+                case DirPermission::PERMISSION_TYPE_NORMAL:
+                case [DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY]:
                     $districtCheck = District::getIds();
                     $industryCheck = Industry::getIds();
                     break;
