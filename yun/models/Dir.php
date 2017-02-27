@@ -1,21 +1,20 @@
 <?php
-
 namespace yun\models;
+
 use ucenter\models\District;
 use ucenter\models\Industry;
 use ucenter\models\UserAppAuth;
 use yun\models\DirPermission;
 use Yii;
-use ucenter\models\Area;
-use ucenter\models\Business;
 
 class Dir extends \yii\db\ActiveRecord
 {
-
+/*
     const ATTR_LIMIT_ALL   = 1;  //全员
     const ATTR_LIMIT_DISTRICT  = 2;  //文件(file)必须要有和职员一样的地区属性或者为缺省值
     const ATTR_LIMIT_INDUSTRY = 3;//文件(file)必须要有和职员一样的业态属性或者为缺省值
     const ATTR_LIMIT_DISTRICT_INDUSTRY = 4; //文件(file)必须要有和职员一样的(地区和业态)属性或者为缺省值
+*/
 
 
     public $childrenIds;
@@ -239,20 +238,19 @@ class Dir extends \yii\db\ActiveRecord
             $industryCheck = Industry::getIds();
         }else{
             switch ($attrLimit){
-                case self::ATTR_LIMIT_ALL:
+                case DirPermission::PERMISSION_TYPE_NORMAL || [DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY]:
                     $districtCheck = District::getIds();
                     $industryCheck = Industry::getIds();
                     break;
-                case self::ATTR_LIMIT_DISTRICT:
+                case DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT:
                     $districtCheck = [Attribute::DISTRICT_DEFAULT,Yii::$app->user->identity->district_id];
                     $industryCheck = Industry::getIds();
                     break;
-                case self::ATTR_LIMIT_INDUSTRY:
+                case DirPermission::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY:
                     $districtCheck =  District::getIds();
                     $industryCheck = [Attribute::INDUSTRY_DEFAULT,Yii::$app->user->identity->industry_id];
                     break;
-                case self::ATTR_LIMIT_DISTRICT_INDUSTRY:
-                    //$districtCheck =  District::getIds();
+                case DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY:
                     $districtCheck = [Attribute::DISTRICT_DEFAULT,Yii::$app->user->identity->district_id];
                     $industryCheck = [Attribute::INDUSTRY_DEFAULT,Yii::$app->user->identity->industry_id];
                     break;
