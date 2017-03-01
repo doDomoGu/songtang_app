@@ -409,13 +409,13 @@ class DirController extends BaseController
         $flag = isset($post['flag'])?$post['flag']:'';
         $filename = isset($post['filename'])?$post['filename']:'';
 
-        if($post['filetype']==0){
+        /*if($post['filetype']==0){
             $districtCheck = 10000;
             $industryCheck = 10000;
-        }else{
-            $districtCheck = isset($post['district_check'])?$post['district_check']:'';
-            $industryCheck = isset($post['industry_check'])?$post['industry_check']:'';
-        }
+        }else{*/
+            $districtCheck = isset($post['district_check'])?$post['district_check']:10000;
+            $industryCheck = isset($post['industry_check'])?$post['industry_check']:10000;
+        /*}*/
 
         if($districtCheck!=10000 && $districtCheck == $user->district_id
             && $industryCheck == $user->industry_id){

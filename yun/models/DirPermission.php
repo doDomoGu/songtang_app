@@ -317,8 +317,12 @@ class DirPermission extends \yii\db\ActiveRecord
         }else{
             if(self::isDirAllow($dir_id,self::PERMISSION_TYPE_NORMAL,$operation_id,$user,$ignoreAdmin)){
                 $isAllow = true;
-            }elseif(self::isDirAllow($dir_id,self::PERMISSION_TYPE_ATTR_LIMIT,$operation_id,$user,$ignoreAdmin)){
-                $isAllow = self::isFileAttributeAccorded($file_id,$user);
+            }elseif(self::isDirAllow($dir_id,self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,$operation_id,$user,$ignoreAdmin)){
+                $isAllow = self::isFileAttributeAccorded($file_id,self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,$user);
+            }elseif(self::isDirAllow($dir_id,self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY,$operation_id,$user,$ignoreAdmin)){
+                $isAllow = self::isFileAttributeAccorded($file_id,self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY,$user);
+            }elseif(self::isDirAllow($dir_id,self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY,$operation_id,$user,$ignoreAdmin)){
+                $isAllow = self::isFileAttributeAccorded($file_id,self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY,$user);
             }
 
             //查看目录的attr_limit  如果是0 则需要isDirAllow 的permissionType 为0  如果是1 则isDirAllow的perssiomType 为 0或1 都可以
@@ -347,42 +351,37 @@ class DirPermission extends \yii\db\ActiveRecord
      * 参数 file_id : 文件ID
      * 参数 user: 用户  默认为当前登录用户
      */
-    public static function isFileAttributeAccorded($file_id,$user=false){
+    public static function isFileAttributeAccorded($file_id,$attr_type,$user=false){
         $return = false;
         if($user===false)
             $user = Yii::$app->user->identity;
 
-        $districtReturn = false;
-        $industryReturn = false;
-        $companyReturn = false;
-        $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_DISTRICT])->one();
-        if($fileAttr){
-            $attr = $fileAttr->attr_id;
-            if($attr==Attribute::DISTRICT_DEFAULT || $attr==$user->district_id){
-                $districtReturn = true;
-            }
-        }
-        if($districtReturn){
-            $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_INDUSTRY])->one();
+
+
+        if($attr_type==self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT || $attr_type==self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY){
+            $districtReturn = false;
+            $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_DISTRICT])->one();
             if($fileAttr){
                 $attr = $fileAttr->attr_id;
-                if($attr==Attribute::INDUSTRY_DEFAULT || $attr==$user->industry_id){
+                if($attr==Attribute::DISTRICT_DEFAULT || $attr==$user->district_id){
+                    $districtReturn = true;
+                }
+            }
+            $return = $districtReturn;
+
+        }
+        if($attr_type==self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY || ($return && $attr_type==self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY)) {
+            $industryReturn = false;
+            $fileAttr = FileAttribute::find()->where(['file_id' => $file_id, 'attr_type' => Attribute::TYPE_INDUSTRY])->one();
+            if ($fileAttr) {
+                $attr = $fileAttr->attr_id;
+                if ($attr == Attribute::INDUSTRY_DEFAULT || $attr == $user->industry_id) {
                     $industryReturn = true;
                 }
             }
-            if($industryReturn){
-                $fileAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_COMPANY])->one();
-                if($fileAttr){
-                    $attr = $fileAttr->attr_id;
-                    if($attr==Attribute::COMPANY_DEFAULT || $attr==$user->company_id){
-                        $companyReturn = true;
-                    }
-                }
-                if($companyReturn){
-                    $return = true;
-                }
-            }
+            $return = $industryReturn;
         }
+
 
         return $return;
     }

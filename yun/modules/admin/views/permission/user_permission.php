@@ -24,23 +24,21 @@ function showStatus($bool){
         <tr>
             <th>目录ID</th>
             <th>目录名称</th>
-            <th class="text-center">目录限制属性</th>
             <th class="text-center">上传</th>
-            <th class="text-center">上传<br/>（限制属性）</th>
+            <th class="text-center">上传<br/>（限制地区）</th>
             <th class="text-center">下载</th>
-            <th class="text-center">下载<br/>（限制属性）</th>
+            <th class="text-center">下载<br/>（限制地区）</th>
         </tr>
         <tbody>
         <?php foreach($dirList as $l):?>
             <tr>
                 <td><?=$l->id?></td>
                 <td><?=$l->name?></td>
-                <td width="120" class="text-center"><?=showStatus($l->attr_limit==1)?></td>
                 <?php
                     $up1 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_UPLOAD,$user,true);
-                    $up2 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT,DirPermission::OPERATION_UPLOAD,$user,true);
+                    $up2 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::OPERATION_UPLOAD,$user,true);
                     $down1 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_DOWNLOAD,$user,true);
-                    $down2 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT,DirPermission::OPERATION_DOWNLOAD,$user,true);
+                    $down2 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::OPERATION_DOWNLOAD,$user,true);
                 ?>
                 <td width="120" class="text-center"><?=showStatus($up1)?></span></td>
                 <td width="120" class="text-center"><?=showStatus($up2)?></span></td>
