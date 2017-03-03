@@ -27,6 +27,9 @@ Modal::begin([
             <br/>
             p_id<input  type="hidden"class="move_p_id_new" name="move_p_id_new" >
             <br/>
+
+        </p>
+        <p>
             <span class="move-error"></span>
         </p>
         <p>
