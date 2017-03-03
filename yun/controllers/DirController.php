@@ -611,16 +611,23 @@ class DirController extends BaseController
         $new_dir_id = Yii::$app->request->post('new_dir_id');
         $new_p_id = Yii::$app->request->post('new_p_id');
         $file_ids = Yii::$app->request->post('file_ids');
+
+        $permissionType = $this->getPermissionNeeded($file_ids);
+
         $permission = false;
-        if($new_p_id>0){
+        if($new_p_id>0){ //移至文件夹
             $parent_dir = File::find()->where(['id'=>$new_p_id,'filetype'=>0])->one();
             if($parent_dir){
-                $permission = PermissionFunc::checkFileUploadPermission($this->user->position_id,$parent_dir->dir_id,1);
+
+                $permission =  DirPermission::isDirAllow($parent_dir->dir_id,$permissionType,DirPermission::OPERATION_UPLOAD);
+//              $permission =  PermissionFunc::checkFileUploadPermission($this->user->position_id,$parent_dir->dir_id,1);
             }
-        }else{
+        }else{//移至目录
             $parent_dir = Dir::find()->where(['id'=>$new_dir_id,'is_leaf'=>1])->one();
             if($parent_dir) {
-                $permission = PermissionFunc::checkFileUploadPermission($this->user->position_id, $parent_dir->id, 1);
+                $permission =  DirPermission::isDirAllow($parent_dir->id,$permissionType,DirPermission::OPERATION_UPLOAD);
+
+                //$permission = PermissionFunc::checkFileUploadPermission($this->user->position_id, $parent_dir->id, 1);
             }
         }
         //检查目录是否存在 目录dir 是否有上传权限
@@ -634,7 +641,7 @@ class DirController extends BaseController
                     if($new_p_id>0){
                         $files2 = File::find()->where(['p_id'=>$new_p_id])->andWhere('status < 2')->all();
                     }else{
-                        $files2 = File::find()->where(['dir_id'=>$new_dir_id])->andWhere('status < 2')->all();
+                        $files2 = File::find()->where(['dir_id'=>$new_dir_id,'p_id'=>0])->andWhere('status < 2')->all();
                     }
                     $files2Name = []; //取出所有文件名
                     foreach($files2 as $f2){
@@ -680,6 +687,54 @@ class DirController extends BaseController
         $arr['result'] = $result;
         echo json_encode($arr);
         Yii::$app->end();
+    }
+
+
+    //移动文件时，根据所选文件 获得所需要的最高权限类型
+    public function getPermissionNeeded($file_ids){
+        $files = $this->getFiles(File::find()->where(['id'=>$file_ids])->all());
+        $districtArr = [];
+        $industryArr = [];
+        foreach($files as $f){
+            if($f->getDistrictAttr()>10000){
+                $districtArr[] = $f->getDistrictAttr();
+            }
+            if($f->getIndustryAttr()>10000){
+                $industryArr[] = $f->getIndustryAttr();
+            }
+        }
+        $districtArr = array_unique($districtArr);
+        $industryArr = array_unique($industryArr);
+
+        $districtMatch = count($districtArr)==0 || (count($districtArr)==1 && in_array($this->user->district_id,$districtArr))?true:false;
+        $industryMatch = count($districtArr)==0 || (count($industryArr)==1 && in_array($this->user->industry_id,$industryArr))?true:false;
+
+        if($districtMatch){
+            if($industryMatch){
+                $permissionType = DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY;
+            }else{
+                $permissionType = DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT;
+            }
+        }else{
+            if($industryMatch){
+                $permissionType = DirPermission::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY;
+            }else{
+                $permissionType = DirPermission::PERMISSION_TYPE_NORMAL;
+            }
+        }
+
+        return $permissionType;
+
+    }
+
+    public function getFiles($files){
+        $return = $files;
+        foreach($files as $f){
+            if($f->filetype ==0){
+                $return[] = $this->getFiles(File::find()->where(['p_id'=>$f->id])->all());
+            }
+        }
+        return $return;
     }
 
     public function actionAjaxMoveSelectDir(){
