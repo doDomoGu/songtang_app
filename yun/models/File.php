@@ -34,6 +34,17 @@ class File extends \yii\db\ActiveRecord
         return $this->hasOne(Dir::className(), array('id' => 'dir_id'));
     }
 
+    public function getDistrictAttr(){
+        $attr = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_DISTRICT])->one();
+        return $attr->attr_id;
+    }
+
+    public function getIndustryAttr(){
+        $attr = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_INDUSTRY])->one();
+        return $attr->attr_id;
+    }
+
+
     public function getDistrictAttrs(){
         $arr = [];
         $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_DISTRICT])->all();
