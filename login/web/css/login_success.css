@@ -1,0 +1,70 @@
+/*.site-login {
+    padding: 60px 0 120px;
+}*/
+
+body {
+    /*background: #9b1316;*/
+    background: #ED1B23;
+}
+
+#site-login header {
+    background: #fff;
+    border-top:40px solid #3A3A3C;
+    padding:14px 0;
+
+}
+
+#site-login header .logo {
+    width:240px;
+
+
+}
+
+#site-login footer {
+    background: #3A3A3C;
+    color:#fff;
+    font-size:24px;
+    padding:40px 0;
+}
+
+.main-content {
+    margin: 0 ;
+}
+
+.success-div {
+
+}
+
+.word-div {
+    margin:20px 0;
+}
+
+
+.goto {
+    width:250px;
+    overflow: hidden;
+    margin:20px auto 0;
+}
+
+.goto .title {
+    float:left;
+    width:100px;
+    text-align: right;
+    color:#fefefe;
+}
+
+.goto ul {
+    float:left;
+    width:150px;
+    text-align: left;
+    list-style: none;
+}
+
+.goto ul .btn {
+    width:100px;
+    text-align: left;
+    padding-left:10px;
+    background: #dadada;
+    font-weight:bold;
+    margin-bottom:10px;
+}
