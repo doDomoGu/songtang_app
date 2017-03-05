@@ -731,7 +731,7 @@ class DirController extends BaseController
         $return = $files;
         foreach($files as $f){
             if($f->filetype ==0){
-                $return[] = $this->getFiles(File::find()->where(['p_id'=>$f->id])->all());
+                $return = array_merge($return , $this->getFiles(File::find()->where(['p_id'=>$f->id])->all()));
             }
         }
         return $return;
