@@ -31,7 +31,8 @@ class UserAppAuth extends \yii\db\ActiveRecord
             'ucenter-admin',
             'yun-admin',
             'yun-frontend',
-            'oa-admin'
+            'oa-admin',
+            'oa-frontend'
         ];
     }
 
@@ -40,7 +41,8 @@ class UserAppAuth extends \yii\db\ActiveRecord
             'ucenter-admin'=>'职员信息管理',
             'yun-admin'=>'颂唐云后台',
             'yun-frontend'=>'颂唐云前台',
-            'oa-admin'=>'OA后台'
+            'oa-admin'=>'OA后台',
+            'oa-frontend'=>'OA前台'
         ];
     }
 

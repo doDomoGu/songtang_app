@@ -27,11 +27,13 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $authKey;
     public $accessToken;
     public $status;
+
     public $isSuperAdmin;
     public $isUcenterAdmin;
     public $isYunAdmin;
     public $isYunFrontend;
     public $isOaAdmin;
+    public $isOaFrontend;
 
     /*private static $users = [
         '100' => [
@@ -85,6 +87,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 'isYunAdmin' => in_array('yun-admin',$appAuthArr)?true:false,
                 'isYunFrontend' => in_array('yun-frontend',$appAuthArr)?true:false,
                 'isOaAdmin' => in_array('oa-admin',$appAuthArr)?true:false,
+                'isOaFrontendAdmin' => in_array('oa-frontend',$appAuthArr)?true:false,
             ];
             return new static($userStatic);
         }
