@@ -10,17 +10,17 @@ AppAsset::addJsFile($this,'js/login_success.js');
 ?>
 
 <?php
-    $hasFrontend = false;
+    //$hasFrontend = false;
     $hasAdmin = false;
-    $isYunFrontend = false;
-    $isOaFrontend = false;
+    //$isYunFrontend = false;
+    //$isOaFrontend = false;
     $isUcenterAdmin = false;
     $isOaAdmin = false;
     $isYunAdmin = false;
 
     $user = Yii::$app->user->identity;
 
-    if($user->isYunFrontend){
+    /*if($user->isYunFrontend){
         $isYunFrontend = true;
         $hasFrontend = true;
     }
@@ -28,7 +28,7 @@ AppAsset::addJsFile($this,'js/login_success.js');
     if($user->isOaFrontend){
         $isOaFrontend = true;
         $hasFrontend = true;
-    }
+    }*/
 
     if($user->isUcenterAdmin){
         $isUcenterAdmin = true;
@@ -68,25 +68,38 @@ AppAsset::addJsFile($this,'js/login_success.js');
         <div class="word-div">
             <img src="/images/site-login/word2.png" style="width:500px;"/>
         </div>
-        <?php if($hasFrontend):?>
         <div class="goto">
             <div class="title">
                 您可以前往
             </div>
             <ul>
-                <?php if($isOaFrontend):?>
                 <li>
                     <?=Html::a('颂唐OA',Yii::$app->params['oaAppUrl'],['class'=>'btn btn-default btn-xs'])?>
                 </li>
-                <?php endif;?>
-                <?php if($isYunFrontend):?>
                 <li>
                     <?=Html::a('颂唐云',Yii::$app->params['yunAppUrl'],['class'=>'btn btn-default btn-xs'])?>
                 </li>
-                <?php endif;?>
             </ul>
         </div>
-        <?php endif;?>
+        <?php /*if($hasFrontend):*/?><!--
+        <div class="goto">
+            <div class="title">
+                您可以前往
+            </div>
+            <ul>
+                <?php /*if($isOaFrontend):*/?>
+                <li>
+                    <?/*=Html::a('颂唐OA',Yii::$app->params['oaAppUrl'],['class'=>'btn btn-default btn-xs'])*/?>
+                </li>
+                <?php /*endif;*/?>
+                <?php /*if($isYunFrontend):*/?>
+                <li>
+                    <?/*=Html::a('颂唐云',Yii::$app->params['yunAppUrl'],['class'=>'btn btn-default btn-xs'])*/?>
+                </li>
+                <?php /*endif;*/?>
+            </ul>
+        </div>
+        --><?php /*endif;*/?>
         <?php if($hasAdmin):?>
         <div class="goto">
            <div class="title">

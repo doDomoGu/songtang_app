@@ -28,12 +28,18 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $accessToken;
     public $status;
 
-    public $isSuperAdmin;
-    public $isUcenterAdmin;
-    public $isYunAdmin;
-    public $isYunFrontend;
-    public $isOaAdmin;
-    public $isOaFrontend;
+    public $isSuperAdmin; //超级管理员
+
+    public $isUcenterAdmin; //ucenter管理员
+
+    public $isYunBackendAdmin; //颂唐云后台管理员
+    public $isYunFrontend;      //颂唐云前台使用权限
+    public $isYunFrontendAdmin;  //颂唐云前台管理员
+
+
+    public $isOaBackendAdmin;  //颂唐OA后台管理员
+    public $isOaFrontend;       //颂唐OA前台使用权限
+    public $isOaFrontendAdmin;  //颂唐OA前台管理员  (暂时没用到)
 
     /*private static $users = [
         '100' => [
@@ -57,11 +63,37 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
         $user = User::find()->where(['id'=>$id,'status'=>1])->one();
         if($user){
             $superAdminArr = [10000];
+
             $appAuthList = UserAppAuth::find()->where(['user_id'=>$user->id])->all();
             $appAuthArr = [];
             foreach($appAuthList as $a){
                 $appAuthArr[] = $a->app;
             }
+
+            $isSuperAdmin = in_array($user->id,$superAdminArr)?true:false;
+            if($isSuperAdmin){
+                $isUcenterAdmin = true;
+                $isYunBackendAdmin = true;
+                $isYunFrontendAdmin = true;
+                $isYunFrontend = true;
+                $isOaBackendAdmin = true;
+                $isOaFrontendAdmin = true;
+                $isOaFrontend = true;
+            }else{
+                $isUcenterAdmin = in_array('ucenter-admin',$appAuthArr)?true:false;
+
+                $isYunBackendAdmin = in_array('yun-backend-admin',$appAuthArr)?true:false;
+                $isYunFrontendAdmin = in_array('yun-frontend-admin',$appAuthArr)?true:false;
+                $isYunFrontend = $isYunFrontendAdmin?true:(in_array('yun-frontend',$appAuthArr)?true:false);
+
+                $isOaBackendAdmin = in_array('oa-backend-admin',$appAuthArr)?true:false;
+                $isOaFrontendAdmin = in_array('oa-frontend-admin',$appAuthArr)?true:false;
+                $isOaFrontend = $isOaFrontendAdmin?true:(in_array('oa-frontend',$appAuthArr)?true:false);
+
+            }
+
+
+
             $userStatic = [
                 'id' => $user->id,
                 'username' => $user->username,
@@ -82,12 +114,18 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 //'position'=>$user->position->name,
                 'authKey' => 'key-'.$user->id,
                 'accessToken' => 'token-'.$user->id,
-                'isSuperAdmin' => in_array($user->id,$superAdminArr)?true:false,
-                'isUcenterAdmin' => in_array('ucenter-admin',$appAuthArr)?true:false,
-                'isYunAdmin' => in_array('yun-admin',$appAuthArr)?true:false,
-                'isYunFrontend' => in_array('yun-frontend',$appAuthArr)?true:false,
-                'isOaAdmin' => in_array('oa-admin',$appAuthArr)?true:false,
-                'isOaFrontendAdmin' => in_array('oa-frontend',$appAuthArr)?true:false,
+
+                'isSuperAdmin' => $isSuperAdmin,
+
+                'isUcenterAdmin' => $isUcenterAdmin,
+
+                'isYunBackendAdmin' => $isYunBackendAdmin,
+                'isYunFrontend' => $isYunFrontend,
+                'isYunFrontendAdmin' => $isYunFrontendAdmin,
+
+                'isOaBackendAdmin' => $isOaBackendAdmin,
+                'isOaFrontend' => $isOaFrontend,
+                'isOaFrontendAdmin' => $isOaFrontendAdmin,
             ];
             return new static($userStatic);
         }
