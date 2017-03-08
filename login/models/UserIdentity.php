@@ -62,37 +62,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     {
         $user = User::find()->where(['id'=>$id,'status'=>1])->one();
         if($user){
-            $superAdminArr = [10000];
-
-            $appAuthList = UserAppAuth::find()->where(['user_id'=>$user->id])->all();
-            $appAuthArr = [];
-            foreach($appAuthList as $a){
-                $appAuthArr[] = $a->app;
-            }
-
-            $isSuperAdmin = in_array($user->id,$superAdminArr)?true:false;
-            if($isSuperAdmin){
-                $isUcenterAdmin = true;
-                $isYunBackendAdmin = true;
-                $isYunFrontendAdmin = true;
-                $isYunFrontend = true;
-                $isOaBackendAdmin = true;
-                $isOaFrontendAdmin = true;
-                $isOaFrontend = true;
-            }else{
-                $isUcenterAdmin = in_array('ucenter-admin',$appAuthArr)?true:false;
-
-                $isYunBackendAdmin = in_array('yun-backend-admin',$appAuthArr)?true:false;
-                $isYunFrontendAdmin = in_array('yun-frontend-admin',$appAuthArr)?true:false;
-                $isYunFrontend = $isYunFrontendAdmin?true:(in_array('yun-frontend',$appAuthArr)?true:false);
-
-                $isOaBackendAdmin = in_array('oa-backend-admin',$appAuthArr)?true:false;
-                $isOaFrontendAdmin = in_array('oa-frontend-admin',$appAuthArr)?true:false;
-                $isOaFrontend = $isOaFrontendAdmin?true:(in_array('oa-frontend',$appAuthArr)?true:false);
-
-            }
-
-
+            $authList = UserAppAuth::getAuthList($user->id);
 
             $userStatic = [
                 'id' => $user->id,
@@ -115,17 +85,17 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
                 'authKey' => 'key-'.$user->id,
                 'accessToken' => 'token-'.$user->id,
 
-                'isSuperAdmin' => $isSuperAdmin,
+                'isSuperAdmin' => $authList['isSuperAdmin'],
 
-                'isUcenterAdmin' => $isUcenterAdmin,
+                'isUcenterAdmin' => $authList['isUcenterAdmin'],
 
-                'isYunBackendAdmin' => $isYunBackendAdmin,
-                'isYunFrontend' => $isYunFrontend,
-                'isYunFrontendAdmin' => $isYunFrontendAdmin,
+                'isYunBackendAdmin' => $authList['isYunBackendAdmin'],
+                'isYunFrontend' => $authList['isYunFrontend'],
+                'isYunFrontendAdmin' => $authList['isYunFrontendAdmin'],
 
-                'isOaBackendAdmin' => $isOaBackendAdmin,
-                'isOaFrontend' => $isOaFrontend,
-                'isOaFrontendAdmin' => $isOaFrontendAdmin,
+                'isOaBackendAdmin' => $authList['isOaBackendAdmin'],
+                'isOaFrontend' => $authList['isOaFrontend'],
+                'isOaFrontendAdmin' => $authList['isOaFrontendAdmin'],
             ];
             return new static($userStatic);
         }

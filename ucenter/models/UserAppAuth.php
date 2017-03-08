@@ -29,9 +29,11 @@ class UserAppAuth extends \yii\db\ActiveRecord
     public static function getAppArr(){
         return [
             'ucenter-admin',
-            'yun-admin',
+            'yun-backend-admin',
+            'yun-frontend-admin',
             'yun-frontend',
-            'oa-admin',
+            'oa-backend-admin',
+            'oa-frontend-admin',
             'oa-frontend'
         ];
     }
@@ -39,9 +41,11 @@ class UserAppAuth extends \yii\db\ActiveRecord
     public static function getAppCnArr(){
         return [
             'ucenter-admin'=>'职员信息管理',
-            'yun-admin'=>'颂唐云后台',
+            'yun-backend-admin'=>'颂唐云后台',
+            'yun-frontend-admin'=>'颂唐云前台管理员',
             'yun-frontend'=>'颂唐云前台',
-            'oa-admin'=>'OA后台',
+            'oa-backend-admin'=>'OA后台',
+            'oa-frontend-admin'=>'OA前台管理员',
             'oa-frontend'=>'OA前台'
         ];
     }
@@ -52,6 +56,46 @@ class UserAppAuth extends \yii\db\ActiveRecord
             return true;
         else
             return false;
+    }
+
+    public static function getAuthList($user_id){
+        $superAdminArr = [10000];
+
+        $appAuthList = UserAppAuth::find()->where(['user_id'=>$user_id])->all();
+        $appAuthArr = [];
+        foreach($appAuthList as $a){
+            $appAuthArr[] = $a->app;
+        }
+
+        $isSuperAdmin = in_array($user_id,$superAdminArr)?true:false;
+        if($isSuperAdmin){
+            $isUcenterAdmin = true;
+            $isYunBackendAdmin = true;
+            $isYunFrontendAdmin = true;
+            $isYunFrontend = true;
+            $isOaBackendAdmin = true;
+            $isOaFrontendAdmin = true;
+            $isOaFrontend = true;
+        }else{
+            $isUcenterAdmin = in_array('ucenter-admin',$appAuthArr)?true:false;
+            $isYunBackendAdmin = in_array('yun-backend-admin',$appAuthArr)?true:false;
+            $isYunFrontendAdmin = in_array('yun-frontend-admin',$appAuthArr)?true:false;
+            $isYunFrontend = in_array('yun-frontend',$appAuthArr)?true:false;
+            $isOaBackendAdmin = in_array('oa-backend-admin',$appAuthArr)?true:false;
+            $isOaFrontendAdmin = in_array('oa-frontend-admin',$appAuthArr)?true:false;
+            $isOaFrontend = in_array('oa-frontend',$appAuthArr)?true:false;
+        }
+
+        return [
+            'isSuperAdmin' => $isSuperAdmin,
+            'isUcenterAdmin' => $isUcenterAdmin,
+            'isYunBackendAdmin' => $isYunBackendAdmin,
+            'isYunFrontend' => $isYunFrontend,
+            'isYunFrontendAdmin' => $isYunFrontendAdmin,
+            'isOaBackendAdmin' => $isOaBackendAdmin,
+            'isOaFrontend' => $isOaFrontend,
+            'isOaFrontendAdmin' => $isOaFrontendAdmin,
+        ];
     }
 
 
