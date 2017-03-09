@@ -4,6 +4,7 @@ use yii\bootstrap\Html;
 
 use login\assets\AppAsset;
 
+$this->title = '登陆成功';
 AppAsset::register($this);  /* 注册appAsset */
 AppAsset::addCssFile($this,'css/login_success.css');
 AppAsset::addJsFile($this,'js/login_success.js');
