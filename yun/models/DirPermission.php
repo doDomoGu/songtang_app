@@ -167,7 +167,7 @@ class DirPermission extends \yii\db\ActiveRecord
      */
     public static function isDirAllow($dir_id,$permission_type,$operation_id,$user=false,$ignoreAdmin=false){
         $isAllow = false;
-        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontend){
+        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontendAdmin){
             $isAllow = true;
         }else{
             if($user===false)
@@ -271,7 +271,7 @@ class DirPermission extends \yii\db\ActiveRecord
      */
     public static function getTopPermission($dir_id,$operation_id,$user=false,$ignoreAdmin=false){
         $permission = false;
-        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontend){
+        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontendAdmin){
             $permission = self::PERMISSION_TYPE_NORMAL;
         }else{
             $pTypeNormal = self::isDirAllow($dir_id,self::PERMISSION_TYPE_NORMAL,$operation_id,$user,true);
@@ -312,7 +312,7 @@ class DirPermission extends \yii\db\ActiveRecord
      */
     public static function isFileAllow($dir_id,$file_id,$operation_id,$user=false,$ignoreAdmin=false){
         $isAllow = false;
-        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontend){
+        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontendAdmin){
             $isAllow = true;
         }else{
             if(self::isDirAllow($dir_id,self::PERMISSION_TYPE_NORMAL,$operation_id,$user,$ignoreAdmin)){

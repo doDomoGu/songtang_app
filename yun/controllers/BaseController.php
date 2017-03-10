@@ -72,8 +72,7 @@ class BaseController extends Controller
 
     //检查是否有使用这个app权限
     private function checkAuth($redirect=false){
-        $hasAuth = UserAppAuth::hasAuth(Yii::$app->user->id,'yun-frontend');
-        if(!$hasAuth){
+        if(!$this->user->isYunFrontend && !$this->user->isYunFrontendAdmin){
             if($redirect){
                 if($this->getRoute()=='site/no-auth'){
                     return true;
@@ -88,12 +87,12 @@ class BaseController extends Controller
 
 
     //获取登录用户的消息通知提醒
-    public function getMessageInfo(){
+    /*public function getMessageInfo(){
         if(!Yii::$app->user->isGuest){
             $this->message = MessageUser::find()->where(['send_to_id'=>yii::$app->user->id,'read_status'=>0])->all();
             if(!empty($this->message)){
                 $this->messageNum = count($this->message);
             }
         }
-    }
+    }*/
 }

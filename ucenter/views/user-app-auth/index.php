@@ -28,39 +28,53 @@ use common\components\CommonFunc;
             <th width="240">用户名</th>
             <th width="80">姓名</th>
             <th style="background:#eaeaea;">用户中心</th>
-            <th style="background:#eaeaea;">颂唐云后台</th>
-            <th style="background:#eaeaea;">颂唐云前台</th>
-            <th style="background:#eaeaea;">OA后台</th>
+            <th style="background:#eaeaea;">颂唐云<br/>前台/前台管理/后台</th>
+            <th style="background:#eaeaea;">OA<br/>前台/前台管理/后台</th>
         </tr>
         <tbody>
-        <?php foreach($list as $l):$user = $l['user'];$auth = $l['auth'];?>
+        <?php foreach($list as $l):
+            //$user = $l['user'];
+        $authList = \ucenter\models\UserAppAuth::getAuthList($l->id);?>
             <tr>
-                <td><?=$user->id?></td>
-                <td><?=$user->username?></td>
-                <td><?=$user->name?></td>
+                <td><?=$l->id?></td>
+                <td><?=$l->username?></td>
+                <td><?=$l->name?></td>
                 <td style="background:#eaeaea;">
-                    <?php if($user->id == '10000'):?>
-                        <span style="color:#00B83F;">启用</span>
-                    <?php else:?>
-                    <?=in_array('ucenter-admin',$auth)?
-                        '<a class="set-auth is-enable" data-user ="'.$user->id.'" data-app="ucenter-admin" data-act="del">启用</a>':
-                        '<a class="set-auth is-disable" data-user ="'.$user->id.'" data-app="ucenter-admin" data-act="add">禁用</a>'?>
-                    <?php endif;?>
+
+                    <?=$authList['isUcenterAdmin']?
+                        '<a class="set-auth is-enable" data-user ="'.$l->id.'" data-app="ucenter-admin" data-act="del">启用</a>':
+                        '<a class="set-auth is-disable" data-user ="'.$l->id.'" data-app="ucenter-admin" data-act="add">禁用</a>'?>
                 </td>
                 <td style="background:#eaeaea;">
-                    <?=in_array('yun-frontend',$auth)?
-                    '<a class="set-auth is-enable" data-user ="'.$user->id.'" data-app="yun-frontend" data-act="del">启用</a>':
-                    '<a class="set-auth is-disable" data-user ="'.$user->id.'" data-app="yun-frontend" data-act="add">禁用</a>'?>
+                    <?=$authList['isYunFrontend']?
+                    '<a class="set-auth is-enable" data-user ="'.$l->id.'" data-app="yun-frontend" data-act="del">启用</a>':
+                        ($authList['isYunFrontendAdmin']?'<a class="is-enable" data-user ="'.$l->id.'" data-app="yun-frontend">启用*</a>':'<a class="set-auth is-disable" data-user ="'.$l->id.'" data-app="yun-frontend" data-act="add">禁用</a>')?>
+                    /
+
+                    <?=$authList['isYunFrontendAdmin']?
+                        '<a class="set-auth is-enable" data-user ="'.$l->id.'" data-app="yun-frontend-admin" data-act="del">启用</a>':
+                        '<a class="set-auth is-disable" data-user ="'.$l->id.'" data-app="yun-frontend-admin" data-act="add">禁用</a>'?>
+
+                    /
+
+                    <?=$authList['isYunBackendAdmin']?
+                        '<a class="set-auth is-enable" data-user ="'.$l->id.'" data-app="yun-backend-admin" data-act="del">启用</a>':
+                        '<a class="set-auth is-disable" data-user ="'.$l->id.'" data-app="yun-backend-admin" data-act="add">禁用</a>'?>
                 </td>
                 <td style="background:#eaeaea;">
-                    <?=in_array('yun-admin',$auth)?
-                    '<a class="set-auth is-enable" data-user ="'.$user->id.'" data-app="yun-admin" data-act="del">启用</a>':
-                    '<a class="set-auth is-disable" data-user ="'.$user->id.'" data-app="yun-admin" data-act="add">禁用</a>'?>
-                </td>
-                <td style="background:#eaeaea;">
-                    <?=in_array('oa-admin',$auth)?
-                    '<a class="set-auth is-enable" data-user ="'.$user->id.'" data-app="oa-admin" data-act="del">启用</a>':
-                    '<a class="set-auth is-disable" data-user ="'.$user->id.'" data-app="oa-admin" data-act="add">禁用</a>'?>
+                    <?=$authList['isOaFrontend']?
+                        '<a class="set-auth is-enable" data-user ="'.$l->id.'" data-app="oa-frontend" data-act="del">启用</a>':
+                        ($authList['isOaFrontendAdmin']?'<a class="is-enable" data-user ="'.$l->id.'" data-app="oa-frontend" >启用*</a>':'<a class="set-auth is-disable" data-user ="'.$l->id.'" data-app="oa-frontend" data-act="add">禁用</a>')?>
+                    /
+
+                    <?=$authList['isOaFrontendAdmin']?
+                        '<a class="set-auth is-enable" data-user ="'.$l->id.'" data-app="oa-frontend-admin" data-act="del">启用</a>':
+                        '<a class="set-auth is-disable" data-user ="'.$l->id.'" data-app="oa-frontend-admin" data-act="add">禁用</a>'?>
+
+                    /
+                    <?=$authList['isOaBackendAdmin']?
+                    '<a class="set-auth is-enable" data-user ="'.$l->id.'" data-app="oa-backend-admin" data-act="del">启用</a>':
+                    '<a class="set-auth is-disable" data-user ="'.$l->id.'" data-app="oa-backend-admin" data-act="add">禁用</a>'?>
                 </td>
             </tr>
 

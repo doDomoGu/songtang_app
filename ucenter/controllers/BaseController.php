@@ -90,8 +90,7 @@ $s=5/0;
 
     //检查是否有使用这个app权限
     private function checkAuth(){
-        $authExist = UserAppAuth::find()->where(['app'=>'ucenter-admin','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
-        if(!$authExist){
+        if(!Yii::$app->user->identity->isUcenterAdmin){
             if($this->getRoute()=='site/no-auth'){
                 return true;
             }else{

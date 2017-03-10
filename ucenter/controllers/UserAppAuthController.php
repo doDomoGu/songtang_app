@@ -21,19 +21,21 @@ class UserAppAuthController extends BaseController
     }
 
     public function actionIndex(){
-        $appArr = UserAppAuth::getAppArr();
-        $list = [];
-        $users = UserAppAuth::find()->where([])->groupBy('user_id')->all();
-        foreach($users as $u){
-            $tmp = [];
-            $tmp['user'] = $u->user;
-            $auths = UserAppAuth::find()->where(['user_id'=>$u->user_id])->all();
-            foreach($auths as $auth){
-                if(in_array($auth->app,$appArr))
-                    $tmp['auth'][] = $auth->app;
-            }
-            $list[] = $tmp;
-        }
+//        $appArr = UserAppAuth::getAppArr();
+//        $list = [];
+//        $users = UserAppAuth::find()->where([])->groupBy('user_id')->all();
+//        foreach($users as $u){
+//            $tmp = [];
+//            $tmp['user'] = $u->user;
+//            $auths = UserAppAuth::find()->where(['user_id'=>$u->user_id])->all();
+//            foreach($auths as $auth){
+//                if(in_array($auth->app,$appArr))
+//                    $tmp['auth'][] = $auth->app;
+//            }
+//            $list[] = $tmp;
+//        }
+
+        $list = User::find()->all();
 
         $params['list'] = $list;
 
