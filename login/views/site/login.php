@@ -10,7 +10,7 @@ AppAsset::addJsFile($this,'js/login.js');
 ?>
 
 <?php
-
+    $this->title = '颂唐机构 - 账号登录';
 ?>
 <?php $this->beginPage(); /* 页面开始标志位 */ ?>
 <!DOCTYPE html>
