@@ -1,6 +1,8 @@
 <?php
 
 namespace console\controllers;
+use ucenter\models\User;
+use ucenter\models\UserAppAuth;
 use Yii;
 use yii\console\Controller;
 
@@ -36,6 +38,37 @@ class TestController extends Controller
 //CREATE DATABASE test_songtang_yun;
 //CREATE TABLE test_songtang_yun.dir LIKE songtang_yun.dir;
 //INSERT INTO test_songtang_yun.dir SELECT * FROM songtang_yun.dir;
+
+    }
+
+    public function actionAddAppUserAuth(){
+
+        $exist = UserAppAuth::find()->where('app = "oa-frontend" or app = "yun-frontend"')->one();
+        if($exist){
+            echo 'has added'."\n";
+        }else{
+            $uList = User::find()->all();
+
+            foreach($uList as $u){
+                $n = new UserAppAuth();
+                $n->app = 'oa-frontend';
+                $n->user_id = $u->id;
+                $n->is_enable = 1;
+                $n->save();
+            }
+
+            foreach($uList as $u){
+                $n = new UserAppAuth();
+                $n->app = 'yun-frontend';
+                $n->user_id = $u->id;
+                $n->is_enable = 1;
+                $n->save();
+            }
+
+            echo 'add finish'."\n";
+        }
+
+
 
     }
 
