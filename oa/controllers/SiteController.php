@@ -62,4 +62,8 @@ class SiteController extends BaseController
         return $this->render('mobile/me');
     }
 
+    public function actionNoAuth(){
+        return $this->render('no_auth');
+    }
+
 }

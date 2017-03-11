@@ -68,23 +68,14 @@ class UserAppAuth extends \yii\db\ActiveRecord
         }
 
         $isSuperAdmin = in_array($user_id,$superAdminArr)?true:false;
-        if($isSuperAdmin){
-            $isUcenterAdmin = true;
-            $isYunBackendAdmin = true;
-            $isYunFrontendAdmin = true;
-            $isYunFrontend = true;
-            $isOaBackendAdmin = true;
-            $isOaFrontendAdmin = true;
-            $isOaFrontend = true;
-        }else{
-            $isUcenterAdmin = in_array('ucenter-admin',$appAuthArr)?true:false;
-            $isYunBackendAdmin = in_array('yun-backend-admin',$appAuthArr)?true:false;
-            $isYunFrontendAdmin = in_array('yun-frontend-admin',$appAuthArr)?true:false;
-            $isYunFrontend = in_array('yun-frontend',$appAuthArr)?true:false;
-            $isOaBackendAdmin = in_array('oa-backend-admin',$appAuthArr)?true:false;
-            $isOaFrontendAdmin = in_array('oa-frontend-admin',$appAuthArr)?true:false;
-            $isOaFrontend = in_array('oa-frontend',$appAuthArr)?true:false;
-        }
+
+        $isUcenterAdmin = in_array('ucenter-admin',$appAuthArr)?true:false;
+        $isYunBackendAdmin = in_array('yun-backend-admin',$appAuthArr)?true:false;
+        $isYunFrontendAdmin = in_array('yun-frontend-admin',$appAuthArr)?true:false;
+        $isYunFrontend = in_array('yun-frontend',$appAuthArr)?true:false;
+        $isOaBackendAdmin = in_array('oa-backend-admin',$appAuthArr)?true:false;
+        $isOaFrontendAdmin = in_array('oa-frontend-admin',$appAuthArr)?true:false;
+        $isOaFrontend = in_array('oa-frontend',$appAuthArr)?true:false;
 
         return [
             'isSuperAdmin' => $isSuperAdmin,

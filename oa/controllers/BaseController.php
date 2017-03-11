@@ -66,6 +66,9 @@ $s=5/0;
             if(Yii::$app->user->isGuest) {
                 $this->toLogin();
                 return false;
+            }else{
+                $this->user = Yii::$app->user->identity;
+                return $this->checkAuth();
             }
         }else{
             return true;
@@ -80,6 +83,20 @@ $s=5/0;
 
         $this->redirect(Yii::$app->params['loginUrl']);
         Yii::$app->end();
+    }
+
+
+    //检查是否有使用这个app权限
+    private function checkAuth(){
+        if(!Yii::$app->user->identity->isOaFrontend && !Yii::$app->user->identity->isOaFrontendAdmin  && !Yii::$app->user->identity->isSuperAdmin ){
+            if($this->getRoute()=='site/no-auth'){
+                return true;
+            }else{
+                return $this->redirect('/site/no-auth');
+            }
+        }else{
+            return true;
+        }
     }
 
 }

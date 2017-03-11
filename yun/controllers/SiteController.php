@@ -29,6 +29,9 @@ class SiteController extends BaseController
         ];
     }
 
+    public function actionNoAuth(){
+        return $this->render('no_auth');
+    }
 
     public function actionClear(){
         $cache = yii::$app->cache;

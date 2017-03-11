@@ -53,7 +53,7 @@ class  BaseController extends Controller
 
     //检查是否有使用这个app权限
     private function checkAuth(){
-        if(!Yii::$app->user->identity->isYunBackendAdmin){
+        if(!Yii::$app->user->identity->isYunBackendAdmin  && !Yii::$app->user->identity->isSuperAdmin){
             if('/'.$this->getRoute()==AdminFunc::adminUrl('default/no-auth')){
                 return true;
             }else{

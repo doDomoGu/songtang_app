@@ -14,6 +14,7 @@ use Yii;
 
 class ApplyController extends BaseController
 {
+    public $defaultAction = 'create';
     public function actionCreate222(){
         $model = new ApplyCreateForm();
 

@@ -90,7 +90,7 @@ $s=5/0;
 
     //检查是否有使用这个app权限
     private function checkAuth(){
-        if(!Yii::$app->user->identity->isUcenterAdmin){
+        if(!Yii::$app->user->identity->isUcenterAdmin && !Yii::$app->user->identity->isSuperAdmin){
             if($this->getRoute()=='site/no-auth'){
                 return true;
             }else{

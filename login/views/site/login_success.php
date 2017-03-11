@@ -24,29 +24,29 @@ AppAsset::addJsFile($this,'js/login_success.js');
 
     $user = Yii::$app->user->identity;
 
-    if($user->isYunFrontend){
+    if($user->isYunFrontend || $user->isYunFrontendAdmin || $user->isSuperAdmin){
         $isYunFrontend = true;
         $hasFrontend = true;
     }
 
-    if($user->isOaFrontend){
+    if($user->isOaFrontend  || $user->isOaFrontendAdmin || $user->isSuperAdmin){
         $isOaFrontend = true;
         $hasFrontend = true;
     }
 
-    if($user->isUcenterAdmin){
+    if($user->isUcenterAdmin || $user->isSuperAdmin){
         $isUcenterAdmin = true;
-        $hasAdmin = true;
+        $hasBackend = true;
     }
 
-    if($user->isYunBackendAdmin){
-      $isYunBackendAdmin = true;
-      $hasAdmin = true;
+    if($user->isYunBackendAdmin || $user->isSuperAdmin){
+        $isYunBackendAdmin = true;
+        $hasBackend = true;
     }
 
-    if($user->isOaBackendAdmin){
+    if($user->isOaBackendAdmin || $user->isSuperAdmin){
         $isOaBackendAdmin = true;
-        $hasAdmin = true;
+        $hasBackend = true;
     }
 ?>
 <?php $this->beginPage(); /* 页面开始标志位 */ ?>
@@ -93,7 +93,7 @@ AppAsset::addJsFile($this,'js/login_success.js');
             </ul>
         </div>
         <?php endif;?>
-        <?php if($hasAdmin):?>
+        <?php if($hasBackend):?>
         <div class="goto">
            <div class="title">
                如果您是管理员 <br/>可以前往

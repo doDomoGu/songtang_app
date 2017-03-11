@@ -12,7 +12,7 @@ body {
 }
 
 .wrap > .container {
-    padding: 110px 15px 20px;
+    padding: 120px 15px 20px;
 }
 
 .footer {
@@ -143,8 +143,8 @@ body {
 
 /* nav */
 #top-navbar {
-    height:100px;
-    border-bottom: 20px solid #c7000a;
+    height:110px;
+    border-bottom: 30px solid #c7000a;
 }
 
 #top-navbar .navbar-brand{
@@ -174,7 +174,7 @@ body {
 
 #top-nav > li.nav-create-btn:hover {
     /*background: #54a254;*/
-    background: #b6b6b6;
+    background: #575757;
 }
 
 #top-nav > li.nav-create-btn > a {
@@ -183,11 +183,27 @@ body {
 
 #top-nav > li.nav-do-btn:hover > a,#top-nav > li.nav-do-btn.active > a{
     /*background: #337ab7;*/
-    background: #b6b6b6;
+    background: #575757;
     color: #fff;
 }
 
 #top-nav > li.nav-exit-btn:hover > a {
     background: #7e0009;
     color:#fff;
+}
+
+
+#top-nav {
+    margin-top:80px;
+    height:30px;
+
+
+}
+#top-nav li {
+    height:30px;
+}
+#top-nav li a {
+    padding:5px 15px;
+    height:30px;
+    color:#fefefe;
 }
