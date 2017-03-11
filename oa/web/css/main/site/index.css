@@ -1,3 +1,37 @@
+#task-index {
+    padding:80px 60px 0;
+
+}
+
+#task-index > .task-content{
+    background-image: url('/images/main/site/bg.png');
+    width:754px;
+    height:820px;
+    padding-top:270px;
+}
+
+#task-index > .task-content > ul {
+    list-style: none ;
+    float:left;
+    width:188px;
+    padding-left:70px;
+}
+
+#task-index > .task-content > ul.ul-3,
+#task-index > .task-content > ul.ul-4 {
+    padding-left:82px;
+}
+#task-index > .task-content > ul > li {
+    letter-spacing: 4px;
+    line-height:42px;
+    font-weight:bold;
+
+}
+
+
+
+
+
 .task-category {
     overflow: hidden;
     margin-top:20px;
