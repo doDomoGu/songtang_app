@@ -92,6 +92,20 @@ class UserController extends BaseController
         return $this->render('permission_list',$params);
     }
 
+    public function actionPermission(){
+
+        $user_id = Yii::$app->user->id;
+        $user = User::find()->where(['id'=>$user_id])->one();
+
+        $dirList = DirFunc::getListArr(0,true,true);
+
+        $params['dirList'] = $dirList;
+
+        $params['user'] = $user;
+
+        return $this->render('user_permission',$params);
+    }
+
     public function actionFile(){
         $this->view->title = '我的上传';
         $list = File::find()->where(['user_id'=>$this->user->id])->andWhere(['>','filetype',0]);
