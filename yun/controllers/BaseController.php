@@ -31,7 +31,8 @@ class BaseController extends Controller
         $this->except = [
             'site/error',
             'site/get-qiniu-uptoken',
-            'version/index'
+            'version/index',
+            'site/no-auth'
         ];
         if(!$this->checkLogin()){
             return false;
@@ -51,11 +52,9 @@ class BaseController extends Controller
                 return false;
             }else{
                 $this->user = Yii::$app->user->identity;
-                $this->checkAuth();
-                return true;
+                return $this->checkAuth();
             }
         }else{
-            $this->checkAuth();
             return true;
         }
     }
@@ -71,14 +70,31 @@ class BaseController extends Controller
     }
 
     //检查是否有使用这个app权限
-    private function checkAuth($redirect=false){
+    /*private function checkAuth($redirect=false){
         if(!$this->user->isYunFrontend && !$this->user->isYunFrontendAdmin){
             if($redirect){
                 if($this->getRoute()=='site/no-auth'){
                     return true;
                 }else{
+
                     return $this->redirect('site/no-auth');
                 }
+            }
+        }else{
+
+            return true;
+        }
+    }*/
+
+
+
+    //检查是否有使用这个app权限
+    private function checkAuth(){
+        if(!Yii::$app->user->identity->isYunFrontend && !Yii::$app->user->identity->isYunFrontendAdmin  && !Yii::$app->user->identity->isSuperAdmin ){
+            if($this->getRoute()=='site/no-auth'){
+                return true;
+            }else{
+                return $this->redirect('site/no-auth');
             }
         }else{
             return true;

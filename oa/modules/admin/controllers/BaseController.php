@@ -54,8 +54,8 @@ class  BaseController extends Controller
 
     //检查是否有使用这个app权限
     private function checkAuth(){
-        $authExist = UserAppAuth::find()->where(['app'=>'oa-admin','user_id'=>Yii::$app->user->id,'is_enable'=>1])->one();
-        if(!$authExist){
+        $user = Yii::$app->user->identity;
+        if(!$user->isOaBackendAdmin && !$user->isSuperAdmin){
             if('/'.$this->getRoute()==AdminFunc::adminUrl('default/no-auth')){
                 return true;
             }else{
