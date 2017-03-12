@@ -96,7 +96,7 @@ AppAsset::addJsFile($this,'js/login_success.js');
         <?php if($hasBackend):?>
         <div class="goto">
            <div class="title">
-               如果您是管理员 <br/>可以前往
+               如果您是管理员，可以前往
            </div>
            <ul>
                 <?php if($isUcenterAdmin):?>

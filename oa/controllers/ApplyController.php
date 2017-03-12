@@ -142,7 +142,7 @@ class ApplyController extends BaseController
                 $flows = Flow::find()->where(['task_id'=>$task_id])->all();
                 if(!empty($flows)){
                     $html.='<h1>申请表预览：</h1>';
-                    $html.='<h3>对应地区：'.($task->area->name).'  对应业态：'.($task->business->name).'</h3>';
+                    //$html.='<h3>对应地区：'.($task->area->name).'  对应业态：'.($task->business->name).'</h3>';
                     foreach($flows as $f){
                         $htmlOne = '<li>';
                         $htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
