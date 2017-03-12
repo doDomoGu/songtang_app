@@ -16,9 +16,10 @@
 }
 
 .panel-default > .panel-heading {
-    background: #d3d3d4;
+    background: #fff;
     text-align: center;
     border-radius: 0;
+    border:none;
 
 }
 
@@ -48,10 +49,10 @@
 }
 
 .panel-default > .panel-body th span{
-    background: #e57e7e;
+    background: #b5b6b6;
     display:block;
     padding:8px;
-    height:40px;
+    height:60px;
     text-align: center;
 }
 

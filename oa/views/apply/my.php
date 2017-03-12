@@ -9,16 +9,17 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
 ?>
 <section class="panel panel-default">
     <div class="panel-heading">
-        <h3><?=Html::img('/images/main/apply/my-icon.png')?> &nbsp;&nbsp;&nbsp;<?=$this->title?></h3>
+        <h3><?=$this->title?></h3>
+        <?=Html::img('/images/main/apply/create-icon-2.png')?>
     </div>
     <div class="panel-body">
         <table>
             <tr>
                 <th><span>#</span></th>
-                <th><span>标题</span></th>
-                <th><span>任务表</span></th>
-                <th><span>申请时间</span></th>
-                <th class="last"><span>操作</span></th>
+                <th><span><?=Html::img('/images/main/apply/list-title-1.png',['style'=>'height:44px;padding:2px;'])?> &nbsp;&nbsp; 标题</span></th>
+                <th><span><?=Html::img('/images/main/apply/list-title-2.png',['style'=>'height:44px;padding:2px;'])?> &nbsp;&nbsp; 任务表</span></th>
+                <th><span><?=Html::img('/images/main/apply/list-title-3.png',['style'=>'height:44px;padding:2px;'])?> &nbsp;&nbsp; 申请时间</span></th>
+                <th class="last"><span><?=Html::img('/images/main/apply/list-title-4.png',['style'=>'height:44px;padding:2px;'])?> &nbsp;&nbsp; 操作</span></th>
             </tr>
             <tbody>
             <?php foreach($list as $l):?>
