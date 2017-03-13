@@ -9,6 +9,8 @@ use oa\models\ApplyRecord;
 use oa\models\Flow;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
+use ucenter\models\User;
+use yii\bootstrap\Html;
 use yii\web\Response;
 use Yii;
 
@@ -51,6 +53,18 @@ class ApplyController extends BaseController
             $new->add_time = date('Y-m-d H:i:s');
             $new->edit_time = date('Y-m-d H:i:s');
             $new->status = 1;
+            $flow_user = Yii::$app->request->post('flow_user',false);
+            if($flow_user){
+                $arr = [];
+                foreach($flow_user as $k => $f){
+                    $arr[] = $k.':'.$f;
+                }
+
+                $new->flow_user = implode('|',$arr);
+            }else{
+                $new->flow_user = '';
+            }
+
             if($new->save()){
                 //Yii::$app->session->setFlash()
                 return $this->redirect('/apply/my');
@@ -143,13 +157,23 @@ class ApplyController extends BaseController
                 if(!empty($flows)){
                     $html.='<h1>申请表预览：</h1>';
                     //$html.='<h3>对应地区：'.($task->area->name).'  对应业态：'.($task->business->name).'</h3>';
+                    $userItems = [];
                     foreach($flows as $f){
                         $htmlOne = '<li>';
                         $htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
                         $htmlOne.= '<div>标题：'.$f->title.'</div>';
                         $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
                         $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
-                        $htmlOne.= '<div>操作人：'.$f->user->getFullRoute().'</div>';
+                        if($f->user_id>0){
+                            $operation_user = $f->user->getFullRoute();
+                        }else{
+                            if(empty($userItems)){
+                                $userItems = User::getItems();
+                            }
+                            $operation_user = '[由发起人选择]';
+                            $operation_user .= Html::dropDownList('flow_user['.$f->step.']','',$userItems,['class'=>"flow-user"]);;
+                        }
+                        $htmlOne.= '<div>操作人：'.$operation_user.'</div>';
                         $htmlOne.= '</li>';
                         $html .= $htmlOne;
                     }
@@ -182,8 +206,13 @@ class ApplyController extends BaseController
             $apply = Apply::find()->where(['id'=>$id])->one();
             if($apply){
                 $result = true;
+                $html .= '<section id="apply-title">'.
+                    '<span>'.Html::img('/images/main/apply/modal-title.png').'申请主题：</span>'.
+                    '<span>'.Html::img('/images/main/apply/modal-date.png').'申请日期：</span>'.
+                    '</section>';
+
                 //1.发起申请
-                $html = '<li>' .
+                $html .= '<li>' .
                     '<div>发起申请</div>' .
                     '<div>操作人：<b>'.$apply->applyUser->name.'</b> ' .
                     '时间：<b>'.$apply->add_time.' </b></div><div>备注信息：'.$apply->message.'</div>' .
@@ -197,7 +226,13 @@ class ApplyController extends BaseController
                         $htmlOne = '<li>';
                         $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
                         $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
-                        $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
+                        if($r->flow->user_id>0){
+                            $username = $r->flow->user->name;
+                        }else{
+                            $username = '[自由选择]';
+                        }
+
+                        $htmlOne.= '<div>操作人：<b>'.$username.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
                         $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
                         $htmlOne.= '</li>';
                         $html .= $htmlOne;
@@ -211,7 +246,12 @@ class ApplyController extends BaseController
                     $htmlOne = '<li class="not-do">';
                     $htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
                     $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
-                    $htmlOne.= '<div>操作人：<b>'.$f->user->name.'</b> </div>';
+                    if($f->user_id>0){
+                        $username = $f->user->name;
+                    }else{
+                        $username = '[自由选择]';
+                    }
+                    $htmlOne.= '<div>操作人：<b>'.$username.'</b> </div>';
                     $htmlOne.= '</li>';
                     $html .= $htmlOne;
                 }

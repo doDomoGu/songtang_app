@@ -2,6 +2,8 @@
 
 namespace oa\models;
 
+/*ALTER TABLE `apply` ADD `flow_user` VARCHAR(100) NOT NULL AFTER `flow_step`;*/
+
 //oa 申请表
 use ucenter\models\User;
 use Yii;
@@ -36,7 +38,7 @@ class Apply extends \yii\db\ActiveRecord
         return [
             [['title','user_id','task_id','flow_step'], 'required'],
             [['user_id','task_id','flow_step','status'], 'integer'],
-            [['add_time','edit_time','message'],'safe']
+            [['add_time','edit_time','message','flow_user'],'safe']
         ];
     }
 

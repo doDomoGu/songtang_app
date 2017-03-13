@@ -43,7 +43,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
 Modal::begin([
     'header' => '申请表详情',
     'id'=>'infoModal',
-    //'size'=>'modal-lg',
+    'size'=>'modal-lg',
     'options'=>['style'=>'margin-top:120px;'],
 ]);
 ?>

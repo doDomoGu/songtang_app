@@ -1,9 +1,19 @@
 .task-preview {
-    margin-top:10px;
-    border:1px solid #333;
+    padding:15px;
 }
-.task-preview li {
 
+.task-preview h1 {
+    font-size: 20px;
+    margin:0;
+}
+
+.flow-user {
+    width:50%;
+    display: inline;
+}
+
+.task-preview li {
+    list-style: none;
 }
 .task-preview li div.task-preview-step {
     background: #cfcddc;

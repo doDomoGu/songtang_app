@@ -55,10 +55,11 @@ class TaskController extends BaseController
         $result = false;
         if(Yii::$app->request->isAjax){
             $title = trim(Yii::$app->request->post('title',false));
-            $district_id = intval(Yii::$app->request->post('district_id',10001));
-            $industry_id = intval(Yii::$app->request->post('industry_id',10002));
-            $company_id = intval(Yii::$app->request->post('company_id',10001));
-            $category_id = intval(Yii::$app->request->post('category_id',0));
+            $district_id = intval(Yii::$app->request->post('district_id',10000));
+            $industry_id = intval(Yii::$app->request->post('industry_id',10000));
+            $company_id = intval(Yii::$app->request->post('company_id',10000));
+            $category_id = intval(Yii::$app->request->post('category_id',1));
+            $department_id = intval(Yii::$app->request->post('department_id',10000));
             //AREA BUSINESS DEPARTMENT  TODO
             if($title==''){
                 $errormsg = '名称或别名不能为空！';
@@ -73,7 +74,7 @@ class TaskController extends BaseController
                     $task->district_id = $district_id;
                     $task->industry_id = $industry_id;
                     $task->company_id = $company_id;
-                    $task->department_id = 1;
+                    $task->department_id = $department_id;
                     $task->ord = 0;
                     $task->status = 1;
                     if($task->save()){
@@ -122,10 +123,10 @@ class TaskController extends BaseController
                 if(!$exist){
                     $errormsg = '对应的任务ID不存在！';
                 }else{
-                    $existUser = User::find()->where(['id'=>$user_id])->one();
+                    /*$existUser = User::find()->where(['id'=>$user_id])->one();
                     if(!$existUser){
                         $errormsg = '所选职员ID不存在！';
-                    }else{
+                    }else{*/
                         $last = Flow::find()->where(['task_id'=>$tid])->orderBy('step desc')->one();
                         $flow = new Flow();
                         $flow->title = $title;
@@ -141,7 +142,7 @@ class TaskController extends BaseController
                         }else{
                             $errormsg = '保存失败，刷新页面重试!';
                         }
-                    }
+                    /*}*/
                 }
             }
         }else{
