@@ -88,8 +88,21 @@
 }
 
 
-#apply-title {
+#apply-header {
     border:1px solid #aaa;
     padding:20px;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+#apply-header .title,
+#apply-header .date
+{
+    font-size:16px;
+    font-weight: bold;
+    width:440px;
+    display: inline-block;
+}
+
+#apply-header .date  {
+    width:300px;
 }

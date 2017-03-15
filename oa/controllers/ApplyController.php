@@ -53,10 +53,27 @@ class ApplyController extends BaseController
             $new->add_time = date('Y-m-d H:i:s');
             $new->edit_time = date('Y-m-d H:i:s');
             $new->status = 1;
-            $flow_user = Yii::$app->request->post('flow_user',false);
-            if($flow_user){
+            //检查任务表(task)中有没有需要选择操作人的流程(flow)
+            $flowList = Flow::find()->where(['task_id'=>$new->task_id])->all();
+            $needUserSelectCount = 0;
+            $userSelectedCount = 0;
+            $flowUserSelect = Yii::$app->request->post('flow_user',false);
+            foreach($flowList as $fl){
+                if($fl->user_id==0){
+                    $needUserSelectCount++;
+                    if(isset($flowUserSelect[$fl->step]) && $flowUserSelect[$fl->step]>0){
+                        $userSelectedCount++;
+                    }
+                }
+            }
+            if($needUserSelectCount>0 && $userSelectedCount!=$needUserSelectCount){
+                echo 'flow user select wrong';exit;
+            }
+
+
+            if($flowUserSelect){
                 $arr = [];
-                foreach($flow_user as $k => $f){
+                foreach($flowUserSelect as $k => $f){
                     $arr[] = $k.':'.$f;
                 }
 
@@ -206,9 +223,9 @@ class ApplyController extends BaseController
             $apply = Apply::find()->where(['id'=>$id])->one();
             if($apply){
                 $result = true;
-                $html .= '<section id="apply-title">'.
-                    '<span>'.Html::img('/images/main/apply/modal-title.png').'申请主题：</span>'.
-                    '<span>'.Html::img('/images/main/apply/modal-date.png').'申请日期：</span>'.
+                $html .= '<section id="apply-header">'.
+                    '<span class="title">'.Html::img('/images/main/apply/modal-title.png').' 申请主题：'.$apply->title.'</span>'.
+                    '<span class="date">'.Html::img('/images/main/apply/modal-date.png').' 申请日期：'. date('Y-m-d',strtotime($apply->add_time)).'</span>'.
                     '</section>';
 
                 //1.发起申请
