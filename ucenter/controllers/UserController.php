@@ -180,6 +180,92 @@ class UserController extends BaseController
     }
 
 
+    public function actionImportDateAll(){
+
+        header("Content-Type: text/html; charset=UTF-8");
+
+        $arr = ['sh'/*,'sz','szgg','wx','nj','hf','hhht'*/];
+        foreach($arr as $a){
+            $handle = fopen('../users/import_date/'.$a.'.csv','r');
+            $this->importDate($handle);
+        }
+    }
+
+    public function importDate($handle){
+        $data = [];
+        $usernameList = [];
+        $wrongNum = 0;
+
+        $result = $this->input_csv($handle); //解析csv
+        $len_result = count($result);
+        var_dump($len_result);echo '<br/>';
+        if($len_result>0){
+            //$aidArr = array_flip(Area::getArr());
+            //$bidArr = array_flip(Business::getArr());
+
+
+
+            for ($i = 2; $i < $len_result; $i++) { //循环获取各字段值
+                foreach($result[$i] as $j => $v){
+                    //$result[$i][$j] = iconv(mb_detect_encoding($v, mb_detect_order(), true), 'utf-8', $v);
+                    //$result[$i][$j] = iconv('gbk', 'utf-8', $v);
+                    /*echo $result[$i][$j];
+                    echo '<Br/>';
+                    echo '<Br/>';*/
+                    $result[$i][$j] = trim($result[$i][$j]);
+
+                }
+
+
+                $join = $result[$i][8];
+                $end = $result[$i][9];
+                $email = $result[$i][10];
+
+
+                $join2 = $join>0?date('Y-m-d',strtotime($join)):'0000-00-00';
+
+                if(strpos($end,'无固定')>-1){
+                    $end2 = '9999-00-00';
+                }else{
+                    $endTmp = str_replace('.','/',$end);
+                    $tmp = explode('-',$endTmp);
+
+                    if(isset($tmp[1]))
+                    var_dump($tmp[1]);
+
+                    if(count($tmp)==2)
+                        $end2 = date('Y-m-d',strtotime($tmp[1]));
+                    else
+                        $end2 = '0000-00-00';
+                }
+
+
+
+                var_dump($email);echo '<br/>';
+                var_dump($join.' | '.$join2);echo '<br/>';
+
+
+                var_dump($end.' | '.$end2);echo '<br/>';
+                echo '========<br/><br/>';
+
+                if($email!=''){
+                    $user = User::find()->where(['username'=>$email])->one();
+                    if($user){
+                        $user->join_date = $join2;
+                        $user->contract_date = $end2;
+                        $user->save();
+                    }
+
+                }
+
+                echo '===============<Br/><Br/><Br/><Br/>';
+            }
+        }
+
+        //exit;
+
+    }
+
     public function actionImportAll(){
         /*if(Yii::$app->request->get('remove')==1){
             User::deleteAll(['>','id',10000]);
