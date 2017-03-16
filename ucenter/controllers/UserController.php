@@ -181,10 +181,12 @@ class UserController extends BaseController
 
 
     public function actionImportDateAll(){
+        /*$date = '20161128';
+        var_dump($this->handleDate($date));exit;*/
 
         header("Content-Type: text/html; charset=UTF-8");
 
-        $arr = ['sh'/*,'sz','szgg','wx','nj','hf','hhht'*/];
+        $arr = ['sh','sz','szgg','wx','nj','hf','hhht'];
         foreach($arr as $a){
             $handle = fopen('../users/import_date/'.$a.'.csv','r');
             $this->importDate($handle);
@@ -217,41 +219,29 @@ class UserController extends BaseController
                 }
 
 
-                $join = $result[$i][8];
+                $join = $result[$i][7];
+                //$start = $result[$i][9];
                 $end = $result[$i][9];
                 $email = $result[$i][10];
 
+                $join2 = $this->handleDate($join);
+                //$start2 = $this->handleDate($start);
+                $end2 = $this->handleDate($end);
 
-                $join2 = $join>0?date('Y-m-d',strtotime($join)):'0000-00-00';
-
-                if(strpos($end,'无固定')>-1){
-                    $end2 = '9999-00-00';
-                }else{
-                    $endTmp = str_replace('.','/',$end);
-                    $tmp = explode('-',$endTmp);
-
-                    if(isset($tmp[1]))
-                    var_dump($tmp[1]);
-
-                    if(count($tmp)==2)
-                        $end2 = date('Y-m-d',strtotime($tmp[1]));
-                    else
-                        $end2 = '0000-00-00';
-                }
 
 
 
                 var_dump($email);echo '<br/>';
                 var_dump($join.' | '.$join2);echo '<br/>';
-
-
-                var_dump($end.' | '.$end2);echo '<br/>';
+                //var_dump($start,' | '.$start2);echo '<br/>';
+                var_dump($end. ' | ' . $end2);echo '<br/>';
                 echo '========<br/><br/>';
 
                 if($email!=''){
                     $user = User::find()->where(['username'=>$email])->one();
                     if($user){
                         $user->join_date = $join2;
+                        //$user->contract_start_date = $start2;
                         $user->contract_date = $end2;
                         $user->save();
                     }
@@ -263,6 +253,32 @@ class UserController extends BaseController
         }
 
         //exit;
+
+    }
+
+
+    private function handleDate($date){
+        if($date==''){
+            $return = '0000-00-00';
+        }else{
+            if(strpos($date,'-')>-1){
+                $date = substr($date,strpos($date,'-')+1);
+            }
+            $date = str_replace('.','/',$date);
+            $date = str_replace('年','/',$date);
+            $date = str_replace('月','/',$date);
+            $date = str_replace('日','',$date);
+            if(strpos($date,'无固定')>-1){
+                $return = '9999-00-00';
+            }else{
+                $time = strtotime($date);
+                if($time)
+                    $return = date('Y-m-d',$time);
+                else
+                    $return = '0000-00-00';
+            }
+        }
+        return $return;
 
     }
 
