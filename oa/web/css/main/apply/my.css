@@ -1,14 +1,13 @@
-#infoContent > .content > li {
-    list-style: none;
-    overflow: hidden;
-    background: #eee;
-    margin-bottom: 10px;
-    padding:2px 10px;
+#infoModal .modal-content {
+    border:20px solid #c7000a;
 }
 
-#infoContent > .content >li.not-do {
-    background: #ffedce;
-}
+/*#infoModal .modal-content .modal-header,
+#infoModal .modal-content .modal-body {
+    border-radius: 6px;
+}*/
+
+
 
 .panel-default {
     border-radius: 0;
@@ -74,4 +73,36 @@
 
 .panel-default > .panel-body table td.last {
     padding:0;
+}
+
+#infoContent > .content > li {
+    list-style: none;
+    overflow: hidden;
+    background: #eee;
+    margin-top: 10px;
+    padding:2px 10px;
+}
+
+#infoContent > .content >li.not-do {
+    background: #ffedce;
+}
+
+
+#apply-header {
+    border:1px solid #aaa;
+    padding:20px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+#apply-header .title,
+#apply-header .date
+{
+    font-size:16px;
+    font-weight: bold;
+    width:440px;
+    display: inline-block;
+}
+
+#apply-header .date  {
+    width:300px;
 }

@@ -16,19 +16,19 @@ class ApplyController extends BaseController
 {
     public function actionIndex()
     {
-        $aid = Yii::$app->request->get('aid',false);
-        $bid = Yii::$app->request->get('bid',false);
+        /*$aid = Yii::$app->request->get('aid',false);
+        $bid = Yii::$app->request->get('bid',false);*/
         $list = Apply::find()->all();
 
 
         $params['list'] = $list;
-        $params['aArr'] = Area::getNameArr();
+        /*$params['aArr'] = Area::getNameArr();
         $params['bArr'] = Business::getNameArr();
         $params['pArr'] = Position::getNameArr();
-        $params['bArr2'] = Area::getRelationsArr($aid);
+        $params['bArr2'] = Area::getRelationsArr($aid);*/
 
-        $params['aid'] = $aid;
-        $params['bid'] = $bid;
+        /*$params['aid'] = $aid;
+        $params['bid'] = $bid;*/
         return $this->render('index',$params);
     }
 

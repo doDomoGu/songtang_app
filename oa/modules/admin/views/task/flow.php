@@ -19,9 +19,9 @@ use yii\helpers\Url;
             <th>标题</th>
             <th>操作类型</th>
             <th>指定操作人</th>
-            <th>转发</th>
+            <!--<th>转发</th>-->
             <th>状态</th>
-            <th>操作</th>
+            <!--<th>操作</th>-->
         </tr>
         <tbody>
         <?php foreach($list as $l):?>
@@ -29,13 +29,11 @@ use yii\helpers\Url;
                 <td><?=$l->step?></td>
                 <td><?=$l->title?></td>
                 <td><?=Flow::getTypeCn($l->type)?></td>
-                <td><?=$l->user->name?></td>
-                <td><?=$l->enable_transfer==0?'禁止':'允许'?></td>
+                <td><?=$l->user_id>0?$l->user->name: '<span style="color:#f44b00;">[由发起人选择]</span>' ?></td>
+                <!--<td><?/*=$l->enable_transfer==0?'禁止':'允许'*/?></td>-->
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
-                <td>
-                    <?/*=Html::a('流程设置',AdminFunc::adminUrl('task/flow',['tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?><!--
-                    --><?/*=Html::a('发起人设置',AdminFunc::adminUrl('task/apply_user',['tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
-                </td>
+                <!--<td>
+                </td>-->
             </tr>
 
         <?php endforeach;?>
@@ -70,7 +68,7 @@ Modal::begin([
                     </select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display:none;">
                 <label class="col-sm-4 control-label label1">是否允许转发</label>
                 <div class="col-sm-6">
                     <select class="form-control create-enable-transfer-select">
@@ -82,7 +80,7 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">职员</label>
                 <div class="col-sm-6">
-                    <?=\yii\bootstrap\BaseHtml::dropDownList('user-select','',\ucenter\models\User::getItems(),['class'=>"form-control create-user-select"])?>
+                    <?=\yii\bootstrap\BaseHtml::dropDownList('user-select','',\ucenter\models\User::getItems(),['class'=>"form-control create-user-select",'prompt'=>'---'])?>
                     <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>

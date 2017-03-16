@@ -22,7 +22,7 @@ use yii\helpers\Url;
             <th>业态</th>
             <th>部门</th>
             <th>职位</th>
-            <th>操作</th>
+            <!--<th>操作</th>-->
         </tr>
         <tbody>
         <?php foreach($list as $l):?>
@@ -32,10 +32,7 @@ use yii\helpers\Url;
                 <td><?=$l->user->district->name?></td>
                 <td><?=$l->user->industry->name?></td>
                 <td><?=$l->user->getDepartmentFullRoute()?></td>
-                <td>
-                    <?/*=Html::a('流程设置',AdminFunc::adminUrl('task/flow',['tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?><!--
-                    --><?/*=Html::a('发起人设置',AdminFunc::adminUrl('task/apply_user',['tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
-                </td>
+                <td><?=$l->user->position->name?></td>
             </tr>
 
         <?php endforeach;?>
