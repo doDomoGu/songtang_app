@@ -49,11 +49,13 @@
                 <tr>
                     <td class="text-right">入职日期</td>
                     <td>
-                        <?php if($user->join_date>0):?>
+                        <?php if($user->join_date>0 && $user->join_date<>'9999-00-00'):?>
+                            <?php $joinDateRight = true;?>
                             <?=date('Y-m-d',strtotime($user->join_date))?>
                             <?php $joinDay = CommonFunc::getJoinDay($user->join_date);?>
                             <br/>距今已经有 <?=$joinDay['day']?>天 / <?=$joinDay['yearMonth']?>
                         <?php else:?>
+                            <?php $joinDateRight = false;?>
                             --
                         <?php endif;?>
                     </td>
@@ -61,14 +63,18 @@
                 <tr>
                     <td class="text-right">合同到期日期</td>
                     <td>
-                        <?php if($user->join_date>0):?>
-                            <?=date('Y-m-d',strtotime($user->contract_date))?>
-                            <?php $contractDay = CommonFunc::getContractDay($user->contract_date);?>
-                            <br/>
-                            <?php if($contractDay['day']!=''):?>
-                            距今还有 <?=$contractDay['day']?>天 / <?=$contractDay['yearMonth']?>
+                        <?php if($joinDateRight && $user->contract_date>0):?>
+                            <?php if($user->contract_date == '9999-00-00'):?>
+                                无固定期限
                             <?php else:?>
-                            已到期
+                                <?=date('Y-m-d',strtotime($user->contract_date))?>
+                                <?php $contractDay = CommonFunc::getContractDay($user->contract_date);?>
+                                <br/>
+                                <?php if($contractDay['day']!=''):?>
+                                距今还有 <?=$contractDay['day']?>天 / <?=$contractDay['yearMonth']?>
+                                <?php else:?>
+                                已到期
+                                <?php endif;?>
                             <?php endif;?>
                         <?php else:?>
                             --
