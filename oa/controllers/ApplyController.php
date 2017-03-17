@@ -72,12 +72,7 @@ class ApplyController extends BaseController
 
 
             if($flowUserSelect){
-                $arr = [];
-                foreach($flowUserSelect as $k => $f){
-                    $arr[] = $k.':'.$f;
-                }
-
-                $new->flow_user = implode('|',$arr);
+                $new->flow_user = Apply::flowUserArr2Str($flowUserSelect);
             }else{
                 $new->flow_user = '';
             }
