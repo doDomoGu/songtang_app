@@ -417,12 +417,43 @@ class DirController extends BaseController
             $industryCheck = isset($post['industry_check'])?$post['industry_check']:10000;
         /*}*/
 
-        if($districtCheck!=10000 && $districtCheck == $user->district_id
+        /*if($districtCheck!=10000 && $districtCheck == $user->district_id
             && $industryCheck == $user->industry_id){
+            //TODO
             $allowPermissionType = [DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::PERMISSION_TYPE_ATTR_LIMIT];
         }else{
             $allowPermissionType = [DirPermission::PERMISSION_TYPE_NORMAL];
+        }*/
+
+        /*
+         * 判断用户有无上传权限
+         * 权限分4个 1:normal  2:district 3:industry 4:district&industry
+         * 1最松 都可以上传  4最紧(严格) 必须地区和行业都符合才行
+         *
+         * 文件属性 与用户的地区 和 行业属性都不符合时 必须拥有最高权限才能上传
+         * 地区相同 如果有地区的权限就行
+         * 行业相同 如果有行业的权限就行
+         * 都符合 只要有 4 就行  
+         */
+        $allowPermissionType = [];
+        $districtEqual = false; //判断选择的地区和  用户的地区是否相同
+        $industryEqual = false; //判断选择的行业和  用户的行业是否相同
+        if($districtCheck!=10000 && $districtCheck == $user->district_id){
+            $districtEqual = true;
+            $allowPermissionType[] = DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT;
         }
+
+        if($industryCheck!=10000 && $industryCheck == $user->industry_id){
+            $industryEqual = true;
+            $allowPermissionType[] = DirPermission::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY;
+        }
+        if($districtEqual && $industryEqual){
+            $allowPermissionType[] = DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY;
+        }
+
+
+        $allowPermissionType[] = DirPermission::PERMISSION_TYPE_NORMAL;
+
 
         if($dir_id>0 && $filename!=''){
             $allowUpload = false;
