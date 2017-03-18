@@ -88,7 +88,12 @@
 }
 
 
-#apply-header {
+#apply-header,
+#apply-message,
+#apply-main
+{
+    font-size:16px;
+    font-weight: bold;
     border:1px solid #aaa;
     padding:20px;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
@@ -97,12 +102,85 @@
 #apply-header .title,
 #apply-header .date
 {
-    font-size:16px;
-    font-weight: bold;
     width:440px;
     display: inline-block;
 }
 
 #apply-header .date  {
     width:300px;
+}
+
+#apply-message {
+    margin-top:14px;
+    overflow:hidden;
+
+}
+
+#apply-message .message-title {
+    display:block;
+    float:left;
+    width:105px;
+    height:140px;
+}
+
+#apply-message .message-text {
+    display:block;
+    float:left;
+    width:683px;
+}
+
+#apply-main {
+    margin-top:14px;
+}
+.apply-main-title {
+    height:30px;
+}
+
+.apply-user,
+.apply-sign-head,
+.apply-approval-head {
+    display:block;
+    float:left;
+    width:230px;
+    position:relative;
+}
+.apply-user {
+    width:328px;
+}
+
+.apply-sign-head .operation-icon,
+.apply-approval-head .operation-icon
+{
+    position: absolute;
+    left:35px;
+    top:23px;
+    width:12px;
+}
+
+#apply-main .flow {
+    margin-top:14px;
+    list-style: none;
+    border-bottom: 1px solid #ccc;
+    padding-bottom:4px;
+    overflow: hidden;
+}
+
+#apply-main .flow .approval-title,
+#apply-main .flow .approval-sign,
+#apply-main .flow .approval-result
+{
+    display:block;
+    float:left;
+    width:230px;
+}
+#apply-main .flow .approval-title {
+    width:328px;
+}
+#apply-main .flow .approval-sign,
+#apply-main .flow .approval-result {
+    padding-left:14px;
+}
+
+#apply-main .flow.not-do .approval-result {
+    color:#ccc;
 }
