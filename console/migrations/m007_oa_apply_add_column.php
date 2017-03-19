@@ -12,9 +12,11 @@ class m007_oa_apply_add_column extends Migration
     public function up()
     {
 
-        //用户签到
+        //自由选择操作人
         $this->addColumn('apply','flow_user','varchar(200)');
 
+        //流程图标
+        $this->addColumn('flow','icon','varchar(20)');
 
     }
 
@@ -22,6 +24,7 @@ class m007_oa_apply_add_column extends Migration
     {
 
         $this->dropColumn('apply','flow_user');
+        $this->dropColumn('flow','icon');
     }
 
 }

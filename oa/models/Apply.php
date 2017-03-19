@@ -66,30 +66,60 @@ class Apply extends \yii\db\ActiveRecord
 
 
     public static function getTodoList($getCount=false){
-        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->all();
-        if(!empty($flow)){
-            $query = Apply::find()->where(['status'=>self::STATUS_NORMAL]);
-            //使用 任务id和流程步骤数 搜索当前的申请表中匹配的
-            $or = [];
-            foreach($flow as $f){
-                $or[] = '(task_id = "'.$f->task_id.'" and flow_step = "'.$f->step.'")';
-            }
-            $condition = implode(' or ',$or);
-            $query = $query->andWhere($condition);
+        $list = [];
+        $user_id = Yii::$app->user->id;
+        // 1.搜索执行中的申请
+        $apply = Apply::find()->where(['status'=>self::STATUS_NORMAL])->all();
 
-            if($getCount){
-                $return = $query->count();
-            }else{
-                //按时间倒序
-                $return = $query->orderBy('add_time desc')->all();
-            }
-        }else{
-            if($getCount){
-                $return = 0;
-            }else{
-                $return = [];
+        foreach($apply as $a){
+            // 2.根据申请对应的任务表  和  步骤 ，判断操作人是不是自己
+            $flow = Flow::find()->where(['task_id'=>$a->task_id,'step'=>$a->flow_step])->one();
+            if($flow){
+                if($flow->user_id>0){
+                    if($flow->user_id == $user_id){
+                        $list[] = $a;
+                    }
+                }else{
+                    //如果user_id = 0 则是由发起人选择的  在apply的flow_user字段中
+                    $arr =  Apply::flowUserStr2Arr($a->flow_user);
+                    if(isset($arr[$a->flow_step]) && $arr[$a->flow_step] == $user_id){
+                        $list[] = $a;
+                    }
+
+                }
             }
         }
+
+        if($getCount){
+            $return = count($list);
+        }else{
+            $return = $list;
+        }
+
+//        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->all();
+//        if(!empty($flow)){
+//            $query = Apply::find()->where(['status'=>self::STATUS_NORMAL]);
+//            //使用 任务id和流程步骤数 搜索当前的申请表中匹配的
+//            $or = [];
+//            foreach($flow as $f){
+//                $or[] = '(task_id = "'.$f->task_id.'" and flow_step = "'.$f->step.'")';
+//            }
+//            $condition = implode(' or ',$or);
+//            $query = $query->andWhere($condition);
+//
+//            if($getCount){
+//                $return = $query->count();
+//            }else{
+//                //按时间倒序
+//                $return = $query->orderBy('add_time desc')->all();
+//            }
+//        }else{
+//            if($getCount){
+//                $return = 0;
+//            }else{
+//                $return = [];
+//            }
+//        }
         return $return;
     }
 
@@ -163,5 +193,49 @@ class Apply extends \yii\db\ActiveRecord
                 $return = [];
         }
         return $return;
+    }
+
+    public static function flowUserStr2Arr($str){
+        $arr = [];
+        $temp = explode('|',$str);
+        foreach($temp as $t){
+            $temp2 = explode(':',$t);
+            $arr[$temp2[0]] = $temp2[1];
+        }
+        return $arr;
+    }
+
+    public static function flowUserArr2Str($arr){
+        $temp = [];
+        foreach($arr as $k => $f){
+            $temp[] = $k.':'.$f;
+        }
+
+        return implode('|',$temp);
+    }
+
+    //apply = 指定的申请
+    //flow  = 指定的步骤
+    //获取对应的操作人
+    public static function getOperationUser($apply,$flow){
+        if($flow->user_id>0){
+            return $flow->user->name;
+        }else{
+            $temp = self::flowUserStr2Arr($apply->flow_user);
+            if($temp){
+                if(isset($temp[$flow->step])){
+                    $user = User::find()->where(['id'=>$temp[$flow->step]])->one();
+                    if($user){
+                        return '*'.$user->name;
+                    }else{
+                        return 'N/A #33';
+                    }
+                }else{
+                    return 'N/A #22';
+                }
+            }else{
+                return 'N/A #11';
+            }
+        }
     }
 }

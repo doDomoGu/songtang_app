@@ -165,14 +165,20 @@ class User extends \yii\db\ActiveRecord
     }
 
     public static function getItems(){
-        $items = [];
-        $list = self::find()->where(['status'=>1])->all();
-        foreach($list as $l){
-            $items[$l->id] = $l->getFullRoute();
+        $cache = yii::$app->cache;
+        if(isset($cache['user-get-items'])){
+            $items = $cache['user-get-items'];
+        }else{
+            $items = [];
+            $list = self::find()->where(['status'=>1])->all();
+            foreach($list as $l){
+                $items[$l->id] = $l->getFullRoute();
+            }
+            $cache['user-get-items'] = $items;
         }
-
         return $items;
     }
+
 
 
 }

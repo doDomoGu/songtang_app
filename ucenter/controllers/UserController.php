@@ -112,6 +112,15 @@ class UserController extends BaseController
         return $this->render('add_and_edit',$params);
     }
 
+
+    public function actionClearCache(){
+        $cache = yii::$app->cache;
+        unset($cache['user-get-items']);
+
+
+        Yii::$app->response->redirect('/user')->send();
+    }
+
     public function actionStructUpdate(){
         if(Yii::$app->request->get('del')==1){
             Structure::deleteAll();//exit;
