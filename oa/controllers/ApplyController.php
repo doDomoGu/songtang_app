@@ -167,28 +167,37 @@ class ApplyController extends BaseController
             if($task){
                 $flows = Flow::find()->where(['task_id'=>$task_id])->all();
                 if(!empty($flows)){
-                    $html.='<h1>申请表预览：</h1>';
+                    $html.='<section class="task-preview-section">'.
+                            '<h1>申请表流程：</h1>';
                     //$html.='<h3>对应地区：'.($task->area->name).'  对应业态：'.($task->business->name).'</h3>';
                     $userItems = [];
+                    $i = 0;
                     foreach($flows as $f){
-                        $htmlOne = '<li>';
-                        $htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
-                        $htmlOne.= '<div>标题：'.$f->title.'</div>';
-                        $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
-                        $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
+                        $i++;
                         if($f->user_id>0){
                             $operation_user = $f->user->getFullRoute();
                         }else{
                             if(empty($userItems)){
                                 $userItems = User::getItems();
                             }
-                            $operation_user = '[由发起人选择]';
+                            $operation_user = '';
+                            //$operation_user = '[由发起人选择]';
                             $operation_user .= Html::dropDownList('flow_user['.$f->step.']','',$userItems,['class'=>"flow-user"]);;
                         }
-                        $htmlOne.= '<div>操作人：'.$operation_user.'</div>';
+
+                        $htmlOne = '<li class="flow done">';
+                        $htmlOne.= '<span class="approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';
+                        $htmlOne.= '<span class="approval-sign">'.$operation_user.'</span>';
+                        /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
+                        $htmlOne.= '<div>标题：'.$f->title.'</div>';
+                        $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
+                        $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
+
+                        $htmlOne.= '<div>操作人：'.$operation_user.'</div>';*/
                         $htmlOne.= '</li>';
                         $html .= $htmlOne;
                     }
+                    $html.= '</section>';
                     $result = true;
                 }else{
                     $errormsg = '申请任务表没有设置流程！';

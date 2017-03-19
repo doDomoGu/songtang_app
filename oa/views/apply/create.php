@@ -28,7 +28,7 @@ $this->title = '发起申请';
 <?= $form->field($model, 'title')->label(Html::img('/images/main/apply/create-head.png').'&nbsp;&nbsp;'.$model->attributeLabels()['title'],['style'=>'text-align:left;padding-left:60px;']) ?>
 
 <?= $form->field($model, 'task_id',[
-    'template'=>"{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-2\">{error}</div><div class=\"col-lg-offset-3 col-lg-9 task-preview \"></div>"
+    'template'=>"{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-2\">{error}</div><div class=\"col-lg-offset-3 col-lg-7 task-preview \"></div>"
 ])->dropDownList($tasks,['prompt'=>'==请选择==','class'=>['form-control task-select']])->label(Html::img('/images/main/apply/create-head-2.png').'&nbsp;&nbsp;'.$model->attributeLabels()['task_id'],['style'=>'text-align:left;padding-left:60px;'])  ?>
 
 
