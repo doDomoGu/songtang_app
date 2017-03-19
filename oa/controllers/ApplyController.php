@@ -279,11 +279,12 @@ class ApplyController extends BaseController
                 $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
                 $i = 1;
                 foreach($flow as $f){
-                    if($f->user_id>0){
+                    $username = Apply::getOperationUser($apply,$f);
+                    /*if($f->user_id>0){
                         $username = $f->user->name;
                     }else{
                         $username = '[自由选择]';
-                    }
+                    }*/
 
                     $htmlOne = '<li class="flow not-do">';
                     $htmlOne.= '<span class="approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';

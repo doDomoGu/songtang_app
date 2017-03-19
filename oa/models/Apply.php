@@ -213,4 +213,29 @@ class Apply extends \yii\db\ActiveRecord
 
         return implode('|',$temp);
     }
+
+    //apply = 指定的申请
+    //flow  = 指定的步骤
+    //获取对应的操作人
+    public static function getOperationUser($apply,$flow){
+        if($flow->user_id>0){
+            return $flow->user->name;
+        }else{
+            $temp = self::flowUserStr2Arr($apply->flow_user);
+            if($temp){
+                if(isset($temp[$flow->step])){
+                    $user = User::find()->where(['id'=>$temp[$flow->step]])->one();
+                    if($user){
+                        return '*'.$user->name;
+                    }else{
+                        return 'N/A #33';
+                    }
+                }else{
+                    return 'N/A #22';
+                }
+            }else{
+                return 'N/A #11';
+            }
+        }
+    }
 }

@@ -13,7 +13,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
         <?=Html::img('/images/main/apply/create-icon-2.png')?>
     </div>
     <div class="panel-body">
-        <table class="table table-bordered table-striped">
+        <table>
             <tr>
                 <th><span>#</span></th>
                 <th><span><?=Html::img('/images/main/apply/list-title-1.png',['style'=>'height:44px;padding:2px;'])?> &nbsp;&nbsp; 标题</span></th>
@@ -24,12 +24,12 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
             <tbody>
             <?php foreach($list as $l):?>
                 <tr>
-                    <td><?=$l->id?></td>
-                    <td><?=$l->title?></td>
-                    <td><?=$l->task->title?></td>
-                    <td><?=$l->add_time?></td>
+                    <td><span><?=$l->id?></span></td>
+                    <td><span><?=$l->title?></span></td>
+                    <td><span><?=$l->task->title?></span></td>
+                    <td><span><?=$l->add_time?></span></td>
                     <td>
-                        <?=Html::a('进行操作','/apply/do?id='.$l->id,['class'=>'btn btn-success btn-xs'])?>
+                        <span><?=Html::a('进行操作','/apply/do?id='.$l->id,['class'=>'btn btn-success btn-xs'])?></span>
                     </td>
                 </tr>
             <?php endforeach;?>

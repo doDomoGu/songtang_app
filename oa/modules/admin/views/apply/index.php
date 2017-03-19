@@ -23,13 +23,24 @@ $this->title = '申请列表';
         </tr>
         <tbody>
         <?php foreach($list as $l):?>
+            <?php if($l->flow->user_id>0):?>
+                <?php $username = $l->flow->user->name;?>
+            <?php else:?>
+                <?php
+                $arr =  \oa\models\Apply::flowUserStr2Arr($l->flow_user);
+                if(isset($arr[$l->flow_step])){
+                    $username = $arr[$l->flow_step];
+                }
+
+                ?>
+            <?php endif;?>
             <tr>
                 <td><?=$l->id?></td>
                 <td><?=$l->title?></td>
                 <td><?=$l->applyUser->name?></td>
                 <td>(ID:<?=$l->task_id?>) <?=$l->task->title?></td>
                 <td><?=$l->flow_step?></td>
-                <td><?=$l->flow->user->name?></td>
+                <td><?=$username?></td>
                 <!--<td><?/*=$l->area_id>0?$aArr[$l->area_id]:'--'*/?></td>
                 <td><?/*=$l->business_id>0?$bArr[$l->business_id]:'--'*/?></td>
                 <td><?/*=\ucenter\models\Department::getFullRoute([$l->department_id])*/?></td>-->
