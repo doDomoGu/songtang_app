@@ -417,7 +417,8 @@ class ApplyController extends BaseController
                     $htmlOne = '<li>';
                     $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
                     $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
-                    $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> </div><div>结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
+                    $username = Apply::getOperationUser($apply,$r->flow);
+                    $htmlOne.= '<div>操作人：<b>'.$username.'</b> 时间: <b>'.$r->add_time.'</b> </div><div>结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
                     $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
                     $htmlOne.= '</li>';
                     $html .= $htmlOne;
@@ -432,12 +433,26 @@ class ApplyController extends BaseController
                 $htmlOne = '<li class="not-do">';
                 $htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
                 $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
-                $htmlOne.= '<div>操作人：<b>'.$f->user->name.'</b> </div>';
+                $username = Apply::getOperationUser($apply,$f);
+                $htmlOne.= '<div>操作人：<b>'.$username.'</b> </div>';
                 $htmlOne.= '</li>';
                 $html2 .= $htmlOne;
             }
-            $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step,'user_id'=>Yii::$app->user->id])->one();
-            if($flow){
+            $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
+            $flag = false;
+            if($flow->user_id>0){
+                if($flow->user_id==Yii::$app->user->id){
+                    $flag = true;
+                }
+            }else{
+                $flowUser = Apply::flowUserStr2Arr($apply->flow_user);
+                if(isset($flowUser[$apply->flow_step]) && $flowUser[$apply->flow_step] == Yii::$app->user->id){
+                    $flag = true;
+                }
+            }
+
+
+            if($flag){
                 $model = new ApplyDoForm();
                 $model->result = 1;
 
@@ -475,8 +490,19 @@ class ApplyController extends BaseController
             $post = Yii::$app->request->post();
             $apply = Apply::find()->where(['id'=>$post['apply_id']])->one();
             if($apply){
-                $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step,'user_id'=>Yii::$app->user->id])->one();
-                if($flow){
+                $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
+                $flag = false;
+                if($flow->user_id>0){
+                    if($flow->user_id==Yii::$app->user->id){
+                        $flag = true;
+                    }
+                }else{
+                    $flowUser = Apply::flowUserStr2Arr($apply->flow_user);
+                    if(isset($flowUser[$apply->flow_step]) && $flowUser[$apply->flow_step] == Yii::$app->user->id){
+                        $flag = true;
+                    }
+                }
+                if($flag){
                     $record = new ApplyRecord();
                     $record->result = $post['result'];
                     $record->message = $post['message'];

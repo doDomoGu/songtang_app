@@ -29,7 +29,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
                     <td><span><?=$l->task->title?></span></td>
                     <td><span><?=$l->add_time?></span></td>
                     <td>
-                        <span><?=Html::a('进行操作','/apply/do?id='.$l->id,['class'=>'btn btn-success btn-xs'])?></span>
+                        <span><?=Html::a('进行操作','/apply/operation?id='.$l->id,['class'=>'btn btn-success btn-xs'])?></span>
                     </td>
                 </tr>
             <?php endforeach;?>

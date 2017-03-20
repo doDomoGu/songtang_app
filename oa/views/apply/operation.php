@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use oa\models\Flow;
-//oa\assets\AppAsset::addJsFile($this,'js/main/apply/create.js');
+oa\assets\AppAsset::addJsFile($this,'js/main/apply/operation.js');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/do.css');
 $this->title = '待办事项';
 ?>
@@ -44,13 +44,23 @@ $this->title = '待办事项';
 
 <?= $form->field($model, 'message')->textarea(['cols'=>190,'rows'=>10]) ?>
 
+
+
 <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-        <?= Html::submitButton('提交', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+        <?= Html::submitButton('提交', ['class' => 'btn btn-primary', 'name' => 'submit-button','id'=>'submit-button']) ?>
     </div>
 </div>
 
+        <!--<div class="form-group">
+            <label class="col-lg-2 control-label" >操作类型</label>
+            <div class="col-lg-5" style="padding-top:7px;font-weight:bold;">
+                <?/*=Flow::getTypeCn($flow->type)*/?>
+            </div>
+        </div>-->
+
 <?php ActiveForm::end(); ?>
+<input id="apply_id" value="<?=$apply->id?>" type="hidden" />
 <?=$html2?>
     </div>
 </section>

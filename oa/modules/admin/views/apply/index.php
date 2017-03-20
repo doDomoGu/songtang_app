@@ -27,10 +27,7 @@ $this->title = '申请列表';
                 <?php $username = $l->flow->user->name;?>
             <?php else:?>
                 <?php
-                $arr =  \oa\models\Apply::flowUserStr2Arr($l->flow_user);
-                if(isset($arr[$l->flow_step])){
-                    $username = $arr[$l->flow_step];
-                }
+                $username = \oa\models\Apply::getOperationUser($l,$l->flow);
 
                 ?>
             <?php endif;?>
