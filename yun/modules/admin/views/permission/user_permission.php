@@ -40,10 +40,10 @@ function showStatus($bool){
                     $down1 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_DOWNLOAD,$user,true);
                     $down2 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::OPERATION_DOWNLOAD,$user,true);
                 ?>
-                <td width="120" class="text-center"><?=showStatus($up1)?></span></td>
-                <td width="120" class="text-center"><?=showStatus($up2)?></span></td>
-                <td width="120" class="text-center"><?=showStatus($down1)?></span></td>
-                <td width="120" class="text-center"><?=showStatus($down2)?></span></td>
+                <td width="120" class="text-center"><?=showStatus($up1)?></td>
+                <td width="120" class="text-center"><?=showStatus($up2)?></td>
+                <td width="120" class="text-center"><?=showStatus($down1)?></td>
+                <td width="120" class="text-center"><?=showStatus($down2)?></td>
             </tr>
 
         <?php endforeach;?>

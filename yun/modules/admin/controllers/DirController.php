@@ -2,6 +2,7 @@
 
 namespace yun\modules\admin\controllers;
 
+use ucenter\models\User;
 use Yii;
 use yun\models\Dir;
 use yun\components\DirFunc;
@@ -56,6 +57,7 @@ class DirController extends BaseController
 
         return $this->render('index',$params);
     }
+
 
     public function actionAddAndEdit(){
         $model = new DirForm();
@@ -142,4 +144,24 @@ class DirController extends BaseController
         return $this->render('permission',$params);
     }
 
+    public function actionIndex2(){
+        $list = DirFunc::getListArr(0,true,true,true);
+
+        $params['list'] = $list;
+        return $this->render('index2',$params);
+    }
+
+
+    //职员版
+    public function actionWatchPermission(){
+        $dir_id = Yii::$app->request->get('dir_id',false);
+        $dir = Dir::find()->where(['id'=>$dir_id])->one();
+        if($dir){
+            $params['userList'] = User::find()->where(['status'=>1])->all();
+            $params['dir'] = $dir;
+            return $this->render('watch_permission',$params);
+        }else{
+            echo 'wrong dir_id';exit;
+        }
+    }
 }
