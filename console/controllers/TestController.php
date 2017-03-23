@@ -70,32 +70,49 @@ class TestController extends Controller
     }
 
 
-    public function actionClearDebug(){
-        $dirList = [
+    public function actionClearRuntime($type='debug'){
+        $appDirList = [
+            Yii::getAlias('@common'),
             Yii::getAlias('@api'),
             Yii::getAlias('@login'),
             Yii::getAlias('@oa'),
             Yii::getAlias('@ucenter'),
             Yii::getAlias('@yun')
         ];
-        foreach($dirList as $dir){
-            $dirDebug = $dir.'/runtime/debug';
-            if(is_dir($dir.'/runtime') && is_dir($dir.'/runtime/debug')){
-                $handle=opendir($dirDebug);
-                echo $dirDebug."\n";
-                $num = 0;
-                while ($file = readdir($handle)) {
-                    if (($file!=".") and ($file!="..")) {
-                        unlink($dirDebug.'/'.$file);
+
+        foreach($appDirList as $appDir){
+            $dir = $appDir.'/runtime/'.$type;
+            if(is_dir($appDir.'/runtime')){
+                $this->rmDir($dir);
+            }
+        }
+    }
+
+    public function rmDir($dir){
+        if(is_dir($dir)){
+            $handle=opendir($dir);
+            echo $dir."\n";
+            $num = 0;
+            while ($file = readdir($handle)) {
+
+                if (($file!=".") and ($file!="..")) {
+                    $path = $dir.'/'.$file;
+
+                    if (is_dir($path)) {
+                        $this->rmDir($path);
+                    } else {
+                        unlink($path);
                         $num++;
                     }
                 }
-                echo 'cleared '.$num.' file(s)'."\n";
-                closedir($handle);
             }
+            echo 'cleared '.$num.' file(s)'."\n";
+            closedir($handle);
+            rmdir($dir);
         }
-exit;
     }
+
+
 
 
 }
