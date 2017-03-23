@@ -67,9 +67,34 @@ class TestController extends Controller
 
             echo 'add finish'."\n";
         }
+    }
 
 
-
+    public function actionClearDebug(){
+        $dirList = [
+            Yii::getAlias('@api'),
+            Yii::getAlias('@login'),
+            Yii::getAlias('@oa'),
+            Yii::getAlias('@ucenter'),
+            Yii::getAlias('@yun')
+        ];
+        foreach($dirList as $dir){
+            $dirDebug = $dir.'/runtime/debug';
+            if(is_dir($dir.'/runtime') && is_dir($dir.'/runtime/debug')){
+                $handle=opendir($dirDebug);
+                echo $dirDebug."\n";
+                $num = 0;
+                while ($file = readdir($handle)) {
+                    if (($file!=".") and ($file!="..")) {
+                        unlink($dirDebug.'/'.$file);
+                        $num++;
+                    }
+                }
+                echo 'cleared '.$num.' file(s)'."\n";
+                closedir($handle);
+            }
+        }
+exit;
     }
 
 
