@@ -337,7 +337,7 @@ class DirController extends BaseController
                     $params['dirRoute'] = $dirRoute;
                     $viewName = 'list';
                 }else{
-                    $list = DirFunc::getChildren($dir_id);
+                    $list = Dir::getChildrenByCache($dir_id);
                     $viewName = 'index';
                 }
                 $params['list'] = $list;
@@ -782,13 +782,13 @@ class DirController extends BaseController
         if(!empty($parents)){
             $p_id2 = 0;
             foreach($parents as $p){
-                $dirList[] =DirFunc::getDropDownList($p_id2,true,false,1);
+                $dirList[] =Dir::getDropDownList($p_id2,true,false,1);
                 $selected[] = $p->id;
                 $p_id2 = $p->id;
             }
-            $dirList[] = DirFunc::getDropDownList($p_id2,true,false,1);
+            $dirList[] = Dir::getDropDownList($p_id2,true,false,1);
         }else{
-            $dirList[] = DirFunc::getDropDownList($p_id,true,false,1);
+            $dirList[] = Dir::getDropDownList($p_id,true,false,1);
         }
 
 

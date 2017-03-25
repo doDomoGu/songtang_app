@@ -19,7 +19,7 @@ class DirController extends BaseController
 
         $dir_id = Yii::$app->request->get('dir_id',false);  //目录
 
-        $dirList_1 = DirFunc::getDropDownList(0,true,false,1); //第一层目录
+        $dirList_1 = Dir::getDropDownList(0,true,false,1); //第一层目录
 
         $dirList_2 = [];
 
@@ -33,7 +33,7 @@ class DirController extends BaseController
             $dirLvl_1 = isset($parents[1])?$parents[1]:null;
             $dirLvl_2 = isset($parents[2]) && $dirLvl_1?$parents[2]:null;
             if($dirLvl_1){
-                $dirList_2 = DirFunc::getDropDownList($dirLvl_1->id,true,false,1);
+                $dirList_2 = Dir::getDropDownList($dirLvl_1->id,true,false,1);
             }
         }else{
             $dirLvl_1 = null;
@@ -42,9 +42,9 @@ class DirController extends BaseController
 
         if($curDir){
             if($curDir->level==2){
-                $list = DirFunc::getListArr($dir_id,true,true,true);
+                $list = Dir::getListArr($dir_id,true,true,true);
             }else{
-                $list = DirFunc::getListArr($dir_id,true,true,true,0);
+                $list = Dir::getListArr($dir_id,true,true,true,0);
             }
         }
 
@@ -145,7 +145,7 @@ class DirController extends BaseController
     }
 
     public function actionIndex2(){
-        $list = DirFunc::getListArr(0,true,true,true);
+        $list = Dir::getListArr(0,true,true,true);
 
         $params['list'] = $list;
         return $this->render('index2',$params);

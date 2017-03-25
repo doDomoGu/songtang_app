@@ -55,11 +55,11 @@ class SiteController extends BaseController
         ];
 
         $limit = 5;
-        $params['list_1'] = DirFunc::getChildren($dir_1->id,true,1,1,$limit);
-        $params['list_2'] = DirFunc::getChildren($dir_2->id,true,1,1,$limit);
-        $params['list_3'] = DirFunc::getChildren($dir_3->id,true,1,1,$limit);
-        $params['list_4'] = DirFunc::getChildren($dir_4->id,true,1,1,$limit);
-        $params['list_5'] = DirFunc::getChildren($dir_5->id,true,1,1,$limit);
+        $params['list_1'] = Dir::getChildren($dir_1->id,true,1,Dir::ORDER_TYPE_1,$limit);
+        $params['list_2'] = Dir::getChildren($dir_2->id,true,1,Dir::ORDER_TYPE_1,$limit);
+        $params['list_3'] = Dir::getChildren($dir_3->id,true,1,Dir::ORDER_TYPE_1,$limit);
+        $params['list_4'] = Dir::getChildren($dir_4->id,true,1,Dir::ORDER_TYPE_1,$limit);
+        $params['list_5'] = Dir::getChildren($dir_5->id,true,1,Dir::ORDER_TYPE_1,$limit);
         $this->view->title = yii::$app->name;
         return $this->render('index',$params);
     }

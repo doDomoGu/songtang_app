@@ -98,7 +98,7 @@ class DirFrontFunc extends Component {
 
 
                 //$dir_id_one = $parents[1];
-                $arr = DirFunc::getChildrenArr($parents[1]->id,true,false,false);
+                $arr = Dir::getChildrenArr($parents[1]->id,true,false,false);
 
                 $treeData .=self::createTreeJson($arr,$dir_id,$p_ids);
 
