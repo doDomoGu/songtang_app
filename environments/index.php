@@ -32,6 +32,7 @@ return [
     'Development' => [
         'path' => 'dev',
         'setWritable' => [
+            'common/runtime',
             'ucenter/runtime',
             'ucenter/web/assets',
             'oa/runtime',
@@ -64,6 +65,7 @@ return [
     'Production' => [
         'path' => 'prod',
         'setWritable' => [
+            'common/runtime',
             'ucenter/runtime',
             'ucenter/web/assets',
             'oa/runtime',
@@ -95,6 +97,7 @@ return [
     'Test' => [
         'path' => 'test',
         'setWritable' => [
+            'common/runtime',
             'ucenter/runtime',
             'ucenter/web/assets',
             'oa/runtime',

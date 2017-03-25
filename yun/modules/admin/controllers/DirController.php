@@ -157,7 +157,13 @@ class DirController extends BaseController
         $dir_id = Yii::$app->request->get('dir_id',false);
         $dir = Dir::find()->where(['id'=>$dir_id])->one();
         if($dir){
-            $params['userList'] = User::find()->where(['status'=>1])->all();
+            $userQuery = User::find()->where(['status'=>1]);
+
+            $userQuery = $userQuery->limit(10);
+
+            $userList = $userQuery->all();
+
+            $params['userList'] = $userList;
             $params['dir'] = $dir;
             return $this->render('watch_permission',$params);
         }else{

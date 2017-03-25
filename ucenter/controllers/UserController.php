@@ -116,8 +116,11 @@ class UserController extends BaseController
     public function actionClearCache(){
         $cache = yii::$app->cache;
         unset($cache['user-get-items']);
-
-
+        unset($cache['userPositionFullRoute']);
+        unset($cache['department-full-route']);
+        unset($cache['dir-data']);
+        unset($cache['dir-children-data']);
+        echo 222;exit;
         Yii::$app->response->redirect('/user')->send();
     }
 

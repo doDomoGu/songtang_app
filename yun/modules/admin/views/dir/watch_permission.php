@@ -10,7 +10,7 @@
 $this->title = '【'.DirFunc::getFileFullRoute($dir->id).'】 - 权限查看 (职员版）';
 function showStatus($bool){
     if($bool){
-        echo '<span style="color:greenyellow;" class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
+        echo '<span style="color:#77cc77;" class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
     }else{
         echo '<span style="color:orangered;" class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
 
@@ -43,7 +43,7 @@ function showStatus($bool){
             <th scope="row"><?=$u->id?></th>
             <td><?=$u->name?></td>
             <td>
-                <?=$u->getFullRoute()?>
+                <?=$u->getFullPositionRoute()?>
             </td>
             <?php
                 $up1All = DirPermission::isDirAllow($dir->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_UPLOAD,$u,true);

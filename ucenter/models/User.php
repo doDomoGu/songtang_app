@@ -3,6 +3,7 @@
 namespace ucenter\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 class User extends \yii\db\ActiveRecord
 {
@@ -149,6 +150,23 @@ class User extends \yii\db\ActiveRecord
         $str .= $this->company->name.$separator;
         $str .= $this->getDepartmentFullRoute().$separator;
         $str .= $this->position->name;
+        return $str;
+    }
+
+    public function getFullPositionRouteByCache($separator = ' > '){
+        $cache = yii::$app->cache;
+        $key = 'userPositionFullRoute';
+        if(isset($cache[$key]) && isset($cache[$key][$this->id])){
+            $str = $cache[$key][$this->id];
+        }else {
+            $str = $this->getFullPositionRoute($separator);
+            if(isset($cache[$key])){
+                $arr = [$this->id => $str];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$this->id => $str]);
+            }
+            $cache[$key] = $arr;
+        }
         return $str;
     }
 

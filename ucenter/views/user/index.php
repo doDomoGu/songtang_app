@@ -2,13 +2,14 @@
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
 use common\components\CommonFunc;
+use ucenter\models\Department;
     $this->title = '职员管理';
     //app\assets\AppAsset::addJsFile($this,'js/main/structure/index.js');
 ?>
 <section>
     <div style="margin-bottom: 10px;">
-        <?=Html::a('新增职员','/user/add-and-edit',['class'=>'btn btn-success'])?>
-        <?=Html::a('清除user缓存','/user/clear-cache',['class'=>'btn btn-danger'])?>
+        <?/*=Html::a('新增职员','/user/add-and-edit',['class'=>'btn btn-success'])*/?>
+        <?/*=Html::a('清除user缓存','/user/clear-cache',['class'=>'btn btn-danger'])*/?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
@@ -34,7 +35,7 @@ use common\components\CommonFunc;
                 <td><?=$districtArr[$l->district_id]?></td>
                 <td><?=$industryArr[$l->industry_id]?></td>
                 <td><?=$companyArr[$l->company_id]?></td>
-                <td><?=\ucenter\models\Department::getFullRoute([$l->department_id])?></td>
+                <td><?=Department::getFullRouteByCache($l->department_id)?></td>
                 <td><?=$positionArr[$l->position_id]?></td>
                 <td><?=CommonFunc::getGenderCn($l->gender)?></td>
                 <td><?=$l->birthday?></td>

@@ -37,6 +37,17 @@ class SiteController extends BaseController
         return $this->render('index');
     }
 
+    public function actionClearCache(){
+        $cache = yii::$app->cache;
+        unset($cache['user-get-items']);
+        unset($cache['userPositionFullRoute']);
+        unset($cache['department-full-route']);
+        unset($cache['dir-data']);
+        unset($cache['dir-children-data']);
+
+        echo 'cleared';exit;
+    }
+
     /*public function actionError(){
 
 

@@ -29,7 +29,7 @@ use ucenter\models\Department;
                 <td><?=$districtArr[$l->district_id]?></td>
                 <td><?=$industryArr[$l->industry_id]?></td>
                 <td><?=$companyArr[$l->company_id]?></td>
-                <td><?=Department::getFullRoute([$l->department_id])?></td>
+                <td><?=Department::getFullRouteByCache($l->department_id)?></td>
                 <td><?=$positionArr[$l->position_id]?></td>
                 <td>
                     <?=Html::a('查看权限','/admin/permission/user-permission?user_id='.$l->id,['class'=>'btn btn-success btn-xs'])?>

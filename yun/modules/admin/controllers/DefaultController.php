@@ -30,4 +30,8 @@ class DefaultController extends BaseController
        /* $n = new TaskCategory();
         $n->install();*/
     }
+
+    public function actionClearCache(){
+
+    }
 }

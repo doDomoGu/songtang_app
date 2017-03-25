@@ -4,11 +4,13 @@ namespace yun\models;
 use ucenter\models\District;
 use ucenter\models\Industry;
 use ucenter\models\UserAppAuth;
+use yii\helpers\ArrayHelper;
 use yun\models\DirPermission;
 use Yii;
 
 class Dir extends \yii\db\ActiveRecord
 {
+    Const ORDER_TYPE_1 = 'ord asc,id Desc';
 /*
     const ATTR_LIMIT_ALL   = 1;  //全员
     const ATTR_LIMIT_DISTRICT  = 2;  //文件(file)必须要有和职员一样的地区属性或者为缺省值
@@ -278,5 +280,164 @@ class Dir extends \yii\db\ActiveRecord
         }
 
         return $return;
+    }
+
+    public static function getOne($id){
+        $dirData = (object)(Dir::find()->where(['id'=>$id])->one()->toArray()); //只取 元素的值
+        return $dirData;
+    }
+
+    /*
+     * 函数getOneByCache ,实现根据 id 读取数据缓存，有则直接返回缓存内容，没有则获取模型数据，并添加至缓存
+     *
+     * @param integer id  dir:id
+     * return DirModel
+     */
+    public static function getOneByCache($id){
+        $cache = yii::$app->cache;
+        $key = 'dir-data';
+        if(isset($cache[$key]) && isset($cache[$key][$id])){
+            $data = $cache[$key][$id];
+        }else {
+            $data = self::getOne($id);
+            if(!isset($cache[$key])){
+                $arr = [$id => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$id => $data]);
+            }
+            $cache[$key] = $arr;
+        }
+        return $data;
+    }
+
+
+    /*
+     * 函数getChildrenByCache ,实现根据 p_id 获取子层级 （单层）
+     *                       读取数据缓存，有则直接返回缓存内容，没有则获取模型数据，并添加至缓存
+     * @param integer p_id 父id (默认 0 )
+     * @param boolean showLeaf 是否显示叶子层级的标志位 (默认true)
+     * @param boolean status 状态 (默认1)
+     * @param string orderBy  排序方法
+     * return array
+     */
+    public static function getChildrenByCache($p_id,$showLeaf=true,$status=1,$orderBy=self::ORDER_TYPE_1,$limit=false){
+        $cache = yii::$app->cache;
+        $key = 'dir-children-data';
+        $idKey = $p_id.'_'.($showLeaf==true?'1':'0').'_'.($status==1?'1':'0').'_'.$orderBy.'_'.($limit==false?'f':$limit);
+        if(isset($cache[$key]) && isset($cache[$key][$idKey])){
+            $data = $cache[$key][$idKey];
+        }else {
+            $data = self::getChildren($p_id,$showLeaf,$status,$orderBy,$limit);
+            if(!isset($cache[$key])){
+                $arr = [$idKey => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$idKey => $data]);
+            }
+            $cache[$key] = $arr;
+        }
+        return $data;
+
+
+
+    }
+
+    /*
+     * 函数getChildren ,实现根据 p_id 获取子层级 （单层）
+     *
+     * @param integer p_id 父id (默认 0 )
+     * @param boolean showLeaf 是否显示叶子层级的标志位 (默认true)
+     * @param boolean status 状态 (默认1)
+     * @param string orderBy  排序方法
+     * return array
+     */
+    public static function getChildren($p_id,$showLeaf=true,$status=1,$orderBy=self::ORDER_TYPE_1,$limit=false){
+        $where['p_id'] = $p_id;
+        $where['status'] = $status;
+        if($showLeaf==false)
+            $where['is_leaf'] = 0;
+
+        $result = [];
+        $list = self::find()->where($where)->orderBy($orderBy)->limit($limit)->asArray()->all();
+        if(!empty($list)){
+            foreach($list as $l){
+                $result[] = (object)$l;
+            }
+        }
+        return $result;
+    }
+
+
+    /*
+     * 函数getDropDownList ,实现根据is_leaf(Dir表 is_leaf字段) 底层
+     *
+     * @param integer p_id 父id (默认 0 )
+     * @param boolean showLeaf 是否显示叶子层级的标志位 (默认true)
+     * @param boolean includeSelf 是否包含自己本身的标志位 (默认false)
+     * @param integer level  显示层级数限制 (默认false,不限制)
+     * return array
+     */
+
+    public static function getListArr($p_id=0,$showLeaf=true,$showTree=false,$includeSelf=false,$level=false){
+        $arr = [];
+        $dir = NULL;
+        $selfChildrenIds = [];
+        if($p_id>0){
+            //根据p_id(父id)查找对应父对象
+            $dir = self::getOneByCache($p_id);
+            if($dir==NULL || $dir->status==0){ //不存在或者状态禁用则返回空数组
+                return [];
+            }else if($includeSelf===true){ //将自己本身添加至数组
+                $arr[$dir->id]= $dir;
+            }
+        }
+
+        $level = $level===false?false:intval($level);
+        if($level>0 || $level===false){  //level正整数 或者 false不限制
+            $list = self::getChildrenByCache($p_id,$showLeaf);
+
+            if(!empty($list)){
+                $nlevel = $level===false?false: intval($level - 1);
+                foreach($list as $l){
+                    $arr[$l->id] = $l;
+                    if($showTree){
+                        $prefix = '';
+                        if($l->level>1){
+                            for($i=1;$i<$l->level;$i++){
+                                $prefix.='&emsp;';
+                            }
+                            if($l->is_last>0){
+                                $prefix.='└─ ';
+                            } else{
+                                $prefix.='├─ ';
+                            }
+                        }
+                        $arr[$l->id]->name = $prefix.$l->name;
+                    }
+
+                    if($nlevel === false || $nlevel > 0){
+                        $children = self::getListArr($l->id,$showLeaf,$showTree,false,$nlevel);
+                        $childrenIds = array();
+                        if(!empty($children)){
+                            foreach($children as $child){
+                                $arr[$child->id] = $child;
+                                $childrenIds[]=$child->id;
+                            }
+                        }
+                        $arr[$l->id]->childrenIds = $childrenIds;
+                        if($includeSelf===true){
+                            $selfChildrenIds = ArrayHelper::merge($selfChildrenIds,$childrenIds);
+                        }
+                    }
+                    if($includeSelf===true){
+                        $selfChildrenIds = ArrayHelper::merge($selfChildrenIds,[$l->id]);
+                    }
+                }
+            }
+        }
+
+        if($dir && $includeSelf===true){
+            $arr[$dir->id]->childrenIds = $selfChildrenIds;
+        }
+        return $arr;
     }
 }

@@ -35,7 +35,7 @@ class PermissionController extends BaseController
 
         $user = User::find()->where(['id'=>$user_id])->one();
 
-        $dirList = DirFunc::getListArr(0,true,true);
+        $dirList = Dir::getListArr(0,true,true);
 
         $params['dirList'] = $dirList;
 

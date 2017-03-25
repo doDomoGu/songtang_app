@@ -2,6 +2,8 @@
 
 namespace ucenter\models;
 use Yii;
+use yii\helpers\ArrayHelper;
+
 //部门
 class Department extends \yii\db\ActiveRecord
 {
@@ -300,5 +302,22 @@ class Department extends \yii\db\ActiveRecord
         }else{
             return null;
         }
+    }
+
+    public static function getFullRouteByCache($id,$separator = ' > '){
+        $key = 'department-full-route';
+        $cache = Yii::$app->cache;
+        if(isset($cache[$key]) && isset($cache[$key][$id])){
+            $data = $cache[$key][$id];
+        }else {
+            $data = self::getFullRoute($id,$separator);
+            if(!isset($cache[$key])){
+                $arr = [$id => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$id => $data]);
+            }
+            $cache[$key] = $arr;
+        }
+        return $data;
     }
 }

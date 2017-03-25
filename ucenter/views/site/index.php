@@ -3,7 +3,9 @@ use yii\bootstrap\Html;
 
 ?>
 
-首页
+首页<br/><br/>
+
+<?=Html::a('清除缓存','/site/clear-cache',['class'=>'btn btn-danger'])?>
 <?php /*if(!Yii::$app->user->isGuest):*/?><!--
 
 
