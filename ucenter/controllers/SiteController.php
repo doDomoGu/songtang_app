@@ -39,11 +39,17 @@ class SiteController extends BaseController
 
     public function actionClearCache(){
         $cache = yii::$app->cache;
+        $cache->flush();echo 'flushed';exit;
         unset($cache['user-get-items']);
         unset($cache['userPositionFullRoute']);
         unset($cache['department-full-route']);
+        unset($cache['dir-full-route']);
+        unset($cache['file-full-route']);
         unset($cache['dir-data']);
         unset($cache['dir-children-data']);
+        unset($cache['dir-parents-data']);
+        //unset($cache['dir-permission-is-in-range']);
+        unset($cache['treeDataId']);
 
         echo 'cleared';exit;
     }

@@ -67,7 +67,7 @@ class UserController extends BaseController
         return $this->render('change_head_img',$params);
     }
 
-    public function actionPermissionList(){
+    /*public function actionPermissionList(){
         $this->view->title = '职员权限列表';
         //$list = [];
         $list =  DirFunc::getListArr(0,true,true,true,false);
@@ -90,14 +90,14 @@ class UserController extends BaseController
         $params['pmCheck'] = $pmCheck;
 
         return $this->render('permission_list',$params);
-    }
+    }*/
 
     public function actionPermission(){
 
         $user_id = Yii::$app->user->id;
         $user = User::find()->where(['id'=>$user_id])->one();
 
-        $dirList = DirFunc::getListArr(0,true,true);
+        $dirList = Dir::getListArr(0,true,true);
 
         $params['dirList'] = $dirList;
 

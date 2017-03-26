@@ -1,5 +1,5 @@
 <?php
-    use yun\components\DirFunc;
+    use yun\models\File;
     use yii\bootstrap\BaseHtml;
     yun\assets\AppAsset::addCssFile($this,'css/main/user/file.css');
 ?>
@@ -22,7 +22,7 @@
                     <th scope="row"><?=$l->id?></th>
                     <td><?=$l->file->filename?></td>
                     <td>
-                        <?=DirFunc::getFileFullRoute($l->file->dir_id,$l->file->p_id)?>
+                        <?=File::getFileFullRoute($l->file->dir_id,$l->file->p_id)?>
                     </td>
                     <td>
                         <?=$l->download_time?>

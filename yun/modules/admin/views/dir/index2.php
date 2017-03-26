@@ -1,6 +1,7 @@
 <?php
 use yii\bootstrap\BaseHtml;
 use yun\components\DirFunc;
+use yun\models\Dir;
 // yun\assets\AppAsset::addJsFile($this,'js/manage-dir.js');
 ?>
 <?/*=BaseHtml::a('添加目录（暂时不可用）',['dir-add-and-edit'],['class'=>'btn btn-primary disabled'])*/?>
@@ -23,7 +24,7 @@ use yun\components\DirFunc;
             <tr>
                 <th scope="row"><?=$l->id?></th>
                 <!--<td><?/*=$l->ord*/?></td>-->
-                <td><?=$l->name?> <span class="glyphicon glyphicon-info-sign" title="<?=DirFunc::getFullRoute($l->id)?>"></span></td>
+                <td><?=$l->name?> <span class="glyphicon glyphicon-info-sign" title="<?=Dir::getFullRouteByCache($l->id)?>"></span></td>
                 <td>
                     <?php if($l->link!=''):?>
                         <span class="label label-warning">链接</span>

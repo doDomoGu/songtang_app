@@ -3,6 +3,7 @@
 namespace yun\models;
 
 use ucenter\models\User;
+use yii\helpers\ArrayHelper;
 use yun\components\FileFrontFunc;
 use Yii;
 
@@ -109,5 +110,53 @@ class File extends \yii\db\ActiveRecord
                 $f->save();
             }
         }
+    }
+
+
+    public static function getFileFullRouteByCache($id){
+        $cache = yii::$app->cache;
+        $key = 'file-full-route';
+        if(isset($cache[$key]) && isset($cache[$key][$id])){
+            $data = $cache[$key][$id];
+        }else {
+            $data = self::getFileFullRoute($id);
+            if(!isset($cache[$key])){
+                $arr = [$id => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$id => $data]);
+            }
+            $cache[$key] = $arr;
+        }
+        return $data;
+    }
+
+    /*
+     * 函数getFileFullRoute ,实现根据dir_id(Dir表 id字段  父目录) p_id(File表 id 父文件夹)获取完整的板块目录路径
+     *
+     * @param dir_id 目录id
+     * @param p_id 父文件夹id
+     * @param separator 分隔符 (默认 '>' )
+     * return string/null
+     */
+    public static function getFileFullRoute($dir_id,$p_id = 0,$separator = ' > '){
+        $route = null;
+//        $route = self::getFullRoute($dir_id,$separator);
+
+
+        if($dir_id > 0){
+            $route .= Dir::getFullRoute($dir_id,$separator);
+        }
+
+
+        if($p_id > 0){
+            $pDir = self::find()->where(['id'=>$p_id])->one();
+            if($pDir){
+                if($pDir->p_id>0){
+                    $route .= self::getFileFullRoute(0,$pDir->p_id,$separator);
+                }
+                $route .= $separator.$pDir->filename;
+            }
+        }
+        return $route;
     }
 }

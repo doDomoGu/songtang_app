@@ -1,8 +1,9 @@
 <?php
-    use yun\components\DirFunc;
     use yii\bootstrap\BaseHtml;
     use yun\components\FileFrontFunc;
     use yun\components\CommonFunc;
+    use yun\models\File;
+
     yun\assets\AppAsset::addCssFile($this,'css/main/user/file.css');
     yun\assets\AppAsset::addJsFile($this,'js/main/user/recycle.js');
 ?>
@@ -45,7 +46,7 @@
                         <?php endif;?>
                     </td>
                     <td>
-                        <?php $dirRoute = DirFunc::getFileFullRoute($l->dir_id,$l->p_id);?>
+                        <?php $dirRoute = File::getFileFullRoute($l->dir_id,$l->p_id);?>
                         <span title="<?=$dirRoute?>">
                             <?=CommonFunc::mySubstr($dirRoute,18)?>
                         </span>

@@ -1,11 +1,10 @@
 <?php
-    use yun\components\DirFunc;
     use yii\bootstrap\BaseHtml;
     use yun\models\DirPermission;
-    use ucenter\models\Area;
-    use ucenter\models\Business;
     use yun\modules\admin\assets\AdminAsset;
-$this->title = '【'.DirFunc::getFileFullRoute($dir->id).'】 - 权限编辑';
+    use yun\models\File;
+
+$this->title = '【'.File::getFileFullRoute($dir->id).'】 - 权限编辑';
 AdminAsset::addJsFile($this,'js/main/dir/permission.js');
 ?>
 <form id="permission-form" class="form-horizontal" action="" method="post">

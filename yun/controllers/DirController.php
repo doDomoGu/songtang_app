@@ -256,7 +256,7 @@ class DirController extends BaseController
                     if($folder){
                         if(!DirPermission::isFileAllow($folder->dir_id,$folder->id,DirPermission::OPERATION_DOWNLOAD)){
                             ## 日志记录 ##
-                            SystemLog::dirError('没有权限打开文件夹('.$folder->id.':'.DirFunc::getFileFullRoute($folder->id).')');
+                            SystemLog::dirError('没有权限打开文件夹('.$folder->id.':'.File::getFileFullRoute($folder->id).')');
                             Yii::$app->response->redirect('/')->send();
                         }
                     }

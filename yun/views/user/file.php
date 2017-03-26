@@ -1,6 +1,6 @@
 <?php
-    use yun\components\DirFunc;
     use yii\bootstrap\BaseHtml;
+    use yun\models\File;
     yun\assets\AppAsset::addCssFile($this,'css/main/user/file.css');
 ?>
 <div class="panel panel-default">
@@ -22,7 +22,7 @@
                     <th scope="row"><?=$l->id?></th>
                     <td><?=$l->filename?></td>
                     <td>
-                        <?=DirFunc::getFileFullRoute($l->dir_id,$l->p_id)?>
+                        <?=File::getFileFullRoute($l->dir_id,$l->p_id)?>
                     </td>
                     <td>
                         <?=$l->add_time?>

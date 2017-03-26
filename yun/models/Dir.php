@@ -282,6 +282,24 @@ class Dir extends \yii\db\ActiveRecord
         return $return;
     }
 
+
+    public static function getParentsByCache($id){
+        $cache = yii::$app->cache;
+        $key = 'dir-parents-data';
+        if(isset($cache[$key]) && isset($cache[$key][$id])){
+            $data = $cache[$key][$id];
+        }else {
+            $data = self::getParents($id);
+            if(!isset($cache[$key])){
+                $arr = [$id => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$id => $data]);
+            }
+            $cache[$key] = $arr;
+        }
+        return $data;
+    }
+
     public static function getOne($id){
         $dirData = (object)(Dir::find()->where(['id'=>$id])->one()->toArray()); //只取 元素的值
         return $dirData;
@@ -336,9 +354,6 @@ class Dir extends \yii\db\ActiveRecord
             $cache[$key] = $arr;
         }
         return $data;
-
-
-
     }
 
     /*
@@ -556,4 +571,47 @@ class Dir extends \yii\db\ActiveRecord
         return $arr;
 
     }
+
+
+    public static function getFullRouteByCache($id){
+        $cache = yii::$app->cache;
+        $key = 'dir-full-route';
+        if(isset($cache[$key]) && isset($cache[$key][$id])){
+            $data = $cache[$key][$id];
+        }else {
+            $data = self::getFullRoute($id);
+            if(!isset($cache[$key])){
+                $arr = [$id => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$id => $data]);
+            }
+            $cache[$key] = $arr;
+        }
+        return $data;
+    }
+
+    /*
+    * 函数getFullRoute ,实现根据dir_id(Dir表 id字段)获取完整的板块目录路径
+    *
+    * @param dir_id 位置id
+    * @param separator 分隔符 (默认 '>' )
+    * return string/null
+    */
+    public static function getFullRoute($dir_id,$separator = ' > '){
+        $dir = Dir::find()->where(['id'=>$dir_id])->one();
+        if($dir!==NULL){
+            $str = '';
+            $str.= self::getFullRoute($dir->p_id,$separator);
+            if($str!=null){
+                $str.= $separator;
+            }
+            $str.= $dir->name;
+            return $str;
+        }else{
+            return null;
+        }
+    }
+
+
+
 }

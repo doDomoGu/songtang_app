@@ -2,6 +2,7 @@
 namespace yun\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 class DirPermission extends \yii\db\ActiveRecord
 {
@@ -155,6 +156,25 @@ class DirPermission extends \yii\db\ActiveRecord
         return $return;
     }
 
+
+    public static function isInRangeByCache($dm,$user=false){
+        $cache = yii::$app->cache;
+        $key = 'dir-permission-is-in-range';
+        $idKey = $dm->dir_id.'-'.$dm->permission_type.'-'.$dm->user_match_type.'-'.$dm->user_match_param_id.'-'.$dm->operation.'-'.$dm->mode.'-'.$user->id;
+        if(isset($cache[$key]) && isset($cache[$key][$idKey])){
+            $data = $cache[$key][$idKey];
+        }else {
+            $data = self::isInRange($dm,$user);
+            if(!isset($cache[$key])){
+                $arr = [$idKey => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$idKey => $data]);
+            }
+            $cache[$key] = $arr;
+        }
+        return $data;
+    }
+
     /*
      * 检测目录是否允许执行所选操作
      * 参数 dir_id : 目录ID
@@ -173,7 +193,7 @@ class DirPermission extends \yii\db\ActiveRecord
             if($user===false)
                 $user = Yii::$app->user->identity;
 
-            $parents = Dir::getParents($dir_id);  //父目录数组 用作递归
+            $parents = Dir::getParentsByCache($dir_id);  //父目录数组 用作递归
 
             $act = 'and';
             if(is_array($permission_type)){
@@ -189,13 +209,13 @@ class DirPermission extends \yii\db\ActiveRecord
 
             foreach($typeArr as $pt){
                 $isAllow2 = false;
-                $ptArr = self::expandPermissionType($pt);
+                //$ptArr = self::expandPermissionType($pt);
+                $allowList = self::getListByCache($dir_id,$pt,$operation_id,self::MODE_ALLOW);
 
-
-                $allowList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
+                //$allowList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
                 if(!empty($allowList)){
                     foreach($allowList as $a){
-                        if(self::isInRange($a,$user)){
+                        if(self::isInRangeByCache($a,$user)){
                             $isAllow2 = true; //有一条允许就允许
                             break;
                         }
@@ -203,10 +223,11 @@ class DirPermission extends \yii\db\ActiveRecord
                 }
                 if($isAllow2==false && !empty($parents)){  //递归父目录
                     foreach($parents as $p_id){
-                        $allowList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
+                        $allowList = self::getListByCache($p_id,$pt,$operation_id,self::MODE_ALLOW);
+                        //$allowList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
                         if(!empty($allowList)){
                             foreach($allowList as $a){
-                                if(self::isInRange($a,$user)){
+                                if(self::isInRangeByCache($a,$user)){
                                     $isAllow2 = true; //有一条允许就允许
                                     break;
                                 }
@@ -215,11 +236,11 @@ class DirPermission extends \yii\db\ActiveRecord
                     }
                 }
 
-
-                $denyList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
+                $denyList = self::getListByCache($dir_id,$pt,$operation_id,self::MODE_DENY);
+                //$denyList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
                 if(!empty($denyList)){
                     foreach($denyList as $d){
-                        if(self::isInRange($d,$user)){
+                        if(self::isInRangeByCache($d,$user)){
                             $isAllow2 = false; //有一条禁止就禁止
                             break;
                         }
@@ -228,10 +249,11 @@ class DirPermission extends \yii\db\ActiveRecord
 
                 if($isAllow2==true && !empty($parents)){ //递归父目录
                     foreach($parents as $p_id){
-                        $denyList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
+                        $denyList = self::getListByCache($p_id,$pt,$operation_id,self::MODE_DENY);
+                        //$denyList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
                         if(!empty($denyList)){
                             foreach($denyList as $d){
-                                if(self::isInRange($d,$user)){
+                                if(self::isInRangeByCache($d,$user)){
                                     $isAllow2 = false; //有一条禁止就禁止
                                     break;
                                 }
@@ -253,6 +275,48 @@ class DirPermission extends \yii\db\ActiveRecord
         }
         return $isAllow;
     }
+
+    private static function getList($dir_id,$permission_type,$operation_id,$mode){
+        $ptArr = self::expandPermissionType($permission_type);
+        return self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>$mode])->all();
+    }
+
+    public static function getListByCache($dir_id,$permission_type,$operation_id,$mode){
+        $cache = yii::$app->cache;
+        $key = 'dir-permission-list';
+        $idKey = md5($dir_id.'-'.$permission_type.'-'.$operation_id.'-'.$mode);
+        if(isset($cache[$key]) && isset($cache[$key][$idKey])){
+            $data = $cache[$key][$idKey];
+        }else {
+            $data = self::getList($dir_id,$permission_type,$operation_id,$mode);
+            if(!isset($cache[$key])){
+                $arr = [$idKey => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$idKey => $data]);
+            }
+            $cache[$key] = $arr;
+        }
+        return $data;
+    }
+
+
+/*    public static function isDirAllowByCache($dir_id,$permission_type,$operation_id,$user=false,$ignoreAdmin=false){
+        $cache = yii::$app->cache;
+        $key = 'dir-full-route';
+        $idKey = $dir_id.'_'.
+        if(isset($cache[$key]) && isset($cache[$key][$id])){
+            $data = $cache[$key][$id];
+        }else {
+            $data = self::getFullRoute($id);
+            if(!isset($cache[$key])){
+                $arr = [$id => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$id => $data]);
+            }
+            $cache[$key] = $arr;
+        }
+        return $data;
+    }*/
 
     private static function expandPermissionType($type){
         $arr = [$type];

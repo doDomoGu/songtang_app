@@ -1,5 +1,4 @@
 <?php
-    use yun\components\DirFunc;
     use yii\bootstrap\BaseHtml;
     use yun\models\DirPermission;
     use ucenter\models\User;
@@ -7,7 +6,9 @@
     use ucenter\models\Industry;
     use ucenter\models\Company;
     use yun\modules\admin\assets\AdminAsset;
-$this->title = '【'.DirFunc::getFileFullRoute($dir->id).'】 - 权限查看 (职员版）';
+    use yun\models\File;
+
+$this->title = '【'.File::getFileFullRoute($dir->id).'】 - 权限查看 (职员版）';
 function showStatus($bool){
     if($bool){
         echo '<span style="color:#77cc77;" class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
