@@ -48,7 +48,8 @@ class SiteController extends BaseController
         unset($cache['dir-data']);
         unset($cache['dir-children-data']);
         unset($cache['dir-parents-data']);
-        //unset($cache['dir-permission-is-in-range']);
+        unset($cache['dir-permission-is-in-range']);
+        unset($cache['dir-is-allow']);
         unset($cache['treeDataId']);
 
         echo 'cleared';exit;

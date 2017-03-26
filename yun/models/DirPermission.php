@@ -276,6 +276,34 @@ class DirPermission extends \yii\db\ActiveRecord
         return $isAllow;
     }
 
+    public static function isDirAllowByCache($dir_id,$permission_type,$operation_id,$user=false,$ignoreAdmin=false){
+        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontendAdmin){
+            $data = true;
+        }else {
+            $cache = yii::$app->cache;
+            $key = 'dir-is-allow';
+            $idKey = $dir_id;
+            $idKey .= '-'.$permission_type;
+            $idKey .= '-'.$operation_id;
+            if ($user === false)
+                $user = Yii::$app->user->identity;
+            $idKey .= '-'.$user->id;
+
+            if(isset($cache[$key]) && isset($cache[$key][$idKey])){
+                $data = $cache[$key][$idKey];
+            }else {
+                $data = self::isDirAllow($dir_id,$permission_type,$operation_id,$user);
+                if(!isset($cache[$key])){
+                    $arr = [$idKey => $data];
+                }else{
+                    $arr = ArrayHelper::merge($cache[$key],[$idKey => $data]);
+                }
+                $cache[$key] = $arr;
+            }
+        }
+        return $data;
+    }
+
     private static function getList($dir_id,$permission_type,$operation_id,$mode){
         $ptArr = self::expandPermissionType($permission_type);
         return self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>$mode])->all();
@@ -284,7 +312,7 @@ class DirPermission extends \yii\db\ActiveRecord
     public static function getListByCache($dir_id,$permission_type,$operation_id,$mode){
         $cache = yii::$app->cache;
         $key = 'dir-permission-list';
-        $idKey = md5($dir_id.'-'.$permission_type.'-'.$operation_id.'-'.$mode);
+        $idKey = $dir_id.'-'.$permission_type.'-'.$operation_id.'-'.$mode;
         if(isset($cache[$key]) && isset($cache[$key][$idKey])){
             $data = $cache[$key][$idKey];
         }else {

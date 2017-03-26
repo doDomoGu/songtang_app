@@ -35,10 +35,10 @@ function showStatus($bool){
                 <td><?=$l->id?></td>
                 <td><?=$l->name?></td>
                 <?php
-                    $up1 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_UPLOAD,$user,true);
-                    $up2 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::OPERATION_UPLOAD,$user,true);
-                    $down1 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_DOWNLOAD,$user,true);
-                    $down2 = DirPermission::isDirAllow($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::OPERATION_DOWNLOAD,$user,true);
+                    $up1 = DirPermission::isDirAllowByCache($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_UPLOAD,$user,true);
+                    $up2 = DirPermission::isDirAllowByCache($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::OPERATION_UPLOAD,$user,true);
+                    $down1 = DirPermission::isDirAllowByCache($l->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_DOWNLOAD,$user,true);
+                    $down2 = DirPermission::isDirAllowByCache($l->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::OPERATION_DOWNLOAD,$user,true);
                 ?>
                 <td width="120" class="text-center"><?=showStatus($up1)?></span></td>
                 <td width="120" class="text-center"><?=showStatus($up2)?></span></td>
