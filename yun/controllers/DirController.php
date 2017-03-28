@@ -587,14 +587,14 @@ class DirController extends BaseController
             var_dump($file_path);exit;
                         Yii::$app->end();*/
 
-                        Header("Content-type: application/octet-stream;");
-                        Header("Accept-Ranges: bytes");
+                        header("Content-type: application/octet-stream;");
+                        header("Accept-Ranges: bytes");
                         //Header("Accept-Length: ".filesize($file_path));
                         $filename = $file->filename;
                         $ua = $_SERVER["HTTP_USER_AGENT"];
                         $encoded_filename = urlencode($filename);
                         $encoded_filename = str_replace("+", "%20", $encoded_filename);
-                        header('Content-Type: application/octet-stream');
+                        //header('Content-Type: application/octet-stream');
                         if(preg_match("/MSIE/", $ua)){
                             header('Content-Disposition: attachment; filename="' . $encoded_filename . '"');
                         }/*elseif(preg_match("/Firefox/", $ua)){
