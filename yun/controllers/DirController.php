@@ -606,7 +606,8 @@ class DirController extends BaseController
                         //Header("Content-Disposition: attachment; filename=" . $file->filename);
                         //echo $result;
                         //echo file_get_contents($file_path);
-                        header("Content-Length: ". filesize($file_path));
+                        $filesize = strlen(file_get_contents($file_path))/1024;
+                        header("Content-Length: ". $filesize);
                         @readfile($file_path);
 
                     }
