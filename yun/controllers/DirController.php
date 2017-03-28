@@ -602,10 +602,11 @@ class DirController extends BaseController
                 }*/else{
                             header('Content-Disposition: attachment; filename="' . $filename . '"');
                         }
-                        header("X-Accel-Redirect: $file_path");
+                        //header("X-Accel-Redirect: $file_path");
                         //Header("Content-Disposition: attachment; filename=" . $file->filename);
                         //echo $result;
                         //echo file_get_contents($file_path);
+                        header("Content-Length: ". filesize($file_path));
                         @readfile($file_path);
 
                     }
