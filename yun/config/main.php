@@ -40,11 +40,11 @@ return [
             'showScriptName' => false,
             'rules' => [
             ],
-        ],
+        ]/*,
         'cache' => [
             'class' => 'yii\caching\FileCache',
             'cachePath' => '@common/runtime/cache',
-        ],
+        ],*/
 
     ],
     'params' => $params,

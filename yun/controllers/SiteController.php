@@ -28,6 +28,16 @@ class SiteController extends BaseController
             ],
         ];
     }
+    public function actionRedis(){
+
+        Yii::$app->cache->set('test', 'hehe..');
+        echo Yii::$app->cache->get('test'), "\n";
+
+        Yii::$app->cache->set('test1', 'haha..', 5);
+        echo '1 ', Yii::$app->cache->get('test1'), "\n";
+        sleep(6);
+        echo '2 ', Yii::$app->cache->get('test1'), "\n";
+    }
 
     public function actionNoAuth(){
         return $this->render('no_auth');
