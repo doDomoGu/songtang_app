@@ -577,19 +577,6 @@ class Dir extends \yii\db\ActiveRecord
 
     public static function getFullRouteByCache($id){
         $cache = yii::$app->cache;
-        $key = 'dir-full-route-'.$id;
-        $data = $cache->get($key);
-        if(empty($data)){
-            $data = self::getFullRoute($id);
-
-
-            $cache->set($key,$data,86400);
-        }
-        return $data;
-    }
-
-    public static function getFullRouteByCache2222($id){
-        $cache = yii::$app->cache;
         $key = 'dir-full-route';
         $dataArr = $cache->get($key);
         if(!empty($dataArr) && isset($dataArr[$id])){
