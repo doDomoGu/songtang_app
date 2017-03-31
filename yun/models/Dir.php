@@ -582,12 +582,12 @@ class Dir extends \yii\db\ActiveRecord
         }else {
             $data = self::getFullRoute($id);
 
-            if(!empty($dataArr)){
+            if(empty($dataArr)){
                 $arr = [$id => $data];
             }else{
                 $arr = ArrayHelper::merge($dataArr,[$id => $data]);
             }
-            $cache->set($key,$arr);
+            $cache->set($key,$arr,86400);
         }
         return $data;
     }
