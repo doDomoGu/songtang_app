@@ -575,7 +575,8 @@ class Dir extends \yii\db\ActiveRecord
 
 
 
-    public static function getFullRouteByCache($id){
+
+    /*public static function getFullRouteByCache($id){
         $cache = yii::$app->cache;
         $key = 'dir-full-route';
         $dataArr = $cache->get($key);
@@ -592,7 +593,7 @@ class Dir extends \yii\db\ActiveRecord
             $cache->set($key,$arr,86400);
         }
         return $data;
-    }
+    }*/
 
     /*
     * 函数getFullRoute ,实现根据dir_id(Dir表 id字段)获取完整的板块目录路径

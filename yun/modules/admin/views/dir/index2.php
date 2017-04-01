@@ -1,6 +1,7 @@
 <?php
 use yii\bootstrap\BaseHtml;
 use yun\components\DirFunc;
+use common\components\CommonFunc;
 use yun\models\Dir;
 // yun\assets\AppAsset::addJsFile($this,'js/manage-dir.js');
 ?>
@@ -24,7 +25,7 @@ use yun\models\Dir;
             <tr>
                 <th scope="row"><?=$l->id?></th>
                 <!--<td><?/*=$l->ord*/?></td>-->
-                <td><?=$l->name?> <span class="glyphicon glyphicon-info-sign" title="<?=Dir::getFullRouteByCache($l->id)?>"></span></td>
+                <td><?=$l->name?> <span class="glyphicon glyphicon-info-sign" title="<?=CommonFunc::getByCache(Dir::className(),'getFullRoute',[$l->id],'dir-full-route');?>"></span></td>
                 <td>
                     <?php if($l->link!=''):?>
                         <span class="label label-warning">链接</span>

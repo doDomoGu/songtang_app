@@ -3,6 +3,7 @@ namespace common\components;
 
 use yii\base\Component;
 use yii;
+use yii\helpers\ArrayHelper;
 
 class CommonFunc extends Component {
     /*
@@ -23,7 +24,7 @@ class CommonFunc extends Component {
         }
         return $code;
     }
-
+/*
 
 
     public static function fixZero($num){
@@ -39,7 +40,7 @@ class CommonFunc extends Component {
             $return = $num;
         }
         return $return;
-    }
+    }*/
 
     public static function mySubstr($str,$len){
         $strlen = mb_strlen( $str, 'utf-8' );
@@ -136,5 +137,29 @@ class CommonFunc extends Component {
             }
         }
         return false;
+    }
+
+
+    public static function getByCache($classname,$func,$params,$key){
+        $cache = yii::$app->cache;
+        //$key = 'dir-full-route';
+        $dataArr = $cache->get($key);
+        $id = implode('|',$params);
+        if(!empty($dataArr) && isset($dataArr[$id])){
+            $data = $dataArr[$id];
+        }else {
+
+            $paramStr = implode(',',$params);
+
+            eval("\$data = $classname::$func($paramStr);");
+
+            if(empty($dataArr)){
+                $arr = [$id => $data];
+            }else{
+                $arr = ArrayHelper::merge($dataArr,[$id => $data]);
+            }
+            $cache->set($key,$arr);
+        }
+        return $data;
     }
 }

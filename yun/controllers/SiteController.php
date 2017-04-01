@@ -1,6 +1,7 @@
 <?php
 namespace yun\controllers;
 
+use common\components\CommonFunc;
 use ucenter\models\User;
 use yun\components\DirFunc;
 use yun\components\QiniuUpload;
@@ -27,6 +28,12 @@ class SiteController extends BaseController
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    public function actionTest(){
+        $s = CommonFunc::getByCache(Dir::className(),'getFullRoute',['82','">>"'],'dir-full-route-22');
+
+        var_dump($s);exit;
     }
     public function actionRedis(){
 
