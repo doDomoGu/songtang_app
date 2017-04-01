@@ -1,6 +1,6 @@
 <?php
     use yii\helpers\BaseHtml;
-    use yun\components\CommonFunc;
+    use yun\components\YunFunc;
     yun\assets\AppAsset::addCssFile($this,'css/main/user/sign.css');
     yun\assets\AppAsset::addJsFile($this,'js/main/user/sign.js');
 ?>
@@ -8,7 +8,7 @@
     <div class="sign-btn">
     <?php if($signTodayFlag):?>
         <?=BaseHtml::a('今日已签到','',['class'=>'btn btn-primary btn-lg btn-sign disabled'])?>
-    <?php elseif(CommonFunc::isHoliday(date('Y-m-d'))):?>
+    <?php elseif(YunFunc::isHoliday(date('Y-m-d'))):?>
         <?=BaseHtml::a('今天是节假日',['/user/sign-in'],['class'=>'btn btn-primary btn-lg btn-sign disabled'])?>
     <?php else:?>
         <?=BaseHtml::a('今日签到',['/user/sign-in'],['class'=>'btn btn-primary btn-lg btn-sign'])?>
@@ -46,7 +46,7 @@
                         echo '<tr>';
                     }
                 $thisDay = $y.'-'.$m.'-'.($d>9?$d:'0'.$d);
-                $isHoliday = CommonFunc::isHoliday($thisDay,$i);
+                $isHoliday = YunFunc::isHoliday($thisDay,$i);
 
                     if($isHoliday){//节假日
                         echo '<td class="holiday">';
