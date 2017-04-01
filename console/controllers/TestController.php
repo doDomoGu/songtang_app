@@ -43,30 +43,37 @@ class TestController extends Controller
 
     public function actionAddAppUserAuth(){
 
-        $exist = UserAppAuth::find()->where('app = "oa-frontend" or app = "yun-frontend"')->one();
+        /*$exist = UserAppAuth::find()->where('app = "oa-frontend" or app = "yun-frontend"')->one();
         if($exist){
             echo 'has added'."\n";
-        }else{
+        }else{*/
             $uList = User::find()->all();
 
             foreach($uList as $u){
-                $n = new UserAppAuth();
-                $n->app = 'oa-frontend';
-                $n->user_id = $u->id;
-                $n->is_enable = 1;
-                $n->save();
+                $exist = UserAppAuth::find()->where('app = "oa-frontend" and user_id = '.$u->id)->one();
+                if(!$exist) {
+                    $n = new UserAppAuth();
+                    $n->app = 'oa-frontend';
+                    $n->user_id = $u->id;
+                    $n->is_enable = 1;
+                    $n->save();
+                }
             }
 
             foreach($uList as $u){
-                $n = new UserAppAuth();
-                $n->app = 'yun-frontend';
-                $n->user_id = $u->id;
-                $n->is_enable = 1;
-                $n->save();
+                $exist = UserAppAuth::find()->where('app = "yun-frontend" and user_id = '.$u->id)->one();
+                if(!$exist) {
+
+                    $n = new UserAppAuth();
+                    $n->app = 'yun-frontend';
+                    $n->user_id = $u->id;
+                    $n->is_enable = 1;
+                    $n->save();
+                }
             }
 
             echo 'add finish'."\n";
-        }
+        /*}*/
     }
 
 
