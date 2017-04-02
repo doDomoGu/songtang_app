@@ -3,6 +3,7 @@ namespace yun\components;
 
 use yii\base\Component;
 use Yii;
+use yun\models\Dir;
 
 class YunFunc extends Component {
     public static function getResourcePath($path,$beaut=true){
@@ -91,6 +92,40 @@ class YunFunc extends Component {
             '2017-05-27',
             '2017-09-30',
         ];
+        return $arr;
+    }
+
+
+    public static function getNavbar(){
+        $arr = [];
+        //var_dump(Yii::$app->controller->id);exit;
+        //$isDirCtl = strpos(Yii::$app->controller->route,'dir')===0?true:false;
+        $isDirCtl = Yii::$app->controller->id == 'dir'?true:false;
+        $dirLvl_1 = null;
+        if($isDirCtl){
+            $dir_id = yii::$app->controller->dir_id;
+
+            if($dir_id){
+                $parents = DirFunc::getParents($dir_id);
+                $dirLvl_1 = isset($parents[1])?$parents[1]:null;
+            }
+        }
+
+        $dirs = Dir::find()->where(['p_id'=>0,'status'=>1])->orderBy('ord asc,id desc')->all();
+        if(!empty($dirs)){
+            foreach($dirs as $dir){
+                $active = $dirLvl_1!=null && $dirLvl_1->id==$dir->id?true:false;
+
+                $arr[] = [
+                    'label'=>$dir->name.'<span class="active-red"></span>',
+                    'url'=>['/dir','dir_id'=>$dir->id],
+                    'active' => $active,
+                    'encode'=>false
+                ];
+            }
+        }
+
+
         return $arr;
     }
 }

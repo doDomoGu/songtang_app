@@ -8,36 +8,7 @@ use yii\helpers\BaseArrayHelper;
 use Yii;
 
 class DirFrontFunc extends Component {
-    public static function getNavbar(){
-        $arr = [];
-        $isDirCtl = strpos(Yii::$app->controller->route,'dir')===0?true:false;
-        $dirLvl_1 = null;
-        if($isDirCtl){
-            $dir_id = yii::$app->controller->dir_id;
 
-            if($dir_id){
-                $parents = DirFunc::getParents($dir_id);
-                $dirLvl_1 = isset($parents[1])?$parents[1]:null;
-            }
-        }
-
-        $dirs = Dir::find()->where(['p_id'=>0,'status'=>1])->orderBy('ord asc,id desc')->all();
-        if(!empty($dirs)){
-            foreach($dirs as $dir){
-                $active = $dirLvl_1!=null && $dirLvl_1->id==$dir->id?true:false;
-
-                $arr[] = [
-                    'label'=>$dir->name.'<span class="active-red"></span>',
-                    'url'=>['/dir','dir_id'=>$dir->id],
-                    'active' => $active,
-                    'encode'=>false
-                ];
-            }
-        }
-
-
-        return $arr;
-    }
 
     public static function createTreeJson($arr,$dir_id,$p_ids){
         $data = null;

@@ -3,6 +3,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\bootstrap\BaseHtml;
 use yii\helpers\ArrayHelper;
+use yun\components\YunFunc;
 
 /*yun\assets\AppAsset::addCssFile($this,'css/layouts/navbar2.css');*/
 ?>
@@ -30,7 +31,7 @@ use yii\helpers\ArrayHelper;
         //$messageSpan = $this->context->messageNum>0?' <span class="label label-danger">'.$this->context->messageNum.'</span>':'';
         $messageSpan = '';
 
-        $navbarItems = ArrayHelper::merge($navbarItems,\yun\components\DirFrontFunc::getNavbar());
+        $navbarItems = ArrayHelper::merge($navbarItems,YunFunc::getNavbar());
 
         $item2 = [['label' => '职员资料', 'url' => '/user','options'=>['class'=>'user-item']]];
         $item2 = ArrayHelper::merge($item2,[['label' => '每日签到', 'url' => '/user/sign','options'=>['class'=>'user-item']]]);
