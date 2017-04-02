@@ -1,6 +1,6 @@
 <?php
     use yii\widgets\Breadcrumbs;
-    use yun\components\CommonFunc;
+    use common\components\CommonFunc;
     yun\assets\AppAsset::addCssFile($this,'css/main/dir/index.css');
 ?>
 <div id="list-head">

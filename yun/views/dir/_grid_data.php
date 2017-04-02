@@ -1,7 +1,7 @@
 <?php
     use yii\bootstrap\Html;
     use yun\components\FileFrontFunc;
-    use yun\components\CommonFunc;
+    use common\components\CommonFunc;
     use yun\models\DirPermission;
 ?>
 <?php foreach($list as $l):?>

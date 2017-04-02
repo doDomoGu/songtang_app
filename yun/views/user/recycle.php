@@ -1,7 +1,7 @@
 <?php
     use yii\bootstrap\BaseHtml;
     use yun\components\FileFrontFunc;
-    use yun\components\CommonFunc;
+    use common\components\CommonFunc;
     use yun\models\File;
 
     yun\assets\AppAsset::addCssFile($this,'css/main/user/file.css');
