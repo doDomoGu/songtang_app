@@ -53,6 +53,11 @@
                         用户组
                     </a>
                 </li>
+                <li class="<?=$this->context->id=='permission' && $this->context->action->id=='check'?'active':''?>">
+                    <a href="<?=AdminFunc::adminUrl('permission/check')?>">
+                        检测
+                    </a>
+                </li>
             </ul>
         </li>
         <li class="menu-single">
