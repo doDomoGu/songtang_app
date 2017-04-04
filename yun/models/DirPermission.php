@@ -194,7 +194,7 @@ class DirPermission extends \yii\db\ActiveRecord
             if($user===false)
                 $user = Yii::$app->user->identity;
 
-            $parents = Dir::getParents($dir_id);  //父目录数组 用作递归
+            $parents = CommonFunc::getByCache(Dir::className(),'getParents',[$dir_id],'yun:dir/parents');  //父目录数组 用作递归
 
             $act = 'and';
             if(is_array($permission_type)){

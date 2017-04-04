@@ -90,6 +90,16 @@ class Company extends \yii\db\ActiveRecord
         return $arr;
     }
 
+    public static function getName($id){
+        $one = self::find()->where(['id'=>$id])->one();
+        if($one){
+            $name = $one->name;
+        }else{
+            $name = null;
+        }
+        return $name;
+    }
+
     public function install() {
         try {
             $exist = self::find()->one();

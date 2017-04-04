@@ -121,4 +121,15 @@ class Position extends \yii\db\ActiveRecord
         }
         return $items;
     }
+
+
+    public static function getName($id){
+        $one = self::find()->where(['id'=>$id])->one();
+        if($one){
+            $name = $one->name;
+        }else{
+            $name = null;
+        }
+        return $name;
+    }
 }
