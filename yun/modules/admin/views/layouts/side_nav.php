@@ -60,6 +60,12 @@
                 </li>
             </ul>
         </li>
+        <li class="menu-single <?=$this->context->id=='cache'?'active':''?>">
+            <a href="<?=AdminFunc::adminUrl('cache')?>">
+                <span class="menu-icon glyphicon glyphicon-list"></span>
+                缓存管理
+            </a>
+        </li>
         <li class="menu-single">
             <a href="<?=Yii::$app->params['logoutUrl']?>">
                 <span class="menu-icon glyphicon glyphicon-log-out"></span>

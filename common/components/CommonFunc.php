@@ -142,23 +142,37 @@ class CommonFunc extends Component {
 
     public static function getByCache($classname,$func,$params,$key){
         $cache = yii::$app->cache;
-        //$key = 'dir-full-route';
-        $dataArr = $cache->get($key);
-        $id = implode('|',$params);
-        if(!empty($dataArr) && isset($dataArr[$id])){
-            $data = $dataArr[$id];
-        }else {
+        if(!empty($params)){ //数组，多个数据
+            $dataArr = $cache->get($key);
+            $id = implode('|',$params);
+            if(!empty($dataArr) && isset($dataArr[$id])){
+                $data = $dataArr[$id];
+            }else {
 
-            $paramStr = implode(',',$params);
+                foreach ($params as $k => $par) {
+                    //将true / false 字符串化 ，用于拼接key
+                    if ($par === true) {
+                        $params[$k] = '1';
+                    } elseif ($par === false) {
+                        $params[$k] = '0';
+                    }
+                }
+                $paramStr = implode(',', $params);
+                eval("\$data = $classname::$func($paramStr);");
 
-            eval("\$data = $classname::$func($paramStr);");
-
-            if(empty($dataArr)){
-                $arr = [$id => $data];
-            }else{
-                $arr = ArrayHelper::merge($dataArr,[$id => $data]);
+                if (empty($dataArr)) {
+                    $arr = [$id => $data];
+                } else {
+                    $arr = ArrayHelper::merge($dataArr, [$id => $data]);
+                }
+                $cache->set($key, $arr);
             }
-            $cache->set($key,$arr);
+        }else{ //单一数据
+            $data = $cache->get($key);
+            if(empty($data)) {
+                eval("\$data = $classname::$func();");
+            }
+            $cache->set($key,$data);
         }
         return $data;
     }
