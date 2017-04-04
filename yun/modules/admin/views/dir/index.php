@@ -43,7 +43,7 @@ use common\components\CommonFunc;
                     <?php if($l->link==""):?>
                         <?=BaseHtml::a('权限查看',['watch-permission','dir_id'=>$l->id],['class'=>'btn btn-primary btn-xs'])?>
 
-                        <?=BaseHtml::a('权限设置',['permission','dir_id'=>$l->id],['class'=>'btn btn-success btn-xs disabled'])?>
+                        <?=BaseHtml::a('权限设置',['permission','dir_id'=>$l->id],['class'=>'btn btn-success btn-xs'])?>
 
                         <?php if($l->is_leaf==0):?>
                             <?=BaseHtml::a('添加子目录',['add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs'])?>

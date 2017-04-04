@@ -163,7 +163,7 @@ class DirController extends BaseController
         if($dir){
             $userQuery = User::find()->where(['status'=>1]);
 
-            $userQuery = $userQuery->limit(10);
+            //$userQuery = $userQuery->limit(10);
 
             $userList = $userQuery->all();
 

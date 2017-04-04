@@ -36,8 +36,8 @@ class DirPermission extends \yii\db\ActiveRecord
 
 
     const TYPE_ALL              = 1;   //全体职员
-    const TYPE_USER             = 2;   //全体职员
-    const TYPE_WILDCARD         = 3;   // 前四个的任意组合
+    const TYPE_USER             = 2;   //单个职员
+    const TYPE_WILDCARD         = 3;   //前四个的任意组合
     const TYPE_GROUP            = 7;   //权限用户组
 
     const TYPE_ALL_CN              = '全体职员';   //全体职员
