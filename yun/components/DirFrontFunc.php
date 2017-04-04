@@ -44,43 +44,18 @@ class DirFrontFunc extends Component {
 
     public static function getTreeData($dir_id){
         $treeData = null;
-        $cache = Yii::$app->cache;
-        $cacheExist = true;
-        $treeDataId = [];
-        if(1!=1 && isset($cache['treeDataId'])){
-            $treeDataId = $cache['treeDataId'];
-            if(isset($treeDataId[$dir_id])){
-                $treeData = $cache['treeData_'.$dir_id];
-            }else{
-                $cacheExist = false;
-            }
-        }else{
-            $cacheExist = false;
-        }
-        if($cacheExist == false){
-            $cache['treeDataId'] = \yii\helpers\ArrayHelper::merge($treeDataId,[$dir_id=>1]);
-
-            $parents = Dir::getParents($dir_id);
-            if(isset($parents[1])){
-                $p_ids = [];
-                foreach($parents as $p){
-                    $p_ids[] = $p->id;
-                }
-
-
-                //$dir_id_one = $parents[1];
-                $arr = Dir::getChildrenArr($parents[1]->id,true,false,false);
-
-                $treeData .=self::createTreeJson($arr,$dir_id,$p_ids);
-
-
-                //$data = '[{ name:"父节点1 - 展开", open:true,isParent:true}]';
+        $parents = Dir::getParents($dir_id);
+        if(isset($parents[1])){
+            $p_ids = [];
+            foreach($parents as $p){
+                $p_ids[] = $p->id;
             }
 
-            //$treeData = DirFrontFunc::getTreeData($dir_id);
+            $arr = Dir::getChildrenArr($parents[1]->id,true,false,false);
+
+            $treeData .=self::createTreeJson($arr,$dir_id,$p_ids);
 
 
-            $cache['treeData_'.$dir_id]=$treeData;
         }
         return $treeData;
 

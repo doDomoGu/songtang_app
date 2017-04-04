@@ -5,6 +5,7 @@ namespace yun\modules\admin\controllers;
 use common\components\CommonFunc;
 use ucenter\models\User;
 use Yii;
+use yun\components\YunFunc;
 use yun\models\Dir;
 use yun\components\DirFunc;
 use yun\modules\admin\models\DirForm;
@@ -29,6 +30,7 @@ class DirController extends BaseController
         $curDir = CommonFunc::getByCache(Dir::className(),'getOne',[$dir_id],'yun:dir/one');
 
         if($curDir && $curDir->status==1){
+
             $parents = CommonFunc::getByCache(Dir::className(),'getParents',[$dir_id],'yun:dir/parents');
            // $parents2 = Dir::getParents($dir_id);
 
@@ -44,9 +46,9 @@ class DirController extends BaseController
 
         if($curDir){
             if($curDir->level==2){
-                $list = Dir::getListArr($dir_id,true,true,true);
+                $list = CommonFunc::getByCache(Dir::className(),'getListArr',[$dir_id,true,true,true],'yun:dir/list-arr');
             }else{
-                $list = Dir::getListArr($dir_id,true,true,true,0);
+                $list = CommonFunc::getByCache(Dir::className(),'getListArr',[$dir_id,true,true,true,0],'yun:dir/list-arr');
             }
         }
 
@@ -112,9 +114,10 @@ class DirController extends BaseController
 
             if($dir->save()){
                 //清除缓存
-                $cache = Yii::$app->getCache();
-                unset($cache['treeDataId']);
-                //$this->clearTreeDataCache();
+                $this->clearCache();
+                /*$cache = Yii::$app->cache;
+                $cache->delete('treeDataId');
+                //$this->clearTreeDataCache();*/
 
                 //重定向
                 $parents = Dir::getParents($dir->id);
@@ -169,6 +172,15 @@ class DirController extends BaseController
             return $this->render('watch_permission',$params);
         }else{
             echo 'wrong dir_id';exit;
+        }
+    }
+
+
+    private function clearCache(){
+        $cache = Yii::$app->cache;
+        $keyList = YunFunc::$cacheKeyList;
+        foreach($keyList['dir'] as $k){
+            $cache->delete('yun:dir/'.$k);
         }
     }
 }

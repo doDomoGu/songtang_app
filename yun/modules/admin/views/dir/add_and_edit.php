@@ -42,9 +42,9 @@
         ]) */?>
 
         <?= $form->field($model, 'is_leaf',['inputOptions'=>['disabled'=>$action=='add'?false:true]])->dropDownList([0=>'否',1=>'是']) ?>
-<?/*= $form->field($model, 'status',[
+<?= $form->field($model, 'status',[
     'template'=>"{label}\n<div class=\"col-lg-4\">{input}</div>\n<div class=\"col-lg-5\">{error}</div>"
-])->dropDownList([0=>'禁用',1=>'启用']) */?>
+])->dropDownList([0=>'禁用',1=>'启用']) ?>
 
 
         <div class="form-group">

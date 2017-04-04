@@ -1,6 +1,7 @@
 <?php
 namespace yun\models;
 
+use common\components\CommonFunc;
 use ucenter\models\District;
 use ucenter\models\Industry;
 use ucenter\models\UserAppAuth;
@@ -412,7 +413,7 @@ class Dir extends \yii\db\ActiveRecord
         $selfChildrenIds = [];
         if($p_id>0){
             //根据p_id(父id)查找对应父对象
-            $dir = self::getOneByCache($p_id);
+            $dir = CommonFunc::getByCache(Dir::className(),'getOne',[$p_id],'yun:dir/one');
             if($dir==NULL || $dir->status==0){ //不存在或者状态禁用则返回空数组
                 return [];
             }else if($includeSelf===true){ //将自己本身添加至数组
@@ -422,7 +423,7 @@ class Dir extends \yii\db\ActiveRecord
 
         $level = $level===false?false:intval($level);
         if($level>0 || $level===false){  //level正整数 或者 false不限制
-            $list = self::getChildrenByCache($p_id,$showLeaf);
+            $list = CommonFunc::getByCache(Dir::className(),'getChildren',[$p_id,$showLeaf],'yun:dir/children');
 
             if(!empty($list)){
                 $nlevel = $level===false?false: intval($level - 1);
@@ -486,7 +487,7 @@ class Dir extends \yii\db\ActiveRecord
         $dir = NULL;
         if($p_id>0){
             //根据p_id(父id)查找对应父对象
-            $dir = Dir::getOneByCache($p_id);
+            $dir = self::getOne($p_id);
             if($dir==NULL || $dir->status==0){ //不存在或者状态禁用则返回空数组
                 return [];
             }else if($includeSelf===true){ //将自己本身添加至数组
@@ -496,7 +497,7 @@ class Dir extends \yii\db\ActiveRecord
 
         $level = $level===false?false:intval($level);
         if($level>0 || $level===false){  //level正整数 或者 false不限制
-            $list = self::getChildrenByCache($p_id,$showLeaf);
+            $list = self::getChildren($p_id,$showLeaf);
 
             if(!empty($list)){
                 $nlevel = $level===false?false: intval($level - 1);
@@ -565,7 +566,7 @@ class Dir extends \yii\db\ActiveRecord
     public static function getDropDownList($p_id=0,$showLeaf=true,$includeSelf=false,$level=false){
         $arr = [];
 
-        $list = self::getListArr($p_id,$showLeaf,false,$includeSelf,$level);
+        $list = CommonFunc::getByCache(Dir::className(),'getListArr',[$p_id,$showLeaf,false,$includeSelf,$level],'yun:dir/list-arr');
         if(!empty($list)){
             foreach($list as $l){
                 $prefix = '';

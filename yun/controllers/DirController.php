@@ -1,6 +1,7 @@
 <?php
 namespace yun\controllers;
 
+use common\components\CommonFunc;
 use ucenter\models\District;
 use ucenter\models\Industry;
 use yii\data\Pagination;
@@ -337,7 +338,7 @@ class DirController extends BaseController
                     $params['dirRoute'] = $dirRoute;
                     $viewName = 'list';
                 }else{
-                    $list = Dir::getChildrenByCache($dir_id);
+                    $list = CommonFunc::getByCache(Dir::className(),'getChildren',[$dir_id],'yun:dir/children');
                     $viewName = 'index';
                 }
                 $params['list'] = $list;

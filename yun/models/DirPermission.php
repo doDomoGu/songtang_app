@@ -1,6 +1,7 @@
 <?php
 namespace yun\models;
 
+use common\components\CommonFunc;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -187,13 +188,13 @@ class DirPermission extends \yii\db\ActiveRecord
      */
     public static function isDirAllow($dir_id,$permission_type,$operation_id,$user=false,$ignoreAdmin=false){
         $isAllow = false;
-        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontendAdmin){
+        if(1!=1 && !$ignoreAdmin && Yii::$app->user->identity->isYunFrontendAdmin){
             $isAllow = true;
         }else{
             if($user===false)
                 $user = Yii::$app->user->identity;
 
-            $parents = Dir::getParentsByCache($dir_id);  //父目录数组 用作递归
+            $parents = Dir::getParents($dir_id);  //父目录数组 用作递归
 
             $act = 'and';
             if(is_array($permission_type)){
@@ -210,7 +211,8 @@ class DirPermission extends \yii\db\ActiveRecord
             foreach($typeArr as $pt){
                 $isAllow2 = false;
                 //$ptArr = self::expandPermissionType($pt);
-                $allowList = self::getListByCache($dir_id,$pt,$operation_id,self::MODE_ALLOW);
+                $allowList = CommonFunc::getByCache(self::className(),'getList',[$dir_id,$pt,$operation_id,self::MODE_ALLOW],'yun:dir-permission/list');
+                //self::getListByCache($dir_id,$pt,$operation_id,self::MODE_ALLOW);
 
                 //$allowList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
                 if(!empty($allowList)){
@@ -222,8 +224,9 @@ class DirPermission extends \yii\db\ActiveRecord
                     }
                 }
                 if($isAllow2==false && !empty($parents)){  //递归父目录
-                    foreach($parents as $p_id){
-                        $allowList = self::getListByCache($p_id,$pt,$operation_id,self::MODE_ALLOW);
+                    foreach($parents as $p){
+                        $allowList = CommonFunc::getByCache(self::className(),'getList',[$p->id,$pt,$operation_id,self::MODE_ALLOW],'yun:dir-permission/list');
+                        //self::getListByCache($p_id,$pt,$operation_id,self::MODE_ALLOW);
                         //$allowList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
                         if(!empty($allowList)){
                             foreach($allowList as $a){
@@ -236,7 +239,8 @@ class DirPermission extends \yii\db\ActiveRecord
                     }
                 }
 
-                $denyList = self::getListByCache($dir_id,$pt,$operation_id,self::MODE_DENY);
+                $denyList = CommonFunc::getByCache(self::className(),'getList',[$dir_id,$pt,$operation_id,self::MODE_DENY],'yun:dir-permission/list');
+                //self::getListByCache($dir_id,$pt,$operation_id,self::MODE_DENY);
                 //$denyList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
                 if(!empty($denyList)){
                     foreach($denyList as $d){
@@ -248,8 +252,9 @@ class DirPermission extends \yii\db\ActiveRecord
                 }
 
                 if($isAllow2==true && !empty($parents)){ //递归父目录
-                    foreach($parents as $p_id){
-                        $denyList = self::getListByCache($p_id,$pt,$operation_id,self::MODE_DENY);
+                    foreach($parents as $p){
+                        $denyList = CommonFunc::getByCache(self::className(),'getList',[$p->id,$pt,$operation_id,self::MODE_DENY],'yun:dir-permission/list');
+                        //self::getListByCache($p_id,$pt,$operation_id,self::MODE_DENY);
                         //$denyList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
                         if(!empty($denyList)){
                             foreach($denyList as $d){
@@ -304,7 +309,7 @@ class DirPermission extends \yii\db\ActiveRecord
         return $data;
     }
 
-    private static function getList($dir_id,$permission_type,$operation_id,$mode){
+    public static function getList($dir_id,$permission_type,$operation_id,$mode){
         $ptArr = self::expandPermissionType($permission_type);
         return self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>$mode])->all();
     }

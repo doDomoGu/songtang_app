@@ -1,15 +1,15 @@
 <?php
     use yun\assets\AppAsset;
     use yun\components\DirFrontFunc;
+    use common\components\CommonFunc;
 
     AppAsset::addCssFile($this,'css/ztree/zTreeStyle/zTreeStyle.css');
     AppAsset::addJsFile($this,'js/jquery.ztree.core-3.5.min.js');
 
 AppAsset::addCssFile($this,'css/main/dir/_left.css');
 AppAsset::addJsFile($this,'js/main/dir-_left.js');
-
 //$start = microtime(true);
-$treeData = DirFrontFunc::getTreeData($dir_id);
+$treeData = CommonFunc::getByCache(DirFrontFunc::className(),'getTreeData',[$dir_id],'yun:dir/tree-data');
 
 /*$end = microtime(true);
 $s = $end-$start;

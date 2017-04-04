@@ -3,26 +3,16 @@
 namespace yun\modules\admin\controllers;
 
 use Yii;
+use yun\components\YunFunc;
 
 class CacheController extends BaseController
 {
 
+
     public function actionIndex(){
         $this->view->title = '缓存管理';
-        $params['list'] = $list = [
-            'dir'=>'目录',
-            'dir-permission'=>'权限'
-        ];
-        $params['keyList'] = $keyList = [
-            'dir'=>[
-                'drop-down-list',
-                'one',
-                'parents'
-            ],
-            'dir-permission'=>[
-
-            ]
-        ];
+        $params['list'] = $list =  YunFunc::$cacheList;
+        $params['keyList'] = $keyList =  YunFunc::$cacheKeyList;
 
         $key = Yii::$app->request->get('key',false);
         if($key){

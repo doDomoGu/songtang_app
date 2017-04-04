@@ -6,6 +6,25 @@ use Yii;
 use yun\models\Dir;
 
 class YunFunc extends Component {
+    static $cacheList = [
+        'dir'=>'目录',
+        'dir-permission'=>'权限'
+    ];
+    static $cacheKeyList = [
+        'dir'=>[
+            'drop-down-list',
+            'one',
+            'parents',
+            'children',
+            'list-arr',
+            'tree-data',
+            'children-arr'
+        ],
+        'dir-permission'=>[
+            'list'
+        ]
+    ];
+
     public static function getResourcePath($path,$beaut=true){
         if($path!='' && strpos($path,'http')!==0){
             if($beaut)
