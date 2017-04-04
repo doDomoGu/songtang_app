@@ -1,7 +1,7 @@
 <?php
     use yii\helpers\Html;
     use yii\bootstrap\ActiveForm;
-    use yun\models\Dir
+    use yun\models\Dir;
 ?>
         <?php $form = ActiveForm::begin([
             'id' => 'login-form',

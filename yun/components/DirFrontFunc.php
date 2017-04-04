@@ -60,7 +60,7 @@ class DirFrontFunc extends Component {
         if($cacheExist == false){
             $cache['treeDataId'] = \yii\helpers\ArrayHelper::merge($treeDataId,[$dir_id=>1]);
 
-            $parents = DirFunc::getParents($dir_id);
+            $parents = Dir::getParents($dir_id);
             if(isset($parents[1])){
                 $p_ids = [];
                 foreach($parents as $p){

@@ -26,15 +26,16 @@ class DirController extends BaseController
 
         $list = [];
 
-        $curDir = Dir::find()->where(['id'=>$dir_id,'status'=>1])->one();
+        $curDir = CommonFunc::getByCache(Dir::className(),'getOne',[$dir_id],'yun:dir/one');
 
-        if($curDir){
-            $parents = DirFunc::getParents($dir_id);
+        if($curDir && $curDir->status==1){
+            $parents = CommonFunc::getByCache(Dir::className(),'getParents',[$dir_id],'yun:dir/parents');
+           // $parents2 = Dir::getParents($dir_id);
 
             $dirLvl_1 = isset($parents[1])?$parents[1]:null;
             $dirLvl_2 = isset($parents[2]) && $dirLvl_1?$parents[2]:null;
             if($dirLvl_1){
-                $dirList_2 = Dir::getDropDownList($dirLvl_1->id,true,false,1);
+                $dirList_2 = CommonFunc::getByCache(Dir::className(),'getDropDownList',[$dirLvl_1->id,true,false,1],'yun:dir/drop-down-list');
             }
         }else{
             $dirLvl_1 = null;
@@ -116,7 +117,7 @@ class DirController extends BaseController
                 //$this->clearTreeDataCache();
 
                 //重定向
-                $parents = DirFunc::getParents($dir->id);
+                $parents = Dir::getParents($dir->id);
                 $redirect = ['admin/dir'];
                 if(isset($parents[2])){
                     $redirect['dir_id'] = $parents[2]->id;

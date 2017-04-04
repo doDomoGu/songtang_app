@@ -15,7 +15,9 @@ class CacheController extends BaseController
         ];
         $params['keyList'] = $keyList = [
             'dir'=>[
-                'drop-down-list'
+                'drop-down-list',
+                'one',
+                'parents'
             ],
             'dir-permission'=>[
 
@@ -31,7 +33,7 @@ class CacheController extends BaseController
                     foreach($kList as $k2){
                         $_k = 'yun:'.$k.'/'.$k2;
                         $cache->delete($_k);
-                        $cleared['all'][] = $_k;
+                        $cleared[$k][] = $_k;
                     }
                 }
             }elseif(isset($list[$key]) && isset($keyList[$key])){

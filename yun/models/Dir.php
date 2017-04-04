@@ -271,15 +271,23 @@ class Dir extends \yii\db\ActiveRecord
 
     }*/
 
-    public static function getParents($id){
-        $return = [];
-        $cur = self::find()->where(['id'=>$id])->one();
-        if($cur && $cur->p_id>0){
-            $parents = self::getParents($cur->p_id);
-            $return = array_merge([$cur->p_id],$parents);
-        }
 
-        return $return;
+    /*
+     * 函数getParents ,实现根据 当前dir_id 递归获取全部父层级 id
+     *
+     * @param integer dir_id
+     * return array
+     */
+    public static function getParents($dir_id){
+        $arr = [];
+        $curDir = Dir::find()->where(['id'=>$dir_id,'status'=>1])->one();
+        if($curDir){
+            $arr[$curDir->level] = $curDir;
+            $arr2 = self::getParents($curDir->p_id);
+            $arr = ArrayHelper::merge($arr,$arr2);
+        }
+        ksort($arr);
+        return $arr;
     }
 
 
@@ -301,7 +309,13 @@ class Dir extends \yii\db\ActiveRecord
     }
 
     public static function getOne($id){
-        $dirData = (object)(Dir::find()->where(['id'=>$id])->one()->toArray()); //只取 元素的值
+        $dir = Dir::find()->where(['id'=>$id])->one();
+        if($dir){
+            $dirData = (object)($dir->toArray()); //只取 元素的值
+        }else{
+            $dirData = NULL;
+        }
+
         return $dirData;
     }
 

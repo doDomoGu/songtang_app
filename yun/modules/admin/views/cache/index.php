@@ -24,7 +24,7 @@
         <td class="row-result">
             <?php if(isset($cleared[$k])):?>
                 <?php foreach($cleared[$k] as $c):?>
-                        <?=$c?>  已清除
+                        <?=$c?>  已清除 <br/>
                 <?php endforeach;?>
             <?php endif;?>
         </td>
@@ -37,7 +37,7 @@
         <td class="row-result">
             <?php if(isset($cleared['all'])):?>
                 <?php foreach($cleared['all'] as $c):?>
-                    <?=$c?>  已清除
+                    <?=$c?>  已清除 <br/>
                 <?php endforeach;?>
             <?php endif;?>
         </td>

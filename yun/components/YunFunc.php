@@ -106,7 +106,7 @@ class YunFunc extends Component {
             $dir_id = yii::$app->controller->dir_id;
 
             if($dir_id){
-                $parents = DirFunc::getParents($dir_id);
+                $parents = Dir::getParents($dir_id);
                 $dirLvl_1 = isset($parents[1])?$parents[1]:null;
             }
         }
