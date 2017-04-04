@@ -21,7 +21,7 @@ function showStatus($bool){
 //AdminAsset::addJsFile($this,'js/main/dir/permission.js');
 ?>
 <p>
-    *四个权限分类依次为 全部/限制地区/限制行业/限制地区加行业
+    *四个权限分类依次为 全部/限制地区/限制行业/限制地区及行业
 </p>
 <table class="table table-bordered">
     <thead>
@@ -29,9 +29,9 @@ function showStatus($bool){
         <th width="60">#</th>
         <th width="60">姓名</th>
         <th>职位</th>
-        <th class="text-center">上传</th>
+        <!--<th class="text-center">上传</th>-->
         <th class="text-center">上传*</th>
-        <th class="text-center">下载</th>
+        <!--<th class="text-center">下载</th>-->
         <th class="text-center">下载*</th>
 
         <!--<th>类型</th>-->
@@ -51,34 +51,34 @@ function showStatus($bool){
                 $up1District = DirPermission::isDirAllow($dir->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::OPERATION_UPLOAD,$u,true);
                 $up1Industry = DirPermission::isDirAllow($dir->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY,DirPermission::OPERATION_UPLOAD,$u,true);
                 $up1DisInd = DirPermission::isDirAllow($dir->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY,DirPermission::OPERATION_UPLOAD,$u,true);
-                $up2All = $up1All;
+                /*$up2All = $up1All;
                 $up2District = $up1All || $up1District;
                 $up2Industry = $up1All || $up1Industry;
-                $up2DisInd = $up1All || $up1District || $up1Industry || $up1DisInd;
+                $up2DisInd = $up1All || $up1District || $up1Industry || $up1DisInd;*/
 
 
                 $down1All = DirPermission::isDirAllow($dir->id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_DOWNLOAD,$u,true);
                 $down1District = DirPermission::isDirAllow($dir->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::OPERATION_DOWNLOAD,$u,true);
                 $down1Industry = DirPermission::isDirAllow($dir->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY,DirPermission::OPERATION_DOWNLOAD,$u,true);
                 $down1DisInd = DirPermission::isDirAllow($dir->id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY,DirPermission::OPERATION_DOWNLOAD,$u,true);
-                $down2All = $down1All;
+                /*$down2All = $down1All;
                 $down2District = $down1All || $down1District;
                 $down2Industry = $down1All || $down1Industry;
-                $down2DisInd = $down1All || $down1District || $down1Industry || $down1DisInd;
+                $down2DisInd = $down1All || $down1District || $down1Industry || $down1DisInd;*/
 
             ?>
             <td width="120" class="text-center">
                 <?=showStatus($up1All)?>/<?=showStatus($up1District)?>/<?=showStatus($up1Industry)?>/<?=showStatus($up1DisInd)?>
             </td>
-            <td width="120" class="text-center">
-                <?=showStatus($up2All)?>/<?=showStatus($up2District)?>/<?=showStatus($up2Industry)?>/<?=showStatus($up2DisInd)?>
-            </td>
+            <!--<td width="120" class="text-center">
+                <?/*=showStatus($up2All)*/?>/<?/*=showStatus($up2District)*/?>/<?/*=showStatus($up2Industry)*/?>/<?/*=showStatus($up2DisInd)*/?>
+            </td>-->
             <td width="120" class="text-center">
                 <?=showStatus($down1All)?>/<?=showStatus($down1District)?>/<?=showStatus($down1Industry)?>/<?=showStatus($down1DisInd)?>
             </td>
-            <td width="120" class="text-center">
-                <?=showStatus($down2All)?>/<?=showStatus($down2District)?>/<?=showStatus($down2Industry)?>/<?=showStatus($down2DisInd)?>
-            </td>
+            <!--<td width="120" class="text-center">
+                <?/*=showStatus($down2All)*/?>/<?/*=showStatus($down2District)*/?>/<?/*=showStatus($down2Industry)*/?>/<?/*=showStatus($down2DisInd)*/?>
+            </td>-->
 
 
             <!--<td>

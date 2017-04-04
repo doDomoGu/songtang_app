@@ -30,7 +30,7 @@ class Dir extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'alias', 'p_id'], 'required'],
-            [['id', 'ord', 'level', 'is_leaf', 'is_last', 'p_id', 'attr_limit', 'status'], 'integer'],
+            [['id', 'ord', 'level', 'is_leaf', 'is_last', 'p_id', 'status'], 'integer'],
             [['describe','link'], 'safe']
         ];
     }

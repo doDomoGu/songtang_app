@@ -39,7 +39,7 @@ use yun\models\Dir;
                         <?=BaseHtml::a('权限设置',['permission','dir_id'=>$l->id],['class'=>'btn btn-success btn-xs disabled'])?>
 
                         <?php if($l->is_leaf==0):?>
-                            <?=BaseHtml::a('添加子目录',['add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs disabled'])?>
+                            <?=BaseHtml::a('添加子目录',['add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs'])?>
                         <?php else:?>
 
                         <?php endif;?>

@@ -2,6 +2,7 @@
 
 namespace yun\modules\admin\controllers;
 
+use common\components\CommonFunc;
 use ucenter\models\User;
 use Yii;
 use yun\models\Dir;
@@ -19,7 +20,7 @@ class DirController extends BaseController
 
         $dir_id = Yii::$app->request->get('dir_id',false);  //目录
 
-        $dirList_1 = Dir::getDropDownList(0,true,false,1); //第一层目录
+        $dirList_1 = CommonFunc::getByCache(Dir::className(),'getDropDownList',[0,true,false,1],'yun:dir/drop-down-list'); //第一层目录
 
         $dirList_2 = [];
 
@@ -78,7 +79,6 @@ class DirController extends BaseController
             $parDir = Dir::find()->where(['id'=>$p_id,'is_leaf'=>0])->one();
             if($parDir){
                 $model->p_id = $p_id;
-                $model->type = $parDir->type;
                 $model->level = $parDir->level + 1;
                 $model->status = 1;
                 $this->view->title = '板块目录 - 添加';
