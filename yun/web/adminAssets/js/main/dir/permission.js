@@ -1,20 +1,20 @@
 $(function(){
-    $('.type-select').on('change',function(){
-        type_param_div = $(this).parents('.permission-one').find('.type_param');
-        type_param_div.find('span').hide();
+    $('.user-match-type-select').on('change',function(){
+        user_match_param_td = $(this).parent().next();
+        user_match_param_td.find('.user_match_param_div').hide();
         val = $(this).val();
         if(val==1){
-            type_param_div.find('span.type_param_all').show();
-        }else if(val==2){
+            user_match_param_td.find('.user_match_param_1_div').show();
+        }/*else if(val==2){
             type_param_div.find('span.type_param_area').show();
         }else if(val==3){
             type_param_div.find('span.type_param_business').show();
-        }else if(val==7){
-            type_param_div.find('span.type_param_group').show();
-        }else if(val==8){
+        }*/else if(val==7){
+            user_match_param_td.find('.user_match_param_7_div').show();
+        }/*else if(val==8){
             type_param_div.find('span.type_param_user').show();
-        }
+        }*/
     });
 
-    $('.type-select').change();
+    $('.user-match-type-select').change();
 });

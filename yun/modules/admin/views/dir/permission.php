@@ -12,7 +12,8 @@ AdminAsset::addJsFile($this,'js/main/dir/permission.js');
     <tr>
         <th>#</th>
         <th>文件属性限制</th>
-        <th>匹配类型/参数</th>
+        <th>匹配类型</th>
+        <th>匹配参数</th>
         <th>操作类型</th>
         <th>模式</th>
     </tr>
@@ -23,16 +24,23 @@ AdminAsset::addJsFile($this,'js/main/dir/permission.js');
             <?=$i?>
         </td>
         <td>
-            <?=BaseHtml::dropDownList('type_'.$i,$dp->permission_type,DirPermission::getPermissionTypeItems(),['class'=>'type-select'])?>
+            <?=BaseHtml::dropDownList('permission_type_'.$i,$dp->permission_type,DirPermission::getPermissionTypeItems(),['class'=>'permission-type-select'])?>
         </td>
         <td>
-            <?=BaseHtml::dropDownList('type_'.$i,$dp->user_match_type,DirPermission::getTypeItems(),['class'=>'type-select'])?>
+            <?=BaseHtml::dropDownList('user_match_type_'.$i,$dp->user_match_type,DirPermission::getTypeItems(),['class'=>'user-match-type-select'])?>
+        </td>
+        <td>
+            <div class="user_match_param_div user_match_param_1_div" style="display: none;">
+                --
+                <?=BaseHtml::hiddenInput('user_match_param_'.$i.'_1',0)?>
+            </div>
+            <div class="user_match_param_div user_match_param_7_div" style="display: none;">
+                用户组ID：<?=BaseHtml::textInput('user_match_param_'.$i.'_7',$dp->user_match_type==7?$dp->user_match_param_id:'')?>
+            </div>
         </td>
         <td>
             <?=BaseHtml::dropDownList('operation_'.$i,$dp->operation,DirPermission::getOperationItems())?>
-            <div >
 
-            </div>
         </td>
         <td>
             <?=BaseHtml::dropDownList('mode_'.$i,$dp->mode,DirPermission::getModeItems())?>

@@ -56,8 +56,8 @@ class DirPermission extends \yii\db\ActiveRecord
     public static function getTypeItems(){
         return [
             self::TYPE_ALL => self::TYPE_ALL_CN,
-            self::TYPE_USER => self::TYPE_USER_CN,
-            self::TYPE_WILDCARD => self::TYPE_WILDCARD_CN,
+            //self::TYPE_USER => self::TYPE_USER_CN,
+            //self::TYPE_WILDCARD => self::TYPE_WILDCARD_CN,
             self::TYPE_GROUP => self::TYPE_GROUP_CN
         ];
     }
