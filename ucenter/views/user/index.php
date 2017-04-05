@@ -35,13 +35,13 @@ use ucenter\models\Department;
                 <td><?=$districtArr[$l->district_id]?></td>
                 <td><?=$industryArr[$l->industry_id]?></td>
                 <td><?=$companyArr[$l->company_id]?></td>
-                <td><?=Department::getFullRouteByCache($l->department_id)?></td>
+                <td><?=CommonFunc::getByCache(Department::className(),'getFullRoute',[$l->department_id],'ucenter:department/full-route')?></td>
                 <td><?=$positionArr[$l->position_id]?></td>
                 <td><?=CommonFunc::getGenderCn($l->gender)?></td>
                 <td><?=$l->birthday?></td>
                 <td><?=CommonFunc::getStatusCn($l->status)?></td>
                 <td>
-                    <?/*=Html::a('添加业态','script:void(0)',['data-pid'=>$l->aid,'data-pname'=>$aArr[$l->aid],'data-type'=>'area','data-toggle'=>"modal",'data-target'=>"#addModal",'class'=>'btn btn-xs btn-success'])*/?>
+<!--                    --><?//=Html::a('添加业态','script:void(0)',['data-pid'=>$l->aid,'data-pname'=>$aArr[$l->aid],'data-type'=>'area','data-toggle'=>"modal",'data-target'=>"#addModal",'class'=>'btn btn-xs btn-success'])?>
                 </td>
             </tr>
 
