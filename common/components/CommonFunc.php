@@ -148,16 +148,18 @@ class CommonFunc extends Component {
             if(!empty($dataArr) && isset($dataArr[$id])){
                 $data = $dataArr[$id];
             }else {
-
+                $paramTemp = [];
                 foreach ($params as $k => $par) {
                     //将true / false 字符串化 ，用于拼接key
                     if ($par === true) {
-                        $params[$k] = '1';
+                        $par = 'true';
                     } elseif ($par === false) {
-                        $params[$k] = '0';
+                        $par = 'false';
                     }
+                    $paramTemp[] = $par;
                 }
-                $paramStr = implode(',', $params);
+                $id = implode('|', $paramTemp);
+                $paramStr = implode(',', $paramTemp);
                 eval("\$data = $classname::$func($paramStr);");
 
                 if (empty($dataArr)) {

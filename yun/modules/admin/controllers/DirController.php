@@ -5,6 +5,7 @@ namespace yun\modules\admin\controllers;
 use common\components\CommonFunc;
 use ucenter\models\User;
 use Yii;
+use yun\models\DirPermission;
 use yun\components\YunFunc;
 use yun\models\Dir;
 use yun\components\DirFunc;
@@ -141,6 +142,10 @@ class DirController extends BaseController
         $dir = Dir::find()->where(['id'=>$dir_id])->one();
         if($dir){
             $params['dir'] = $dir;
+
+            $permission = DirPermission::find()->where(['dir_id'=>$dir->id])->orderBy('user_match_type asc')->all();
+
+            $params['permission_list'] = $permission;
         }else{
             return Yii::$app->response->redirect('dir');
         }

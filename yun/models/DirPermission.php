@@ -71,6 +71,15 @@ class DirPermission extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getPermissionTypeItems(){
+        return [
+            self::PERMISSION_TYPE_NORMAL => '没有限制',
+            self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT => '限制地区',
+            self::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY => '限制行业',
+            self::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY => '限制地区及行业'
+        ];
+    }
+
     public static function getModeItems(){
         return [
             self::MODE_ALLOW => self::MODE_ALLOW_CN,
@@ -82,7 +91,7 @@ class DirPermission extends \yii\db\ActiveRecord
         return [
             self::OPERATION_UPLOAD => self::OPERATION_UPLOAD_CN,
             self::OPERATION_DOWNLOAD => self::OPERATION_DOWNLOAD_CN,
-            self::OPERATION_COOP => self::OPERATION_COOP_CN
+            //self::OPERATION_COOP => self::OPERATION_COOP_CN
         ];
     }
 
