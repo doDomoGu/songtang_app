@@ -15,9 +15,10 @@ class UserForm extends Model
     public $forgetpw_code;
     public $name;
     public $is_admin;
-    public $aid;
-    public $bid;
-    public $did;
+    public $district_id;
+    public $industry_id;
+    public $company_id;
+    public $department_id;
     public $position_id;
     public $gender;
     public $birthday;
@@ -38,9 +39,10 @@ class UserForm extends Model
             'forgetpw_code' => '忘记密码验证码',
             'name' => '姓名',
             //'is_admin' => '是否为管理员',
-            'aid' => '地区',
-            'bid' => '业态',
-            'did' => '部门',
+            'district_id' => '地区',
+            'industry_id' => '行业',
+            'company_id' => '公司',
+            'department_id' => '部门',
             'position_id' => '职位',
             'gender' => '性别',
             'birthday' => '生日',
@@ -63,9 +65,10 @@ class UserForm extends Model
                 'reg_code',
                 'forgetpw_code',
                 'name',
-                'aid',
-                'bid',
-                'did',
+                'district_id',
+                'industry_id',
+                'company_id',
+                'department_id',
                 'position_id',
                 'gender',
                 'birthday',
@@ -87,9 +90,10 @@ class UserForm extends Model
                 'reg_code',
                 'forgetpw_code',
                 'name',
-                'aid',
-                'bid',
-                'did',
+                'district_id',
+                'industry_id',
+                'company_id',
+                'department_id',
                 'position_id',
                 'gender',
                 'birthday',
@@ -112,7 +116,7 @@ class UserForm extends Model
         return [
             /*[['password','password2'],'required','on'=>'create'],*/
             [['username', 'name', 'ord', 'status'], 'required'],
-            [['id', 'ord', 'status','aid','bid','did', 'position_id', 'gender'], 'integer'],
+            [['id', 'ord', 'status','district_id','industry_id', 'company_id', 'department_id', 'position_id', 'gender'], 'integer'],
             ['username','unique','on'=>'create', 'targetClass' =>User::className(), 'message' => '此用户名已经被使用。'],
             ['username','email'],
             ['password2', 'compare','compareAttribute'=>'password'],

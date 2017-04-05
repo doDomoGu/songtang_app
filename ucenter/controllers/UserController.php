@@ -15,17 +15,17 @@ use yii\web\Response;
 class UserController extends BaseController
 {
     public function actionIndex(){
-        $aid = Yii::$app->request->get('aid',false);
-        $bid = Yii::$app->request->get('bid',false);
-        $list = User::find()->where([])->groupBy('id')->all();
+        /*$aid = Yii::$app->request->get('aid',false);
+        $bid = Yii::$app->request->get('bid',false);*/
+        $list = User::find()->all();
 
 
         $params['list'] = $list;
-        $params['districtArr'] = District::getNameArr();
+        /*$params['districtArr'] = District::getNameArr();
         $params['industryArr'] = Industry::getNameArr();
         $params['companyArr'] = Company::getNameArr();
         $params['departmentArr'] = Department::getNameArr();
-        $params['positionArr'] = Position::getNameArr();
+        $params['positionArr'] = Position::getNameArr();*/
         //$params['bArr2'] = Area::getRelationsArr($aid);
 
         //$params['aid'] = $aid;

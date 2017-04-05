@@ -1,6 +1,11 @@
 <?php
     use yii\helpers\Html;
     use yii\bootstrap\ActiveForm;
+    use ucenter\models\District;
+    use ucenter\models\Industry;
+    use ucenter\models\Company;
+    use ucenter\models\Department;
+    use ucenter\models\Position;
     //yun\assets\AppAsset::addJsFile($this,'js/main/manage/user/add_and_edit.js');
 ?>
 
@@ -25,7 +30,7 @@
             <div class="form-group field-userform-position_id">
                 <label for="userform-position_id" class="col-lg-2 control-label">密码</label>
                 <div class="col-lg-10">
-                    自动随机创建，在添加职员成功后，在给职员邮箱发送的邮件中查看密码
+                    自动随机创建，向管理员询问<!--在添加职员成功后，在给职员邮箱发送的邮件中查看密码-->
                 </div>
             </div>
         <?php else:?>
@@ -40,10 +45,11 @@
         <?/*= $form->field($model, 'position_id') */?>
 
 
-<?= $form->field($model, 'aid')->dropDownList(\ucenter\models\Area::getItems()) ?>
-<?= $form->field($model, 'bid')->dropDownList(\ucenter\models\Business::getItems()) ?>
-<?= $form->field($model, 'did')->dropDownList(\ucenter\models\Department::getItems(),['encode'=>false]) ?>
-<?= $form->field($model, 'position_id')->dropDownList(\ucenter\models\Position::getItems()) ?>
+<?= $form->field($model, 'district_id')->dropDownList(District::getItems()) ?>
+<?= $form->field($model, 'industry_id')->dropDownList(Industry::getItems()) ?>
+<?= $form->field($model, 'company_id')->dropDownList(Company::getItems()) ?>
+<?= $form->field($model, 'department_id')->dropDownList(Department::getItems(),['encode'=>false]) ?>
+<?= $form->field($model, 'position_id')->dropDownList(Position::getItems()) ?>
         <?= $form->field($model, 'gender')->dropDownList([0=>'N/A',1=>'男',2=>'女']) ?>
 
         <?= $form->field($model, 'mobile') ?>
