@@ -61,6 +61,19 @@ return [
                     'logTable'=> 'log_sms'
                 ]
             ]
-        ]
+        ],
+        'cache' => [
+            //'class' => 'yii\caching\FileCache',s
+            //'cachePath' => '@common/runtime/cache',
+            'class' => 'yii\redis\Cache',
+        ],
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            //'hostname' => 'localhost',
+            'hostname' => 'r-bp1520b0b452fd84.redis.rds.aliyuncs.com',
+            'password'=> 'Gljxyt110909',
+            'port' => 6379,
+            'database' => 8,
+        ],
     ],
 ];

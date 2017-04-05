@@ -1,5 +1,5 @@
 <?php
-    use yun\components\CommonFunc;
+    use yun\components\YunFunc;
     use yun\assets\AppAsset;
     AppAsset::addJsFile($this,'js/jquery.SuperSlide.2.1.1.js');
     AppAsset::addJsFile($this,'js/main/site/_news.js');
@@ -20,7 +20,7 @@
         <div class="bd">
             <ul>
                 <?php foreach($news_list as $l):?>
-                <li style="background:url('<?=CommonFunc::imgUrl($l->img_url)?>') #eee center 0 no-repeat;">
+                <li style="background:url('<?=YunFunc::getResourcePath($l->img_url)?>') #eee center 0 no-repeat;">
                     <div class="siteWidth"><a href="/" target="_blank"></a></div></li>
                 <?php endforeach;?>
             </ul>

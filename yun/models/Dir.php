@@ -1,6 +1,7 @@
 <?php
 namespace yun\models;
 
+use common\components\CommonFunc;
 use ucenter\models\District;
 use ucenter\models\Industry;
 use ucenter\models\UserAppAuth;
@@ -30,7 +31,7 @@ class Dir extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'alias', 'p_id'], 'required'],
-            [['id', 'ord', 'level', 'is_leaf', 'is_last', 'p_id', 'attr_limit', 'status'], 'integer'],
+            [['id', 'ord', 'level', 'is_leaf', 'is_last', 'p_id', 'status'], 'integer'],
             [['describe','link'], 'safe']
         ];
     }
@@ -271,15 +272,23 @@ class Dir extends \yii\db\ActiveRecord
 
     }*/
 
-    public static function getParents($id){
-        $return = [];
-        $cur = self::find()->where(['id'=>$id])->one();
-        if($cur && $cur->p_id>0){
-            $parents = self::getParents($cur->p_id);
-            $return = array_merge([$cur->p_id],$parents);
-        }
 
-        return $return;
+    /*
+     * 函数getParents ,实现根据 当前dir_id 递归获取全部父层级 id
+     *
+     * @param integer dir_id
+     * return array
+     */
+    public static function getParents($dir_id){
+        $arr = [];
+        $curDir = Dir::find()->where(['id'=>$dir_id,'status'=>1])->one();
+        if($curDir){
+            $arr[$curDir->level] = $curDir;
+            $arr2 = self::getParents($curDir->p_id);
+            $arr = ArrayHelper::merge($arr,$arr2);
+        }
+        ksort($arr);
+        return $arr;
     }
 
 
@@ -301,7 +310,13 @@ class Dir extends \yii\db\ActiveRecord
     }
 
     public static function getOne($id){
-        $dirData = (object)(Dir::find()->where(['id'=>$id])->one()->toArray()); //只取 元素的值
+        $dir = Dir::find()->where(['id'=>$id])->one();
+        if($dir){
+            $dirData = (object)($dir->toArray()); //只取 元素的值
+        }else{
+            $dirData = NULL;
+        }
+
         return $dirData;
     }
 
@@ -398,7 +413,7 @@ class Dir extends \yii\db\ActiveRecord
         $selfChildrenIds = [];
         if($p_id>0){
             //根据p_id(父id)查找对应父对象
-            $dir = self::getOneByCache($p_id);
+            $dir = CommonFunc::getByCache(Dir::className(),'getOne',[$p_id],'yun:dir/one');
             if($dir==NULL || $dir->status==0){ //不存在或者状态禁用则返回空数组
                 return [];
             }else if($includeSelf===true){ //将自己本身添加至数组
@@ -408,7 +423,7 @@ class Dir extends \yii\db\ActiveRecord
 
         $level = $level===false?false:intval($level);
         if($level>0 || $level===false){  //level正整数 或者 false不限制
-            $list = self::getChildrenByCache($p_id,$showLeaf);
+            $list = CommonFunc::getByCache(Dir::className(),'getChildren',[$p_id,$showLeaf],'yun:dir/children');
 
             if(!empty($list)){
                 $nlevel = $level===false?false: intval($level - 1);
@@ -472,7 +487,7 @@ class Dir extends \yii\db\ActiveRecord
         $dir = NULL;
         if($p_id>0){
             //根据p_id(父id)查找对应父对象
-            $dir = Dir::getOneByCache($p_id);
+            $dir = self::getOne($p_id);
             if($dir==NULL || $dir->status==0){ //不存在或者状态禁用则返回空数组
                 return [];
             }else if($includeSelf===true){ //将自己本身添加至数组
@@ -482,7 +497,7 @@ class Dir extends \yii\db\ActiveRecord
 
         $level = $level===false?false:intval($level);
         if($level>0 || $level===false){  //level正整数 或者 false不限制
-            $list = self::getChildrenByCache($p_id,$showLeaf);
+            $list = self::getChildren($p_id,$showLeaf);
 
             if(!empty($list)){
                 $nlevel = $level===false?false: intval($level - 1);
@@ -551,7 +566,7 @@ class Dir extends \yii\db\ActiveRecord
     public static function getDropDownList($p_id=0,$showLeaf=true,$includeSelf=false,$level=false){
         $arr = [];
 
-        $list = self::getListArr($p_id,$showLeaf,false,$includeSelf,$level);
+        $list = CommonFunc::getByCache(Dir::className(),'getListArr',[$p_id,$showLeaf,false,$includeSelf,$level],'yun:dir/list-arr');
         if(!empty($list)){
             foreach($list as $l){
                 $prefix = '';
@@ -573,22 +588,27 @@ class Dir extends \yii\db\ActiveRecord
     }
 
 
-    public static function getFullRouteByCache($id){
+
+
+
+    /*public static function getFullRouteByCache($id){
         $cache = yii::$app->cache;
         $key = 'dir-full-route';
-        if(isset($cache[$key]) && isset($cache[$key][$id])){
-            $data = $cache[$key][$id];
+        $dataArr = $cache->get($key);
+        if(!empty($dataArr) && isset($dataArr[$id])){
+            $data = $dataArr[$id];
         }else {
             $data = self::getFullRoute($id);
-            if(!isset($cache[$key])){
+
+            if(empty($dataArr)){
                 $arr = [$id => $data];
             }else{
-                $arr = ArrayHelper::merge($cache[$key],[$id => $data]);
+                $arr = ArrayHelper::merge($dataArr,[$id => $data]);
             }
-            $cache[$key] = $arr;
+            $cache->set($key,$arr,86400);
         }
         return $data;
-    }
+    }*/
 
     /*
     * 函数getFullRoute ,实现根据dir_id(Dir表 id字段)获取完整的板块目录路径

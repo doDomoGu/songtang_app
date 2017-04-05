@@ -5,6 +5,7 @@ namespace login\models;
 use ucenter\models\UserAppAuth;
 use ucenter\models\User;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterface
 {
@@ -60,46 +61,62 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
 
     public static function findIdentity($id)
     {
-        $user = User::find()->where(['id'=>$id,'status'=>1])->one();
-        if($user){
-            $authList = UserAppAuth::getAuthList($user->id);
+        $cache = yii::$app->cache;
+        $key = 'user-identity-data';
+        if(isset($cache[$key]) && isset($cache[$key][$id])){
+            $data = $cache[$key][$id];
+        }else {
+            $user = User::find()->where(['id'=>$id,'status'=>1])->one();
+            if($user){
+                $authList = UserAppAuth::getAuthList($user->id);
 
-            $userStatic = [
-                'id' => $user->id,
-                'username' => $user->username,
-                'password' => $user->password,
-                'name'=>$user->name,
-                'district_id'=>$user->district_id,
-                'district'=>$user->district->name,
-                'industry_id'=>$user->industry_id,
-                'industry'=>$user->industry->name,
-                'company_id'=>$user->company_id,
-                'company'=>$user->company->name,
-                'department_id'=>$user->department_id,
-                'department'=>$user->getDepartmentFullRoute(),
-                'position_id'=>$user->position_id,
-                'position'=>$user->position->name,
-                'join_date'=>$user->join_date,
-                'contract_date'=>$user->contract_date,
-                //'position'=>$user->position->name,
-                'authKey' => 'key-'.$user->id,
-                'accessToken' => 'token-'.$user->id,
+                $userStatic = [
+                    'id' => $user->id,
+                    'username' => $user->username,
+                    'password' => $user->password,
+                    'name'=>$user->name,
+                    'district_id'=>$user->district_id,
+                    'district'=>$user->district->name,
+                    'industry_id'=>$user->industry_id,
+                    'industry'=>$user->industry->name,
+                    'company_id'=>$user->company_id,
+                    'company'=>$user->company->name,
+                    'department_id'=>$user->department_id,
+                    'department'=>$user->getDepartmentFullRoute(),
+                    'position_id'=>$user->position_id,
+                    'position'=>$user->position->name,
+                    'join_date'=>$user->join_date,
+                    'contract_date'=>$user->contract_date,
+                    //'position'=>$user->position->name,
+                    'authKey' => 'key-'.$user->id,
+                    'accessToken' => 'token-'.$user->id,
 
-                'isSuperAdmin' => $authList['isSuperAdmin'],
+                    'isSuperAdmin' => $authList['isSuperAdmin'],
 
-                'isUcenterAdmin' => $authList['isUcenterAdmin'],
+                    'isUcenterAdmin' => $authList['isUcenterAdmin'],
 
-                'isYunBackendAdmin' => $authList['isYunBackendAdmin'],
-                'isYunFrontend' => $authList['isYunFrontend'],
-                'isYunFrontendAdmin' => $authList['isYunFrontendAdmin'],
+                    'isYunBackendAdmin' => $authList['isYunBackendAdmin'],
+                    'isYunFrontend' => $authList['isYunFrontend'],
+                    'isYunFrontendAdmin' => $authList['isYunFrontendAdmin'],
 
-                'isOaBackendAdmin' => $authList['isOaBackendAdmin'],
-                'isOaFrontend' => $authList['isOaFrontend'],
-                'isOaFrontendAdmin' => $authList['isOaFrontendAdmin'],
-            ];
-            return new static($userStatic);
+                    'isOaBackendAdmin' => $authList['isOaBackendAdmin'],
+                    'isOaFrontend' => $authList['isOaFrontend'],
+                    'isOaFrontendAdmin' => $authList['isOaFrontendAdmin'],
+                ];
+                $data = new static($userStatic);
+            }else {
+                $data = null;
+            }
+            if(!isset($cache[$key])){
+                $arr = [$id => $data];
+            }else{
+                $arr = ArrayHelper::merge($cache[$key],[$id => $data]);
+            }
+            $cache[$key] = $arr;
         }
-        return null;
+        return $data;
+
+
     }
 
     public static function findIdentityByAccessToken($token, $type = null)

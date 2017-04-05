@@ -44,23 +44,6 @@ class DirFunc extends Component {
 
 
 
-    /*
-     * 函数getParents ,实现根据 当前dir_id 递归获取全部父层级 id
-     *
-     * @param integer dir_id
-     * return array
-     */
-    public static function getParents($dir_id){
-        $arr = [];
-        $curDir = Dir::find()->where(['id'=>$dir_id,'status'=>1])->one();
-        if($curDir){
-            $arr[$curDir->level] = $curDir;
-            $arr2 = self::getParents($curDir->p_id);
-            $arr = BaseArrayHelper::merge($arr,$arr2);
-        }
-        ksort($arr);
-        return $arr;
-    }
 
 
     /*

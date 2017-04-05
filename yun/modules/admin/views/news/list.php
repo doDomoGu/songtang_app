@@ -1,8 +1,7 @@
 <?php
 use yii\bootstrap\BaseHtml;
 use yii\bootstrap\Html;
-use yun\components\CommonFunc;
-use yii\bootstrap\Modal;
+use yun\components\YunFunc;
 
 $this->title = '首页新闻';
 ?>
@@ -25,8 +24,8 @@ $this->title = '首页新闻';
                 <tr>
                     <th scope="row"><?=$l->id?></th>
                     <td><?=$l->title?></td>
-                    <?php $img_url = CommonFunc::imgUrl($l->img_url);?>
-                    <td><?=\yii\bootstrap\Html::img($img_url,['width'=>200,'title'=>$img_url,'alt'=>$img_url,'style'=>'border:1px solid #333;'])?></td>
+                    <?php $img_url =YunFunc::getResourcePath($l->img_url);?>
+                    <td><?=Html::img($img_url,['width'=>200,'title'=>$img_url,'alt'=>$img_url,'style'=>'border:1px solid #333;'])?></td>
                     <td><?=$l->status==1?'启用':'禁用'?></td>
                     <td><?=$l->ord?></td>
                     <td><?=BaseHtml::a('编辑',['add-and-edit','id'=>$l->id],['class'=>'btn btn-primary btn-xs'])?></td>

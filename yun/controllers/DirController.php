@@ -1,6 +1,7 @@
 <?php
 namespace yun\controllers;
 
+use common\components\CommonFunc;
 use ucenter\models\District;
 use ucenter\models\Industry;
 use yii\data\Pagination;
@@ -128,7 +129,7 @@ class DirController extends BaseController
                 $this->dir_id = $dir_id;
                 $dirRoute = ''; //目录路径 用来在七牛上传文件时，拼接文件名
                 //面包屑 & 文件路径
-                $parents = DirFunc::getParents($dir_id);
+                $parents = Dir::getParents($dir_id);
                 $parents2 = FileFrontFunc::getParents($p_id);
                 if(!empty($parents2)){
                     foreach($parents as $parent){
@@ -337,7 +338,7 @@ class DirController extends BaseController
                     $params['dirRoute'] = $dirRoute;
                     $viewName = 'list';
                 }else{
-                    $list = Dir::getChildrenByCache($dir_id);
+                    $list = CommonFunc::getByCache(Dir::className(),'getChildren',[$dir_id],'yun:dir/children');
                     $viewName = 'index';
                 }
                 $params['list'] = $list;
@@ -776,7 +777,7 @@ class DirController extends BaseController
 
         $this->layout = false;
 
-        $parents = DirFunc::getParents($p_id);
+        $parents = Dir::getParents($p_id);
 
 
         $dirList = [];

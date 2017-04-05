@@ -1,6 +1,7 @@
 <?php
     use yii\helpers\Html;
     use yii\bootstrap\ActiveForm;
+    use yun\components\YunFunc;
 
     app\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
     app\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
@@ -27,7 +28,7 @@
 
     <?= $form->field($model, 'head_img',['template'=>"{label}\n<div class=\"col-lg-3\">
     <div>
-    <img id=\"img-upload\" src=\"".app\components\CommonFunc::imgUrl($model->head_img)."\" style=\"border:1px solid #333;width:300px;height:300px;\" />
+    <img id=\"img-upload\" src=\"".YunFunc::getResourcePath($model->head_img)."\" style=\"border:1px solid #333;width:300px;height:300px;\" />
     </div>
     <div id=\"pickfile_container\">
     <p>

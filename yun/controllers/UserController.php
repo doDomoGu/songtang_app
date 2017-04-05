@@ -3,7 +3,7 @@
 namespace yun\controllers;
 
 use yun\models\UserChangePwdForm;
-use yun\components\CommonFunc;
+use yun\components\YunFunc;
 use yun\components\DirFunc;
 use yun\components\FileFrontFunc;
 use yun\models\Dir;
@@ -276,7 +276,7 @@ class UserController extends BaseController
         $y = date('Y');
         $m = date('m');
         $d = date('d');
-        $isHoliday = CommonFunc::isHoliday($date);
+        $isHoliday = YunFunc::isHoliday($date);
         if($isHoliday){
             $result = 3;
         }else{

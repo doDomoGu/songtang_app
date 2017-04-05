@@ -2,6 +2,7 @@
 use yii\bootstrap\BaseHtml;
 use yun\components\DirFunc;
 use yun\models\Dir;
+use common\components\CommonFunc;
  yun\assets\AppAsset::addJsFile($this,'js/manage-dir.js');
 ?>
 <?/*=BaseHtml::a('添加目录（暂时不可用）',['dir-add-and-edit'],['class'=>'btn btn-primary disabled'])*/?>
@@ -30,7 +31,7 @@ use yun\models\Dir;
             <tr>
                 <th scope="row"><?=$l->id?></th>
                 <!--<td><?/*=$l->ord*/?></td>-->
-                <td><?=$l->name?> <span class="glyphicon glyphicon-info-sign" title="<?=Dir::getFullRouteByCache($l->id)?>"></span></td>
+                <td><?=$l->name?> <span class="glyphicon glyphicon-info-sign" title="<?=CommonFunc::getByCache(Dir::className(),'getFullRoute',[$l->id],'dir-full-route');?>"></span></td>
                 <td>
                     <?php if($l->link!=''):?>
                         <span class="label label-warning">链接</span>
@@ -40,10 +41,12 @@ use yun\models\Dir;
                 <td>
                     <?=BaseHtml::a('编辑',['add-and-edit','id'=>$l->id],['class'=>'btn btn-primary btn-xs'])?>
                     <?php if($l->link==""):?>
-                        <?=BaseHtml::a('权限设置',['permission','dir_id'=>$l->id],['class'=>'btn btn-success btn-xs disabled'])?>
+                        <?=BaseHtml::a('权限查看',['watch-permission','dir_id'=>$l->id],['class'=>'btn btn-primary btn-xs'])?>
+
+                        <?=BaseHtml::a('权限设置',['permission','dir_id'=>$l->id],['class'=>'btn btn-success btn-xs'])?>
 
                         <?php if($l->is_leaf==0):?>
-                            <?=BaseHtml::a('添加子目录',['add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs disabled'])?>
+                            <?=BaseHtml::a('添加子目录',['add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs'])?>
                         <?php else:?>
 
                         <?php endif;?>

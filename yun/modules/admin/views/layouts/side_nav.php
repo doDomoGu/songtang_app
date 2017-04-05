@@ -53,7 +53,18 @@
                         用户组
                     </a>
                 </li>
+                <li class="<?=$this->context->id=='permission' && $this->context->action->id=='check'?'active':''?>">
+                    <a href="<?=AdminFunc::adminUrl('permission/check')?>">
+                        权限检验
+                    </a>
+                </li>
             </ul>
+        </li>
+        <li class="menu-single <?=$this->context->id=='cache'?'active':''?>">
+            <a href="<?=AdminFunc::adminUrl('cache')?>">
+                <span class="menu-icon glyphicon glyphicon-list"></span>
+                缓存管理
+            </a>
         </li>
         <li class="menu-single">
             <a href="<?=Yii::$app->params['logoutUrl']?>">

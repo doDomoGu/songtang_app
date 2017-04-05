@@ -2,8 +2,11 @@
 
 namespace yun\modules\admin\controllers;
 
+use common\components\CommonFunc;
 use ucenter\models\User;
 use Yii;
+use yun\models\DirPermission;
+use yun\components\YunFunc;
 use yun\models\Dir;
 use yun\components\DirFunc;
 use yun\modules\admin\models\DirForm;
@@ -19,21 +22,23 @@ class DirController extends BaseController
 
         $dir_id = Yii::$app->request->get('dir_id',false);  //目录
 
-        $dirList_1 = Dir::getDropDownList(0,true,false,1); //第一层目录
+        $dirList_1 = CommonFunc::getByCache(Dir::className(),'getDropDownList',[0,true,false,1],'yun:dir/drop-down-list'); //第一层目录
 
         $dirList_2 = [];
 
         $list = [];
 
-        $curDir = Dir::find()->where(['id'=>$dir_id,'status'=>1])->one();
+        $curDir = CommonFunc::getByCache(Dir::className(),'getOne',[$dir_id],'yun:dir/one');
 
-        if($curDir){
-            $parents = DirFunc::getParents($dir_id);
+        if($curDir && $curDir->status==1){
+
+            $parents = CommonFunc::getByCache(Dir::className(),'getParents',[$dir_id],'yun:dir/parents');
+           // $parents2 = Dir::getParents($dir_id);
 
             $dirLvl_1 = isset($parents[1])?$parents[1]:null;
             $dirLvl_2 = isset($parents[2]) && $dirLvl_1?$parents[2]:null;
             if($dirLvl_1){
-                $dirList_2 = Dir::getDropDownList($dirLvl_1->id,true,false,1);
+                $dirList_2 = CommonFunc::getByCache(Dir::className(),'getDropDownList',[$dirLvl_1->id,true,false,1],'yun:dir/drop-down-list');
             }
         }else{
             $dirLvl_1 = null;
@@ -42,9 +47,9 @@ class DirController extends BaseController
 
         if($curDir){
             if($curDir->level==2){
-                $list = Dir::getListArr($dir_id,true,true,true);
+                $list = CommonFunc::getByCache(Dir::className(),'getListArr',[$dir_id,true,true,true],'yun:dir/list-arr');
             }else{
-                $list = Dir::getListArr($dir_id,true,true,true,0);
+                $list = CommonFunc::getByCache(Dir::className(),'getListArr',[$dir_id,true,true,true,0],'yun:dir/list-arr');
             }
         }
 
@@ -78,7 +83,6 @@ class DirController extends BaseController
             $parDir = Dir::find()->where(['id'=>$p_id,'is_leaf'=>0])->one();
             if($parDir){
                 $model->p_id = $p_id;
-                $model->type = $parDir->type;
                 $model->level = $parDir->level + 1;
                 $model->status = 1;
                 $this->view->title = '板块目录 - 添加';
@@ -111,12 +115,13 @@ class DirController extends BaseController
 
             if($dir->save()){
                 //清除缓存
-                $cache = Yii::$app->getCache();
-                unset($cache['treeDataId']);
-                //$this->clearTreeDataCache();
+                $this->clearCache();
+                /*$cache = Yii::$app->cache;
+                $cache->delete('treeDataId');
+                //$this->clearTreeDataCache();*/
 
                 //重定向
-                $parents = DirFunc::getParents($dir->id);
+                $parents = Dir::getParents($dir->id);
                 $redirect = ['admin/dir'];
                 if(isset($parents[2])){
                     $redirect['dir_id'] = $parents[2]->id;
@@ -137,6 +142,10 @@ class DirController extends BaseController
         $dir = Dir::find()->where(['id'=>$dir_id])->one();
         if($dir){
             $params['dir'] = $dir;
+
+            $permission = DirPermission::find()->where(['dir_id'=>$dir->id])->orderBy('user_match_type asc')->all();
+
+            $params['permission_list'] = $permission;
         }else{
             return Yii::$app->response->redirect('dir');
         }
@@ -159,7 +168,7 @@ class DirController extends BaseController
         if($dir){
             $userQuery = User::find()->where(['status'=>1]);
 
-            $userQuery = $userQuery->limit(10);
+            //$userQuery = $userQuery->limit(10);
 
             $userList = $userQuery->all();
 
@@ -168,6 +177,15 @@ class DirController extends BaseController
             return $this->render('watch_permission',$params);
         }else{
             echo 'wrong dir_id';exit;
+        }
+    }
+
+
+    private function clearCache(){
+        $cache = Yii::$app->cache;
+        $keyList = YunFunc::$cacheKeyList;
+        foreach($keyList['dir'] as $k){
+            $cache->delete('yun:dir/'.$k);
         }
     }
 }
