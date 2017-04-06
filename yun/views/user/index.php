@@ -22,7 +22,7 @@
             <table class="table table-bordered table-hover">
                 <tr>
                     <td class="text-right">姓名</td>
-                    <td><?=$user->name?></td>
+                    <td><?=Yii::$app->user->identity->name?></td>
                 </tr>
                 <tr>
                     <td class="text-right">邮箱</td>
