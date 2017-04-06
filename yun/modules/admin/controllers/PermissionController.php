@@ -16,6 +16,7 @@ use yun\models\DirPermission;
 use yun\models\File;
 use yun\models\FileAttribute;
 use yun\models\UserGroup;
+use yun\models\UserGroupUser;
 
 class PermissionController extends BaseController
 {
@@ -75,9 +76,24 @@ class PermissionController extends BaseController
         }else{
 
         }
+    }
 
 
+    public function actionUserGroupUser(){
+        $group_id = Yii::$app->request->get('group_id',false);
+        $userGroup = UserGroup::find()->where(['id'=>$group_id])->one();
+        if($userGroup){
+            $userGroupUser = UserGroupUser::find()->where(['group_id'=>$group_id])->all();
+            $user_ids = [];
+            foreach($userGroupUser as $u){
+                $user_ids[] = $u->user_id;
+            }
 
+            $list = User::find()->where(['id'=>$user_ids])->all();
+
+            $params['list'] = $list;
+            return $this->render('user_group_user',$params);
+        }
 
     }
 

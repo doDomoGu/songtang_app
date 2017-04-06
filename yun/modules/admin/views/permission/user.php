@@ -2,7 +2,11 @@
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
 use common\components\CommonFunc;
+use ucenter\models\District;
+use ucenter\models\Industry;
+use ucenter\models\Company;
 use ucenter\models\Department;
+use ucenter\models\Position;
 
     $this->title = '目录权限 - 用户';
     //app\assets\AppAsset::addJsFile($this,'js/main/structure/index.js');
@@ -26,11 +30,11 @@ use ucenter\models\Department;
                 <td><?=$l->id?></td>
                 <td><?=$l->username?></td>
                 <td><?=$l->name?></td>
-                <td><?=$districtArr[$l->district_id]?></td>
-                <td><?=$industryArr[$l->industry_id]?></td>
-                <td><?=$companyArr[$l->company_id]?></td>
-                <td><?=Department::getFullRouteByCache($l->department_id)?></td>
-                <td><?=$positionArr[$l->position_id]?></td>
+                <td><?=CommonFunc::getByCache(District::className(),'getName',[$l->district_id],'ucenter:district/name')?></td>
+                <td><?=CommonFunc::getByCache(Industry::className(),'getName',[$l->industry_id],'ucenter:industry/name')?></td>
+                <td><?=CommonFunc::getByCache(Company::className(),'getName',[$l->company_id],'ucenter:company/name')?></td>
+                <td><?=CommonFunc::getByCache(Department::className(),'getFullRoute',[$l->department_id],'ucenter:department/full-route')?></td>
+                <td><?=CommonFunc::getByCache(Position::className(),'getName',[$l->position_id],'ucenter:position/name')?></td>
                 <td>
                     <?=Html::a('查看权限','/admin/permission/user-permission?user_id='.$l->id,['class'=>'btn btn-success btn-xs'])?>
                 </td>

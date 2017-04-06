@@ -1,7 +1,5 @@
 <?php
-use yii\bootstrap\BaseHtml;
 use yii\bootstrap\Html;
-use yun\components\CommonFunc;
 use yii\bootstrap\Modal;
 
 
@@ -27,7 +25,10 @@ $this->title = '用户组权限';
                     <th scope="row"><?=$l->id?></th>
                     <td><?=$l->name?></td>
                     <td><?=count($l->users)?></td>
-                    <td>---</td>
+                    <td>
+                        <?=Html::a('设置成员',['/admin/permission/user-group-user','group_id'=>$l->id],['class'=>'btn btn-primary btn-xs'])?>
+                        <?=Html::a('设置权限',['/admin/permission/user-group-permission','group_id'=>$l->id],['class'=>'btn btn-success btn-xs'])?>
+                    </td>
                 </tr>
             <?php endforeach;?>
             <?php endif;?>
