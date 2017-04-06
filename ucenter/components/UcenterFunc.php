@@ -11,6 +11,7 @@ class UcenterFunc extends Component {
         'company'=>'公司',
         'department'=>'部门',
         'position'=>'职位',
+        'user' =>'职员账号'
     ];
     static $cacheKeyList = [
         'district'=>[
@@ -28,5 +29,8 @@ class UcenterFunc extends Component {
         'position'=>[
             'name'
         ],
+        'user'=>[
+            'identity'
+        ]
     ];
 }

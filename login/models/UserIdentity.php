@@ -62,7 +62,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public static function findIdentity($id)
     {
         $cache = yii::$app->cache;
-        $key = 'user-identity-data';
+        $key = 'ucenter:user/identity';
         if(isset($cache[$key]) && isset($cache[$key][$id])){
             $data = $cache[$key][$id];
         }else {
