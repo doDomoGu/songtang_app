@@ -197,7 +197,7 @@ class DirPermission extends \yii\db\ActiveRecord
      */
     public static function isDirAllow($dir_id,$permission_type,$operation_id,$user=false,$ignoreAdmin=false){
         $isAllow = false;
-        if(1!=1 && !$ignoreAdmin && Yii::$app->user->identity->isYunFrontendAdmin){
+        if(!$ignoreAdmin && Yii::$app->user->identity->isYunFrontendAdmin){
             $isAllow = true;
         }else{
             if($user===false)
