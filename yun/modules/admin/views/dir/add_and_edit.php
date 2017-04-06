@@ -37,9 +37,9 @@
 
 
 
-        <?/*= $form->field($model, 'ord',[
+        <?= $form->field($model, 'ord',[
             'template'=>"{label}\n<div class=\"col-lg-4\">{input}</div>\n<div class=\"col-lg-5\">{error}</div>"
-        ]) */?>
+        ]) ?>
 
         <?= $form->field($model, 'is_leaf',['inputOptions'=>['disabled'=>$action=='add'?false:true]])->dropDownList([0=>'否',1=>'是']) ?>
 <?= $form->field($model, 'status',[
