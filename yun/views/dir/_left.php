@@ -1,6 +1,6 @@
 <?php
     use yun\assets\AppAsset;
-    use yun\components\DirFrontFunc;
+    use yun\models\Dir;
     use common\components\CommonFunc;
 
     AppAsset::addCssFile($this,'css/ztree/zTreeStyle/zTreeStyle.css');
@@ -9,7 +9,7 @@
 AppAsset::addCssFile($this,'css/main/dir/_left.css');
 AppAsset::addJsFile($this,'js/main/dir-_left.js');
 //$start = microtime(true);
-$treeData = CommonFunc::getByCache(DirFrontFunc::className(),'getTreeData',[$dir_id],'yun:dir/tree-data');
+$treeData = CommonFunc::getByCache(Dir::className(),'getTreeData',[$dir_id],'yun:dir/tree-data');
 
 /*$end = microtime(true);
 $s = $end-$start;

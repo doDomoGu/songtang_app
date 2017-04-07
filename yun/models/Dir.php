@@ -632,6 +632,54 @@ class Dir extends \yii\db\ActiveRecord
         }
     }
 
+    public static function getTreeData($dir_id){
+        $treeData = null;
+        $parents = self::getParents($dir_id);
+        if(isset($parents[1])){
+            $p_ids = [];
+            foreach($parents as $p){
+                $p_ids[] = $p->id;
+            }
+
+            $arr = self::getChildrenArr($parents[1]->id,true,false,false);
+
+            $treeData .=self::createTreeJson($arr,$dir_id,$p_ids);
 
 
+        }
+        return $treeData;
+    }
+
+
+    private static function createTreeJson($arr,$dir_id,$p_ids){
+        $data = null;
+        $i=1;
+        if(!empty($arr)){
+            $data .= '[';
+            foreach($arr as $l){
+                $data.='{';
+                if($l->link!='')
+                    $data.="name:'".$l->name."',url:'".$l->link."',target:'_blank'";
+                else
+                    $data.="name:'".$l->name."',url:'/dir?dir_id=".$l->id."',target:'_self'";
+                if($l->id == $dir_id){
+                    $data.=",font:{'background-color':'black', 'color':'white'}";
+                }else if(in_array($l->id,$p_ids)){
+                    $data.=',open:true';
+                }
+                if(!empty($l->childrenList)){
+                    $data.=',children: '.self::createTreeJson($l->childrenList,$dir_id,$p_ids);
+                }
+
+
+                $data.='}';
+                if($i<count($arr)){
+                    $data.=',';
+                }
+                $i++;
+            }
+            $data .= ']';
+        }
+        return $data;
+    }
 }
