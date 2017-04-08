@@ -1,6 +1,5 @@
 <?php
 use yii\bootstrap\BaseHtml;
-use yun\components\DirFunc;
 use yun\models\Dir;
 use common\components\CommonFunc;
  yun\assets\AppAsset::addJsFile($this,'js/manage-dir.js');
@@ -36,7 +35,7 @@ use common\components\CommonFunc;
                     <?php if($l->link!=''):?>
                         <span class="label label-warning">链接</span>
                     <?php else:?>
-                        <?=DirFunc::getIsLeaf($l->is_leaf)?></td>
+                        <?=Dir::getIsLeaf($l->is_leaf)?></td>
                     <?php endif;?>
                 <td>
                     <?=BaseHtml::a('编辑',['add-and-edit','id'=>$l->id],['class'=>'btn btn-primary btn-xs'])?>

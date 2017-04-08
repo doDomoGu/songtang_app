@@ -3,6 +3,7 @@
     use app\components\PermissionFunc;
     use app\components\DirFunc;
     use app\components\CommonFunc;
+    use yun\models\Dir;
 
     app\assets\AppAsset::addCssFile($this,'css/main/user/permission-list.css')
 ?>
@@ -42,7 +43,7 @@
                 <tr>
                     <th><?=$l->id?></th>
                     <td><?=$l->name?> </td>
-                    <td><?=DirFunc::getIsLeaf($l->is_leaf)?></td>
+                    <td><?=Dir::getIsLeaf($l->is_leaf)?></td>
                     <?php if($l->is_leaf):?>
                         <input type="hidden" name="pm[<?=$l->id?>][edit]" />
                         <?php $check11 = isset($pmCheck[$l->id][11]);?>

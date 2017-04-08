@@ -127,22 +127,6 @@ class PositionFunc extends Component {
         return $arr;
     }
 
-    /*
-     * 函数getIsLeaf ,实现根据is_leaf(Position表 is_leaf字段) 判断是部门还是职位
-     *
-     * @param is_leaf  (1, 0, null) 是否为叶子的标志为  1为职位 0为部门 , null= N/A
-     * return string/null
-     */
-    public static function getIsLeaf($is_leaf=NULL){
-        if($is_leaf===1){
-            return '<span class="label label-info">职位</span>';
-        }elseif($is_leaf===0){
-            return '<span class="label label-default">部门</span>';
-        }else{
-            return 'N/A';
-        }
-    }
-
 
     /*
      * 函数getDropDownList ,实现根据is_leaf(Position表 is_leaf字段) 判断是部门还是职位
