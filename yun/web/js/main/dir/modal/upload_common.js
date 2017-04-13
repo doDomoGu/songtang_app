@@ -120,6 +120,7 @@ var uploader = Qiniu.uploader({
         },
         'FileUploaded': function(up, file, info) {
             var res = $.parseJSON(info);
+            //console.log(res);
             //console.log(res.key);
             /*console.log(info);
              console.log(res.key);*/
@@ -190,6 +191,8 @@ var uploader = Qiniu.uploader({
              });*/
             //return false;
             setTimeout(function(){
+                //console.log('finish');return false;
+
                 if(_p_id>0){
                     //console.log('/dir?p_id='+_p_id);
                     location.href='/dir?p_id='+_p_id;
@@ -208,7 +211,7 @@ var uploader = Qiniu.uploader({
             /*console.log(up);
              console.log(files);*/
 
-            return 'file:'+_dir_route+files.id+files.name;
+            return 'file:'+_dir_route+files.id;
         }
     }
 });
