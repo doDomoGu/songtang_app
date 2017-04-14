@@ -1,12 +1,12 @@
 <?php
-use api\components\CommonFunc;
+use api\components\ApiFunc;
 $classList  = ['Oa','User','Yun'];
 ?>
 
 <?php foreach($classList as $c):?>
 <section>
     <?php
-        $help = CommonFunc::getHelp($c);
+        $help = ApiFunc::getHelp($c);
         $title = $help['title'];
         $list = $help['list'];
     ?>

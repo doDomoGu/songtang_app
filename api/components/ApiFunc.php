@@ -2,9 +2,9 @@
 namespace api\components;
 
 use yii\base\Component;
-use yii;
+use Yii;
 
-class CommonFunc extends Component {
+class ApiFunc extends Component {
     public static function getHelp($className){
         $return = [];
 
@@ -45,7 +45,7 @@ class CommonFunc extends Component {
 
     }
 
-    public static function funcNameTrans($str){
+    /*public static function funcNameTrans($str){
         $length = mb_strlen($str);
 
         $new = '';
@@ -59,7 +59,7 @@ class CommonFunc extends Component {
         }
 
         return strtolower($new);
-    }
+    }*/
 
 
 }
