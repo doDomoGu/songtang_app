@@ -37,6 +37,7 @@ use yii\bootstrap\Html;
             </tr>
             <?php else:?>
                 <tr>
+                    <td></td>
                     <td><?=$l->id?></td>
                     <td></td>
                     <td></td>
