@@ -16,7 +16,6 @@ class Task extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => '任务名称',
-            'category_id' => '任务分类',
             'district_id' => '锁定地区',
             'industry_id' => '锁定行业',
             'company_id' => '锁定公司',
@@ -30,12 +29,22 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['ord', 'category_id', 'status', 'district_id', 'industry_id', 'company_id', 'department_id'], 'integer'],
+            [['ord', 'status', 'district_id', 'industry_id', 'company_id', 'department_id'], 'integer'],
         ];
     }
 
-    public function getCategory(){
-        return $this->hasOne(TaskCategory::className(), array('id' => 'category_id'));
+    public static function getCategory($task_id){
+        $taskCateId = TaskCategoryId::find()->where(['task_id'=>$task_id])->all();
+        $cateIds = [];
+        foreach($taskCateId as $t){
+            $cateIds[] = $t->category_id;
+        }
+        $category = TaskCategory::find()->where(['id'=>$cateIds])->all();
+        $list = [];
+        foreach($category as $c){
+            $list[$c->id] = $c->name;
+        }
+        return $list;
     }
 
 

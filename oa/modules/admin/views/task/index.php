@@ -1,7 +1,12 @@
 <?php
     use yii\bootstrap\Modal;
-    use yii\bootstrap\Html;
+    use yii\helpers\Html;
     use yii\helpers\Url;
+    use common\components\CommonFunc;
+    use ucenter\models\Department;
+    use ucenter\models\District;
+    use ucenter\models\Company;
+    use oa\models\Task;
 
     $this->title = '任务表设置';
     oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/index.js');
@@ -16,7 +21,7 @@
             <th>标题</th>
             <th>分类</th>
             <th width="200">所属地区 <?/*=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])*/?></th>
-            <th>所属行业 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
+            <!--<th>所属行业</th>-->
             <th>所属公司 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
             <th>所属部门</th>
             <th>状态</th>
@@ -25,15 +30,20 @@
         </tr>
         <tbody>
         <?php foreach($list as $l):?>
+            <?php
+                $categoryList = Task::getCategory($l->id);
+                $category = implode(' , ',$categoryList);
+            ?>
+
             <tr>
                 <td><?=$l->id?></td>
                 <td><?=$l->title?></td>
-                <td><?=$l->category->name?></td>
-                <td><?=$l->district_id>0?$districtArr[$l->district_id]:'--'?></td>
-                <td><?=$l->industry_id>0?$industryArr[$l->industry_id]:'--'?></td>
-                <td><?=$l->company_id>0?$companyArr[$l->company_id]:'--'?></td>
-                <td><?=\ucenter\models\Department::getFullRoute([$l->department_id])?></td>
-                <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
+                <td><?=$category?></td>
+                <td><?=commonFunc::getByCache(District::className(),'getName',[$l->district_id],'ucenter:district/name')?></td>
+                <!--<td><?/*=$l->industry_id>0?$industryArr[$l->industry_id]:'--'*/?></td>-->
+                <td><?=commonFunc::getByCache(Company::className(),'getName',[$l->company_id],'ucenter:company/name')?></td>
+                <td><?=commonFunc::getByCache(Department::className(),'getFullRoute',[$l->department_id],'ucenter:department/full-route')?></td>
+                <td><?=CommonFunc::getStatusCn($l->status)?></td>
                 <td>
                     <?php if($l->set_complete==1):?>
                         <?=Html::a('查看流程',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
@@ -81,7 +91,7 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">分类</label>
                 <div class="col-sm-6">
-                    <?=Html::dropDownList('create-category-select','',$categoryList,['class'=>'form-control create-category-select','prompt'=>'==请选择==','encode'=>false,'options'=>['t1'=>['disabled'=>true],'t2'=>['disabled'=>true],'t3'=>['disabled'=>true],'t4'=>['disabled'=>true]]])?>
+                    <?=Html::checkboxList('create-category-select','',$categoryList,['class'=>'create-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
                 </div>
             </div>
             <div class="form-group">
@@ -90,30 +100,29 @@ Modal::begin([
                     <?=\yii\bootstrap\BaseHtml::dropDownList('district-select','',\ucenter\models\District::getItems(),['class'=>"form-control create-district-select"])?>
                 </div>
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label class="col-sm-4 control-label label1">所属行业</label>
                 <div class="col-sm-6">
-                    <?=\yii\bootstrap\BaseHtml::dropDownList('industry-select','',\ucenter\models\Industry::getItems(),['class'=>"form-control create-industry-select"])?>
+                    <?/*=\yii\bootstrap\BaseHtml::dropDownList('industry-select','',\ucenter\models\Industry::getItems(),['class'=>"form-control create-industry-select"])*/?>
                 </div>
-            </div>
+            </div>-->
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">所属公司</label>
                 <div class="col-sm-6">
                     <?=\yii\bootstrap\BaseHtml::dropDownList('company-select','',\ucenter\models\Company::getItems(),['class'=>"form-control create-company-select"])?>
                 </div>
             </div>
-            <!--<div class="form-group">
+            <div class="form-group">
                 <label class="col-sm-4 control-label label2">所属部门</label>
                 <div class="col-sm-6">
-                    <select class="form-control create-department-select">
-                        <option value="">---</option>
-                    </select>
-                    <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
+                    <?=\yii\bootstrap\BaseHtml::dropDownList('department-select','',\ucenter\models\Department::getItems(),['class'=>"form-control create-department-select",'encode'=>false])?>
+
                 </div>
-            </div>-->
+            </div>
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-6">
                     <button type="button" class="btn btn-success" id="create-btn">提交</button>
+                    <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>
         </form>

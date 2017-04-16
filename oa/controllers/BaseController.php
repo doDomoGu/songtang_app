@@ -52,6 +52,7 @@ $s=5/0;
 
             //如果是移动设备
             if($this->isMobile){
+                echo '手机版请使用微信';exit;
                 $this->layout = 'mobile/main';
             }
 

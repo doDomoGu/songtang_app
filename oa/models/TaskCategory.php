@@ -114,6 +114,15 @@ class TaskCategory extends \yii\db\ActiveRecord
         return $return;
     }
 
+    public static function getItems(){
+        $items = [];
+        $list = self::find()->where(['status'=>1])->orderBy('ord asc')->all();
+        foreach($list as $l){
+            $items[$l->id] = $l->name;
+        }
+        return $items;
+    }
+
     public static function getDropdownList(){
         $list = [];
         $typeList = self::getTypeList();

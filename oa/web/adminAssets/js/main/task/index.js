@@ -1,6 +1,13 @@
 $(function () {
     $('#create-btn').click(function(){
         $('#createContent .errormsg-text').html('').hide();
+        var category_ids = [];
+        $('input[name="create-category-select[]"]:checked').each(function(){
+            category_ids.push($(this).val());
+        });
+
+        var category_id = category_ids.join(',');
+
         $.ajax({
             url: '/admin/task/create',
             type: 'post',
@@ -11,7 +18,8 @@ $(function () {
                 district_id: $('#createContent .create-district-select').val(),
                 industry_id: $('#createContent .create-industry-select').val(),
                 company_id: $('#createContent .create-company-select').val(),
-                category_id: $('#createContent .create-category-select').val()
+                category_id: category_id,
+                department_id: $('#createContent .create-department-select').val()
             },
             success: function (data) {
                 if(data.result){
@@ -29,6 +37,14 @@ $(function () {
         if(confirm('确认已完成设置？（确认后无法再返回设置）')){
             location.href = '/admin/task/set-complete?id='+id;
         }
+    });
+
+
+    $('.create-category-select input').each(function(){
+         var disabledArr = ['t1','t2','t3','t4'];
+         if(disabledArr.indexOf($(this).val())>-1){
+             $(this).attr('disabled','disabled');
+         }
     });
 
     /*$('#editModal').on('show.bs.modal',function(e) {

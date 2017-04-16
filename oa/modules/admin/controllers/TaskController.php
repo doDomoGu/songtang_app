@@ -6,6 +6,7 @@ use oa\models\Flow;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
+use oa\models\TaskCategoryId;
 use oa\modules\admin\components\AdminFunc;
 use ucenter\models\Company;
 use ucenter\models\District;
@@ -38,9 +39,9 @@ class TaskController extends BaseController
 
 
         $params['list'] = $list;
-        $params['districtArr'] = District::getNameArr();
+        /*$params['districtArr'] = District::getNameArr();
         $params['industryArr'] = Industry::getNameArr();
-        $params['companyArr'] = Company::getNameArr();
+        $params['companyArr'] = Company::getNameArr();*/
         $params['pArr'] = Position::getNameArr();
         $params['industryArr2'] = District::getIndustryRelationsArr($aid);
 
@@ -55,10 +56,10 @@ class TaskController extends BaseController
         $result = false;
         if(Yii::$app->request->isAjax){
             $title = trim(Yii::$app->request->post('title',false));
+            $category_id = Yii::$app->request->post('category_id','');
             $district_id = intval(Yii::$app->request->post('district_id',10000));
             $industry_id = intval(Yii::$app->request->post('industry_id',10000));
             $company_id = intval(Yii::$app->request->post('company_id',10000));
-            $category_id = intval(Yii::$app->request->post('category_id',1));
             $department_id = intval(Yii::$app->request->post('department_id',10000));
             //AREA BUSINESS DEPARTMENT  TODO
             if($title==''){
@@ -68,20 +69,31 @@ class TaskController extends BaseController
                 if($exist){
                     $errormsg = '标题已存在!';
                 }else{
-                    $task = new Task();
-                    $task->title = $title;
-                    $task->category_id = $category_id;
-                    $task->district_id = $district_id;
-                    $task->industry_id = $industry_id;
-                    $task->company_id = $company_id;
-                    $task->department_id = $department_id;
-                    $task->ord = 0;
-                    $task->status = 1;
-                    if($task->save()){
-                        Yii::$app->getSession()->setFlash('success','新增任务【'.$task->title.'】成功！');
-                        $result = true;
+                    if($category_id==''){
+                        $errormsg = '请勾选至少一个模板分类！';
                     }else{
-                        $errormsg = '保存失败，刷新页面重试!';
+                        $task = new Task();
+                        $task->title = $title;
+                        $task->district_id = $district_id;
+                        $task->industry_id = $industry_id;
+                        $task->company_id = $company_id;
+                        $task->department_id = $department_id;
+                        $task->ord = 0;
+                        $task->status = 1;
+                        if($task->save()){
+                            $categoryIds = explode(',',$category_id);
+                            foreach($categoryIds as $cate_id){
+                                $taskCategoryId = new TaskCategoryId();
+                                $taskCategoryId->task_id = $task->id;
+                                $taskCategoryId->category_id = $cate_id;
+                                $taskCategoryId->save();
+                            }
+
+                            Yii::$app->getSession()->setFlash('success','新增任务【'.$task->title.'】成功！');
+                            $result = true;
+                        }else{
+                            $errormsg = '保存失败，刷新页面重试!';
+                        }
                     }
                 }
             }
