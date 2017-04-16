@@ -29,27 +29,37 @@ $(function () {
         $('#editContent .errormsg-text').html('').hide();
         var btn = $(e.relatedTarget);
         var id = btn.data("id");
-        var oldName = btn.data("old-name");
-        $('#editContent .id-value').val(id);
-        $('#editContent .old-name-text').html(oldName);
+        var title = btn.data("title");
+        var type = btn.data("type");
+        var user_id = btn.data("user-id");
+        if(user_id==0){
+            user_id='';
+        }
+        $('#editContent .edit-flow-id').val(id);
+        $('#editContent .create-title').val(title);
+        $('#editContent .create-type-select').val(type);
+        $('#editContent .create-user-select').val(user_id);
     });
 
 
     $('#edit-btn').click(function(){
         $('#editContent .errormsg-text').html('').hide();
+        var tid =$('#editContent .task-id').val();
         $.ajax({
-            url: '/setting/edit',
+            url: '/admin/task/flow-edit',
             type: 'post',
             //async : false,
             dataType: 'json',
             data: {
-                id: $('#editContent .id-value').val(),
-                name: $('#editContent .new-name').val(),
-                type: 'area'
+                tid : tid,
+                flow_id: $('#editContent .edit-flow-id').val(),
+                title: $('#editContent .create-title').val(),
+                type: $('#editContent .create-type-select').val(),
+                user_id: $('#editContent .create-user-select').val()
             },
             success: function (data) {
                 if(data.result){
-                    location.href='/setting/area';
+                    location.href='/admin/task/flow?tid='+tid;
                 }else{
                     $('#editContent .errormsg-text').html(data.errormsg).show();
 

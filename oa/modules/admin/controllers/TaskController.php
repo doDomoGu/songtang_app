@@ -129,7 +129,7 @@ class TaskController extends BaseController
             $tid = intval(Yii::$app->request->post('tid',0));
             $enable_transfer = intval(Yii::$app->request->post('enable_transfer',0));
             if($title==''){
-                $errormsg = '名称或别名不能为空！';
+                $errormsg = '名称不能为空！';
             }else{
                 $exist = Task::find()->where(['id'=>$tid])->one();
                 if(!$exist){
@@ -155,6 +155,49 @@ class TaskController extends BaseController
                             $errormsg = '保存失败，刷新页面重试!';
                         }
                     /*}*/
+                }
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+    public function actionFlowEdit(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $title = trim(Yii::$app->request->post('title',false));
+            $type = intval(Yii::$app->request->post('type',0));
+            $user_id = intval(Yii::$app->request->post('user_id',0));
+            $tid = intval(Yii::$app->request->post('tid',0));
+            $flow_id = intval(Yii::$app->request->post('flow_id',0));
+            $enable_transfer = intval(Yii::$app->request->post('enable_transfer',0));
+
+            if($title==''){
+                $errormsg = '名称不能为空！';
+            }else{
+                $exist = Task::find()->where(['id'=>$tid])->one();
+                if(!$exist){
+                    $errormsg = '对应的任务ID不存在！';
+                }else{
+                    $flow = Flow::find()->where(['task_id'=>$tid,'id'=>$flow_id])->one();
+                    if(!$flow){
+                        $errormsg = '流程不存在！';
+                    }else{
+                        $flow->title = $title;
+                        $flow->task_id = $tid;
+                        $flow->user_id = $user_id;
+                        $flow->type = $type;
+                        if($flow->save()){
+                            Yii::$app->getSession()->setFlash('success','修改流程【'.$flow->title.'】成功！');
+                            $result = true;
+                        }else{
+                            $errormsg = '保存失败，刷新页面重试!';
+                        }
+                    }
                 }
             }
         }else{
