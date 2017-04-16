@@ -2,7 +2,6 @@
 namespace api\components;
 
 use yii\base\Component;
-use Yii;
 
 class ApiFunc extends Component {
     public static function getHelp($className){
@@ -12,14 +11,26 @@ class ApiFunc extends Component {
 
         $class = new $class($className,false);
 
+        //获取方法列表
         $actionList = array_keys($class->actions());
 
         $return['title'] = $class->helpTitle;
 
         $list = [];
 
+        $format = $class->format;
+
         foreach($actionList as $act){
-            $allowParam = !empty($class->allowArr[$act])?$class->allowArr[$act]:[];
+            if(isset($format[$act])){
+                //$param = $format[$act]['param'];
+                $list[$act] = $format[$act];
+                /*var_dump($param);
+                echo '<br/><br/>';
+                continue;*/
+
+            }
+
+            /*$allowParam = !empty($class->allowArr[$act])?$class->allowArr[$act]:[];
             $requireParam = !empty($class->requireArr[$act])?$class->requireArr[$act]:[];
             $param = '';
             foreach($allowParam as $k=>$rule){
@@ -34,8 +45,8 @@ class ApiFunc extends Component {
             $list[] = [
                 'title'=>$act,
                 'param'=>$param,
-                'desc'=>$class->getHelp($act)
-            ];
+                //'desc'=>$class->getHelp($act)
+            ];*/
         }
 
         $return['list'] = $list;

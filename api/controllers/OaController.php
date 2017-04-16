@@ -4,19 +4,55 @@ namespace api\controllers;
 use Yii;
 
 class OaController extends BaseController{
+
     public $helpTitle = 'OA API';
 
-    public $allowArr = [
+    public $format = [
             'apply-get'=>[
-                'id'=>'int'
+                'param'=>[
+                    'id'=>[
+                        'type' => 'int',
+                        'required' => true,
+                        'explain' => '申请表ID'
+                    ]
+                ],
+                'title' => '获取申请表信息',
+                'explain' => '获取申请表信息.....'
             ],
             'apply-create'=>[
-                'title'=>'str',
-                'task_id'=>'int',
-                'message'=>'str',
-                'user_id'=>'int',
-                'session_3rd'=>'str'
-            ],
+                'param' => [
+                    'title'=>[
+                        'type'=>'string',
+                        'required' => true,
+                        'explain' => '标题'
+                    ],
+                    'task_id'=>[
+                        'type'=>'int',
+                        'required' => false,
+                        'explain' => '任务表ID'
+                    ],
+                    'message'=>[
+                        'type'=>'string',
+                        'required' => false,
+                        'explain' => '申请内容'
+                    ],
+                    'user_id'=>[
+                        'type'=>'int',
+                        'required' => false,
+                        'explain' => '发起人/申请人ID'
+                    ],
+                    'session_3rd'=>[
+                        'type'=>'string',
+                        'required' => false,
+                        'explain' => '第三方session'
+                    ]
+                ],
+                'title' => '创建申请表',
+                'explain'=>'创建申请表...'
+            ]
+        ];
+
+    public $allowArr = [
             'change'=>[
                 'id'=>'int',
                 'name'=>'str'
@@ -29,12 +65,6 @@ class OaController extends BaseController{
             ]
         ];
     public $requireArr = [
-            'apply-get'=>[
-                'id'
-            ],
-            'apply-create'=>[
-                'title'
-            ],
         ];
 
     public function actions()
@@ -46,12 +76,12 @@ class OaController extends BaseController{
             'apply-create'=>[
                 'class'=>'api\controllers\oa\apply\create',
             ],
-            'apply-getall'=>[
+            /*'apply-getall'=>[
                 'class'=>'api\controllers\oa\apply\getall',
             ],
             'task-getall'=>[
                 'class'=>'api\controllers\oa\task\getall',
-            ]
+            ]*/
         ];
     }
 

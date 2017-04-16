@@ -2,18 +2,15 @@
 namespace api\controllers;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\Response;
 
 class BaseController extends Controller
 {
-    public $rParams = [];  //从客户端 请求的参数
-    public $allowArr = [];   //允许提交的参数   第一层下标为action名  第二层下标为参数键名 值为规定的数据格式
-    public $requireArr = []; //必须提交的参数   第一层下标为action名  值为参数键名
+    public $request = [];  //从客户端 请求的参数
+    public $format = [];  //请求参数格式   第一层下标为action名  第二层下标为参数键名 值为 type（数据类型） required （是否必填） 和 explian （说明） 组成的数组
     public $msg;
 
-    //
     public function beforeAction($action){
         if (parent::beforeAction($action)) {
             //TODO  访问日志
@@ -52,48 +49,50 @@ class BaseController extends Controller
 
     /*
      * handleRequestParams
-     * 功能：处理客户端请求过来的参数， 先验证 (必填参数，参数格式，错误的参数） 再将参数整理赋值给$requestParams
+     * 功能：处理客户端请求过来的参数， 先验证 (必填参数，参数格式，错误的参数） 再将参数整理赋值给$request
      */
     public function handleRequestParams(){
         $act = $this->action->id;
-        $allowArr = isset($this->allowArr[$act])?$this->allowArr[$act]:[];   //允许的参数
-        $requireArr = isset($this->requireArr[$act])?$this->requireArr[$act]:[];  //必填的参数
-        //$post = Yii::$app->request->post();
+        if(isset($this->format[$act])){
+            //参数格式
+            $format = $this->format[$act];
+            $param = $format['param'];
+
+            //请求的参数
+            $get = Yii::$app->request->get();
+            $post = Yii::$app->request->post();
+            $request = array_merge($get,$post);
+            $requestKeys = array_keys($request);
 
 
-        $get = Yii::$app->request->get();  //请求的参数
-        $post = Yii::$app->request->post();  //请求的参数
-        $request = array_merge($get,$post);
+            //允许的参数
+            $allowKeys = array_keys($param);
 
+            //必填的参数
+            $requireKeys = [];
+            foreach($param as $k => $v){
+                if(isset($v['required']) && $v['required']==true){
+                    $requireKeys[] = $k;
+                }
+            }
 
-
-        $allowKeys = array_keys($allowArr);
-        $requireKeys = $requireArr;
-        $requestKeys = array_keys($request);
-
-        //验证参数是否设置正确 不矛盾
-        if(count(array_intersect($allowKeys,$requireKeys)) != count($requireKeys)){
-            $this->msg = '方法参数设置错误';
-            return false;
-        }else{
-            //验证没有提交多余的参数
-            if(count(array_intersect($allowKeys,$requestKeys)) != count($requestKeys)){
-                $this->msg = '请求参数错误 （多余参数）';
+            //验证有没有提交多余的参数
+            if(!empty($requestKeys) && count(array_intersect($allowKeys,$requestKeys)) != count($requestKeys)){
+                $this->msg = '请求参数错误 （提交了多余的参数）';
                 return false;
             }else{
-                if(count(array_intersect($requestKeys,$requireKeys)) != count($requireKeys)){
-                    $this->msg = '请求参数错误 （必填参数没有）';
+                //验证有没有提交必填的参数
+                if(!empty($requireKeys) && count(array_intersect($requestKeys,$requireKeys)) != count($requireKeys)){
+                    $this->msg = '请求参数错误 （有必填参数没有提交）';
                     return false;
                 }else{
                     //TODO 格式验证
-                    $this->rParams = $request;
-
+                    $this->request = $request;
 
                     return true;
                 }
             }
         }
-
     }
 
     public function afterAction($action,$result){

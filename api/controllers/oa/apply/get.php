@@ -8,7 +8,7 @@ class get extends Action {
     public function run() {
         $errormsg = '';
         $result = false;
-        $apply = Apply::find()->where(['id'=>$this->controller->rParams['id']])->one();
+        $apply = Apply::find()->where(['id'=>$this->controller->request['id']])->one();
         if($apply){
             $result = true;
         }else{
