@@ -20,7 +20,7 @@ class m008_oa_task_category_id extends Migration
             'task_id'=> $this->integer(11),
             'category_id'=>$this->integer(11)
         ]);
-
+        $this->addPrimaryKey('primayKey','task_category_id',['task_id','category_id']);
 
     }
 
