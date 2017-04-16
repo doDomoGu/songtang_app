@@ -91,7 +91,7 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">分类</label>
                 <div class="col-sm-6">
-                    <?=Html::checkboxList('create-category-select','',$categoryList,['class'=>'create-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
+                    <?=Html::checkboxList('create-category-select','',$taskCategoryList,['class'=>'create-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
                 </div>
             </div>
             <div class="form-group">

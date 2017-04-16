@@ -47,7 +47,7 @@ class TaskController extends BaseController
 
         $params['aid'] = $aid;
         $params['bid'] = $bid;
-        $params['categoryList'] = TaskCategory::getDropdownList();
+        $params['taskCategoryList'] = TaskCategory::getDropdownList();
         return $this->render('index',$params);
     }
 
