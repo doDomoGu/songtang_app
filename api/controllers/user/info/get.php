@@ -6,7 +6,7 @@ use ucenter\models\User;
 
 class get extends Action {
     public function run() {
-        $id = $this->controller->rParams['id'];
+        $id = $this->controller->request['id'];
         $user = User::find()->where(['id'=>$id])->one();
         if($user){
             return ['user_get_response'=>
