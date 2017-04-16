@@ -1,21 +1,19 @@
 <?php
-use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
-use oa\models\Flow;
-use yii\helpers\Url;
+    use common\components\CommonFunc;
     $this->title = '【'.$task->title.'】的发起人设置';
     oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/apply_user.js');
 ?>
 <section>
-    <div style="margin-bottom: 10px;">
-        <?php if($task->set_complete==0):?>
-        <?=Html::a('新增发起人','script:void(0)',['data-toggle'=>"modal",
-            'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
-        <?php endif;?>
-        <?=Html::a('返回','/admin/task',['class'=>'btn btn-default'])?>
-    </div>
-    <table class="table table-bordered" style="background: #fafafa;">
+    <input type="hidden" class="task-id" value="<?=$task->id?>" />
+    <div class="errmsg" style="color:red;display:none;"></div>
+    <?php if($task->set_complete==0):?>
+    <button class="btn btn-success submit-btn" > 保存 </button>
+    <?php endif;?>
+    <?=Html::a('返回','/admin/task',['class'=>'btn btn-default'])?>
+    <table class="table table-bordered" style="margin: 10px 0;background: #fafafa;">
         <tr>
+            <th></th>
             <th>职员ID</th>
             <th>职员姓名</th>
             <th>地区</th>
@@ -25,48 +23,34 @@ use yii\helpers\Url;
             <!--<th>操作</th>-->
         </tr>
         <tbody>
-        <?php foreach($list as $l):?>
+        <?php foreach($userList as $l):?>
+            <?php $userInfo = CommonFunc::getByCache(\login\models\UserIdentity::className(),'findIdentityOne',[$l->id],'ucenter:user/identity'); ?>
+            <?php if($userInfo!=null):?>
             <tr>
-                <td><?=$l->user_id?></td>
-                <td><?=$l->user->name?></td>
-                <td><?=$l->user->district->name?></td>
-                <td><?=$l->user->industry->name?></td>
-                <td><?=$l->user->getDepartmentFullRoute()?></td>
-                <td><?=$l->user->position->name?></td>
+                <td class="text-center"><input type="checkbox" name="user_check[]" value="<?=$l->id?>"  <?=in_array($l->id,$applyUserList)?'checked="checked"':''?> class="user-checkbox" /></td>
+                <td><?=$l->id?></td>
+                <td><?=$userInfo->name?></td>
+                <td><?=$userInfo->district?></td>
+                <td><?=$userInfo->industry?></td>
+                <td><?=$userInfo->department?></td>
+                <td><?=$userInfo->position?></td>
             </tr>
-
+            <?php else:?>
+                <tr>
+                    <td><?=$l->id?></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            <?php endif;?>
         <?php endforeach;?>
         </tbody>
     </table>
+    <?php if($task->set_complete==0):?>
+        <button class="btn btn-success submit-btn" > 保存 </button>
+    <?php endif;?>
 </section>
 
 
-
-
-<?php
-Modal::begin([
-    'header' => '新增发起人',
-    'id'=>'createModal',
-    'options'=>['style'=>'margin-top:120px;'],
-]);
-?>
-    <div id="createContent">
-        <form class="form-horizontal" role="form">
-            <input class="task-id" type="hidden" value="<?=$task->id?>" />
-            <div class="form-group">
-                <label class="col-sm-4 control-label label1">发起人</label>
-                <div class="col-sm-6">
-                    <?=\yii\bootstrap\BaseHtml::dropDownList('user-id','',\ucenter\models\User::getItems(),['class'=>"form-control create-user-id"])?>
-                    <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-6">
-                    <button type="button" class="btn btn-success" id="create-btn">提交</button>
-                </div>
-            </div>
-        </form>
-    </div>
-<?php
-Modal::end();
-?>

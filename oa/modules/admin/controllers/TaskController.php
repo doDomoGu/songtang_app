@@ -184,7 +184,16 @@ class TaskController extends BaseController
         $task = Task::find()->where(['id'=>$tid])->one();
         if($task){
             $applyUser= TaskApplyUser::find()->where(['task_id'=>$tid])->all();
-            $params['list'] = $applyUser;
+
+            //$params['list'] = $applyUser;
+            $applyUserList = [];
+foreach($applyUser as $au){
+    $applyUserList[] = $au->user_id;
+}
+$params['applyUserList'] = $applyUserList;
+
+            $params['userList'] = User::find()->all();
+
             $params['task'] = $task;
             return $this->render('apply_user',$params);
         }else{
@@ -222,6 +231,39 @@ class TaskController extends BaseController
                         }
                     }
                 }
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+
+    public function actionApplyUserAdd2(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $user_id = Yii::$app->request->post('user_id','');
+            $tid = intval(Yii::$app->request->post('tid',0));
+            $exist = Task::find()->where(['id'=>$tid])->one();
+            if(!$exist){
+                $errormsg = '对应的任务ID不存在！';
+            }else{
+                TaskApplyUser::deleteAll(['task_id'=>$tid]);
+
+                $userIds = explode(',',$user_id);
+                foreach($userIds as $uid){
+                    $n = new TaskApplyUser();
+                    $n->task_id = $tid;
+                    $n->user_id = $uid;
+                    $n->save();
+                }
+
+                Yii::$app->getSession()->setFlash('success','修改发起人成功！');
+                $result = true;
+
             }
         }else{
             $errormsg = '操作错误，请重试!';

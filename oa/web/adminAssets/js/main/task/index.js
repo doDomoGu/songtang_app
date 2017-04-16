@@ -32,6 +32,16 @@ $(function () {
         });
     });
 
+    $('#checkall').click(function(){
+        if($(this).prop('checked')){
+            $('input[name="create-category-select[]"]').prop('checked',true);
+        }else{
+            $('input[name="create-category-select[]"]').prop('checked',false);
+        }
+
+        //if()
+    })
+
     $('.complete-btn').on('click',function(){
         var id = $(this).attr('data-id');
         if(confirm('确认已完成设置？（确认后无法再返回设置）')){

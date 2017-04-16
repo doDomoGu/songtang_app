@@ -21,4 +21,34 @@ $(function () {
             }
         });
     });
+
+
+    $('.submit-btn').click(function(){
+        $('.errmsg').html('').hide();
+        var tid =$('.task-id').val();
+        var userids = [];
+        $('input[name="user_check[]"]:checked').each(function(){
+            userids.push($(this).val());
+        });
+        var user_id = userids.join(',');
+
+        $.ajax({
+            url: '/admin/task/apply-user-add2',
+            type: 'post',
+            //async : false,
+            dataType: 'json',
+            data: {
+                tid : tid,
+                user_id : user_id
+            },
+            success: function (data) {
+                if(data.result){
+                    location.href='/admin/task/apply-user?tid='+tid;
+                }else{
+                    $('#createContent .errormsg-text').html(data.errormsg).show();
+
+                }
+            }
+        });
+    });
 });

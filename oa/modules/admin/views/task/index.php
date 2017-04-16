@@ -19,10 +19,10 @@
         <tr>
             <th>#</th>
             <th>标题</th>
-            <th>分类</th>
-            <th width="200">所属地区 <?/*=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])*/?></th>
+            <th width="200">分类</th>
+            <th width="100">所属地区 <?/*=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])*/?></th>
             <!--<th>所属行业</th>-->
-            <th>所属公司 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
+            <th width="100">所属公司 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
             <th>所属部门</th>
             <th>状态</th>
             <th>设置</th>
@@ -89,7 +89,10 @@ Modal::begin([
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-4 control-label label1">分类</label>
+                <label class="col-sm-4 control-label label1">
+                    <input type="checkbox" id="checkall" />
+                    分类
+                </label>
                 <div class="col-sm-6">
                     <?=Html::checkboxList('create-category-select','',$taskCategoryList,['class'=>'create-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
                 </div>
