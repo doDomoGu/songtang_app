@@ -32,4 +32,9 @@
             <span class="val"><?=$user->position?></span>
         </li>
     </ul>
+    <?php if($user->isOaBackendAdmin || $user->isSuperAdmin):?>
+        <div class="text-center" style="margin-bottom: 10px;">
+            <a href="/admin" target="_blank" class="btn btn-warning btn-ms" >后台管理</a>
+        </div>
+    <?php endif;?>
 </section>
