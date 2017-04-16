@@ -9,7 +9,7 @@ class getall extends Action {
         $errormsg = '';
         $result = false;
 
-        $user_id = $this->controller->rParams['user_id'];
+        $user_id = $this->controller->request['user_id'];
 
 
         $query = Apply::find();
@@ -32,7 +32,7 @@ class getall extends Action {
                 ];
             }
         }else{
-            $errormsg = '找不到对应的申请!';
+            $errormsg = '没有找到发起过的申请!';
         }
         if($result){
             return ['apply_get_all_response'=>

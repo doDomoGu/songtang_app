@@ -9,7 +9,7 @@ class getall extends Action {
     public function run() {
         $errormsg = '';
         $result = false;
-        $apply_user = $this->controller->rParams['apply_user'];
+        $apply_user = $this->controller->request['user_id'];
 
 
         $query = Task::find();

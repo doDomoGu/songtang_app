@@ -5,7 +5,19 @@ use ucenter\models\User;
 use Yii;
 
 class UserController extends BaseController{
-    public $helpTitle = 'User API';
+    public $format = [
+        'info-get'=>[
+            'param'=>[
+                'id'=>[
+                    'type' => 'int',
+                    'required' => true,
+                    'explain' => '用户ID'
+                ]
+            ],
+            'title' => '获取用户信息',
+            'explain' => '获取用户信息.....'
+        ],
+        ];
 
     public $allowArr = [
             'info-get'=>['id'=>'int'],
@@ -33,7 +45,7 @@ class UserController extends BaseController{
             'info-get'=>[
                 'class'=>'api\controllers\user\info\get',
             ],
-            'login'=>[
+            /*'login'=>[
                 'class'=>'api\controllers\user\login\index',
             ],
             'wx-code-to-session'=>[
@@ -50,20 +62,7 @@ class UserController extends BaseController{
             ],
             'wx-unbind-user'=>[
                 'class'=>'api\controllers\user\wx\unbindUser',
-            ]
+            ]*/
         ];
-    }
-
-
-    public function getHelp($act){
-        switch($act){
-            case 'info-get':
-                $msg = $act.' : help info';
-                break;
-            default:
-                $msg = false;
-        }
-
-        return $msg;
     }
 }

@@ -14,8 +14,6 @@ class ApiFunc extends Component {
         //获取方法列表
         $actionList = array_keys($class->actions());
 
-        $return['title'] = $class->helpTitle;
-
         $list = [];
 
         $format = $class->format;
@@ -49,10 +47,7 @@ class ApiFunc extends Component {
             ];*/
         }
 
-        $return['list'] = $list;
-
-
-        return $return ;
+        return $list;
 
     }
 

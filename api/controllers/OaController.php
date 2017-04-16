@@ -1,11 +1,7 @@
 <?php
 namespace api\controllers;
 
-use Yii;
-
 class OaController extends BaseController{
-
-    public $helpTitle = 'OA API';
 
     public $format = [
             'apply-get'=>[
@@ -49,22 +45,29 @@ class OaController extends BaseController{
                 ],
                 'title' => '创建申请表',
                 'explain'=>'创建申请表...'
-            ]
-        ];
-
-    public $allowArr = [
-            'change'=>[
-                'id'=>'int',
-                'name'=>'str'
             ],
             'task-getall'=>[
-                'apply_user'=>'int'
+                'param'=>[
+                    'user_id'=>[
+                        'type' => 'int',
+                        'required' => true,
+                        'explain' => '申请人用户ID'
+                    ]
+                ],
+                'title' => '获取对应用户可发起的申请表模板',
+                'explain' => '获取可发起的申请表模板.....'
             ],
             'apply-getall'=>[
-                'user_id'=>'int'
+                'param'=>[
+                    'user_id'=>[
+                        'type' => 'int',
+                        'required' => true,
+                        'explain' => '申请人用户ID'
+                    ]
+                ],
+                'title' => '获取对应用户发起的申请',
+                'explain' => '获取对应用户发起的申请表.....'
             ]
-        ];
-    public $requireArr = [
         ];
 
     public function actions()
@@ -76,34 +79,12 @@ class OaController extends BaseController{
             'apply-create'=>[
                 'class'=>'api\controllers\oa\apply\create',
             ],
-            /*'apply-getall'=>[
+            'apply-getall'=>[
                 'class'=>'api\controllers\oa\apply\getall',
             ],
             'task-getall'=>[
                 'class'=>'api\controllers\oa\task\getall',
-            ]*/
+            ]
         ];
-    }
-
-
-    public function getHelp($act){
-        switch($act){
-            case 'apply-create':
-                $msg = $act.' : help info';
-                break;
-            case 'apply-get':
-                $msg = $act.' : help info';
-                break;
-            case 'apply-getall':
-                $msg = $act.' : help info';
-                break;
-            case 'task-getall':
-                $msg = $act.' : help info';
-                break;
-            default:
-                $msg = false;
-        }
-
-        return $msg;
     }
 }
