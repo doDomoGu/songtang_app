@@ -11,7 +11,7 @@
 <section>
     <div>
         <h3>
-            <?=\app\components\PositionFunc::getFullRoute($this->context->user->position_id);?>
+            ### 职位路径 ####
         </h3>
     </div>
     <table class="table table-bordered">

@@ -46,7 +46,7 @@ class MessageFunc extends Component {
             $position = Position::find()->where(['id'=>$position_id])->one();
             $info = '('.$position_id.') ';
             if($position)
-                $info .= PositionFunc::getFullRoute($position_id);
+                $info .= '取职位路径';
             else
                 $info .= 'N/A';
         }elseif($send_type==self::SEND_TYPE_ALL){
