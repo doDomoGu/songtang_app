@@ -6,5 +6,6 @@ Yii::setAlias('@ucenter', dirname(dirname(__DIR__)) . '/ucenter');
 Yii::setAlias('@oa', dirname(dirname(__DIR__)) . '/oa');
 Yii::setAlias('@yun', dirname(dirname(__DIR__)) . '/yun');
 Yii::setAlias('@api', dirname(dirname(__DIR__)) . '/api');
+Yii::setAlias('@test', dirname(dirname(__DIR__)) . '/test');
 Yii::setAlias('@clientResource', dirname(dirname(__DIR__)) . '/clientResource');
 Yii::setAlias('@merchantResource', dirname(dirname(__DIR__)) . '/merchantResource');
