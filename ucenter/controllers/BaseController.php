@@ -12,17 +12,14 @@ class BaseController extends Controller
     public $viewName = '';      //视图文件
     public $isMobile = false;   //表示是否为移动用户
     public $hasAuth = false;    //表示是否有权限使用
-    public $except = [
+    public $routeExcepted = [
         'site/login',
-        //'site/get-user',
-        'site/captcha',
+        //'site/captcha',
         'site/error',
-        /*'site/index',
-        'site/logout',*/
 
-        'site/send-test',
-        'site/test',
-        'site/install'
+//        'site/send-test',
+//        'site/test',
+//        'site/install'
     ];
 
 
@@ -42,8 +39,11 @@ $s=5/0;
 
 
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
-            $this->checkLogin();  //检测用户登录 和 状态是否正常
+            $this->checkLogin();  //检测用户是否登录和状态是否正常
 
+            $this->checkAppAuth(); //检测用户是否有当前APP的权限
+
+ //var_dump($s);exit;
             //Yii::$app->setLayoutPath(Yii::$app->viewPath);  //修改读取布局文件的默认文件夹  原本为 views/layouts => views
 
             //$this->viewName = $this->action->id;  //一般视图名就等于动作名  site/login => login.php
@@ -62,15 +62,19 @@ $s=5/0;
         }
     }
 
-    //检测是否登陆
-    public function checkLogin(){
+    /**
+     * 检测用户是否登录
+     *
+     * @return bool
+     */
+    private function checkLogin(){
         //除了上述访问路径外，需要用户登录，跳转至登录页面
-        if (!in_array($this->route, $this->except)) {
+        if (!in_array($this->route, $this->routeExcepted)) {
             if(Yii::$app->user->isGuest) {
                 $this->toLogin();
                 return false;
             }else{
-                return $this->checkAuth();
+                return true;
             }
         }else{
             return true;
@@ -84,19 +88,17 @@ $s=5/0;
         $session['referrer_url_user'] = Yii::$app->request->getAbsoluteUrl();
 
         $this->redirect(Yii::$app->params['loginUrl']);
-        Yii::$app->end();
+        //Yii::$app->end();
     }
 
     //检查是否有使用这个app权限
-    private function checkAuth(){
+    private function checkAppAuth(){
         if(!Yii::$app->user->identity->isUcenterAdmin && !Yii::$app->user->identity->isSuperAdmin){
-            if($this->getRoute()=='site/no-auth'){
-                return true;
-            }else{
-                return $this->redirect('/site/no-auth');
+            if($this->route != 'site/no-auth'){
+                $this->redirect('/site/no-auth');
             }
+            return false;
         }else{
-            $this->hasAuth = true;
             return true;
         }
     }
