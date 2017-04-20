@@ -13,6 +13,7 @@ class BaseController extends Controller
 
     public function beforeAction($action){
         if (parent::beforeAction($action)) {
+            header("Access-Control-Allow-Origin:*");
             //TODO  访问日志
 
             //TODO  其他逻辑代码
@@ -26,7 +27,6 @@ class BaseController extends Controller
                     ]
                 ];
                 return $this->afterAction($action,$result);
-
             }
             return true;
         }

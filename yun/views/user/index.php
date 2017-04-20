@@ -1,6 +1,5 @@
 <?php
     use common\components\CommonFunc;
-    use yun\components\PositionFunc;
     yun\assets\AppAsset::addCssFile($this,'css/main/user/index.css');
 ?>
 <section>

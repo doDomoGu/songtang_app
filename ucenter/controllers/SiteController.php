@@ -25,10 +25,10 @@ class SiteController extends BaseController
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
+            /*'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            ],*/
         ];
     }
 
@@ -37,7 +37,7 @@ class SiteController extends BaseController
         return $this->render('index');
     }
 
-    public function actionClearCache(){
+/*    public function actionClearCache(){
         $cache = yii::$app->cache;
         $cache->flush();echo 'flushed';exit;
         unset($cache['user-get-items']);
@@ -53,7 +53,7 @@ class SiteController extends BaseController
         unset($cache['treeDataId']);
 
         echo 'cleared';exit;
-    }
+    }*/
 
     /*public function actionError(){
 
@@ -116,7 +116,7 @@ class SiteController extends BaseController
         return $this->goHome();
     }*/
 
-    public function actionTest(){
+    /*public function actionTest(){
         $list = User::find()->all();
 foreach($list as $l){
     var_dump($l->id,$l->position_id,$l->position->name);
@@ -139,9 +139,6 @@ foreach($list as $l){
         $n = new Department();
         $n->install();
 
-//        $n = new Structure();
-//        $n->install();
-
         $n = new Position();
         $n->install();
 
@@ -150,9 +147,9 @@ foreach($list as $l){
 
         $n = new UserAppAuth();
         $n->install();
-    }
+    }*/
 
-    public function actionGetUser(){
+/*    public function actionGetUser(){
         $result = false;
         $data = false;
         $uid = Yii::$app->request->get('uid',false);
@@ -170,7 +167,7 @@ foreach($list as $l){
         $response = Yii::$app->response;
         $response->format=Response::FORMAT_JSON;
         $response->data=['result'=>$result,'data'=>$data];
-    }
+    }*/
 
     public function actionNoAuth(){
         if($this->hasAuth){

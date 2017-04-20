@@ -8,8 +8,8 @@ class index extends Action {
     public function run() {
         $success = false;
         $msg = '未知错误';
-        $username = $this->controller->rParams['username'];
-        $password = $this->controller->rParams['password'];
+        $username = $this->controller->request['username'];
+        $password = $this->controller->request['password'];
 
         if($username==''){
             $msg = '用户名不能为空';

@@ -1,12 +1,6 @@
 <?php
 namespace yun\controllers;
 
-use ucenter\models\UserAppAuth;
-use yun\components\PermissionFunc;
-use yun\models\MessageUser;
-use yun\models\Position;
-use yun\models\PositionDirPermission;
-use ucenter\models\User;
 use Yii;
 use yii\web\Controller;
 

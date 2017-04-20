@@ -9,7 +9,7 @@ class create extends Action {
     public function run() {
         $errormsg = '';
         $result = false;
-        $session_3rd = $this->controller->rParams['session_3rd'];
+        $session_3rd = $this->controller->request['session_3rd'];
         $table = 'user_wx_3rd_session';
         $db = Yii::$app->db_ucenter;
         $sql = "select * from $table where 3rd_session = '$session_3rd'";
@@ -22,9 +22,9 @@ class create extends Action {
             }else{
 
                 $n = new Apply();
-                $n->title = $this->controller->rParams['title'];
-                $n->task_id  = $this->controller->rParams['task_id'];
-                $n->message  = $this->controller->rParams['message'];
+                $n->title = $this->controller->request['title'];
+                $n->task_id  = $this->controller->request['task_id'];
+                $n->message  = $this->controller->request['message'];
                 $n->user_id = $re['user_id'];
                 $n->flow_step = 1;
                 $n->add_time = date('Y-m-d H:i:s');

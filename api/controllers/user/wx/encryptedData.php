@@ -9,7 +9,7 @@ class encryptedData extends Action {
     public function run() {
         $appid = 'wxfeb4bdcd2e97f17b';
        /* $secret = '558f4d98ab4a03e9ccb5e20270806436';
-        $code = $this->controller->rParams['code'];
+        $code = $this->controller->request['code'];
 
         $url = 'https://api.weixin.qq.com/sns/jscode2session?';
 
@@ -23,11 +23,11 @@ class encryptedData extends Action {
         $result = json_decode($result,true);
 var_dump($result);exit;*/
 
-        $sessionKey = $this->controller->rParams['session_key'];
+        $sessionKey = $this->controller->request['session_key'];
 
-        $encryptedData = $this->controller->rParams['encryptedData'];
+        $encryptedData = $this->controller->request['encryptedData'];
 
-        $iv = $this->controller->rParams['iv'];
+        $iv = $this->controller->request['iv'];
 
         $pc = new WXBizDataCrypt($appid, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
