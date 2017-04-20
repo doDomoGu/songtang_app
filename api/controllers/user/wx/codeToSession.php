@@ -7,7 +7,7 @@ class codeToSession extends Action {
     public function run() {
         $appid = 'wxfeb4bdcd2e97f17b';
         $secret = '558f4d98ab4a03e9ccb5e20270806436';
-        $code = $this->controller->rParams['code'];
+        $code = $this->controller->request['code'];
 
         $url = 'https://api.weixin.qq.com/sns/jscode2session?';
 

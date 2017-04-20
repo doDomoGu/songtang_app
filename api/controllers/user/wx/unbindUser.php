@@ -9,8 +9,8 @@ class unbindUser extends Action {
     public function run() {
         $result = false;
         $msg = '';
-        $user_id = $this->controller->rParams['user_id'];
-        $session_3rd = $this->controller->rParams['session_3rd'];
+        $user_id = $this->controller->request['user_id'];
+        $session_3rd = $this->controller->request['session_3rd'];
 
         $table = 'user_wx_3rd_session';
         $db = Yii::$app->db_ucenter;

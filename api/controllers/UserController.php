@@ -1,9 +1,6 @@
 <?php
 namespace api\controllers;
 
-use ucenter\models\User;
-use Yii;
-
 class UserController extends BaseController{
     public $format = [
         'info-get'=>[
@@ -17,27 +14,98 @@ class UserController extends BaseController{
             'title' => '获取用户信息',
             'explain' => '获取用户信息.....'
         ],
-        ];
-
-    public $allowArr = [
-            'info-get'=>['id'=>'int'],
-            'login'=>['username'=>'str','password'=>'str'],
-            'wx-code-to-session'=>['code'=>'str'],
-            'wx-encrypted-data'=>['session_key'=>'str','encryptedData'=>'str','iv'=>'str'],
-            'wx-bind-user'=>['user_id'=>'str','session_3rd'=>'str'],
-            'wx-unbind-user'=>['user_id'=>'str','session_3rd'=>'str'],
-            'wx-get-3rd-session'=>['code'=>'str']
-        ];
-    public $requireArr = [
-            'info-get'=>['id'],
-            'login'=>['username','password'],
-            'wx-code-to-session'=>['code'],
-            'wx-encrypted-data'=>['session_key','encryptedData','iv'],
-            'wx-bind-user'=>['user_id','session_3rd'],
-            'wx-unbind-user'=>['user_id','session_3rd'],
-            'wx-get-3rd-session'=>['code']
-            //'add'=>['name']
-        ];
+        'login'=>[
+            'param'=>[
+                'username'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ],
+                'password'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ]
+            ],
+            'title'=> '用户登录',
+            'explain'=>'login'
+        ],
+        'wx-code-to-session'=>[
+            'param'=>[
+                'code'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ]
+            ],
+            'title'=> '微信码转换为session',
+            'explain'=>'login'
+        ],
+        'wx-encrypted-data'=>[
+            'param'=>[
+                'session_key'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ],
+                'encryptedData'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ],
+                'iv'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ]
+            ],
+            'title'=> '微信码解析',
+            'explain'=>'login'
+        ],
+        'wx-bind-user'=>[
+            'param'=>[
+                'user_id'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ],
+                'session_3rd'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ]
+            ],
+            'title'=> '微信用户绑定',
+            'explain'=>'login'
+        ],
+        'wx-unbind-user'=>[
+            'param'=>[
+                'user_id'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ],
+                'session_3rd'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ]
+            ],
+            'title'=> '微信用户解除绑定',
+            'explain'=>'login'
+        ],
+        'wx-get-3rd-session' =>[
+            'param'=>[
+                'code'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ]
+            ],
+            'title'=> '获取第三方session',
+            'explain'=>'login'
+        ],
+    ];
 
     public function actions()
     {
@@ -45,7 +113,7 @@ class UserController extends BaseController{
             'info-get'=>[
                 'class'=>'api\controllers\user\info\get',
             ],
-            /*'login'=>[
+            'login'=>[
                 'class'=>'api\controllers\user\login\index',
             ],
             'wx-code-to-session'=>[
@@ -62,7 +130,7 @@ class UserController extends BaseController{
             ],
             'wx-unbind-user'=>[
                 'class'=>'api\controllers\user\wx\unbindUser',
-            ]*/
+            ]
         ];
     }
 }

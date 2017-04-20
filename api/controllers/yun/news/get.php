@@ -7,7 +7,7 @@ use yun\models\News;
 
 class get extends Action {
     public function run() {
-        //$id = $this->controller->rParams['id'];
+        //$id = $this->controller->request['id'];
 
 
         $list = News::find()->where(['status'=>1])->orderBy('ord desc, edit_time desc')->all();

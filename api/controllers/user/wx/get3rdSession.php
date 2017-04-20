@@ -12,7 +12,7 @@ class get3rdSession extends Action {
 
         $expired = 3600; //过期时间 1小时
 
-        $code = $this->controller->rParams['code'];
+        $code = $this->controller->request['code'];
 
         $url = 'https://api.weixin.qq.com/sns/jscode2session?';
 
