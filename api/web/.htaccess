@@ -2,6 +2,9 @@ Options +FollowSymLinks
 IndexIgnore */*
 RewriteEngine on
 
+RewriteCond %{SERVER_PORT} !^443$
+RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
