@@ -73,13 +73,13 @@
 
         <section id="article-link">
             <article id="article-link-1">
-                <span><a href="/" target="_blank"></a></span>
+                <span><a href="http://www.songtang.net/tangxun" target="_blank"></a></span>
             </article>
             <article id="article-link-2">
-                <span><a href="/" target="_blank"></a></span>
+                <span><a href="http://www.songtang.net/tangkan" target="_blank"></a></span>
             </article>
             <article id="article-link-3">
-                <span><a href="/" target="_blank"></a></span>
+                <span><a href="http://www.songtang.net/tangjian" target="_blank"></a></span>
             </article>
         </section>
         </main>
