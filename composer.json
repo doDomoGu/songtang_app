@@ -18,13 +18,13 @@
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "bower-asset/jquery": "1.12.1-patch1"
+      "bower-asset/jquery": "2.1.4"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
         "yiisoft/yii2-gii": "~2.0.0",
         "yiisoft/yii2-faker": "~2.0.0",
-        "bower-asset/jquery": "1.12.1-patch1",
+        "bower-asset/jquery": "2.1.4",
 
         "codeception/base": "^2.2.3",
         "codeception/verify": "~0.3.1"
