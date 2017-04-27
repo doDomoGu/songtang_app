@@ -9,6 +9,11 @@ class UserController extends BaseController{
                     'type' => 'int',
                     'required' => true,
                     'explain' => '用户ID'
+                ],
+                'user_session'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => '用户认证信息'
                 ]
             ],
             'title' => '获取用户信息',
@@ -29,6 +34,22 @@ class UserController extends BaseController{
             ],
             'title'=> '用户登录',
             'explain'=>'login'
+        ],
+        'logout'=>[
+            'param'=>[
+                'user_session'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => '用户认证信息'
+                ],
+                'username'=>[
+                    'type'=>'string',
+                    'required' => true,
+                    'explain' => ''
+                ]
+            ],
+            'title'=> '用户登出',
+            'explain'=>'logout'
         ],
         'wx-code-to-session'=>[
             'param'=>[
@@ -115,6 +136,9 @@ class UserController extends BaseController{
             ],
             'login'=>[
                 'class'=>'api\controllers\user\login\index',
+            ],
+            'logout'=>[
+                'class'=>'api\controllers\user\logout\index',
             ],
             'wx-code-to-session'=>[
                 'class'=>'api\controllers\user\wx\codeToSession',
