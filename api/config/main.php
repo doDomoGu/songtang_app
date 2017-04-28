@@ -19,6 +19,9 @@ return [
         'login' => [
             'class' => 'api\modules\login\Module',
         ],
+        'v1' => [
+            'class' => 'api\modules\v1\Module',
+        ],
     ],
     'components' => [
         'request' => [
