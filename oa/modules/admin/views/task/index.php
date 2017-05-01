@@ -62,7 +62,7 @@
                     <?php endif;?>
                 </td>
                 <td>
-                    <?=Html::a('编辑','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs'])?>
+                    <?/*=Html::a('编辑','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs'])*/?>
                     <?php $isApplied = Task::isApplied($l->id);?>
                     <?php if($isApplied):?>
                         <?=Html::a('删除',Url::to(''),['class'=>'btn btn-xs btn-danger disabled'])?>
@@ -140,6 +140,71 @@ Modal::begin([
             </div>
         </form>
     </div>
+<?php
+Modal::end();
+?>
+
+
+<?php
+Modal::begin([
+    'header' => '编辑任务',
+    'id'=>'editModal',
+    'options'=>['style'=>'margin-top:120px;'],
+]);
+?>
+<div id="createContent">
+    <form class="form-horizontal" role="form">
+        <input class="aid-value" type="hidden" />
+        <input class="bid-value" type="hidden" />
+        <input class="p_id-value" type="hidden" />
+        <div class="form-group">
+            <label class="col-sm-4 control-label label1">标题</label>
+            <div class="col-sm-6">
+                <input class="form-control create-title">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label label1">
+                <input type="checkbox" id="checkall" />
+                分类
+            </label>
+            <div class="col-sm-6">
+                <?=Html::checkboxList('create-category-select','',$taskCategoryList,['class'=>'create-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label label1">所属地区</label>
+            <div class="col-sm-6">
+                <?=\yii\bootstrap\BaseHtml::dropDownList('district-select','',\ucenter\models\District::getItems(),['class'=>"form-control create-district-select"])?>
+            </div>
+        </div>
+        <!--<div class="form-group">
+                <label class="col-sm-4 control-label label1">所属行业</label>
+                <div class="col-sm-6">
+                    <?/*=\yii\bootstrap\BaseHtml::dropDownList('industry-select','',\ucenter\models\Industry::getItems(),['class'=>"form-control create-industry-select"])*/?>
+                </div>
+            </div>-->
+        <div class="form-group">
+            <label class="col-sm-4 control-label label1">所属公司</label>
+            <div class="col-sm-6">
+                <?=\yii\bootstrap\BaseHtml::dropDownList('company-select','',\ucenter\models\Company::getItems(),['class'=>"form-control create-company-select"])?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label label2">所属部门</label>
+            <div class="col-sm-6">
+                <?=\yii\bootstrap\BaseHtml::dropDownList('department-select','',\ucenter\models\Department::getItems(),['class'=>"form-control create-department-select",'encode'=>false])?>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-6">
+                <button type="button" class="btn btn-success" id="create-btn">提交</button>
+                <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
+            </div>
+        </div>
+    </form>
+</div>
 <?php
 Modal::end();
 ?>
