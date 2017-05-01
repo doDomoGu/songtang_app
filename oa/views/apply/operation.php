@@ -8,7 +8,9 @@ $this->title = '待办事项';
 ?>
 <section class="panel panel-default" id="infoContent">
     <div class="panel-heading">
-        <h3><?=$this->title?></h3>
+        <?=Html::img('/images/main/apply/apply_heading_2.png')?>
+        <?=$this->title?>
+        <?/*=Html::img('/images/main/apply/create-icon-2.png')*/?>
     </div>
     <div class="panel-body content" >
 <?=$html?>

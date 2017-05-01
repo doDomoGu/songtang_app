@@ -1,17 +1,38 @@
+.panel-default {
+    border-radius: 0;
+    border:none;
+}
+
+.panel-default > .panel-heading {
+    /*background: #fff;*/
+    text-align: center;
+    border-radius: 0;
+    border:none;
+    font-size:20px;
+    padding:20px;
+
+    background: #c7000a;
+    color:#fff;
+}
+
+.panel-body {
+    padding:4px 0;
+}
+
 #infoContent > .content > li {
     list-style: none;
     overflow: hidden;
-    background: #eee;
-    margin-bottom: 10px;
-    padding:2px 10px;
+    background: #e8868a;
+    margin-bottom: 4px;
+    padding:6px 10px;
 }
 
 #infoContent > .content >li.not-do {
-    background: #ffedce;
+    background: #fcd4d4;
 }
 
 #apply-do-form {
-    background: #c7eeea;
+    background: #e6e6e6;
     padding:10px 0;
     overflow: hidden;
     margin-bottom: 10px;
