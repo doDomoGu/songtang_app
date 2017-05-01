@@ -9,13 +9,11 @@ $this->title = '发起申请';
 
 <section class="panel panel-default">
     <div class="panel-heading">
-        <h3>
-            <?=$this->title?>
-        </h3>
-        <?=Html::img('/images/main/apply/create-icon-2.png')?>
+        <?=Html::img('/images/main/apply/apply_heading_1.png')?>
+        <?=$this->title?>
+        <?/*=Html::img('/images/main/apply/create-icon-2.png')*/?>
     </div>
     <div class="panel-body">
-
 
 <?php $form = ActiveForm::begin([
     'id' => 'apply-create-form',

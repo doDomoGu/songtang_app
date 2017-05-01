@@ -55,10 +55,13 @@
 }
 
 .panel-default > .panel-heading {
-    background: #fff;
     text-align: center;
     border-radius: 0;
     border:none;
+    background: #272c55;
+    font-size:20px;
+    padding:20px;
+    color:#fff;
 }
 
 .panel-default > .panel-heading > h3 {
