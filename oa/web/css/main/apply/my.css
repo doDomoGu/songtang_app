@@ -15,12 +15,15 @@
 }
 
 .panel-default > .panel-heading {
-    background: #fff;
+    /*background: #fff;*/
     text-align: center;
     border-radius: 0;
     border:none;
     font-size:20px;
     padding:20px;
+
+    background: #3e86a6;
+    color:#fff;
 }
 
 .panel-default > .panel-heading > h3 {
@@ -50,11 +53,15 @@
 }
 
 .panel-default > .panel-body th span{
-    background: #b5b6b6;
+   /* background: #b5b6b6;*/
     display:block;
     padding:8px;
     height:60px;
     text-align: center;
+    background: #3e86a6;
+    color:#fff;
+    font-weight:normal;
+    padding-top:12px;
 }
 
 .panel-default > .panel-body table th.last {
