@@ -51,4 +51,16 @@ $(function () {
             }
         });
     });
+
+    $('#checkAll').click(function(){
+       if($(this).prop('checked')==true){
+           $('input[name="user_check[]"]').each(function(){
+               $(this).prop('checked',true);
+           });
+       }else{
+           $('input[name="user_check[]"]').each(function(){
+               $(this).prop('checked',false);
+           });
+       }
+    });
 });

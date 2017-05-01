@@ -13,7 +13,7 @@ use yii\bootstrap\Html;
     <?=Html::a('返回','/admin/task',['class'=>'btn btn-default'])?>
     <table class="table table-bordered" style="margin: 10px 0;background: #fafafa;">
         <tr>
-            <th></th>
+            <th class="text-center"><input type="checkbox" id="checkAll" /></th>
             <th>职员ID</th>
             <th>职员姓名</th>
             <th>地区</th>
