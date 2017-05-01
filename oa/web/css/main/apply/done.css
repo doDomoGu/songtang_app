@@ -1,0 +1,11 @@
+.panel-default > .panel-heading {
+    background: #6da62a;
+    color:#fff;
+}
+
+.panel-default > .panel-body th span{
+    background: #9bd05d;
+    color:#fff;
+    font-weight:normal;
+    padding-top:12px;
+}

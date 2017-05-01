@@ -19,7 +19,8 @@
     text-align: center;
     border-radius: 0;
     border:none;
-
+    font-size:20px;
+    padding:20px;
 }
 
 .panel-default > .panel-heading > h3 {
@@ -30,6 +31,7 @@
 
 .panel-default > .panel-body {
     border:none;
+    padding:4px 0;
 }
 
 .btn.btn-primary {
