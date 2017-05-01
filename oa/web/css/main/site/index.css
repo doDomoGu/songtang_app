@@ -1,7 +1,41 @@
 #task-index {
-    padding:80px 60px 0;
+    padding:0 60px;
 
 }
+
+#task-index > .task-content-2 > .task-list {
+    width:175px;
+    margin-right:18px;
+    float:left;
+}
+
+#task-index > .task-content-2 > .task-list > .task-title {
+    display:block;
+    width:175px;
+    height:160px;
+    padding-top:36px;
+    padding-left:44px;
+    margin-bottom:18px;
+}
+#task-index > .task-content-2 > .task-list > .task-title-1 {
+    background-color:#f5d23a;
+}
+#task-index > .task-content-2 > .task-list > .task-title-2 {
+    background-color:#c7000a;
+}
+#task-index > .task-content-2 > .task-list > .task-title-3 {
+    background-color:#252a54;
+}
+#task-index > .task-content-2 > .task-list > .task-title-4 {
+    background-color:#6da62a;
+}
+
+#task-index > .task-content-2 > .task-list > .task-category-list {
+    height:350px;
+    background-color:#e6e6e6;
+}
+
+
 
 #task-index > .task-content{
     background-image: url('/images/main/site/bg.png');
@@ -9,6 +43,9 @@
     height:820px;
     padding-top:270px;
 }
+
+
+
 
 #task-index > .task-content > ul {
     list-style: none ;

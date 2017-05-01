@@ -46,8 +46,13 @@ echo Nav::widget([
 ]);
 NavBar::end();
 ?>
+<?php if(Yii::$app->controller->route=='site/index'):?>
+    <div style="background:url('/images/main/site/index_banner_bg.jpg');height:500px;overflow: hidden;margin-top:110px;text-align: center;">
+        <img src="/images/main/site/index_banner.jpg" style="height:500px;width:1200px;margin:0 auto;" />
+    </div>
+<?php endif;?>
 <div class="wrap">
-    <div class="container">
+    <div class="container" <?php if(Yii::$app->controller->route=='site/index'):?>style="padding-top:16px;"<?php endif;?>>
         <?=$this->render('sidebar')?>
         <?/*=$this->render('page_head')*/?>
         <section id="main">
