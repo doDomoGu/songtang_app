@@ -42,13 +42,38 @@ $(function () {
         //if()
     })
 
-    $('.complete-btn').on('click',function(){
-        var id = $(this).attr('data-id');
-        if(confirm('确认已完成设置？（确认后无法再返回设置）')){
-            location.href = '/admin/task/set-complete?id='+id;
+    $('.create-category-select input').each(function(){
+        var disabledArr = ['t1','t2','t3','t4'];
+        if(disabledArr.indexOf($(this).val())>-1){
+            $(this).attr('disabled','disabled');
         }
     });
 
+    $('.del-btn').click(function(){
+        var task_id = $(this).attr('data-id');
+        if(confirm('确认要删除这个任务表（模板）吗？')){
+            $.ajax({
+                url: '/admin/task/delete',
+                type: 'post',
+                //async : false,
+                dataType: 'json',
+                data: {
+                    id: task_id
+                },
+                success: function (data) {
+                    if(data.result){
+                        location.href='/admin/task';
+                    }else{
+                        alert('删除失败！');
+                        //$('#createContent .errormsg-text').html(data.errormsg).show();
+                    }
+                }
+            });
+        }else{
+            return false;
+        }
+
+    })
 
     $('.create-category-select input').each(function(){
          var disabledArr = ['t1','t2','t3','t4'];

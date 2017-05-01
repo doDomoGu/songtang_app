@@ -27,6 +27,7 @@
             <th>状态</th>
             <th>设置</th>
             <th>是否完成设置</th>
+            <th>操作</th>
         </tr>
         <tbody>
         <?php foreach($list as $l):?>
@@ -58,6 +59,15 @@
                         已完成
                     <?php else:?>
                         <button data-id="<?=$l->id?>" class="complete-btn btn btn-danger btn-xs">确认设置完成</button>
+                    <?php endif;?>
+                </td>
+                <td>
+                    <?=Html::a('编辑','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs'])?>
+                    <?php $isApplied = Task::isApplied($l->id);?>
+                    <?php if($isApplied):?>
+                        <?=Html::a('删除',Url::to(''),['class'=>'btn btn-xs btn-danger disabled'])?>
+                    <?php else:?>
+                        <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
                     <?php endif;?>
                 </td>
             </tr>

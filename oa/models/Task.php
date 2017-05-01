@@ -98,4 +98,14 @@ class Task extends \yii\db\ActiveRecord
     }
 
 
+    public static function isApplied($task_id){
+        $list = Apply::find()->where(['task_id'=>$task_id])->all();
+        if(!empty($list)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
 }

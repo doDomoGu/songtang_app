@@ -323,4 +323,27 @@ $params['applyUserList'] = $applyUserList;
         $response->format=Response::FORMAT_JSON;
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
+
+    public function actionDelete(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $task_id = Yii::$app->request->post('id','');
+            $exist = Task::find()->where(['id'=>$task_id])->one();
+            if(!$exist){
+                $errormsg = '对应的任务ID不存在！';
+            }else{
+                Task::deleteAll(['id'=>$task_id]);
+
+                Yii::$app->getSession()->setFlash('success','删除任务表（模板）成功！');
+                $result = true;
+
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
 }
