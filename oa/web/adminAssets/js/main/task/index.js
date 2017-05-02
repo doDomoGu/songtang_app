@@ -42,10 +42,11 @@ $(function () {
         //if()
     })
 
-    $('.create-category-select input').each(function(){
-        var disabledArr = ['t1','t2','t3','t4'];
-        if(disabledArr.indexOf($(this).val())>-1){
-            $(this).attr('disabled','disabled');
+    $('.complete-btn').on('click',function() {
+        var id = $(this).attr('data-id');
+        if (confirm('确认已完成设置？（确认后无法再返回设置）')) {
+            location.href = '/admin/task/set-complete?id=' + id;
+
         }
     });
 
