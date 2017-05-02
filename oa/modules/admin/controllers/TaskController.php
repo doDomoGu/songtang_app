@@ -346,4 +346,27 @@ $params['applyUserList'] = $applyUserList;
         $response->format=Response::FORMAT_JSON;
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
+
+    public function actionFlowDeleteAll(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $task_id = Yii::$app->request->post('id','');
+            $exist = Task::find()->where(['id'=>$task_id])->one();
+            if(!$exist){
+                $errormsg = '对应的任务ID不存在！';
+            }else{
+                FLow::deleteAll(['task_id'=>$task_id]);
+
+                Yii::$app->getSession()->setFlash('success','清空任务表流程成功！');
+                $result = true;
+
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
 }

@@ -9,7 +9,8 @@ use yii\helpers\Url;
 <section>
     <div style="margin-bottom: 10px;">
         <?php if($task->set_complete==0):?>
-        <?=Html::a('新增流程','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?=Html::a('新增流程','javascript:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?=Html::a('清空流程','javascript:void(0)',['class'=>'btn btn-danger delete-all'])?>
         <?php endif;?>
         <?=Html::a('返回','/admin/task',['class'=>'btn btn-default'])?>
     </div>

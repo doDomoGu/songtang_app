@@ -62,10 +62,32 @@ $(function () {
                     location.href='/admin/task/flow?tid='+tid;
                 }else{
                     $('#editContent .errormsg-text').html(data.errormsg).show();
-
                 }
             }
         });
+    });
+
+
+    $('.delete-all').click(function(){
+        if(confirm('确定要更删除所有流程么？')){
+            var _id = $('#createContent .task-id').val();
+            $.ajax({
+                url: '/admin/task/flow-delete-all',
+                type: 'post',
+                //async : false,
+                dataType: 'json',
+                data: {
+                    id: _id
+                },
+                success: function (data) {
+                    if(data.result){
+                        location.href='/admin/task/flow?tid='+_id;
+                    }else{
+                        alert(data.errormsg);
+                    }
+                }
+            });
+        }
     });
 
     $('.order-change').click(function(){
