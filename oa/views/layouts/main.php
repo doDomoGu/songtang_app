@@ -33,6 +33,7 @@ NavBar::begin([
     ],
 ]);
     $menuItems = [];
+    $menuItems[] = ['label' => '首页', 'url' => Url::to('/'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='site/index'?true:false];
     $menuItems[] = ['label' => '发起申请', 'url' => Url::to('/apply/create'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/create'?true:false];
     $menuItems[] = ['label' => '我的申请', 'url' => Url::to('/apply/my'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/my'?true:false];
     $menuItems[] = ['label' => '待办事项', 'url' => Url::to('/apply/todo'),'options'=>['class'=>'nav-do-btn'],'active'=>$this->context->getRoute()=='apply/todo'||$this->context->getRoute()=='apply/do'?true:false];
