@@ -62,21 +62,13 @@ NavBar::end();
     </div>
 </div>
 <footer class="footer">
-    <!--<div class="container">
-        <p class="pull-left">&copy; My Company </p>
-
-        <p class="pull-right"></p>
-    </div>-->
-    <div class=" text-center">
+    <div style="text-align: center;">
         <div class="logo-line">
-            <img src="/images/footer.png" style="width:1140px;">
+            <img src="<?=Yii::$app->params['yunAppUrl']?>/images/footer.png"  style="width:1140px;"/>
         </div>
-        <!--<div class="txt-line">
-            Tel: 021-50103599  Fax: 021-50103598  Email: songtang@126.com
+        <div class="copyright">
+            Copyright © 1993 - 2017 <strong><a style="text-decoration: none;color:#333;" href="http://www.songtang.net/">颂唐机构</a></strong> . All rights reserved
         </div>
-        <div class="txt-line">
-            地址：上海市-闵行区-中春路9988号 Add: No. 9988, Zhongchun Road, Minhang District, Shanghai
-        </div>-->
     </div>
 </footer>
 <?php $this->endBody() ?>

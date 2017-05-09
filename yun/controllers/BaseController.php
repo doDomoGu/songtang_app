@@ -26,7 +26,8 @@ class BaseController extends Controller
             'site/error',
             'site/get-qiniu-uptoken',
             'version/index',
-            'site/no-auth'
+            'site/no-auth',
+            'site/footer'
         ];
         if(!$this->checkLogin()){
             return false;

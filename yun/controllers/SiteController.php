@@ -644,4 +644,9 @@ class SiteController extends BaseController
         }
         echo 'rcHHHT finish =====<br/><br/>';
     }
+
+    public function actionFooter(){
+        $this->layout = false;
+        return $this->render('footer');
+    }
 }
