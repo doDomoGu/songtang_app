@@ -13,12 +13,12 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'api\controllers',
     'modules' => [
-        'ucenter' => [
+/*        'ucenter' => [
             'class' => 'api\modules\ucenter\Module',
         ],
         'login' => [
             'class' => 'api\modules\login\Module',
-        ],
+        ],*/
         'v1' => [
             'class' => 'api\modules\v1\Module',
         ],
@@ -43,6 +43,18 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'enableStrictParsing' =>true,
+            'rules' => [
+                //'DELETE v1/users'  => 'v1/users/delete',
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['v1/users'],
+                    'except' => ['delete'],
+                    //'pluralize' => true
+
+                ],
+
+            ]
         ],
 
     ],
