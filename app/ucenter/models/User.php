@@ -7,6 +7,8 @@ use yii\helpers\ArrayHelper;
 
 class User extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
+
     public static function getDb(){
         return Yii::$app->db_ucenter;
     }
@@ -196,6 +198,10 @@ class User extends \yii\db\ActiveRecord
         }
         return $items;
     }
+
+
+
+
 
 
 

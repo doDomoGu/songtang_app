@@ -50,6 +50,12 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['v1/users'],
                     'except' => ['delete'],
+                    'extraPatterns' => [
+                        //'GET versions' => 'version',
+                        //'GET search/<id:\d+>' => 'search',
+                        'POST login' => 'login',
+                        'GET signup-test' => 'signup-test',
+                    ],
                     //'pluralize' => true
 
                 ],

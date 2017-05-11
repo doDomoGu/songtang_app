@@ -3,6 +3,7 @@
 namespace login\models;
 
 use common\components\CommonFunc;
+use ucenter\models\UserApiAuth;
 use ucenter\models\UserAppAuth;
 use ucenter\models\User;
 use Yii;
@@ -43,6 +44,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public $isOaFrontend;       //颂唐OA前台使用权限
     public $isOaFrontendAdmin;  //颂唐OA前台管理员  (暂时没用到)
 
+
     /*private static $users = [
         '100' => [
             'id' => '100',
@@ -70,60 +72,12 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public static function findIdentityOne($id){
         $user = User::find()->where(['id'=>$id,'status'=>1])->one();
         if($user){
-            $authList = UserAppAuth::getAuthList($user->id);
-
-            $userStatic = [
-                'id' => $user->id,
-                'username' => $user->username,
-                'password' => $user->password,
-                'name'=>$user->name,
-                'district_id'=>$user->district_id,
-                'district'=>$user->district->name,
-                'industry_id'=>$user->industry_id,
-                'industry'=>$user->industry->name,
-                'company_id'=>$user->company_id,
-                'company'=>$user->company->name,
-                'department_id'=>$user->department_id,
-                'department'=>$user->getDepartmentFullRoute(),
-                'position_id'=>$user->position_id,
-                'position'=>$user->position->name,
-                'join_date'=>$user->join_date,
-                'contract_date'=>$user->contract_date,
-                //'position'=>$user->position->name,
-                'authKey' => 'key-'.$user->id,
-                'accessToken' => 'token-'.$user->id,
-
-                'isSuperAdmin' => $authList['isSuperAdmin'],
-
-                'isUcenterAdmin' => $authList['isUcenterAdmin'],
-
-                'isYunBackendAdmin' => $authList['isYunBackendAdmin'],
-                'isYunFrontend' => $authList['isYunFrontend'],
-                'isYunFrontendAdmin' => $authList['isYunFrontendAdmin'],
-
-                'isOaBackendAdmin' => $authList['isOaBackendAdmin'],
-                'isOaFrontend' => $authList['isOaFrontend'],
-                'isOaFrontendAdmin' => $authList['isOaFrontendAdmin'],
-            ];
-            $data = new static($userStatic);
-        }else {
-            $data = null;
+            return self::combineUser($user);
         }
-        return $data;
-    }
-
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        ##没有用到
-
-        /*foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }*/
-
         return null;
     }
+
+
 
     public static function findByUsername($username)
     {
@@ -133,18 +87,51 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
 
         $user = User::find()->where(['username'=>$username])->one();
         if($user){
-            $userStatic = [
-                'id' => $user->id,
-                'username' => $user->username,
-                'password' => $user->password,
-                'authKey' => 'key-'.$user->id,
-                'accessToken' => 'token-'.$user->id,
-                'status' => $user->status
-            ];
-            return new static($userStatic);
+            return self::combineUser($user);
         }
 
         return null;
+    }
+
+    public static function combineUser($user){
+        $authList = UserAppAuth::getAuthList($user->id);
+
+        $userStatic = [
+            'id' => $user->id,
+            'username' => $user->username,
+            'password' => $user->password,
+            'name'=>$user->name,
+            'district_id'=>$user->district_id,
+            'district'=>$user->district->name,
+            'industry_id'=>$user->industry_id,
+            'industry'=>$user->industry->name,
+            'company_id'=>$user->company_id,
+            'company'=>$user->company->name,
+            'department_id'=>$user->department_id,
+            'department'=>$user->getDepartmentFullRoute(),
+            'position_id'=>$user->position_id,
+            'position'=>$user->position->name,
+            'join_date'=>$user->join_date,
+            'contract_date'=>$user->contract_date,
+            //'position'=>$user->position->name,
+            //'authKey' => 'key-'.$user->id,
+            'authKey' => UserApiAuth::getAuthKey($user->id),
+            'accessToken' => 'token-'.$user->id,
+
+            'isSuperAdmin' => $authList['isSuperAdmin'],
+
+            'isUcenterAdmin' => $authList['isUcenterAdmin'],
+
+            'isYunBackendAdmin' => $authList['isYunBackendAdmin'],
+            'isYunFrontend' => $authList['isYunFrontend'],
+            'isYunFrontendAdmin' => $authList['isYunFrontendAdmin'],
+
+            'isOaBackendAdmin' => $authList['isOaBackendAdmin'],
+            'isOaFrontend' => $authList['isOaFrontend'],
+            'isOaFrontendAdmin' => $authList['isOaFrontendAdmin'],
+            'status' => $user->status
+        ];
+        return new static($userStatic);
     }
 
     public function getId()
@@ -166,6 +153,33 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
     public function validatePassword($password)
     {
         return $this->password === md5($password);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        // 如果token无效的话，
+        if(!UserApiAuth::apiTokenIsValid($token)) {
+            throw new \yii\web\UnauthorizedHttpException("token is invalid.");
+        }
+
+        $userApiAuth = UserApiAuth::find()->where(['auth_key'=>$token])->one();
+
+        return static::findOne(['id' => $userApiAuth->user_id, 'status' => self::STATUS_ACTIVE]);
+        // throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+
+
+    public function loginByAccessToken($token, $type = null)
+    {
+        echo 1;exit;
+        /* @var $class IdentityInterface */
+        $class = $this->identityClass;
+        $identity = $class::findIdentityByAccessToken($token, $type);
+        if ($identity && $this->login($identity)) {
+            return $identity;
+        } else {
+            return null;
+        }
     }
 
 }

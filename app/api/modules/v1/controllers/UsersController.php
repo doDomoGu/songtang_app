@@ -4,9 +4,12 @@ namespace api\modules\v1\controllers;
 /*use ucenter\models\UserWxOpenid;
 use ucenter\models\UserWxSession;*/
 use ucenter\models\User;
+use ucenter\models\UserApiAuth;
 use yii\data\ActiveDataProvider;
+use login\models\LoginForm;
 use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
+use yii\web\IdentityInterface;
 use yii\web\Response;
 use Yii;
 
@@ -22,11 +25,15 @@ class UsersController extends ActiveController
     {
         $behaviors = parent::behaviors();
         $behaviors['contentNegotiator']['formats'] = ['application/json' => Response::FORMAT_JSON];
-        /*$behaviors['authenticator'] = [
+        $behaviors['authenticator'] = [
             'class' => QueryParamAuth::className(),
             // 设置token名称，默认是access-token
-            'tokenParam' => 'token'
-        ];*/
+            'tokenParam' => 'token',
+            'optional' => [
+                'login',
+                'signup-test'
+            ],
+        ];
         return $behaviors;
     }
 
@@ -51,7 +58,7 @@ class UsersController extends ActiveController
             'view' => ['GET', 'HEAD'],
             'create' => ['POST'],
             'update' => ['PUT', 'PATCH'],
-            'delete' => ['DELETE'],
+            'delete' => ['DELETE']
         ];
     }
 
@@ -59,6 +66,21 @@ class UsersController extends ActiveController
         echo 1;exit;
     }
 
+    public function actionLogin ()
+    {
+        $model = new LoginForm;
+        $model->setAttributes(Yii::$app->request->post());
+        if ($user = $model->login()) {
+            if ($user instanceof IdentityInterface) {
+
+                return $user->authKey;
+            } else {
+                return $user->errors;
+            }
+        } else {
+            return $model->errors;
+        }
+    }
     /*
         public function actionIndex(){
             echo 'index123213213';exit;

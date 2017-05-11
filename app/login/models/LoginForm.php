@@ -2,6 +2,8 @@
 
 namespace login\models;
 
+use ucenter\models\User;
+use ucenter\models\UserApiAuth;
 use Yii;
 use yii\base\Model;
 
@@ -12,6 +14,14 @@ class LoginForm extends Model
     public $rememberMe = true;
 
     private $_user = false;
+
+    const GET_API_TOKEN = 'generate_api_token';
+
+    public function init ()
+    {
+        parent::init();
+        $this->on(self::GET_API_TOKEN, [$this, 'onGenerateApiToken']);
+    }
 
     public function rules()
     {
@@ -46,16 +56,16 @@ class LoginForm extends Model
         }
     }
 
-    /**
-     * Logs in a user using the provided username and password.
-     * @return boolean whether the user is logged in successfully
-     */
+
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            $this->trigger(self::GET_API_TOKEN);
+
+            return $this->_user;
+        } else {
+            return null;
         }
-        return false;
     }
 
     public function getUser()
@@ -68,6 +78,35 @@ class LoginForm extends Model
         return $this->_user;
     }
 
+    /**
+     * 登录校验成功后，为用户生成新的token
+     * 如果token失效，则重新生成token
+     */
+    public function onGenerateApiToken ()
+    {
+        $one = UserApiAuth::find()->where(['user_id'=>$this->_user->id])->one();
+        if($one){
+            $token = $one->auth_key;
+        }else{
+            $token = '';
+        }
+        if (!UserApiAuth::apiTokenIsValid($token)) {
+            $one = UserApiAuth::find()->where(['user_id'=>$this->_user->id])->one();
+            if ($one) {
+                $one->generateApiToken();
+                $one->expire_time = date('Y-m-d H:i:s',strtotime('+3600 second',time()));
+                $one->save();
+            }else{
+                $userApiAuth = new UserApiAuth();
+                $userApiAuth->user_id = $this->_user->id;
+                $userApiAuth->generateApiToken();
+                $userApiAuth->expire_time = date('Y-m-d H:i:s',strtotime('+3600 second',time()));
+                $userApiAuth->save();
+            }
+
+
+        }
+    }
 
 
 }
