@@ -157,15 +157,14 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-
         // 如果token无效的话，
         if(!UserApiAuth::apiTokenIsValid($token)) {
             throw new \yii\web\UnauthorizedHttpException("token is invalid.");
         }
-
         $userApiAuth = UserApiAuth::find()->where(['auth_key'=>$token])->one();
 
-        return static::findOne(['id' => $userApiAuth->user_id, 'status' => self::STATUS_ACTIVE]);
+        //return User::findOne(['id' => $userApiAuth->user_id, 'status' => User::STATUS_ACTIVE]);
+        return static::findIdentityOne($userApiAuth->user_id);
         // throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
@@ -175,6 +174,7 @@ class UserIdentity extends \yii\base\Object implements \yii\web\IdentityInterfac
         // @var $class IdentityInterface
         $class = $this->identityClass;
         $identity = $class::findIdentityByAccessToken($token, $type);
+
         if ($identity && $this->login($identity)) {
             return $identity;
         } else {
