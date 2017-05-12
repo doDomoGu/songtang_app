@@ -61,6 +61,7 @@ class LoginForm extends Model
     {
         if ($this->validate()) {
             $this->trigger(self::GET_API_TOKEN);
+            Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
 
             return $this->_user;
         } else {

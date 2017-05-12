@@ -21,6 +21,7 @@ class SiteController extends BaseController
 {
 
     public $defaultAction = 'login';
+    public $enableCsrfValidation = false;
 
     public function actions()
     {
