@@ -144,8 +144,8 @@ body {
 
 /* nav */
 #top-navbar {
-    height:110px;
-    border-bottom: 30px solid #c7000a;
+    height:130px;
+    border-bottom: 50px solid #c7000a;
 }
 
 #top-navbar .navbar-brand{
@@ -189,22 +189,22 @@ body {
 }
 
 #top-nav > li.nav-exit-btn:hover > a {
-    background: #7e0009;
+    background: #4e0004;
     color:#fff;
 }
 
 
 #top-nav {
     margin-top:80px;
-    height:30px;
+    height:50px;
 
 
 }
 #top-nav li {
-    height:30px;
+    height:50px;
 }
 #top-nav li a {
-    padding:5px 15px;
-    height:30px;
+    padding:15px 20px;
+    height:50px;
     color:#fefefe;
 }
