@@ -30,7 +30,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/related.css');
                         <td><span><?=$l->title?></span></td>
                         <td><span><?=$l->task->title?></span></td>
                         <td><span><?=$l->add_time?></span></td>
-                        <th class="last"><span>
+                        <td class="last"><span>
                             <?=Html::a('查看详情','script:void(0)',['data-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#infoModal",'class'=>'btn btn-success btn-xs'])?>
                             </span>
                         </td>

@@ -30,7 +30,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/todo.css');
                     <td><span><?=$l->title?></span></td>
                     <td><span><?=$l->task->title?></span></td>
                     <td><span><?=$l->add_time?></span></td>
-                    <th class="last"><span>
+                    <td class="last"><span>
                         <span><?=Html::a('进行操作','/apply/operation?id='.$l->id,['class'=>'btn btn-success btn-xs'])?></span>
                     </td>
                 </tr>
