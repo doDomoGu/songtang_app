@@ -24,20 +24,25 @@
         <li class="menu-list <?=$this->context->id=='task'?'nav-active':''?>">
             <a href="javascript:void(0);" class="<?=$this->context->id=='task'?'':'collapsed'?>">
                 <span class="menu-icon glyphicon glyphicon-cog"></span>
-                任务设置
+                模板设置
                 <span class="sub-menu-collapsed glyphicon glyphicon-plus"></span>
                 <span class="sub-menu-collapsed-in glyphicon glyphicon-minus"></span>
             </a>
 
             <ul class="sub-menu-list collapse <?=$this->context->id=='task'?'in':''?>" id="system-collapse">
+                <li class="<?=$this->context->id=='task' && $this->context->action->id=='index'?'active':''?>">
+                    <a href="<?=AdminFunc::adminUrl('task')?>">
+                        模板
+                    </a>
+                </li>
                 <li class="<?=$this->context->id=='task' && $this->context->action->id=='category'?'active':''?>">
                     <a href="<?=AdminFunc::adminUrl('task/category')?>">
                         分类
                     </a>
                 </li>
-                <li class="<?=$this->context->id=='task' && $this->context->action->id=='index'?'active':''?>">
-                    <a href="<?=AdminFunc::adminUrl('task')?>">
-                        任务表
+                <li class="<?=$this->context->id=='task' && $this->context->action->id=='form'?'active':''?>">
+                    <a href="<?=AdminFunc::adminUrl('task/form')?>">
+                        表单
                     </a>
                 </li>
             </ul>

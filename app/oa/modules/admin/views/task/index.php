@@ -19,11 +19,12 @@
         <tr>
             <th>#</th>
             <th>标题</th>
-            <th width="200">分类</th>
-            <th width="100">所属地区 <?/*=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])*/?></th>
+            <th width="200">关联分类</th>
+            <th width="200">关联表单</th>
+            <!-- <th width="100">所属地区 </th>-->
             <!--<th>所属行业</th>-->
-            <th width="100">所属公司 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
-            <th>所属部门</th>
+            <!--<th width="100">所属公司 </th>-->
+            <!--<th>所属部门</th>-->
             <th>状态</th>
             <th>设置</th>
             <th>是否完成设置</th>
@@ -32,18 +33,20 @@
         <tbody>
         <?php foreach($list as $l):?>
             <?php
-                $categoryList = Task::getCategory($l->id);
-                $category = implode(' , ',$categoryList);
+                /*$categoryList = Task::getCategory($l->id);
+                $category = implode(' , ',$categoryList);*/
+
+                $category = Task::getCategory2($l->id);
             ?>
 
             <tr>
                 <td><?=$l->id?></td>
                 <td><?=$l->title?></td>
                 <td><?=$category?></td>
-                <td><?=commonFunc::getByCache(District::className(),'getName',[$l->district_id],'ucenter:district/name')?></td>
+                <!--<td><?/*=commonFunc::getByCache(District::className(),'getName',[$l->district_id],'ucenter:district/name')*/?></td>-->
                 <!--<td><?/*=$l->industry_id>0?$industryArr[$l->industry_id]:'--'*/?></td>-->
-                <td><?=commonFunc::getByCache(Company::className(),'getName',[$l->company_id],'ucenter:company/name')?></td>
-                <td><?=commonFunc::getByCache(Department::className(),'getFullRoute',[$l->department_id],'ucenter:department/full-route')?></td>
+                <!--<td><?/*=commonFunc::getByCache(Company::className(),'getName',[$l->company_id],'ucenter:company/name')*/?></td>-->
+                <!--<td><?/*=commonFunc::getByCache(Department::className(),'getFullRoute',[$l->department_id],'ucenter:department/full-route')*/?></td>-->
                 <td><?=CommonFunc::getStatusCn($l->status)?></td>
                 <td>
                     <?php if($l->set_complete==1):?>

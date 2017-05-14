@@ -47,6 +47,29 @@ class Task extends \yii\db\ActiveRecord
         return $list;
     }
 
+    public static function getCategory2($task_id){
+        $taskCateId = TaskCategoryId::find()->where(['task_id'=>$task_id])->all();
+        $cateIds = [];
+        foreach($taskCateId as $t){
+            $cateIds[] = $t->category_id;
+        }
+        $category = TaskCategory::find()->where(['id'=>$cateIds])->orderBy('type asc')->all();
+        $list = [];
+        foreach($category as $c){
+            $list[$c->type][$c->id] = $c->name;
+        }
+        $typeList = TaskCategory::getTypeList();
+        $return = '';
+        foreach($list as $k=>$types){
+            $return .= $typeList[$k].' : '.implode(' , ',$types).'<br/>';
+        }
+
+
+
+
+        return $return ;
+    }
+
 
 
     public function getDistrict(){

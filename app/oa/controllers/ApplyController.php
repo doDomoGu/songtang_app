@@ -9,6 +9,7 @@ use oa\models\ApplyRecord;
 use oa\models\Flow;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
+use oa\models\TaskCategory;
 use ucenter\models\User;
 use yii\bootstrap\Html;
 use yii\web\Response;
@@ -84,6 +85,7 @@ class ApplyController extends BaseController
         }
         $params['model'] = $model;
         $params['tasks'] = Func::getTasksByUid(Yii::$app->user->id);
+        $params['taskCategory'] = TaskCategory::getDropdownList();
         if($this->isMobile){
             $this->tabbar_on = 2;
             return $this->render('mobile/create',$params);
