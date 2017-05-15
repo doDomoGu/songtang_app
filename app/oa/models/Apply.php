@@ -9,6 +9,10 @@ use ucenter\models\User;
 use Yii;
 class Apply extends \yii\db\ActiveRecord
 {
+
+    ////ALTER TABLE `apply` ADD `task_category` INT NOT NULL AFTER `task_id`;
+
+
     public static function getDb(){
         return Yii::$app->db_oa;
     }
@@ -36,8 +40,8 @@ class Apply extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title','user_id','task_id','flow_step'], 'required'],
-            [['user_id','task_id','flow_step','status'], 'integer'],
+            [['title','user_id','task_id','flow_step','task_category'], 'required'],
+            [['user_id','task_id','flow_step','status','task_category'], 'integer'],
             [['add_time','edit_time','message','flow_user'],'safe']
         ];
     }
