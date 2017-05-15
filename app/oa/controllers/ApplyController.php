@@ -10,6 +10,8 @@ use oa\models\Flow;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
+use oa\models\TaskCategoryId;
+use oa\models\TaskUserWildcard;
 use ucenter\models\User;
 use yii\bootstrap\Html;
 use yii\web\Response;
@@ -44,6 +46,8 @@ class ApplyController extends BaseController
      * 发起申请 填写页面
      */
     public function actionCreate(){
+        $category = Yii::$app->request->get('category',0);
+
         $model = new ApplyCreateForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -82,6 +86,8 @@ class ApplyController extends BaseController
                 //Yii::$app->session->setFlash()
                 return $this->redirect('/apply/my');
             }
+        }else{
+            $model->task_category = $category;
         }
         $params['model'] = $model;
         $params['tasks'] = Func::getTasksByUid(Yii::$app->user->id);
@@ -131,6 +137,62 @@ class ApplyController extends BaseController
      * 返回 html
      */
     public function actionGetTaskList(){
+        $errormsg = '';
+        $result = false;
+        $html = '';
+        if(Yii::$app->request->isAjax){
+            $taskCategory = trim(Yii::$app->request->post('task_category',0));
+            $taskCategoryIds = TaskCategoryId::find()->where(['category_id'=>$taskCategory])->all();
+            foreach($taskCategoryIds as $taskCategoryId){
+
+                $task = Task::find()->where(['id'=>$taskCategoryId->task_id])->one();
+                //1.判断模板状态
+                if($task && $task->set_complete == 1 && $task->status == 1){
+                    //2.判断模板发起人
+                    /*if(Yii::$app->user->identity->isOaFrontendAdmin){
+                        $isAllow = true;
+                    }else{*/
+                        $isAllow = false;
+                        $userWildcardList = TaskUserWildcard::find()->where(['task_id'=>$task->id])->all();
+
+                        //$params['list'] = $applyUser;
+                        $userList = [];
+                        foreach($userWildcardList as $uWL){
+                            $result = $uWL->getUsers();
+                            foreach($result as $r){
+
+                                if($r->id == Yii::$app->user->id){
+                                    $isAllow = true;
+                                }
+                            }
+                        }
+                    //}
+
+                    if($isAllow){
+                        $list[$task->id] = $task->title;
+                    }
+
+                }
+            }
+
+
+            //$list = Task::getList($district_id,$industry_id,$company_id);
+            $html .='<option value="">==请选择==</option>';
+            if(!empty($list)){
+                foreach($list as $k=>$v){
+                    $html.='<option value="'.$k.'">'.$v.'</option>';
+                }
+            }
+            $result = true;
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html];
+    }
+
+    public function actionGetTaskList22(){
         $errormsg = '';
         $result = false;
         $html = '';

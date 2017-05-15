@@ -21,17 +21,17 @@ oa\assets\AppAsset::addCssFile($this,'css/main/site/index.css');
                             <?php $list1 = array_slice($list,0,6);$list2 = array_slice($list,6,6);?>
                             <ul>
                             <?php foreach($list1 as $l):?>
-                                <li><?=$l->name?></li>
+                                <li><a href="/apply/create?category=<?=$l->id?>"><?=$l->name?></a></li>
                             <?php endforeach;?>
                             </ul>
                             <ul>
                             <?php foreach($list2 as $l):?>
-                                <li><?=$l->name?></li>
+                                <li><a href="/apply/create?category=<?=$l->id?>"><?=$l->name?></a></li>
                             <?php endforeach;?>
                             </ul>
                         <?php else:?>
                         <?php foreach($list as $l):?>
-                            <li><?=$l->name?></li>
+                                <li><a href="/apply/create?category=<?=$l->id?>"><?=$l->name?></a></li>
                         <?php endforeach;?>
                         <?php endif;?>
                     <?php endif;?>

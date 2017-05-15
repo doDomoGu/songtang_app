@@ -17,6 +17,9 @@ $this->title = '发起申请';
 
 <?php $form = ActiveForm::begin([
     'id' => 'apply-create-form',
+    'validateOnChange' => false,
+    'validateOnBlur' => false,
+    'validateOnSubmit' => true,
     'options' => ['class' => 'form-horizontal','autocomplete'=>'off'],
     'fieldConfig' => [
         'template' => "{label}\n<div class=\"col-lg-7\">{input}{hint}</div>\n<div class=\"col-lg-2\">{error}</div>",
@@ -26,7 +29,7 @@ $this->title = '发起申请';
 <?= $form->field($model, 'title')->label(Html::img('/images/main/apply/create-head.png').'&nbsp;&nbsp;'.$model->attributeLabels()['title'],['style'=>'text-align:left;padding-left:60px;']) ?>
 
 <?= $form->field($model, 'task_category',[
-    'template'=>"{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-2\">{error}</div><div class=\"col-lg-offset-3 col-lg-7 task-preview \"></div>"
+    'template'=>"{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-2\">{error}</div><div class=\"col-lg-offset-3 col-lg-7 \"></div>"
 ])->dropDownList($taskCategory,['prompt'=>'==请选择==','class'=>['form-control task-category-select'],'encode'=>false ])->label(Html::img('/images/main/apply/create-head-2.png').'&nbsp;&nbsp;'.$model->attributeLabels()['task_category'],['style'=>'text-align:left;padding-left:60px;'])  ?>
 
 

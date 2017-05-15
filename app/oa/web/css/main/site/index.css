@@ -3,6 +3,15 @@
 
 }
 
+#task-index a {
+    text-decoration: none;
+    color:#333;
+}
+
+#task-index a:hover {
+    color:#c7000a;
+}
+
 #task-index > .task-content-2 > .task-list {
     width:175px;
     margin-right:18px;

@@ -31,24 +31,30 @@ $(function(){
             }
         })
 
-        /*$('#applycreateform-task_category').on('change',function(){
+        $('#applycreateform-task_category').on('change',function(){
+            $('#applycreateform-task_id').html('<option value="">==请选择==</option>');
+            $('.task-preview').html('').hide();
+
             $.ajax({
-                url: '/apply/get-task-preview',
+                url: '/apply/get-task-list',
                 type: 'post',
                 //async : false,
                 dataType: 'json',
                 data: {
-                    task_id:task_id
+                    task_category:$(this).val()
                 },
                 success: function (data) {
                     if(data.result){
-                        $('.task-preview').html(data.html).show();
+                        $('#applycreateform-task_id').html(data.html);
                     }else{
-                        $('.task-preview').html(data.errormsg).show();
+                        //alert(data.errormsg);
+                        //$('.task-preview').html(data.errormsg).show();
 
                     }
                 }
             });
-        })*/
+        })
     }
+
+    $('#applycreateform-task_category').change();
 });
