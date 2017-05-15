@@ -31,6 +31,14 @@ class TaskController extends BaseController
         return $this->render('category',$params);
     }
 
+    public function actionForm()
+    {
+        $list = TaskCategory::find()->all();
+
+
+        $params['list'] = $list;
+        return $this->render('form',$params);
+    }
 
     public function actionIndex()
     {

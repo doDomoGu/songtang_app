@@ -3,12 +3,12 @@
     use yii\bootstrap\Html;
     use yii\helpers\Url;
 
-    $this->title = '模板 - 分类设置';
-    oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/index.js');
+    $this->title = '模板 - 表单设置';
+    /*oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/index.js');*/
 ?>
-<section>
+<!--<section>
     <div style="margin-bottom: 10px;">
-        <?=Html::a('新增分类','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?/*=Html::a('新增分类','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])*/?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
@@ -19,19 +19,17 @@
             <th>操作</th>
         </tr>
         <tbody>
-        <?php foreach($list as $l):?>
+        <?php /*foreach($list as $l):*/?>
             <tr>
-                <td><?=$l->id?></td>
-                <td><?=$l->name?></td>
-                <td><?=$l->typeName?></td>
-                <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
+                <td><?/*=$l->id*/?></td>
+                <td><?/*=$l->name*/?></td>
+                <td><?/*=$l->typeName*/?></td>
+                <td><?/*=\common\components\CommonFunc::getStatusCn($l->status)*/?></td>
                 <td>
-                    <?/*=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?><!--
-                    --><?/*=Html::a('发起人设置',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
                 </td>
             </tr>
 
-        <?php endforeach;?>
+        <?php /*endforeach;*/?>
         </tbody>
     </table>
 </section>
@@ -40,12 +38,12 @@
 
 
 <?php
-Modal::begin([
+/*Modal::begin([
     'header' => '新增分类',
     'id'=>'createModal',
     'options'=>['style'=>'margin-top:120px;'],
 ]);
-?>
+*/?>
     <div id="createContent">
         <form class="form-horizontal" role="form">
             <input class="aid-value" type="hidden" />
@@ -88,6 +86,6 @@ Modal::begin([
             </div>
         </form>
     </div>
-<?php
-Modal::end();
-?>
+--><?php
+/*Modal::end();
+*/?>
