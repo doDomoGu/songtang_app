@@ -29,7 +29,7 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['ord', 'status', 'district_id', 'industry_id', 'company_id', 'department_id','task_category'], 'integer'],
+            [['ord', 'status', 'district_id', 'industry_id', 'company_id', 'department_id'], 'integer'],
         ];
     }
 
