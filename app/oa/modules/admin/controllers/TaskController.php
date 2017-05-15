@@ -83,19 +83,23 @@ class TaskController extends BaseController
                         $task->status = 1;
                         if($task->save()){
                             $categoryIds = explode(',',$category_id);
+
                             foreach($categoryIds as $cate_id){
-                                $taskCategoryId = new TaskCategoryId();
-                                $taskCategoryId->task_id = $task->id;
-                                $taskCategoryId->category_id = $cate_id;
-                                $taskCategoryId->save();
+                                $taskCategory = TaskCategory::find()->where(['id'=>$cate_id])->one();
+                                if($taskCategory){
+                                    $taskCategoryId = new TaskCategoryId();
+                                    $taskCategoryId->task_id = $task->id;
+                                    $taskCategoryId->category_id = $cate_id;
+                                    $taskCategoryId->save();
+                                }
                             }
-                            $user = User::find()->all();
+                            /*$user = User::find()->all();
                             foreach($user as $u){
                                 $taskUser = new TaskApplyUser();
                                 $taskUser->task_id = $task->id;
                                 $taskUser->user_id = $u->id;
                                 $taskUser->save();
-                            }
+                            }*/
 
 
                             Yii::$app->getSession()->setFlash('success','新增任务【'.$task->title.'】成功！');

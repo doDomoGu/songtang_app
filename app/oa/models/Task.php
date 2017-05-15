@@ -61,7 +61,7 @@ class Task extends \yii\db\ActiveRecord
         $typeList = TaskCategory::getTypeList();
         $return = '';
         foreach($list as $k=>$types){
-            $return .= $typeList[$k].' : '.implode(' , ',$types).'<br/>';
+            $return .= '<span style="color:#999;">'.$typeList[$k].'</span> : '.implode(' , ',$types).'<br/>';
         }
 
 
