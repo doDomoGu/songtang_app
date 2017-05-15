@@ -20,13 +20,14 @@
             <th>#</th>
             <th>标题</th>
             <th width="200">关联分类</th>
-            <th width="200">关联表单</th>
+            <!--<th width="200">关联表单</th>-->
             <!-- <th width="100">所属地区 </th>-->
             <!--<th>所属行业</th>-->
             <!--<th width="100">所属公司 </th>-->
             <!--<th>所属部门</th>-->
-            <th>状态</th>
-            <th>设置</th>
+            <!--<th>状态</th>-->
+            <th>流程设置</th>
+            <th>发起人设置</th>
             <th>是否完成设置</th>
             <th>操作</th>
         </tr>
@@ -47,15 +48,21 @@
                 <!--<td><?/*=$l->industry_id>0?$industryArr[$l->industry_id]:'--'*/?></td>-->
                 <!--<td><?/*=commonFunc::getByCache(Company::className(),'getName',[$l->company_id],'ucenter:company/name')*/?></td>-->
                 <!--<td><?/*=commonFunc::getByCache(Department::className(),'getFullRoute',[$l->department_id],'ucenter:department/full-route')*/?></td>-->
-                <td><?=CommonFunc::getStatusCn($l->status)?></td>
+                <!--<td><?/*=CommonFunc::getStatusCn($l->status)*/?></td>-->
                 <td>
                     <?php if($l->set_complete==1):?>
                         <?=Html::a('查看流程',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
-                        <?=Html::a('查看发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
                     <?php else:?>
                         <?=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
-                        <?=Html::a('发起人设置',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
                     <?php endif;?>
+                </td>
+                <td>
+                    <?=Html::a('查看发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
+                    <?php /*if($l->set_complete==1):*/?><!--
+                        <?/*=Html::a('查看发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
+                    <?php /*else:*/?>
+                        <?/*=Html::a('发起人设置',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])*/?>
+                    --><?php /*endif;*/?>
                 </td>
                 <td>
                     <?php if($l->set_complete==1):?>

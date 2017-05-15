@@ -7,6 +7,7 @@ use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
 use oa\models\TaskCategoryId;
+use oa\models\TaskUserWildcard;
 use oa\modules\admin\components\AdminFunc;
 use ucenter\models\Company;
 use ucenter\models\District;
@@ -231,6 +232,35 @@ class TaskController extends BaseController
     }
 
     public function actionApplyUser(){
+        $tid = Yii::$app->request->get('tid',false);
+        $task = Task::find()->where(['id'=>$tid])->one();
+        if($task){
+            $list = TaskUserWildcard::find()->where(['task_id'=>$tid])->all();
+
+            //$params['list'] = $applyUser;
+            $userList = [];
+            foreach($list as $l){
+                $result = $l->getUsers();
+                foreach($result as $r){
+                    $userList[$r->id] = $r;
+                }
+            }
+
+            /*$params['applyUserList'] = $applyUserList;
+
+            $params['userList'] = User::find()->all();*/
+
+            $params['userList'] = $userList;
+
+            $params['task'] = $task;
+            return $this->render('apply_user',$params);
+        }else{
+            Yii::$app->getSession()->setFlash('error','发起人设置对应的任务id不存在!');
+            return $this->redirect(AdminFunc::adminUrl('task'));
+        }
+    }
+
+    public function actionApplyUser22(){
         $tid = Yii::$app->request->get('tid',false);
         $task = Task::find()->where(['id'=>$tid])->one();
         if($task){

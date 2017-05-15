@@ -1,7 +1,7 @@
 <?php
 use yii\bootstrap\Html;
     use common\components\CommonFunc;
-    $this->title = '【'.$task->title.'】的发起人列表';
+    $this->title = '【'.$task->title.'】的发起人设置';
     oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/apply_user.js');
 ?>
 <section>
@@ -13,6 +13,7 @@ use yii\bootstrap\Html;
     <?=Html::a('返回','/admin/task',['class'=>'btn btn-default'])?>
     <table class="table table-bordered" style="margin: 10px 0;background: #fafafa;">
         <tr>
+            <th class="text-center"><input type="checkbox" id="checkAll" /></th>
             <th>职员ID</th>
             <th>职员姓名</th>
             <th>地区</th>
@@ -26,6 +27,7 @@ use yii\bootstrap\Html;
             <?php $userInfo = CommonFunc::getByCache(\login\models\UserIdentity::className(),'findIdentityOne',[$l->id],'ucenter:user/identity'); ?>
             <?php if($userInfo!=null):?>
             <tr>
+                <td class="text-center"><input type="checkbox" name="user_check[]" value="<?=$l->id?>"  <?=in_array($l->id,$applyUserList)?'checked="checked"':''?> class="user-checkbox" /></td>
                 <td><?=$l->id?></td>
                 <td><?=$userInfo->name?></td>
                 <td><?=$userInfo->district?></td>
@@ -35,6 +37,7 @@ use yii\bootstrap\Html;
             </tr>
             <?php else:?>
                 <tr>
+                    <td></td>
                     <td><?=$l->id?></td>
                     <td></td>
                     <td></td>

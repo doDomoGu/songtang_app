@@ -44,6 +44,9 @@ class UserApiAuth extends \yii\db\ActiveRecord
 
     public static function getAuthKey($user_id){
         $one = self::find()->where(['user_id'=>$user_id])->one();
-        return $one->auth_key;
+        if($one)
+            return $one->auth_key;
+        else
+            return null;
     }
 }

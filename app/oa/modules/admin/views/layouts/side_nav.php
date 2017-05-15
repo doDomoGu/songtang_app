@@ -30,7 +30,7 @@
             </a>
 
             <ul class="sub-menu-list collapse <?=$this->context->id=='task'?'in':''?>" id="system-collapse">
-                <li class="<?=$this->context->id=='task' && $this->context->action->id=='index'?'active':''?>">
+                <li class="<?=$this->context->id=='task' && in_array($this->context->action->id,['index','flow','apply-user'])?'active':''?>">
                     <a href="<?=AdminFunc::adminUrl('task')?>">
                         模板
                     </a>
