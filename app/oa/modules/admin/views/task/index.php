@@ -75,8 +75,10 @@
                     <?/*=Html::a('编辑','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs'])*/?>
                     <?php $isApplied = Task::isApplied($l->id);?>
                     <?php if($isApplied):?>
+                        <?=Html::a('编辑',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
                         <?=Html::a('删除',Url::to(''),['class'=>'btn btn-xs btn-danger disabled'])?>
                     <?php else:?>
+                        <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary edit-btn','data-id'=>$l->id])?>
                         <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
                     <?php endif;?>
                 </td>
@@ -92,7 +94,7 @@
 
 <?php
 Modal::begin([
-    'header' => '新增任务',
+    'header' => '新增模板',
     'id'=>'createModal',
     'options'=>['style'=>'margin-top:120px;'],
 ]);
@@ -103,7 +105,7 @@ Modal::begin([
             <input class="bid-value" type="hidden" />
             <input class="p_id-value" type="hidden" />
             <div class="form-group">
-                <label class="col-sm-4 control-label label1">标题</label>
+                <label class="col-sm-4 control-label label1">模板标题</label>
                 <div class="col-sm-6">
                     <input class="form-control create-title">
                 </div>
@@ -111,7 +113,7 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">
                     <input type="checkbox" id="checkall" />
-                    分类
+                    所属分类
                 </label>
                 <div class="col-sm-6">
                     <?=Html::checkboxList('create-category-select','',$taskCategoryList,['class'=>'create-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
@@ -144,7 +146,7 @@ Modal::begin([
             </div>-->
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-6">
-                    <button type="button" class="btn btn-success" id="create-btn">提交</button>
+                    <button type="button" class="btn btn-success" id="create-submit-btn">提交</button>
                     <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>
@@ -156,40 +158,41 @@ Modal::end();
 
 
 <?php
-/*Modal::begin([
-    'header' => '编辑任务',
+Modal::begin([
+    'header' => '编辑模板',
     'id'=>'editModal',
     'options'=>['style'=>'margin-top:120px;'],
 ]);
-*/?><!--
+?>
 <div id="editContent">
     <form class="form-horizontal" role="form">
         <input class="aid-value" type="hidden" />
         <input class="bid-value" type="hidden" />
         <input class="p_id-value" type="hidden" />
+        <input class="edit-task_id" type="hidden" />
         <div class="form-group">
-            <label class="col-sm-4 control-label label1">标题</label>
+            <label class="col-sm-4 control-label label1">模板标题</label>
             <div class="col-sm-6">
-                <input class="form-control create-title">
+                <input class="form-control edit-title">
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label label1">
-                <input type="checkbox" id="checkall" />
-                分类
+                <input type="checkbox" id="edit-checkall" />
+                所属分类
             </label>
             <div class="col-sm-6">
-                <?/*=Html::checkboxList('create-category-select','',$taskCategoryList,['class'=>'create-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])*/?>
+                <?=Html::checkboxList('edit-category-select','',$taskCategoryList,['class'=>'edit-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-6">
-                <button type="button" class="btn btn-success" id="create-btn">提交</button>
+                <button type="button" class="btn btn-success" id="edit-submit-btn">提交</button>
                 <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
             </div>
         </div>
     </form>
 </div>
---><?php
-/*Modal::end();
-*/?>
+<?php
+Modal::end();
+?>

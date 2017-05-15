@@ -52,6 +52,34 @@ class TaskController extends BaseController
         return $this->render('index',$params);
     }
 
+
+    public function actionGet(){
+        $errormsg = '';
+        $result = false;
+        $info = [];
+        if(Yii::$app->request->isAjax){
+            $task_id = Yii::$app->request->post('id',0);
+            $task = Task::find()->where(['id'=>$task_id])->one();
+            if($task){
+                $info['title'] = $task->title;
+                $category = TaskCategoryId::find()->where(['task_id'=>$task_id])->all();
+                $cateArr = [];
+                foreach($category as $c){
+                    $cateArr[] = $c->category_id;
+                }
+                $info['category_ids'] = implode(',',$cateArr);
+                $result = true;
+            }else{
+                $errormsg = '模板不存在';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg,'info'=>$info];
+    }
+
     public function actionCreate(){
         $errormsg = '';
         $result = false;
@@ -64,7 +92,7 @@ class TaskController extends BaseController
             $department_id = intval(Yii::$app->request->post('department_id',10000));
             //AREA BUSINESS DEPARTMENT  TODO
             if($title==''){
-                $errormsg = '名称或别名不能为空！';
+                $errormsg = '标题不能为空！';
             }else{
                 $exist = Task::find()->where(['title'=>$title])->one();
                 if($exist){
@@ -102,13 +130,66 @@ class TaskController extends BaseController
                             }*/
 
 
-                            Yii::$app->getSession()->setFlash('success','新增任务【'.$task->title.'】成功！');
+                            Yii::$app->getSession()->setFlash('success','新增模板【'.$task->title.'】成功！');
                             $result = true;
                         }else{
                             $errormsg = '保存失败，刷新页面重试!';
                         }
                     }
                 }
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+
+    public function actionEdit(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $task_id = Yii::$app->request->post('task_id',0);
+            $title = trim(Yii::$app->request->post('title',false));
+            $category_id = Yii::$app->request->post('category_id','');
+            $task = Task::find()->where(['id'=>$task_id])->one();
+            if($task){
+                if($title==''){
+                    $errormsg = '标题不能为空！';
+                }else {
+                    $exist = Task::find()->where(['title' => $title])->andWhere(['<>', 'id', $task_id])->one();
+                    if ($exist) {
+                        $errormsg = '标题已存在!';
+                    } else {
+                        if ($category_id == '') {
+                            $errormsg = '请勾选至少一个模板分类！';
+                        } else {
+                            $task->title = $title;
+                            $task->save();
+
+                            TaskCategoryId::deleteAll(['task_id' => $task_id]);
+                            $categoryIds = explode(',', $category_id);
+
+                            foreach ($categoryIds as $cate_id) {
+                                $taskCategory = TaskCategory::find()->where(['id' => $cate_id])->one();
+                                if ($taskCategory) {
+                                    $taskCategoryId = new TaskCategoryId();
+                                    $taskCategoryId->task_id = $task->id;
+                                    $taskCategoryId->category_id = $cate_id;
+                                    $taskCategoryId->save();
+                                }
+                            }
+
+
+                            Yii::$app->getSession()->setFlash('success', '编辑模板【' . $task->title . '】成功！');
+                            $result = true;
+                        }
+                    }
+                }
+            }else{
+                $errormsg = '模板错误！';
             }
         }else{
             $errormsg = '操作错误，请重试!';
