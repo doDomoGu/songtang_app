@@ -66,7 +66,7 @@
                 </td>
                 <td>
                     <?php if($l->set_complete==1):?>
-                        已完成
+                        已完成  <br/><button data-id="<?=$l->id?>" class="complete2-btn btn btn-danger btn-xs">改为未完成（测试用）</button>
                     <?php else:?>
                         <button data-id="<?=$l->id?>" class="complete-btn btn btn-danger btn-xs">确认设置完成</button>
                     <?php endif;?>

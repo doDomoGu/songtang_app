@@ -334,6 +334,20 @@ class TaskController extends BaseController
 
     }
 
+    public function actionSetComplete2(){
+        $id = Yii::$app->request->get('id',false);
+        $task = Task::find()->where(['id'=>$id])->one();
+        if($task){
+            $task->set_complete = 0;
+            $task->save();
+            Yii::$app->getSession()->setFlash('success','任务表【'.$task->title.'】改为未完成！');
+        }else{
+            Yii::$app->getSession()->setFlash('error','任务表ID不存在！');
+        }
+        return $this->redirect('/admin/task');
+
+    }
+
     public function actionApplyUser(){
         $tid = Yii::$app->request->get('tid',false);
         $task = Task::find()->where(['id'=>$tid])->one();
