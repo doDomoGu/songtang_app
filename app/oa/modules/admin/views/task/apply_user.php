@@ -17,6 +17,7 @@ use yii\bootstrap\Html;
             <th>职员姓名</th>
             <th>地区</th>
             <th>业态</th>
+            <th>公司</th>
             <th>部门</th>
             <th>职位</th>
             <!--<th>操作</th>-->
@@ -30,6 +31,7 @@ use yii\bootstrap\Html;
                 <td><?=$userInfo->name?></td>
                 <td><?=$userInfo->district?></td>
                 <td><?=$userInfo->industry?></td>
+                <td><?=$userInfo->company?></td>
                 <td><?=$userInfo->department?></td>
                 <td><?=$userInfo->position?></td>
             </tr>
