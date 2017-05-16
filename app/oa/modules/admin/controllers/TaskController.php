@@ -15,6 +15,7 @@ use ucenter\models\Industry;
 use ucenter\models\Position;
 use ucenter\models\User;
 use Yii;
+use yii\data\Pagination;
 use yii\web\Response;
 /**
  *  任务流程管理
@@ -44,10 +45,19 @@ class TaskController extends BaseController
     {
         $aid = Yii::$app->request->get('aid',false);
         $bid = Yii::$app->request->get('bid',false);
-        $list = Task::find()->all();
+        $query = Task::find();
 
+        $count = $query->count();
+        $pageSize = 10;
+        $pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
+        $list = $query
+            ->offset($pages->offset)
+            ->limit($pages->limit)
+            ->orderBy('id desc')
+            ->all();
 
         $params['list'] = $list;
+        $params['pages'] = $pages;
         /*$params['districtArr'] = District::getNameArr();
         $params['industryArr'] = Industry::getNameArr();
         $params['companyArr'] = Company::getNameArr();*/

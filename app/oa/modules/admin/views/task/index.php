@@ -87,6 +87,9 @@
         <?php endforeach;?>
         </tbody>
     </table>
+    <div class="clearfix text-center">
+        <?= \yii\widgets\LinkPager::widget(['pagination' => $pages]); ?>
+    </div>
 </section>
 
 
