@@ -23,7 +23,7 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">
-                发起人通过使用匹配职员的属性来选择  <?=Html::a('新增','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success btn-xs'])?>
+                发起人通过使用匹配职员的属性来选择  <?=Html::button('新增',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success btn-xs'])?>
 
                 <?/*=Html::button('增加',['class'=>'btn btn-xs btn-success add-btn','data-id'=>$task->id])*/?>
             </h3>
