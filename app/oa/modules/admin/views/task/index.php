@@ -57,7 +57,7 @@
                     <?php endif;?>
                 </td>
                 <td>
-                    <?=Html::a('查看发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
+                    <?=Html::a('设置发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
                     <?php /*if($l->set_complete==1):*/?><!--
                         <?/*=Html::a('查看发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
                     <?php /*else:*/?>
