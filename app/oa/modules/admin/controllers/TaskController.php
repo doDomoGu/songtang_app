@@ -348,6 +348,22 @@ class TaskController extends BaseController
 
     }
 
+
+    public function actionApplyUserDel(){
+        $id = Yii::$app->request->get('id',false);
+        $tid = Yii::$app->request->get('tid',false);
+        $one = TaskUserWildcard::find()->where(['id'=>$id])->one();
+        if($one){
+            TaskUserWildcard::deleteAll(['id'=>$id]);
+            Yii::$app->getSession()->setFlash('success','删除"发起人设置"完成！');
+        }else{
+            Yii::$app->getSession()->setFlash('error','发起人设置,不存在！');
+        }
+        return $this->redirect('/admin/task/apply-user?tid='.$tid);
+
+    }
+
+
     public function actionApplyUser(){
         $tid = Yii::$app->request->get('tid',false);
         $task = Task::find()->where(['id'=>$tid])->one();
@@ -370,6 +386,8 @@ class TaskController extends BaseController
             $params['userList'] = $userList;
 
             $params['task'] = $task;
+            $params['list'] = $list;
+
             return $this->render('apply_user',$params);
         }else{
             Yii::$app->getSession()->setFlash('error','发起人设置对应的任务id不存在!');
@@ -400,7 +418,75 @@ $params['applyUserList'] = $applyUserList;
         }
     }
 
+
     public function actionApplyUserAdd(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+
+            $tid = intval(Yii::$app->request->post('tid',0));
+            $district_id = intval(Yii::$app->request->post('district_id',10000));
+            $industry_id = intval(Yii::$app->request->post('industry_id',10000));
+            $company_id = intval(Yii::$app->request->post('company_id',10000));
+            $department_id = intval(Yii::$app->request->post('department_id',10000));
+            $position_id = intval(Yii::$app->request->post('position_id',10000));
+
+            $new = new TaskUserWildcard();
+            $new->task_id = $tid;
+            $new->district_id = $district_id;
+            $new->industry_id = $industry_id;
+            $new->company_id = $company_id;
+            $new->department_id = $department_id;
+            $new->position_id = $position_id;
+            $new->save();
+
+
+
+            Yii::$app->getSession()->setFlash('success','添加发起人成功！');
+            $result = true;
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+    public function actionApplyUserEdit(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+
+            $id = intval(Yii::$app->request->post('edit_id',0));
+            $one = TaskUserWildcard::find()->where(['id'=>$id])->one();
+            if($one){
+                $district_id = intval(Yii::$app->request->post('district_id',10000));
+                $industry_id = intval(Yii::$app->request->post('industry_id',10000));
+                $company_id = intval(Yii::$app->request->post('company_id',10000));
+                $department_id = intval(Yii::$app->request->post('department_id',10000));
+                $position_id = intval(Yii::$app->request->post('position_id',10000));
+
+                $one->district_id = $district_id;
+                $one->industry_id = $industry_id;
+                $one->company_id = $company_id;
+                $one->department_id = $department_id;
+                $one->position_id = $position_id;
+                $one->save();
+
+                Yii::$app->getSession()->setFlash('success','编辑发起人成功！');
+                $result = true;
+            }else{
+                $errormsg = '设置 没找到!';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+    public function actionApplyUserAdd2233(){
         $errormsg = '';
         $result = false;
         if(Yii::$app->request->isAjax){
