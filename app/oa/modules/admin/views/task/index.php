@@ -13,7 +13,7 @@
 ?>
 <section>
     <div style="margin-bottom: 10px;">
-        <?=Html::a('新增模板','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?=Html::button('新增模板',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
