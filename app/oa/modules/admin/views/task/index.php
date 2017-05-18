@@ -50,11 +50,12 @@
                 <!--<td><?/*=commonFunc::getByCache(Department::className(),'getFullRoute',[$l->department_id],'ucenter:department/full-route')*/?></td>-->
                 <!--<td><?/*=CommonFunc::getStatusCn($l->status)*/?></td>-->
                 <td>
-                    <?php if($l->set_complete==1):?>
-                        <?=Html::a('查看流程',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])?>
-                    <?php else:?>
-                        <?=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
-                    <?php endif;?>
+                    <?=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
+                    <?php /*if($l->set_complete==1):*/?><!--
+                        <?/*=Html::a('查看流程',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
+                    <?php /*else:*/?>
+                        <?/*=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])*/?>
+                    --><?php /*endif;*/?>
                 </td>
                 <td>
                     <?=Html::a('设置发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
