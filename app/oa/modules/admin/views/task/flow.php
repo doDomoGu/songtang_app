@@ -135,7 +135,7 @@ Modal::begin([
         <div class="form-group">
             <label class="col-sm-4 control-label label1">职员</label>
             <div class="col-sm-6">
-                <?=\yii\bootstrap\BaseHtml::dropDownList('user-select','',\ucenter\models\User::getItems(),['class'=>"form-control create-user-select",'prompt'=>'---'])?>
+                <?=\yii\bootstrap\BaseHtml::dropDownList('user-select','',\common\components\CommonFunc::getByCache(\ucenter\models\User::className(),'getItems',[],'ucenter:user/items'),['class'=>"form-control create-user-select",'prompt'=>'---'])?>
                 <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
             </div>
         </div>

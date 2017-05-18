@@ -2,6 +2,7 @@
 
 namespace ucenter\models;
 
+use common\components\CommonFunc;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -184,17 +185,12 @@ class User extends \yii\db\ActiveRecord
         return $str;
     }
 
+
     public static function getItems(){
-        $cache = yii::$app->cache;
-        if(isset($cache['user-get-items'])){
-            $items = $cache['user-get-items'];
-        }else{
-            $items = [];
-            $list = self::find()->where(['status'=>1])->all();
-            foreach($list as $l){
-                $items[$l->id] = $l->getFullRoute();
-            }
-            $cache['user-get-items'] = $items;
+        $items = [];
+        $list = self::find()->where(['status'=>1])->all();
+        foreach($list as $l){
+            $items[$l->id] = $l->getFullRoute();
         }
         return $items;
     }

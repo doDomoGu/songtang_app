@@ -30,7 +30,8 @@ class UcenterFunc extends Component {
             'name'
         ],
         'user'=>[
-            'identity'
+            'identity',
+            'items'
         ]
     ];
 }
