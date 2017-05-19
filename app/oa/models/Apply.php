@@ -68,6 +68,19 @@ class Apply extends \yii\db\ActiveRecord
         return $return;
     }
 
+    public static function getLasttime($apply_id){
+        $apply = self::find()->where(['id'=>$apply_id])->one();
+        if($apply){
+            if($apply->flow_step>1){
+                return 'TODO';
+            }else{
+                return $apply->add_time;
+            }
+        }else{
+            return null;
+        }
+    }
+
 
     public static function getTodoList($getCount=false){
         $list = [];

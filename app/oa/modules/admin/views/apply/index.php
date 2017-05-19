@@ -19,6 +19,8 @@ $this->title = '申请列表';
             <th>所属业态 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
             <th>所属部门</th>-->
             <th>状态</th>
+            <th>申请时间</th>
+            <th>最后操作时间</th>
             <th>操作</th>
         </tr>
         <tbody>
@@ -42,6 +44,9 @@ $this->title = '申请列表';
                 <td><?/*=$l->business_id>0?$bArr[$l->business_id]:'--'*/?></td>
                 <td><?/*=\ucenter\models\Department::getFullRoute([$l->department_id])*/?></td>-->
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
+                <td><?=$l->add_time?></td>
+
+                <td><?=\oa\models\Apply::getLasttime($l->id)?></td>
                 <td>
                     <?=Html::a('查看流程记录',Url::to(['apply/show-record','aid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
                 </td>
