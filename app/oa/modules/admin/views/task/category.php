@@ -7,9 +7,9 @@
     oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/index.js');
 ?>
 <section>
-    <div style="margin-bottom: 10px;">
-        <?=Html::a('新增分类','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
-    </div>
+    <!--<div style="margin-bottom: 10px;">
+        <?/*=Html::a('新增分类','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])*/?>
+    </div>-->
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
             <th>#</th>
