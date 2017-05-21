@@ -27,8 +27,8 @@ class ApplyRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['apply_id','flow_id','result','user_id','flow_type','step','title'], 'required'],
-            [['apply_id','flow_id','result','user_id','flow_type','step'], 'integer'],
+            [['apply_id','flow_id','result','user_id','type','step','title'], 'required'],
+            [['apply_id','flow_id','result','user_id','type','step'], 'integer'],
             [['message','add_time','attachment'],'safe']
         ];
     }

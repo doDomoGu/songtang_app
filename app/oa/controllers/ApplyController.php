@@ -572,6 +572,11 @@ class ApplyController extends BaseController
                     $record->message = $post['message'];
                     $record->apply_id = $apply->id;
                     $record->flow_id = $flow->id;
+                    $record->type = $flow->type;
+                    $record->user_id = $flow->user_id;
+                    $record->step = $flow->step;
+                    $record->title = $flow->title;
+
                     $record->add_time = date('Y-m-d H:i:s');
                     if($record->save()){
                         //操作类型为 1 approval审核 和 3 execute执行  结果为0 进行打回操作
