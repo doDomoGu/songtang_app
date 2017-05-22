@@ -600,9 +600,10 @@ class ApplyController extends BaseController
                     $record->apply_id = $apply->id;
                     $record->flow_id = $flow->id;
                     $record->type = $flow->type;
-                    $record->user_id = $flow->user_id;
+                    $record->user_id = Yii::$app->user->id;
                     $record->step = $flow->step;
                     $record->title = $flow->title;
+
 
                     $record->add_time = date('Y-m-d H:i:s');
                     if($record->save()){
@@ -628,7 +629,9 @@ class ApplyController extends BaseController
                                 $apply->status= Apply::STATUS_SUCCESS;
                             }
                         }
+                        $apply->edit_time = date('Y-m-d H:i:s');
                         $apply->save();
+
                         Yii::$app->getSession()->setFlash('success','操作成功！');
                         $result = true;
                     }else{
