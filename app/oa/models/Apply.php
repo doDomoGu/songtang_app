@@ -72,7 +72,7 @@ class Apply extends \yii\db\ActiveRecord
         $apply = self::find()->where(['id'=>$apply_id])->one();
         if($apply){
             if($apply->flow_step>1){
-                return 'TODO';
+                return $apply->edit_time;
             }else{
                 return $apply->add_time;
             }
