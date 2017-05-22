@@ -83,6 +83,20 @@ class ApplyController extends BaseController
             }
 
             if($new->save()){
+                $r = new ApplyRecord();
+                $r->apply_id = $new->id;
+                $r->flow_id = 0;
+                $r->step = 0;
+                $r->title = $new->title;
+                $r->type = 0;
+                $r->user_id = $new->user_id;
+                $r->result = 0;
+                $r->message = $new->message;
+                $r->add_time = $new->add_time;
+                $r->save();
+
+
+
                 //Yii::$app->session->setFlash()
                 return $this->redirect('/apply/my');
             }
@@ -118,6 +132,19 @@ class ApplyController extends BaseController
             $n->edit_time = date('Y-m-d H:i:s');
             $n->status = 1;
             if($n->save()){
+                $r = new ApplyRecord();
+                $r->apply_id = $n->id;
+                $r->flow_id = 0;
+                $r->step = 0;
+                $r->title = $n->title;
+                $r->type = 0;
+                $r->user_id = $n->user_id;
+                $r->result = 0;
+                $r->message = $n->message;
+                $r->add_time = $n->add_time;
+                $r->save();
+
+
                 Yii::$app->getSession()->setFlash('success','发起申请成功！');
                 $result = true;
             }else{
@@ -149,9 +176,9 @@ class ApplyController extends BaseController
                 //1.判断模板状态
                 if($task && $task->set_complete == 1 && $task->status == 1){
                     //2.判断模板发起人
-                    /*if(Yii::$app->user->identity->isOaFrontendAdmin){
+                    if(Yii::$app->user->identity->isOaFrontendAdmin){
                         $isAllow = true;
-                    }else{*/
+                    }else{
                         $isAllow = false;
                         $userWildcardList = TaskUserWildcard::find()->where(['task_id'=>$task->id])->all();
 
@@ -166,7 +193,7 @@ class ApplyController extends BaseController
                                 }
                             }
                         }
-                    //}
+                    }
 
                     if($isAllow){
                         $list[$task->id] = $task->title;
