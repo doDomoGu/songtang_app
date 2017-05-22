@@ -256,7 +256,7 @@ class ApplyController extends BaseController
             $task_id = trim(Yii::$app->request->post('task_id',false));
             $task = Task::find()->where(['id'=>$task_id])->one();
             if($task){
-                $flows = Flow::find()->where(['task_id'=>$task_id])->all();
+                $flows = Flow::find()->where(['task_id'=>$task_id])->orderBy('step asc')->all();
                 if(!empty($flows)){
                     $html.='<section class="task-preview-section">'.
                             '<h1>申请表流程：</h1>';
@@ -325,7 +325,7 @@ class ApplyController extends BaseController
 
                 //1.发起申请
                 $html .= '<section id="apply-message">' .
-                    '<span class="message-title">'.Html::img('/images/main/apply/modal-message.png').' 申请内容：</span><span class="message-text">'.$apply->message.'</span>'.
+                    '<span class="message-title">'.Html::img('/images/main/apply/modal-message.png').' 申请内容：</span><span class="message-text">'.(str_replace("\r\n",'<br/>',$apply->message)).'</span>'.
                     '</section>';
                 $html .= '<section id="apply-main">' .
                     '<div class="apply-main-title">'.
