@@ -152,7 +152,7 @@ class PermissionController extends BaseController
                             $params['districtName'] = $districtName;
                             $params['industryName'] = $industryName;
                             $dir_id = $dir->id;
-                            $successMsg['file'] = Dir::getFullRoute($dir->id).' > '.$file->filename;
+                            $successMsg['file'] = '目录ID：'.$dir->id.'<br/>'.File::getFileFullRoute($dir->id,$file->id)/*Dir::getFullRoute($dir->id).' > '.$file->filename*/;
                         }else{
                             $errorMsg['file'] = '所在目录不存在';
                         }
