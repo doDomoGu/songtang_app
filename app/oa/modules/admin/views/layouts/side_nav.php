@@ -54,4 +54,5 @@
             </a>
         </li>
     </ul>
+    <?=$this->render('../../../../../ucenter/views/layouts/app_entry',['current'=>'oaBackendAdmin'])?>
 </div>

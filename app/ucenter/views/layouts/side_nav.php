@@ -2,6 +2,7 @@
     //手动引入bootstrap.js
     //**由于有可能没有调用任何bootstrap组件   **使用Asset依赖注册不会重复引入js文件
     yii\bootstrap\BootstrapPluginAsset::register($this);
+    use yii\helpers\Html;
 ?>
 <div class="side-nav">
     <div class="side-head">
@@ -98,4 +99,6 @@
             </a>
         </li>
     </ul>
+
+    <?=$this->render('app_entry',['current'=>'ucenterAdmin'])?>
 </div>

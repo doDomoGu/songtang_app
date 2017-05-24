@@ -128,14 +128,14 @@
 #apply-message .message-title {
     display:block;
     float:left;
-    width:105px;
+    width:200px;
     height:140px;
 }
 
 #apply-message .message-text {
     display:block;
     float:left;
-    width:683px;
+    width:588px;
 }
 
 #apply-main {
