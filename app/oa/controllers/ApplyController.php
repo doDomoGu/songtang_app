@@ -340,6 +340,7 @@ class ApplyController extends BaseController
                 if(!empty($records)){
                     $i = 1;
                     foreach($records as $r){
+                        if($r->step==0) continue;
                         if($r->flow->user_id>0){
                             $username = $r->flow->user->name;
                         }else{
