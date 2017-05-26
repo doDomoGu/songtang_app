@@ -109,14 +109,19 @@
 }
 
 #apply-header .title,
-#apply-header .date
+#apply-header .date,
+#apply-header .title-txt,
+#apply-header .date-txt
 {
-    width:440px;
+    width:106px;
     display: inline-block;
 }
 
-#apply-header .date  {
-    width:300px;
+#apply-header .title-txt  {
+    width:200px;
+}
+#apply-header .date-txt  {
+    width:210px;
 }
 
 #apply-message {
@@ -128,11 +133,11 @@
 #apply-message .message-title {
     display:block;
     float:left;
-    width:200px;
+    width:106px;
     height:140px;
 }
 
-#apply-message .message-text {
+#apply-message .message-txt {
     display:block;
     float:left;
     width:588px;

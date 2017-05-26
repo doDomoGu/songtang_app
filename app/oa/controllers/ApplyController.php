@@ -1,6 +1,7 @@
 <?php
 namespace oa\controllers;
 
+use common\components\CommonFunc;
 use oa\components\Func;
 use oa\models\Apply;
 use oa\models\ApplyCreateForm;
@@ -319,13 +320,13 @@ class ApplyController extends BaseController
             if($apply){
                 $result = true;
                 $html .= '<section id="apply-header">'.
-                    '<span class="title">'.Html::img('/images/main/apply/modal-title.png').' 申请主题：'.$apply->title.'</span>'.
-                    '<span class="date">'.Html::img('/images/main/apply/modal-date.png').' 申请日期：'. date('Y-m-d',strtotime($apply->add_time)).'</span>'.
+                    '<span class="title">'.Html::img('/images/main/apply/modal-title.png').' 申请主题：</span><span class="title-txt">'.$apply->title.'</span>'.
+                    '<span class="date">'.Html::img('/images/main/apply/modal-date.png').' 申请日期：</span><span class="date-txt">'. date('Y-m-d',strtotime($apply->add_time)).'</span>'.
                     '</section>';
 
                 //1.发起申请
                 $html .= '<section id="apply-message">' .
-                    '<span class="message-title">'.Html::img('/images/main/apply/modal-message.png').' 申请内容：</span><span class="message-text">'.(str_replace("\r\n",'<br/>',$apply->message)).'</span>'.
+                    '<span class="message-title">'.Html::img('/images/main/apply/modal-message.png').' 申请内容：</span><span class="message-txt">'.(str_replace("\r\n",'<br/>',$apply->message)).'</span>'.
                     '</section>';
                 $html .= '<section id="apply-main">' .
                     '<div class="apply-main-title">'.
@@ -346,6 +347,9 @@ class ApplyController extends BaseController
                         }else{
                             $username = '[自由选择]';
                         }
+
+                        $flow_user = CommonFunc::getByCache(self::className(),'findIdentityOne',[$r->user_id],'ucenter:user/identity');
+                        $username = $flow_user?$flow_user->name:'N/A';
 
                         $htmlOne = '<li class="flow done">';
                         $htmlOne.= '<span class="approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->flow->title.'</span>';

@@ -33,7 +33,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
                     <td><span><?=$l->add_time?></span></td>
                     <td><span><?=Apply::getStatusCn($l->status)?></span></td>
                     <td class="last"><span>
-                        <?=Html::a('查看详情','script:void(0)',['data-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#infoModal",'class'=>'btn btn-success btn-xs'])?>
+                        <?=Html::a('查看详情','javascript:void(0)',['data-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#infoModal",'class'=>'btn btn-success btn-xs'])?>
                             </span>
                     </td>
                 </tr>
