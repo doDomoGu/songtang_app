@@ -1,6 +1,7 @@
 <?php
 use yii\bootstrap\Modal;
 use yii\bootstrap\Html;
+use oa\models\Apply;
 
 $this->title = '我的申请';
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/my.js');
@@ -20,6 +21,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
                 <th><span><?=Html::img('/images/main/apply/th_1.png',['style'=>''])?> &nbsp;&nbsp; 标题</span></th>
                 <th><span><?=Html::img('/images/main/apply/th_2.png',['style'=>''])?> &nbsp;&nbsp; 任务表</span></th>
                 <th><span><?=Html::img('/images/main/apply/th_3.png',['style'=>''])?> &nbsp;&nbsp; 申请时间</span></th>
+                <th><span><?=Html::img('/images/main/apply/th_3.png',['style'=>''])?> &nbsp;&nbsp; 状态</span></th>
                 <th class="last"><span><?=Html::img('/images/main/apply/th_4.png',['style'=>''])?> &nbsp;&nbsp; 操作</span></th>
             </tr>
             <tbody>
@@ -29,6 +31,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
                     <td><span><?=$l->title?></span></td>
                     <td><span><?=$l->task->title?></span></td>
                     <td><span><?=$l->add_time?></span></td>
+                    <td><span><?=Apply::getStatusCn($l->status)?></span></td>
                     <td class="last"><span>
                         <?=Html::a('查看详情','script:void(0)',['data-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#infoModal",'class'=>'btn btn-success btn-xs'])?>
                             </span>

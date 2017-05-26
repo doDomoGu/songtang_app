@@ -17,10 +17,18 @@ class Apply extends \yii\db\ActiveRecord
         return Yii::$app->db_oa;
     }
     const STATUS_NORMAL     = 1; //正常流程中
-    const STATUS_DELETE     = 0; //删除
+    const STATUS_DELETE     = 0; //删除 撤销
     const STATUS_SUCCESS    = 2; //成功 完成
-    const STATUS_FAILURE    = 3; //失败 完成
-    const STATUS_BEATBACK   = 4; //打回 发生情况：1.审核不通过 2.执行失败
+    const STATUS_FAILURE    = 3; //失败 发生情况：1.执行类型的流程结果是 失败
+    const STATUS_BEATBACK   = 4; //打回 发生情况：1.审批类型的流程结果是 不通过
+    const STATUS_APPLYDELETE = 5; //申请撤销
+
+    const STATUS_NORMAL_CN  = '执行中';
+    const STATUS_DELETE_CN  = '撤销';
+    const STATUS_SUCCESS_CN  = '已完成';//'已完成(执行成功)';
+    const STATUS_FAILURE_CN  = '失败'; //'已完成(执行失败)';
+    const STATUS_BEATBACK_CN  = '打回';
+    const STATUS_APPLYDELETE_CN  = '申请撤销';
 
     public function attributeLabels(){
         return [
@@ -57,6 +65,34 @@ class Apply extends \yii\db\ActiveRecord
 
     public function getTask(){
         return $this->hasOne(Task::className(), array('id' => 'task_id'));
+    }
+
+
+    public static function getStatusCn($status){
+        switch($status){
+            case self::STATUS_NORMAL:
+                $return = self::STATUS_NORMAL_CN;
+                break;
+            case self::STATUS_DELETE:
+                $return = self::STATUS_DELETE_CN;
+                break;
+            case self::STATUS_SUCCESS:
+                $return = self::STATUS_SUCCESS_CN;
+                break;
+            case self::STATUS_FAILURE:
+                $return = self::STATUS_FAILURE_CN;
+                break;
+            case self::STATUS_BEATBACK:
+                $return = self::STATUS_BEATBACK_CN;
+                break;
+            case self::STATUS_APPLYDELETE:
+                $return = self::STATUS_APPLYDELETE_CN;
+                break;
+            default:
+                $return = 'N/A';
+        }
+
+        return $return;
     }
 
     public static function getMyApplyList($getCount=false){
