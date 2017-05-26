@@ -366,30 +366,33 @@ class ApplyController extends BaseController
                     }
                 }
 
-                //3.剩余未完成操作
-                $curStep = $apply->flow_step;
-                $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
-                $i = 1;
-                foreach($flow as $f){
-                    $username = Apply::getOperationUser($apply,$f);
-                    /*if($f->user_id>0){
-                        $username = $f->user->name;
-                    }else{
-                        $username = '[自由选择]';
-                    }*/
+                //3.剩余未完成操作  * 只有申请表(apply)状态为执行中(status=1)
+                if($apply->status==1){
+                    $curStep = $apply->flow_step;
+                    $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
+                    $i = 1;
+                    foreach($flow as $f){
+                        $username = Apply::getOperationUser($apply,$f);
+                        /*if($f->user_id>0){
+                            $username = $f->user->name;
+                        }else{
+                            $username = '[自由选择]';
+                        }*/
 
-                    $htmlOne = '<li class="flow not-do">';
-                    $htmlOne.= '<span class="approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';
-                    $htmlOne.= '<span class="approval-sign">'.$username.'</span>';
-                    $htmlOne.= '<span class="approval-result">还未操作</span>';
-                    /*$htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
-                    $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
+                        $htmlOne = '<li class="flow not-do">';
+                        $htmlOne.= '<span class="approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';
+                        $htmlOne.= '<span class="approval-sign">'.$username.'</span>';
+                        $htmlOne.= '<span class="approval-result">还未操作</span>';
+                        /*$htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
+                        $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
 
-                    $htmlOne.= '<div>操作人：<b>'.$username.'</b> </div>';*/
-                    $htmlOne.= '</li>';
-                    $html .= $htmlOne;
-                    $i++;
+                        $htmlOne.= '<div>操作人：<b>'.$username.'</b> </div>';*/
+                        $htmlOne.= '</li>';
+                        $html .= $htmlOne;
+                        $i++;
+                    }
                 }
+
                 $html .= '</section>';
             }else{
                 $errormsg = '申请表不存在！';
