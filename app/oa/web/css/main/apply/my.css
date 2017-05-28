@@ -208,6 +208,8 @@
     width:188px;
 }
 
-#apply-main .flow.not-do .approval-result {
+#apply-main .flow.not-do .approval-result,
+#apply-main .flow.not-do .approval-message,
+#apply-main .flow.not-do .approval-time{
     color:#ccc;
 }

@@ -357,7 +357,7 @@ class ApplyController extends BaseController
                         $htmlOne.= '<span class="r-done approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->flow->title.'</span>';
                         $htmlOne.= '<span class="r-done approval-sign">'.$username.'</span>';
                         $htmlOne.= '<span class="r-done approval-result">'.Flow::getResultCn($r->flow->type,$r->result).'</span>';
-                        $htmlOne.= '<span class="r-done approval-message">'.$r->message.'</span>';
+                        $htmlOne.= '<span class="r-done approval-message">'.($r->message?$r->message:'&nbsp').'</span>';
                         $htmlOne.= '<span class="r-done approval-time">'.substr($r->add_time,0,-3).'</span>';
                         $htmlOne.= '</li>';
                         /*$htmlOne = '<li class="flow">';
@@ -391,8 +391,8 @@ class ApplyController extends BaseController
                         $htmlOne.= '<span class="r-not-do approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';
                         $htmlOne.= '<span class="r-not-do approval-sign">'.$username.'</span>';
                         $htmlOne.= '<span class="r-not-do approval-result">还未操作</span>';
-                        $htmlOne.= '<span class="r-not-do approval-message"></span>';
-                        $htmlOne.= '<span class="r-not-do approval-time"></span>';
+                        $htmlOne.= '<span class="r-not-do approval-message">--</span>';
+                        $htmlOne.= '<span class="r-not-do approval-time">--</span>';
                         /*$htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
                         $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
 
