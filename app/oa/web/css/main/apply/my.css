@@ -113,12 +113,12 @@
 #apply-header .title-txt,
 #apply-header .date-txt
 {
-    width:106px;
+    width:110px;
     display: inline-block;
 }
 
 #apply-header .title-txt  {
-    width:200px;
+    width:400px;
 }
 #apply-header .date-txt  {
     width:210px;
@@ -133,7 +133,7 @@
 #apply-message .message-title {
     display:block;
     float:left;
-    width:106px;
+    width:110px;
     height:140px;
 }
 
