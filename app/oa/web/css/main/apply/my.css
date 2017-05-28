@@ -159,8 +159,11 @@
     width:90px;
     position:relative;
 }
+.apply-title.apply-approval-head {
+    width:100px;
+}
 .apply-title.apply-message-head {
-    width:350px;
+    width:340px;
 }
 .apply-title.apply-time-head {
     width:164px;
@@ -196,8 +199,12 @@
     padding-left:0;
 }
 
+#apply-main .flow .approval-result {
+    width:100px;
+}
+
 #apply-main .flow .approval-message {
-    width:350px;
+    width:340px;
 }
 
 #apply-main .flow .approval-time {
