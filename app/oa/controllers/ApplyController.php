@@ -330,9 +330,11 @@ class ApplyController extends BaseController
                     '</section>';
                 $html .= '<section id="apply-main">' .
                     '<div class="apply-main-title">'.
-                    '<span class="apply-user">'.Html::img('/images/main/apply/modal-user.png').' 申请人：'.$apply->applyUser->name.'</span>'.
-                    '<span class="apply-sign-head">'.Html::img('/images/main/apply/modal-sign-head.png').' 签名'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
-                    '<span class="apply-approval-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 批示'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
+                    '<span class="apply-title apply-user">'.Html::img('/images/main/apply/modal-user.png').' 申请人：'.$apply->applyUser->name.'</span>'.
+                    '<span class="apply-title apply-sign-head">'.Html::img('/images/main/apply/modal-sign-head.png').' 签名'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
+                    '<span class="apply-title apply-approval-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 批示'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
+                    '<span class="apply-title apply-message-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 批注'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
+                    '<span class="apply-title apply-time-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 时间'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
                     '</div>';
 
 
@@ -352,9 +354,11 @@ class ApplyController extends BaseController
                         $username = $flow_user?$flow_user->name:'N/A';
 
                         $htmlOne = '<li class="flow done">';
-                        $htmlOne.= '<span class="approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->flow->title.'</span>';
-                        $htmlOne.= '<span class="approval-sign">'.$username.'</span>';
-                        $htmlOne.= '<span class="approval-result">'.Flow::getResultCn($r->flow->type,$r->result).'</span>';
+                        $htmlOne.= '<span class="r-done approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->flow->title.'</span>';
+                        $htmlOne.= '<span class="r-done approval-sign">'.$username.'</span>';
+                        $htmlOne.= '<span class="r-done approval-result">'.Flow::getResultCn($r->flow->type,$r->result).'</span>';
+                        $htmlOne.= '<span class="r-done approval-message">'.$r->message.'</span>';
+                        $htmlOne.= '<span class="r-done approval-time">'.substr($r->add_time,0,-3).'</span>';
                         $htmlOne.= '</li>';
                         /*$htmlOne = '<li class="flow">';
                         $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
@@ -384,9 +388,11 @@ class ApplyController extends BaseController
                         }*/
 
                         $htmlOne = '<li class="flow not-do">';
-                        $htmlOne.= '<span class="approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';
-                        $htmlOne.= '<span class="approval-sign">'.$username.'</span>';
-                        $htmlOne.= '<span class="approval-result">还未操作</span>';
+                        $htmlOne.= '<span class="r-not-do approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';
+                        $htmlOne.= '<span class="r-not-do approval-sign">'.$username.'</span>';
+                        $htmlOne.= '<span class="r-not-do approval-result">还未操作</span>';
+                        $htmlOne.= '<span class="r-not-do approval-message"></span>';
+                        $htmlOne.= '<span class="r-not-do approval-time"></span>';
                         /*$htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
                         $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
 

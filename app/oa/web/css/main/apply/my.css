@@ -95,7 +95,9 @@
 #infoContent > .content >li.not-do {
     background: #ffedce;
 }
-
+#infoModal .modal-lg {
+    width:1000px;
+}
 
 #apply-header,
 #apply-message,
@@ -118,7 +120,8 @@
 }
 
 #apply-header .title-txt  {
-    width:460px;
+    width:550px;
+    margin-right:10px;
 }
 #apply-header .date-txt  {
     width:100px;
@@ -140,7 +143,7 @@
 #apply-message .message-txt {
     display:block;
     float:left;
-    width:588px;
+    width:760px;
 }
 
 #apply-main {
@@ -150,21 +153,23 @@
     height:30px;
 }
 
-.apply-user,
-.apply-sign-head,
-.apply-approval-head {
+.apply-title  {
     display:block;
     float:left;
-    width:230px;
+    width:90px;
     position:relative;
 }
+.apply-title.apply-message-head {
+    width:350px;
+}
+.apply-title.apply-time-head {
+    width:164px;
+}
 .apply-user {
-    width:328px;
+    width:188px;
 }
 
-.apply-sign-head .operation-icon,
-.apply-approval-head .operation-icon
-{
+.apply-title .operation-icon {
     position: absolute;
     left:35px;
     top:23px;
@@ -179,20 +184,28 @@
     overflow: hidden;
 }
 
-#apply-main .flow .approval-title,
-#apply-main .flow .approval-sign,
-#apply-main .flow .approval-result
-{
+#apply-main .flow .r-done,
+#apply-main .flow .r-not-do {
     display:block;
     float:left;
-    width:230px;
-}
-#apply-main .flow .approval-title {
-    width:328px;
-}
-#apply-main .flow .approval-sign,
-#apply-main .flow .approval-result {
+    width:90px;
     padding-left:14px;
+}
+
+#apply-main .flow .approval-title {
+    padding-left:0;
+}
+
+#apply-main .flow .approval-message {
+    width:350px;
+}
+
+#apply-main .flow .approval-time {
+    width:164px;
+}
+
+#apply-main .flow .approval-title {
+    width:188px;
 }
 
 #apply-main .flow.not-do .approval-result {
