@@ -117,6 +117,14 @@ AppAsset::addJsFile($this,'js/login_success.js');
            </ul>
         </div>
         <?php endif;?>
+        <div class="goto">
+            <div class="title">欢迎，<?=Yii::$app->user->identity->name?></div>
+            <ul>
+                <li>
+                    <?=Html::a('安全退出',Yii::$app->params['logoutUrl'],['class'=>'btn btn-default btn-xs'])?>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <footer class="text-center">

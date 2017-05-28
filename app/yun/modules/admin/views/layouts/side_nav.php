@@ -8,6 +8,9 @@
     <div class="side-head">
         <?=Yii::$app->name?> 后台管理
     </div>
+    <div class="side-head2">
+        欢迎光临，<?=Yii::$app->user->identity->name?>
+    </div>
     <ul class="nav nav-pills nav-stacked">
         <li class="menu-single <?=$this->context->id=='default'?'active':''?>">
             <a href="<?=AdminFunc::adminUrl('/')?>">
