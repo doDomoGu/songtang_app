@@ -156,17 +156,14 @@
 .apply-title  {
     display:block;
     float:left;
-    width:90px;
+    width:110px;
     position:relative;
 }
-.apply-title.apply-approval-head {
-    width:100px;
-}
 .apply-title.apply-message-head {
-    width:340px;
+    width:300px;
 }
 .apply-title.apply-time-head {
-    width:164px;
+    width:180px;
 }
 .apply-user {
     width:188px;
@@ -191,7 +188,7 @@
 #apply-main .flow .r-not-do {
     display:block;
     float:left;
-    width:90px;
+    width:110px;
     padding-left:14px;
 }
 
@@ -199,16 +196,12 @@
     padding-left:0;
 }
 
-#apply-main .flow .approval-result {
-    width:100px;
-}
-
 #apply-main .flow .approval-message {
-    width:340px;
+    width:300px;
 }
 
 #apply-main .flow .approval-time {
-    width:164px;
+    width:180px;
 }
 
 #apply-main .flow .approval-title {
