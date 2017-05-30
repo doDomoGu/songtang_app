@@ -2,6 +2,8 @@
 
 namespace oa\modules\admin\controllers;
 
+use common\components\CommonFunc;
+use login\models\UserIdentity;
 use oa\models\Apply;
 use oa\models\ApplyRecord;
 use oa\models\Flow;
@@ -43,26 +45,34 @@ class ApplyController extends BaseController
             $records = ApplyRecord::find()->where(['apply_id'=>$aid])->all();
             if(!empty($records)){
                 foreach($records as $r){
+
+                    $flow_user = CommonFunc::getByCache(UserIdentity::className(),'findIdentityOne',[$r->user_id],'ucenter:user/identity');
+                    $username = $flow_user?$flow_user->name:'N/A';
+
                     $htmlOne = '<li>';
                     $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
                     $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
-                    $htmlOne.= '<div>操作人：<b>'.$r->flow->user->name.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
+                    $htmlOne.= '<div>操作人：<b>'.$username.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
                     $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
                     $htmlOne.= '</li>';
                     $html .= $htmlOne;
                 }
             }
 
-            //3.剩余未完成操作
-            $curStep = $apply->flow_step;
-            $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
-            foreach($flow as $f){
-                $htmlOne = '<li class="not-do">';
-                $htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
-                $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
-                $htmlOne.= '<div>操作人：<b>'.$f->user->name.'</b> </div>';
-                $htmlOne.= '</li>';
-                $html .= $htmlOne;
+            //3.剩余未完成操作  * 只有申请表(apply)状态为执行中(status=1)
+            if($apply->status==1) {
+                $curStep = $apply->flow_step;
+                $flow = Flow::find()->where(['task_id' => $apply->task_id])->andWhere(['>=', 'step', $curStep])->all();
+                foreach ($flow as $f) {
+                    $username = Apply::getOperationUser($apply, $f);
+
+                    $htmlOne = '<li class="not-do">';
+                    $htmlOne .= '<div>步骤' . $f->step . ' 还未操作</div>';
+                    $htmlOne .= '<div>标题：<b>' . $f->title . '</b>  操作类型：<b>' . $f->typeName . '</b></div>';
+                    $htmlOne .= '<div>操作人：<b>' . $username . '</b> </div>';
+                    $htmlOne .= '</li>';
+                    $html .= $htmlOne;
+                }
             }
             $params['html'] = $html;
             $params['apply'] = $apply;

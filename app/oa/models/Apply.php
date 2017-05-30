@@ -177,11 +177,14 @@ class Apply extends \yii\db\ActiveRecord
     }
 
     public static function getDoneList($getCount=false){
-        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->orderBy('step desc')->select(['task_id','step'])->all();
+        //$flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->orderBy('step desc')->select(['task_id','step'])->all();
+
+
+        $records = ApplyRecord::find()->where(['user_id'=>Yii::$app->user->id])->all();
         $list = [];
-        if(!empty($flow)){
-            foreach($flow as $f){
-                $applyList = Apply::find()->where(['task_id'=>$f->task_id,'status'=>self::STATUS_NORMAL])->andWhere(['>','flow_step',$f->step])->all();
+        if(!empty($records)){
+            foreach($records as $r){
+                $applyList = Apply::find()->where(['id'=>$r->apply_id,'status'=>self::STATUS_SUCCESS])->all();
                 if(!empty($applyList))
                     $list = array_merge($list,$applyList);
             }
