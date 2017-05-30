@@ -75,14 +75,60 @@
 .panel-default > .panel-body td span{
     background: #e6e6e6;
     display:block;
-    padding:8px;
-    height:40px;
+    padding:8px 8px 0;
+    height:48px;
     text-align: center;
+
 }
 
 .panel-default > .panel-body table td.last {
     padding:0;
 }
+
+.panel-default > .panel-body > table > tbody > tr > th > span,
+.panel-default > .panel-body > table > tbody > tr > td > span
+{
+    word-break: break-all;
+    width: 36px;
+    overflow:hidden;
+}
+
+.panel-default > .panel-body > table > tbody > tr > th:nth-child(2) > span,
+.panel-default > .panel-body > table > tbody > tr > td:nth-child(2) > span
+{
+    width: 276px;
+}
+
+.panel-default > .panel-body > table > tbody > tr > th:nth-child(3) > span,
+.panel-default > .panel-body > table > tbody > tr > td:nth-child(3) > span
+{
+    width: 196px;
+}
+
+.panel-default > .panel-body > table > tbody > tr > th:nth-child(4) > span,
+.panel-default > .panel-body > table > tbody > tr > td:nth-child(4) > span
+{
+    width: 166px;
+}
+
+.panel-default > .panel-body > table > tbody > tr > th:nth-child(5) > span,
+.panel-default > .panel-body > table > tbody > tr > td:nth-child(5) > span
+{
+    width: 116px;
+}
+
+.panel-default > .panel-body > table > tbody > tr > th:nth-child(6) > span,
+.panel-default > .panel-body > table > tbody > tr > td:nth-child(6) > span
+{
+    width: 110px;
+}
+
+
+
+
+
+
+
 
 #infoContent > .content > li {
     list-style: none;
