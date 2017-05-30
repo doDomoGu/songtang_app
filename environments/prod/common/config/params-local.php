@@ -16,6 +16,13 @@ return [
     'qiniu-domain'=> 'http://ojh4ydms2.bkt.clouddn.com/',
     'qiniu-domain-beaut'=> 'http://yun-source.songtang.net/',
 
+    'qiniu-oa-accessKey' => 'A9vqV-lyLBGKTkGpMBEkfqyUevJN-TKVi57jNpt-',
+    'qiniu-oa-secretKey' => 'zCOYX5Uu31qAEpmJ7ZRndPnVlm-56CAH9Kq3gW-K',
+    'qiniu-oa-bucket' => 'songtangoa',
+    'qiniu-oa-domain'=> 'http://ojh4ydms2.bkt.clouddn.com/',
+    'qiniu-oa-domain-beaut'=> 'http://oa-source.songtang.net/',
+
+
 
     'aliyun_sms_config'=> [
         'accessKey'=> 'LTAIaNUr1BPK7bAa',

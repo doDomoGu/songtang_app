@@ -11,6 +11,12 @@ $(function(){
             }
         }
         if(flag){
+            var attachments = {};
+            var attach_num = 0;
+            $('.attachment_files').each(function(){
+                var attach_temp = $(this).val().split('|||');
+                attachments[attach_num] = {'url':attach_temp[0],'name':attach_temp[1]};
+            });
             $.ajax({
                 url: '/apply/do-operation',
                 type: 'post',
@@ -19,7 +25,8 @@ $(function(){
                 data: {
                     result: $('#applydoform-result input:checked').val(),
                     message: $('#applydoform-message').val(),
-                    apply_id: $('#apply_id').val()
+                    apply_id: $('#apply_id').val(),
+                    attachment: attachments
                 },
                 success: function (data) {
                     if(data.result){

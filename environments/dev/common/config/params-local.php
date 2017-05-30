@@ -17,6 +17,12 @@ return [
     'qiniu-domain' => 'http://7xoavb.com1.z0.glb.clouddn.com/',
     'qiniu-domain-beaut' => 'http://7xoavb.com1.z0.glb.clouddn.com/',
 
+    'qiniu-oa-accessKey' => '1nwvYZqaucoH14DZTD41GkKM1JmksrjlfNafgdu_',
+    'qiniu-oa-secretKey' => 'sV_VSSqbypX7XxoahfacjdQtoFVxr7BiLXFBrGV4',
+    'qiniu-oa-bucket' => 'songtangoa',
+    'qiniu-oa-domain' => 'http://oqs27rpel.bkt.clouddn.com',
+    'qiniu-oa-domain-beaut' => 'http://oqs27rpel.bkt.clouddn.com',
+
     'aliyun_sms_config'=> [
         'accessKey'=> 'LTAIaNUr1BPK7bAa',
         'accessSecret' => 'EyZv4WFoxrVzNMPzlrYnQd2LaSsOhr',

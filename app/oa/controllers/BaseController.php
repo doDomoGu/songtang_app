@@ -15,7 +15,8 @@ class BaseController extends Controller
     public $isMobile = false;   //表示是否为移动用户
     public $tabbar_on = 0;      //移动端导航栏激活标志
     public $except = [
-        'site/error'
+        'site/error',
+        'site/get-qiniu-uptoken'
     ];
 
 

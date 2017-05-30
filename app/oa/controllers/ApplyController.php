@@ -617,6 +617,7 @@ class ApplyController extends BaseController
                     $record->user_id = Yii::$app->user->id;
                     $record->step = $flow->step;
                     $record->title = $flow->title;
+                    $record->attachment = json_encode($post['attachment']);
 
 
                     $record->add_time = date('Y-m-d H:i:s');

@@ -2,7 +2,14 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use oa\models\Flow;
+
+
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/operation.js');
+oa\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
+oa\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
+oa\assets\AppAsset::addJsFile($this,'js/main/apply/attachment-upload.js');
+
+
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/do.css');
 $this->title = '待办事项';
 ?>
@@ -47,7 +54,26 @@ $this->title = '待办事项';
 <?= $form->field($model, 'message')->textarea(['cols'=>190,'rows'=>10]) ?>
 
 
+<div class="form-group">
+    <label class="col-lg-2 control-label" >附件</label>
+    <div class="col-lg-8" style="padding-top:7px;font-weight:bold;" id="pickfile_container">
+        <input type="file" id="pickfile">
+        <input type="hidden" id="fileurl" name="fileurl" />
+    </div>
 
+    <div class="col-lg-offset-2 col-lg-8">
+        <div id="upload_files">
+
+        </div>
+        <div id="upload_progress" style="display:non33e;">
+        </div>
+    </div>
+
+</div>
+
+
+        <input type="hidden" id="qiniuDomain" value="<?=yii::$app->params['qiniu-domain']?>" />
+        <input type="hidden" id="apply_id" value="<?=$apply->id?>" />
 <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
         <?= Html::submitButton('提交', ['class' => 'btn btn-primary', 'name' => 'submit-button','id'=>'submit-button']) ?>

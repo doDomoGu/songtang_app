@@ -8,6 +8,8 @@ use yii\debug\models\search\Log;
 use yii\log\Logger;
 use yii\web\Controller;
 
+use yun\components\QiniuUpload;
+
 /**
  * Site controller
  */
@@ -64,6 +66,13 @@ class SiteController extends BaseController
 
     public function actionNoAuth(){
         return $this->render('no_auth');
+    }
+
+    public function actionGetQiniuUptoken(){
+        $up=new QiniuUpload(yii::$app->params['qiniu-oa-bucket']);
+        $saveKey = yii::$app->request->get('saveKey','');
+        $upToken=$up->createtoken($saveKey);
+        echo json_encode(['uptoken'=>$upToken]);exit;
     }
 
 }
