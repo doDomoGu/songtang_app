@@ -185,8 +185,11 @@ class Apply extends \yii\db\ActiveRecord
         if(!empty($records)){
             foreach($records as $r){
                 $applyList = Apply::find()->where(['id'=>$r->apply_id,'status'=>self::STATUS_SUCCESS])->all();
-                if(!empty($applyList))
-                    $list = array_merge($list,$applyList);
+                if(!empty($applyList)){
+                    foreach($applyList as $l){
+                        $list[$l->id] = $l;
+                    }
+                }
             }
         }
         if($getCount){
