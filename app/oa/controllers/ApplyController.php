@@ -332,6 +332,10 @@ class ApplyController extends BaseController
             $apply = Apply::find()->where(['id'=>$id])->one();
             if($apply){
                 $result = true;
+                $html .= '<section id="apply-top">'.
+                        '<span class="apply_user"> 申请人：</span><span class="apply_user-txt">'.$apply->applyUser->name.'</span>'.
+                        '<span class="apply_position"> 部门：</span><span class="apply_position-txt">'.$apply->applyUser->getFullPositionRoute().'</span>'.
+                        '</section>';
                 $html .= '<section id="apply-header">'.
                     '<span class="title">'.Html::img('/images/main/apply/modal-title.png').' 申请主题：</span><span class="title-txt">'.$apply->title.'</span>'.
                     '<span class="date">'.Html::img('/images/main/apply/modal-date.png').' 申请日期：</span><span class="date-txt">'. date('Y-m-d',strtotime($apply->add_time)).'</span>'.
@@ -343,7 +347,7 @@ class ApplyController extends BaseController
                     '</section>';
                 $html .= '<section id="apply-main">' .
                     '<div class="apply-main-title">'.
-                    '<span class="apply-title apply-user">'.Html::img('/images/main/apply/modal-user.png').' 申请人：'.$apply->applyUser->name.'</span>'.
+                    '<span class="apply-title apply-user">'.Html::img('/images/main/apply/modal-user.png').' 审批流程</span>'.
                     '<span class="apply-title apply-sign-head">'.Html::img('/images/main/apply/modal-sign-head.png').' 签名'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
                     '<span class="apply-title apply-approval-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 批示'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
                     '<span class="apply-title apply-message-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 批注'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.

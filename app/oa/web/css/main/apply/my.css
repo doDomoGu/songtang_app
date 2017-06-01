@@ -146,6 +146,14 @@
     width:1000px;
 }
 
+#apply-top {
+    font-size:16px;
+    padding:10px 50px;
+}
+#apply-top .apply_user-txt {
+    margin-right:120px;
+}
+
 #apply-header,
 #apply-message,
 #apply-main
@@ -165,6 +173,7 @@
     width:110px;
     display: inline-block;
 }
+
 
 #apply-header .title-txt  {
     width:550px;
