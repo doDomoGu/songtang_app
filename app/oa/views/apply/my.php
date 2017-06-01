@@ -34,6 +34,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
                     <td><span><?=Apply::getStatusCn($l->status)?></span></td>
                     <td class="last"><span>
                         <?=Html::a('查看详情','javascript:void(0)',['data-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#infoModal",'class'=>'btn btn-success btn-xs'])?>
+                        <?=$l->flow_step==1&&$l->status==Apply::STATUS_NORMAL?Html::button('撤销',['data-id'=>$l->id,'class'=>'btn btn-danger btn-xs btn-op-del']):''?>
                             </span>
                     </td>
                 </tr>

@@ -22,4 +22,33 @@ $(function(){
         });
 
     });
+
+
+
+
+    $('.btn-op-del').click(function(){
+        if(confirm('确认是否要撤销这个申请？')){
+            var id = $(this).attr('data-id');
+
+            $.ajax({
+                url: '/apply/del',
+                type: 'post',
+                //async : false,
+                dataType: 'json',
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    if(data.result){
+                        location.href = '/apply/my';
+                    }else{
+                        alert('撤销失败！刷新重试！');
+
+                    }
+                }
+            });
+        }else{
+            return false;
+        }
+    })
 });

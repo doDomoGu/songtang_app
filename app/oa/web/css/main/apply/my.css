@@ -76,8 +76,9 @@
     background: #e6e6e6;
     display:block;
     padding:8px 8px 0;
-    height:48px;
+    height:60px;
     text-align: center;
+    line-height:24px;
 
 }
 

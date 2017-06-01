@@ -706,4 +706,31 @@ class ApplyController extends BaseController
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 
+
+    /*
+ * 操作办事 撤销申请
+ */
+    public function actionDel()
+    {
+        $errormsg = '';
+        $result = false;
+        if (Yii::$app->request->isAjax) {
+            $id = Yii::$app->request->post('id');
+            $apply = Apply::find()->where(['id'=>$id,'user_id'=>Yii::$app->user->id,'status'=>Apply::STATUS_NORMAL])->one();
+            if($apply){
+                $apply->status = Apply::STATUS_DELETE;
+                $apply->save();
+                $result = true;
+            }else{
+                $errormsg = '申请表状态错误!';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
 }
