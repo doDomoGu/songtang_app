@@ -170,13 +170,13 @@
 #apply-header .title-txt,
 #apply-header .date-txt
 {
-    width:110px;
+    width:120px;
     display: inline-block;
 }
 
 
 #apply-header .title-txt  {
-    width:550px;
+    width:520px;
     margin-right:10px;
 }
 #apply-header .date-txt  {
@@ -192,7 +192,7 @@
 #apply-message .message-title {
     display:block;
     float:left;
-    width:110px;
+    width:120px;
     height:140px;
 }
 
