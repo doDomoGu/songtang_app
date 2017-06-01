@@ -418,9 +418,10 @@ class ApplyController extends BaseController
 
     //我的申请
     public function actionMy(){
-        $list = Apply::getMyApplyList();
+        $list = Apply::getMyList();
 
-        $params['list'] = $list;if($this->isMobile){
+        $params['list'] = $list;
+        if($this->isMobile){
             $this->tabbar_on = 2;
             return $this->render('mobile/my',$params);
         }else

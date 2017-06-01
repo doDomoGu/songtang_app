@@ -95,7 +95,8 @@ class Apply extends \yii\db\ActiveRecord
         return $return;
     }
 
-    public static function getMyApplyList($getCount=false){
+    //
+    public static function getMyList($getCount=false){
         $query = self::find()->where(['user_id'=>Yii::$app->user->id]);
         if($getCount)
             $return = $query->count();
@@ -117,30 +118,39 @@ class Apply extends \yii\db\ActiveRecord
         }
     }
 
+    //根据
+    public static function isFlowUser($user_id,$flow,$apply){
+        $return = false;
+        if($flow){
+            if($flow->user_id>0){
+                if($flow->user_id == $user_id){
+                    $return = true;
+                }
+            }else{
+                //如果user_id = 0 则是由发起人选择的  在apply的flow_user字段中
+                $arr =  self::flowUserStr2Arr($apply->flow_user);
+                if(isset($arr[$apply->flow_step]) && $arr[$apply->flow_step] == $user_id){
+                    $return = true;
+                }
+            }
+        }
 
+        return $return;
+    }
+
+    //待办事项:   当前流程操作人是"我"，且状态为“执行中”（这个是必然的，其他状态没有操作人了，都是已经完成的申请，不是成功就是失败）
     public static function getTodoList($getCount=false){
         $list = [];
         $user_id = Yii::$app->user->id;
         // 1.搜索执行中的申请
-        $apply = Apply::find()->where(['status'=>self::STATUS_NORMAL])->all();
+        $applyList = Apply::find()->where(['status'=>self::STATUS_NORMAL])->all();
 
-        foreach($apply as $a){
+        foreach($applyList as $apply){
             // 2.根据申请对应的任务表  和  步骤 ，判断操作人是不是自己
-            $flow = Flow::find()->where(['task_id'=>$a->task_id,'step'=>$a->flow_step])->one();
-            if($flow){
-                if($flow->user_id>0){
-                    if($flow->user_id == $user_id){
-                        $list[] = $a;
-                    }
-                }else{
-                    //如果user_id = 0 则是由发起人选择的  在apply的flow_user字段中
-                    $arr =  Apply::flowUserStr2Arr($a->flow_user);
-                    if(isset($arr[$a->flow_step]) && $arr[$a->flow_step] == $user_id){
-                        $list[] = $a;
-                    }
+            $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
 
-                }
-            }
+            if(self::isFlowUser($user_id,$flow,$apply))
+                $list[] = $apply;
         }
 
         if($getCount){
@@ -149,33 +159,10 @@ class Apply extends \yii\db\ActiveRecord
             $return = $list;
         }
 
-//        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->all();
-//        if(!empty($flow)){
-//            $query = Apply::find()->where(['status'=>self::STATUS_NORMAL]);
-//            //使用 任务id和流程步骤数 搜索当前的申请表中匹配的
-//            $or = [];
-//            foreach($flow as $f){
-//                $or[] = '(task_id = "'.$f->task_id.'" and flow_step = "'.$f->step.'")';
-//            }
-//            $condition = implode(' or ',$or);
-//            $query = $query->andWhere($condition);
-//
-//            if($getCount){
-//                $return = $query->count();
-//            }else{
-//                //按时间倒序
-//                $return = $query->orderBy('add_time desc')->all();
-//            }
-//        }else{
-//            if($getCount){
-//                $return = 0;
-//            }else{
-//                $return = [];
-//            }
-//        }
         return $return;
     }
 
+    //办结事项   流程(不包含发起人）中操作人是"我"，且状态为 “已完成”
     public static function getDoneList($getCount=false){
         //$flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->orderBy('step desc')->select(['task_id','step'])->all();
 
@@ -254,6 +241,8 @@ class Apply extends \yii\db\ActiveRecord
         return $return;
     }
 
+
+    //将apply的flow_user字段分解成 流程步骤数step => 操作人user_id 的数组
     public static function flowUserStr2Arr($str){
         $arr = [];
         $temp = explode('|',$str);

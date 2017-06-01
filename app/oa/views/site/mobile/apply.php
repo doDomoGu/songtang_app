@@ -1,7 +1,7 @@
 <?php
 use oa\models\Apply;
 $this->title = '';
-$myApplyCount = Apply::getMyApplyList(true);
+$myApplyCount = Apply::getMyList(true);
 ?>
 <div class="weui-cells">
     <a class="weui-cell weui-cell_access" href="/apply/create">
