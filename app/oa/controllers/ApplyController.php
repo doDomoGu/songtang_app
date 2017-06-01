@@ -94,6 +94,18 @@ class ApplyController extends BaseController
                 $r->result = 0;
                 $r->message = $new->message;
                 $r->add_time = $new->add_time;
+                $attachment = [];
+
+                if(Yii::$app->request->post('attachment_url')){
+                    foreach(Yii::$app->request->post('attachment_url') as $a){
+                        $tmp = explode('|||',$a);
+                        if(count($tmp)==2){
+                            $attachment[] = ['url'=>$tmp[0],'name'=>$tmp[1]];
+                        }
+                    }
+                }
+                $r->attachment = json_encode($attachment);
+
                 $r->save();
 
 
@@ -520,6 +532,7 @@ class ApplyController extends BaseController
             $records = ApplyRecord::find()->where(['apply_id'=>$id])->all();
             if(!empty($records)){
                 foreach($records as $r){
+                    if($r->step==0) continue;
                     $htmlOne = '<li>';
                     $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
                     $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
@@ -618,7 +631,7 @@ class ApplyController extends BaseController
                     $record->user_id = Yii::$app->user->id;
                     $record->step = $flow->step;
                     $record->title = $flow->title;
-                    $record->attachment = json_encode($post['attachment']);
+                    $record->attachment = isset($post['attachment'])?json_encode($post['attachment']):json_encode([]);
 
 
                     $record->add_time = date('Y-m-d H:i:s');

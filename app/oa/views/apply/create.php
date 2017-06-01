@@ -4,6 +4,11 @@ use yii\bootstrap\ActiveForm;
 
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/create.js');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/create.css');
+oa\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
+oa\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
+oa\assets\AppAsset::addJsFile($this,'js/main/apply/create-apply-attachment-upload.js');
+
+
 $this->title = '发起申请';
 ?>
 
@@ -39,6 +44,28 @@ $this->title = '发起申请';
 
 
 <?= $form->field($model, 'message')->textarea(['rows'=>10])->label(Html::img('/images/main/apply/create-head-3.png').'&nbsp;&nbsp;'.$model->attributeLabels()['message'],['style'=>'text-align:left;padding-left:60px;'])   ?>
+
+
+<div class="form-group">
+    <label class="col-lg-3 control-label" >附件</label>
+    <div class="col-lg-9" style="padding-top:7px;font-weight:bold;" id="pickfile_container">
+        <input type="file" id="pickfile">
+        <input type="hidden" id="fileurl" name="fileurl" />
+    </div>
+
+    <div class="col-lg-offset-3 col-lg-8">
+        <div id="upload_files">
+
+        </div>
+        <div id="upload_progress" style="display:non33e;">
+        </div>
+    </div>
+
+</div>
+
+
+<input type="hidden" id="qiniuDomain" value="<?=yii::$app->params['qiniu-domain']?>" />
+
 
 <div class="form-group">
     <div class="col-lg-offset-3 col-lg-9">
