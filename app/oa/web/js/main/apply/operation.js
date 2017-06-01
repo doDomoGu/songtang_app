@@ -16,6 +16,7 @@ $(function(){
             $('.attachment_files').each(function(){
                 var attach_temp = $(this).val().split('|||');
                 attachments[attach_num] = {'url':attach_temp[0],'name':attach_temp[1]};
+                attach_num++;
             });
             $.ajax({
                 url: '/apply/do-operation',

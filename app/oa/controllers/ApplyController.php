@@ -3,6 +3,7 @@ namespace oa\controllers;
 
 use common\components\CommonFunc;
 use oa\components\Func;
+use oa\components\OaFunc;
 use oa\models\Apply;
 use oa\models\ApplyCreateForm;
 use oa\models\ApplyDoForm;
@@ -526,7 +527,21 @@ class ApplyController extends BaseController
         $apply = Apply::find()->where(['id'=>$id])->one();
         if($apply){
             //1.发起申请
-            $html = '<li><div>发起申请</div><div>操作人：<b>'.$apply->applyUser->name.'</b> 时间：<b>'.$apply->add_time.' </b></div><div>申请信息：<b>'.$apply->message.'</b></div></li>';
+            $html = '<li><div>发起申请</div><div>操作人：<b>'.$apply->applyUser->name.'</b> 时间：<b>'.$apply->add_time.' </b></div><div>申请信息：<b>'.$apply->message.'</b></div>';
+
+            $record0 = ApplyRecord::find()->where(['apply_id'=>$id,'step'=>0])->one();
+            if($record0){
+                $attchList = json_decode($record0->attachment,true);
+                if($attchList){
+                    $html .= '<div><span style="display:block;width:40px;float:left;">附件: </span><span style="display: block;width:500px;float:left;">';
+                    foreach($attchList as $a){
+                        $html .= '<div>'.Html::a($a['name'],OaFunc::getResourcePath($a['url']),['style'=>'color:#333;text-decoration:underline;']).'</div>';
+                    }
+                    $html .= '</span></div>';
+                }
+            }
+
+            $html .= '</li>';
 
             //2.操作记录
             $records = ApplyRecord::find()->where(['apply_id'=>$id])->all();
@@ -539,6 +554,16 @@ class ApplyController extends BaseController
                     $username = Apply::getOperationUser($apply,$r->flow);
                     $htmlOne.= '<div>操作人：<b>'.$username.'</b> 时间: <b>'.$r->add_time.'</b> </div><div>结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
                     $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
+                    $attchList = json_decode($r->attachment,true);
+                    if($attchList){
+                        $htmlOne .= '<div><span style="display:block;width:40px;float:left;">附件: </span><span style="display: block;width:500px;float:left;">';
+                        foreach($attchList as $a){
+                            $htmlOne .= '<div>'.Html::a($a['name'],OaFunc::getResourcePath($a['url']),['style'=>'color:#333;text-decoration:underline;']).'</div>';
+                        }
+                        $htmlOne .= '</span></div>';
+                    }
+
+
                     $htmlOne.= '</li>';
                     $html .= $htmlOne;
                 }
@@ -622,6 +647,7 @@ class ApplyController extends BaseController
                     }
                 }
                 if($flag){
+
                     $record = new ApplyRecord();
                     $record->result = $post['result'];
                     $record->message = $post['message'];
