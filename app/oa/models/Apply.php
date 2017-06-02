@@ -165,9 +165,19 @@ class Apply extends \yii\db\ActiveRecord
     //办结事项   流程(不包含发起人）中操作人是"我"，且状态为 “已完成”
     public static function getDoneList($getCount=false){
         //$flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->orderBy('step desc')->select(['task_id','step'])->all();
+        $list = [];
+        $user_id = Yii::$app->user->id;
+        // 1.搜索完结的申请
+        $applyList = Apply::find()->where(['status'=>self::STATUS_SUCCESS])->orderBy('add_time desc')->all();
 
+        foreach($applyList as $apply){
+            // 2.搜索操作记录中user_id 是不是自己
+            $records = ApplyRecord::find()->where(['apply_id'=>$apply->id,'user_id'=>$user_id])->andWhere(['>','step',0])->all();
+            if($records)
+                $list[] = $apply;
+        }
 
-        $records = ApplyRecord::find()->where(['user_id'=>Yii::$app->user->id])->all();
+        /*$records = ApplyRecord::find()->where(['user_id'=>Yii::$app->user->id])->all();
         $list = [];
         if(!empty($records)){
             foreach($records as $r){
@@ -178,7 +188,7 @@ class Apply extends \yii\db\ActiveRecord
                     }
                 }
             }
-        }
+        }*/
         if($getCount){
             $return = count($list);
         }else{
@@ -206,16 +216,30 @@ class Apply extends \yii\db\ActiveRecord
     }
 
     public static function getRelatedList($getCount=false){
-        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->select('task_id')->all();
+        $user_id = Yii::$app->user->id;
+        //1.查找操作历史（不包含发起人）中是"我"的
+        $records = ApplyRecord::find()->where(['user_id'=>$user_id])->andWhere(['>','step',0])->groupBy('apply_id')->all();
+
+        if(!empty($records)){
+            $apply_ids = [];
+            foreach($records as $r){
+                $apply_ids[] = $r->apply_id;
+            }
+
+
+        /*}
+
+
+        $flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->andWhere(['>','step',0])->groupBy('task_id')->select('task_id')->all();
         if(!empty($flow)){
             $taskIds = [];
             foreach($flow as $f){
                 $taskIds[] = $f->task_id;
-            }
+            }*/
 
             $todoList = self::getTodoList();
             $doneList = self::getDoneList();
-            $finishList = self::getFinishList();
+            //$finishList = self::getFinishList();
             $notInIds = [];
             foreach($todoList as $l){
                 $notInIds[] = $l->id;
@@ -223,11 +247,15 @@ class Apply extends \yii\db\ActiveRecord
             foreach($doneList as $l){
                 $notInIds[] = $l->id;
             }
-            foreach($finishList as $l){
+            /*foreach($finishList as $l){
                 $notInIds[] = $l->id;
-            }
+            }*/
 
-            $query = Apply::find()->where(['task_id'=>$taskIds])->andWhere(['not in','id',$notInIds])->orderBy('add_time desc');
+            $query = Apply::find()
+                /*->where(['task_id'=>$taskIds])*/
+                ->where(['id'=>$apply_ids])
+                ->andWhere(['not in','id',$notInIds])->orderBy('add_time desc');
+
             if($getCount)
                 $return = $query->count();
             else
