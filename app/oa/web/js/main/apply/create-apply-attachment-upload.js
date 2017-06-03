@@ -163,18 +163,19 @@ var uploader = Qiniu.uploader({
              console.log(file);
              });*/
             //return false;
-            var upload_num = 1;
+            $('#upload_files').html('');
+            //var upload_num = 1;
             plupload.each(files, function(file) {
-
+                console.log(file.id);
                 $('#upload-progress-'+file.id).parent('.progress-item').remove();
-                var _upload_file_item = '<div id="#upload_files_'+file.id+'" >'+upload_num+'. '+file.name+'<input type="hidden" class="attachment_files" name="attachment_url[]"  value="attachment:'+file.id+'|||'+file.name+'"  /></div>';
+                var _upload_file_item = '<div class="upload_files" id="#upload_files_'+file.id+'" >'/*+upload_num+'. '*/+file.name+'<input type="hidden" class="attachment_files" name="attachment_url[]"  value="attachment:'+file.id+'|||'+file.name+'"  /></div>';
                 $('#upload_files').append(_upload_file_item);
-                upload_num++;
+                //upload_num++;
             });
 
 
-            setTimeout(function(){
-                console.log('finish');return false;
+            /*setTimeout(function(){
+                console.log('finish');return false;*/
 
                 /*if(_p_id>0){
                     //console.log('/dir?p_id='+_p_id);
@@ -184,7 +185,7 @@ var uploader = Qiniu.uploader({
 
                     location.href='/dir?dir_id='+_dir_id;
                 }*/
-            },1000);
+            //},1000);
 
 
 

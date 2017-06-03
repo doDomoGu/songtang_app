@@ -80,3 +80,11 @@
     background: #c7000a;
     border-color: #c7000a;
 }
+
+.upload_files {
+    padding-left:20px;
+    background-image: url('/images/common/compose207c92.png');
+    background-position-x: 0;
+    background-position-y: 2px;
+    background-repeat: no-repeat;
+}
