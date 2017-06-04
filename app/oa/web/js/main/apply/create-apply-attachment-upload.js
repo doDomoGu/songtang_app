@@ -1,9 +1,24 @@
+var upload_del_ids = [];
+
+$(function(){
+    $('#upload_files').on('click','.upload-del-btn',function(){
+        var file_id = $(this).attr('data-id');
+        if($.inArray(file_id,upload_del_ids)<0){
+            upload_del_ids.push(file_id);
+        }
+        $(this).parent('.upload_files').remove();
+    });
+
+});
+
 var progress_html = '';
 //var filename_list = [];
 
 /*var _dir_id = $('#var_dir_id').val();
 var _p_id = $('#var_p_id').val();
 var _dir_route = $('#var_dir_route').val();*/
+
+
 
 
 
@@ -165,11 +180,18 @@ var uploader = Qiniu.uploader({
             //return false;
             $('#upload_files').html('');
             //var upload_num = 1;
+            //console.log(upload_del_ids);
             plupload.each(files, function(file) {
-                console.log(file.id);
+                //console.log(file.id);
                 $('#upload-progress-'+file.id).parent('.progress-item').remove();
-                var _upload_file_item = '<div class="upload_files" id="#upload_files_'+file.id+'" >'/*+upload_num+'. '*/+file.name+'<input type="hidden" class="attachment_files" name="attachment_url[]"  value="attachment:'+file.id+'|||'+file.name+'"  /></div>';
-                $('#upload_files').append(_upload_file_item);
+
+                if($.inArray(file.id,upload_del_ids)<0){
+                    //console.log(file.id);
+                    var _upload_file_item = '<div class="upload_files" id="#upload_files_'+file.id+'" >'/*+upload_num+'. '*/+file.name+'<input type="hidden" class="attachment_files" name="attachment_url[]"  value="attachment:'+file.id+'|||'+file.name+'"  /> <button type="button" class="btn btn-xs btn-danger upload-del-btn" data-id="'+file.id+'">删除</button></div>';
+                    $('#upload_files').append(_upload_file_item);
+                }
+                //console.log('------');
+
                 //upload_num++;
             });
 
@@ -199,3 +221,4 @@ var uploader = Qiniu.uploader({
         }
     }
 });
+
