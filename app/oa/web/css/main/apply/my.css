@@ -269,3 +269,24 @@
 #apply-main .flow.not-do .approval-time{
     color:#ccc;
 }
+
+
+#a-print {
+    padding:10px 10px 0 0;
+    overflow:hidden;
+}
+
+#a-print .print-btn {
+    float:right;
+    background:#c7000a;
+    color:#fff;
+    border-radius: 4px;
+    padding: 4px 16px;
+    font-size:12px;
+    text-decoration: none;
+    cursor:pointer;
+}
+
+#a-print .print-btn:hover {
+    opacity: 0.8;
+}

@@ -420,7 +420,12 @@ class ApplyController extends BaseController
                     }
                 }
 
+                //4. 打印
+                $html .= '<div id="a-print" class="hidden-print"><a type="button" class="print-btn">打印</a></div>';
+
                 $html .= '</section>';
+
+
             }else{
                 $errormsg = '申请表不存在！';
             }
