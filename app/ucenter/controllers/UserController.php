@@ -1,6 +1,7 @@
 <?php
 namespace ucenter\controllers;
 
+use moonland\phpexcel\Excel;
 use ucenter\models\District;
 use ucenter\models\Industry;
 use ucenter\models\Company;
@@ -574,5 +575,9 @@ echo '===============<Br/><Br/><Br/><Br/>';
             $posTrue->save();
         }
         return $posTrue->id;
+    }
+
+    public function actionExport(){
+        $excel = new Excel();
     }
 }
