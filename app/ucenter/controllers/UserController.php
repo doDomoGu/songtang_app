@@ -12,6 +12,7 @@ use ucenter\models\User;
 use ucenter\models\UserForm;
 use Yii;
 use yii\web\Response;
+use common\components\CommonFunc;
 
 class UserController extends BaseController
 {
@@ -577,7 +578,33 @@ echo '===============<Br/><Br/><Br/><Br/>';
         return $posTrue->id;
     }
 
-    public function actionExport(){
-        $excel = new Excel();
+    public function actionExportAll(){
+        error_reporting(E_ALL);
+
+        $data = User::find()->all();
+        foreach($data as $k=>$d){
+$d->district_id = CommonFunc::getByCache(District::className(),'getName',[$d->district_id],'ucenter:district/name');
+$d->industry_id = CommonFunc::getByCache(Industry::className(),'getName',[$d->industry_id],'ucenter:industry/name');
+$d->company_id = CommonFunc::getByCache(Company::className(),'getName',[$d->company_id],'ucenter:company/name');
+$d->department_id = CommonFunc::getByCache(Department::className(),'getFullRoute',[$d->department_id],'ucenter:department/full-route');
+$d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->position_id],'ucenter:position/name');
+            $data[$k] = $d;
+        }
+
+        Excel::export([
+            'models'=>$data,
+            'fileName'=>'职员列表_'.time(),
+            'columns'=>['id','username','name','district_id','industry_id','company_id','department_id','position_id'],
+            'headers'=>[
+                'id'=>'ID',
+                'username'=>'用户名',
+                'name'=>'姓名',
+                'district_id'=>'地区',
+                'industry_id'=>'行业',
+                'company_id'=>'公司',
+                'department_id'=>'部门',
+                'position_id'=>'职位',
+            ],
+        ]);
     }
 }

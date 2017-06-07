@@ -15,6 +15,7 @@ use ucenter\models\Position;
 <section>
     <div style="margin-bottom: 10px;">
         <?=Html::a('新增职员','/user/add-and-edit',['class'=>'btn btn-success'])?>
+        <?=Html::a('全部导出','/user/export-all',['class'=>'btn btn-warning'])?>
         <?/*=Html::a('清除user缓存','/user/clear-cache',['class'=>'btn btn-danger'])*/?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
