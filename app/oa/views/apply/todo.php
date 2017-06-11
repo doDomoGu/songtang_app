@@ -7,6 +7,7 @@ $this->title = '待办事项';
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/my.js');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/todo.css');
+oa\assets\AppAsset::addCssFile($this,'css/main/apply/table.css');
 
 ?>
 <section class="panel panel-default">
@@ -21,6 +22,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/todo.css');
                 <th><span>#</span></th>
                 <th><span><?=Html::img('/images/main/apply/th_1.png',['style'=>''])?> &nbsp;&nbsp; 标题</span></th>
                 <th><span><?=Html::img('/images/main/apply/th_2.png',['style'=>''])?> &nbsp;&nbsp; 任务表</span></th>
+                <th><span><?=Html::img('/images/main/apply/th_2.png',['style'=>''])?> &nbsp;&nbsp; 申请人</span></th>
                 <th><span><?=Html::img('/images/main/apply/th_3.png',['style'=>''])?> &nbsp;&nbsp; 申请时间</span></th>
                 <th><span><?=Html::img('/images/main/apply/th_3.png',['style'=>''])?> &nbsp;&nbsp; 状态</span></th>
                 <th class="last"><span><?=Html::img('/images/main/apply/th_4.png',['style'=>''])?> &nbsp;&nbsp; 操作</span></th>
@@ -31,7 +33,8 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/todo.css');
                     <td><span><?=$l->id?></span></td>
                     <td><span><?=$l->title?></span></td>
                     <td><span><?=$l->task->title?></span></td>
-                    <td><span><?=$l->add_time?></span></td>
+                    <td><span><?=$l->applyUser->name?></span></td>
+                    <td><span><?=substr($l->add_time,0,-3)?></span></td>
                     <td><span><?=Apply::getStatusCn($l->status)?></span></td>
                     <td class="last">
                         <span><?=Html::a('进行操作','/apply/operation?id='.$l->id,['class'=>'btn btn-success btn-xs'])?></span>
