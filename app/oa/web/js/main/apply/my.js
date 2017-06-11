@@ -53,6 +53,24 @@ $(function(){
     })
 
     $('#main').on('click','.print-btn',function(){
+        //$("#infoModal .modal-content").jqprint()
+
+        var newWindow=window.open("/apply/print?id="+$(this).attr('data-id'),"_blank");
+        //var docStr = $("#infoModal .modal-content").html();
+        //newWindow.document.write('<html><head><link href="/assets/88e40878/css/bootstrap.css" rel="stylesheet">');
+        //newWindow.document.write('<link href="/css/site.css" rel="stylesheet">');
+        //newWindow.document.write('<link href="/css/main/apply/my.css" rel="stylesheet"><title></title></head><body>');
+        //newWindow.document.write('<html><head><title></title></head><body>');
+        //newWindow.document.write(docStr);
+        //newWindow.document.write('</body></html>');
+
+
+        //newWindow.document.close();
+        //newWindow.print();
+        //newWindow.close();
+
+
+/*
         var headhtml = "<html><head>";
         //headhtml += '<link href="/css/site.css" rel="stylesheet">'+
         //    '<link href="/css/main/apply/my.css" rel="stylesheet">';
@@ -74,6 +92,6 @@ $(function(){
 
         // 将原来窗口body的html值回填展示
         document.body.innerHTML = oldhtml;
-        return false;
+        return false;*/
     });
 });

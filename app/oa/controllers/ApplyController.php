@@ -2,6 +2,7 @@
 namespace oa\controllers;
 
 use common\components\CommonFunc;
+use login\models\UserIdentity;
 use oa\components\Func;
 use oa\components\OaFunc;
 use oa\models\Apply;
@@ -318,6 +319,18 @@ class ApplyController extends BaseController
         $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html];
     }
 
+    public function actionPrint(){
+        $this->layout = 'main_blank';
+        $html  = '';
+        $id = trim(Yii::$app->request->get('id',false));
+        $apply = Apply::find()->where(['id'=>$id])->one();
+        if($apply){
+            $html = $this->getHtmlByApply($apply);
+        }
+        $params['html'] = $html;
+        return $this->render('print',$params);
+    }
+
 
     /*
      * get-record 获取申请表详情
@@ -332,99 +345,7 @@ class ApplyController extends BaseController
             $apply = Apply::find()->where(['id'=>$id])->one();
             if($apply){
                 $result = true;
-                $html .= '<section id="apply-top">'.
-                        '<span class="apply_user"> 申请人：</span><span class="apply_user-txt">'.$apply->applyUser->name.'</span>'.
-                        '<span class="apply_position"> 部门：</span><span class="apply_position-txt">'.$apply->applyUser->getFullPositionRoute().'</span>'.
-                        '</section>';
-                $html .= '<section id="apply-header">'.
-                    '<span class="title">'.Html::img('/images/main/apply/modal-title.png').' 申请主题：</span><span class="title-txt">'.$apply->title.'</span>'.
-                    '<span class="date">'.Html::img('/images/main/apply/modal-date.png').' 申请日期：</span><span class="date-txt">'. date('Y-m-d',strtotime($apply->add_time)).'</span>'.
-                    '</section>';
-
-                //1.发起申请
-                $html .= '<section id="apply-message">' .
-                    '<span class="message-title">'.Html::img('/images/main/apply/modal-message.png').' 申请内容：</span><span class="message-txt">'.(str_replace("\r\n",'<br/>',$apply->message)).'</span>'.
-                    '</section>';
-                $html .= '<section id="apply-main">' .
-                    '<div class="apply-main-title">'.
-                    '<span class="apply-title apply-user">'.Html::img('/images/main/apply/modal-user.png').' 审批流程</span>'.
-                    '<span class="apply-title apply-sign-head">'.Html::img('/images/main/apply/modal-sign-head.png').' 签名'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
-                    '<span class="apply-title apply-approval-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 批示'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
-                    '<span class="apply-title apply-message-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 批注'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
-                    '<span class="apply-title apply-time-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 时间'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
-                    '</div>';
-
-
-                //2.操作记录
-                $records = ApplyRecord::find()->where(['apply_id'=>$id])->all();
-                if(!empty($records)){
-                    $i = 1;
-                    foreach($records as $r){
-                        if($r->step==0) continue;
-                        if($r->flow->user_id>0){
-                            $username = $r->flow->user->name;
-                        }else{
-                            $username = '[自由选择]';
-                        }
-
-                        $flow_user = CommonFunc::getByCache(self::className(),'findIdentityOne',[$r->user_id],'ucenter:user/identity');
-                        $username = $flow_user?$flow_user->name:'N/A';
-
-                        $htmlOne = '<li class="flow done">';
-                        $htmlOne.= '<span class="r-done approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->flow->title.'</span>';
-                        $htmlOne.= '<span class="r-done approval-sign">'.$username.'</span>';
-                        $htmlOne.= '<span class="r-done approval-result">'.Flow::getResultCn($r->flow->type,$r->result).'</span>';
-                        $htmlOne.= '<span class="r-done approval-message">'.($r->message?$r->message:'&nbsp').'</span>';
-                        $htmlOne.= '<span class="r-done approval-time">'.substr($r->add_time,0,-3).'</span>';
-                        $htmlOne.= '</li>';
-                        /*$htmlOne = '<li class="flow">';
-                        $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
-                        $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
-
-
-                        $htmlOne.= '<div>操作人：<b>'.$username.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
-                        $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
-                        $htmlOne.= '</li>';*/
-
-                        $html .= $htmlOne;
-                        $i++;
-                    }
-                }
-
-                //3.剩余未完成操作  * 只有申请表(apply)状态为执行中(status=1)
-                if($apply->status==1){
-                    $curStep = $apply->flow_step;
-                    $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
-                    $i = 1;
-                    foreach($flow as $f){
-                        $username = Apply::getOperationUser($apply,$f);
-                        /*if($f->user_id>0){
-                            $username = $f->user->name;
-                        }else{
-                            $username = '[自由选择]';
-                        }*/
-
-                        $htmlOne = '<li class="flow not-do">';
-                        $htmlOne.= '<span class="r-not-do approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';
-                        $htmlOne.= '<span class="r-not-do approval-sign">'.$username.'</span>';
-                        $htmlOne.= '<span class="r-not-do approval-result">还未操作</span>';
-                        $htmlOne.= '<span class="r-not-do approval-message">--</span>';
-                        $htmlOne.= '<span class="r-not-do approval-time">--</span>';
-                        /*$htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
-                        $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
-
-                        $htmlOne.= '<div>操作人：<b>'.$username.'</b> </div>';*/
-                        $htmlOne.= '</li>';
-                        $html .= $htmlOne;
-                        $i++;
-                    }
-                }
-
-                //4. 打印
-                $html .= '<div id="a-print" class="hidden-print"><a type="button" class="print-btn">打印</a></div>';
-
-                $html .= '</section>';
-
+                $html = $this->getHtmlByApply($apply);
 
             }else{
                 $errormsg = '申请表不存在！';
@@ -437,6 +358,104 @@ class ApplyController extends BaseController
         $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html];
     }
 
+    public function getHtmlByApply($apply){
+        $html = '';
+
+        $html .= '<section id="apply-top">'.
+            '<span class="apply_user"> 申请人：</span><span class="apply_user-txt">'.$apply->applyUser->name.'</span>'.
+            '<span class="apply_position"> 部门：</span><span class="apply_position-txt">'.$apply->applyUser->getFullPositionRoute().'</span>'.
+            '</section>';
+        $html .= '<section id="apply-header">'.
+            '<span class="title">'.Html::img('/images/main/apply/modal-title.png').' 申请主题：</span><span class="title-txt">'.$apply->title.'</span>'.
+            '<span class="date">'.Html::img('/images/main/apply/modal-date.png').' 申请日期：</span><span class="date-txt">'. date('Y-m-d',strtotime($apply->add_time)).'</span>'.
+            '</section>';
+
+        //1.发起申请
+        $html .= '<section id="apply-message">' .
+            '<span class="message-title">'.Html::img('/images/main/apply/modal-message.png').' 申请内容：</span><span class="message-txt">'.(str_replace("\r\n",'<br/>',$apply->message)).'</span>'.
+            '</section>';
+        $html .= '<section id="apply-main">' .
+            '<div class="apply-main-title">'.
+            '<span class="apply-title apply-user">'.Html::img('/images/main/apply/modal-user.png').' 审批流程</span>'.
+            '<span class="apply-title apply-sign-head">'.Html::img('/images/main/apply/modal-sign-head.png').' 签名'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
+            '<span class="apply-title apply-approval-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 批示'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
+            '<span class="apply-title apply-message-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 批注'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
+            '<span class="apply-title apply-time-head">'.Html::img('/images/main/apply/modal-approval-head.png').' 时间'.Html::img('/images/main/apply/create-icon-2.png',['class'=>'operation-icon']).'</span>'.
+            '</div>';
+
+
+        //2.操作记录
+        $records = ApplyRecord::find()->where(['apply_id'=>$apply->id])->all();
+        if(!empty($records)){
+            $i = 1;
+            foreach($records as $r){
+                if($r->step==0) continue;
+/*                if($r->flow->user_id>0){
+                    $username = $r->flow->user->name;
+                }else{
+                    $username = '[自由选择]';
+                }*/
+
+                $flow_user = CommonFunc::getByCache(UserIdentity::className(),'findIdentityOne',[$r->user_id],'ucenter:user/identity');
+                $username = $flow_user?$flow_user->name:'N/A';
+
+                $htmlOne = '<li class="flow done">';
+                $htmlOne.= '<span class="r-done approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->flow->title.'</span>';
+                $htmlOne.= '<span class="r-done approval-sign">'.$username.'</span>';
+                $htmlOne.= '<span class="r-done approval-result">'.Flow::getResultCn($r->flow->type,$r->result).'</span>';
+                $htmlOne.= '<span class="r-done approval-message">'.($r->message?$r->message:'&nbsp').'</span>';
+                $htmlOne.= '<span class="r-done approval-time">'.substr($r->add_time,0,-3).'</span>';
+                $htmlOne.= '</li>';
+                /*$htmlOne = '<li class="flow">';
+                $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
+                $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
+
+
+                $htmlOne.= '<div>操作人：<b>'.$username.'</b> 时间: <b>'.$r->add_time.'</b> 结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
+                $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
+                $htmlOne.= '</li>';*/
+
+                $html .= $htmlOne;
+                $i++;
+            }
+        }
+
+        //3.剩余未完成操作  * 只有申请表(apply)状态为执行中(status=1)
+        if($apply->status==1){
+            $curStep = $apply->flow_step;
+            $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
+            $i = 1;
+            foreach($flow as $f){
+                $username = Apply::getOperationUser($apply,$f);
+                /*if($f->user_id>0){
+                    $username = $f->user->name;
+                }else{
+                    $username = '[自由选择]';
+                }*/
+
+                $htmlOne = '<li class="flow not-do">';
+                $htmlOne.= '<span class="r-not-do approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';
+                $htmlOne.= '<span class="r-not-do approval-sign">'.$username.'</span>';
+                $htmlOne.= '<span class="r-not-do approval-result">还未操作</span>';
+                $htmlOne.= '<span class="r-not-do approval-message">--</span>';
+                $htmlOne.= '<span class="r-not-do approval-time">--</span>';
+                /*$htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
+                $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
+
+                $htmlOne.= '<div>操作人：<b>'.$username.'</b> </div>';*/
+                $htmlOne.= '</li>';
+                $html .= $htmlOne;
+                $i++;
+            }
+        }
+
+        //4. 打印
+        $html .= '<div id="a-print" class="hidden-print"><a data-id="'.$apply->id.'" type="button" class="print-btn">打印</a></div>';
+
+        $html .= '</section>';
+
+        return $html;
+    }
 
     //我的申请
     public function actionMy(){
