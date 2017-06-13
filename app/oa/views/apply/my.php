@@ -12,7 +12,6 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
     <div class="panel-heading">
         <?=Html::img('/images/main/apply/apply_heading_5.png')?>
         <?=$this->title?>
-        <?/*=Html::img('/images/main/apply/create-icon-2.png')*/?>
     </div>
     <div class="panel-body">
         <table>
