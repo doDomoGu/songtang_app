@@ -36,3 +36,4 @@ phpunit.phar
 # vagrant runtime
 /.vagrant
 vendor.tar.gz
+package-lock.json

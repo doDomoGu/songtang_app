@@ -135,29 +135,29 @@ class DirPermission extends \yii\db\ActiveRecord
      * 参数 dm : 一条dir_permission记录
      * 参数 user: 用户  默认为当前登录用户
      */
-    private static function isInRange($dm,$user=false){
+    public static function isInRange($dm_user_match_type,$dm_user_match_param_id,$user_id=false){
         $return = false;
-        if($user===false)
-            $user = Yii::$app->user->identity;
-        switch($dm->user_match_type){
+        if($user_id===false)
+            $user_id = Yii::$app->user->id;
+        switch($dm_user_match_type){
             case self::TYPE_ALL:
                 $return = true;
                 break;
             case self::TYPE_WILDCARD:
-                $userWildcard = UserWildcard::find()->where(['id'=>$dm->user_match_param_id])->one();
+                $userWildcard = UserWildcard::find()->where(['id'=>$dm_user_match_param_id])->one();
                 foreach($userWildcard->users as $u){
-                    if($u->id==$user->id)
+                    if($u->id==$user_id)
                         $return = true;
                 }
                 break;
             case self::TYPE_USER:
-                if($dm->user_match_param_id == $user->id)
+                if($dm_user_match_param_id == $user_id)
                     $return = true;
                 break;
             case self::TYPE_GROUP:
-                $userGroup = UserGroup::find()->where(['id'=>$dm->user_match_param_id])->one();
+                $userGroup = UserGroup::find()->where(['id'=>$dm_user_match_param_id])->one();
                 foreach($userGroup->users as $u){
-                    if($u->user_id==$user->id)
+                    if($u->user_id==$user_id)
                         $return = true;
                 }
                 break;
@@ -226,7 +226,7 @@ class DirPermission extends \yii\db\ActiveRecord
                 //$allowList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
                 if(!empty($allowList)){
                     foreach($allowList as $a){
-                        if(self::isInRangeByCache($a,$user)){
+                        if(CommonFunc::getByCache(self::className(),'isInRange',[$a->user_match_type,$a->user_match_param_id,$user->id],'yun:dir-permission/is-in-range')){
                             $isAllow2 = true; //有一条允许就允许
                             break;
                         }
@@ -239,7 +239,7 @@ class DirPermission extends \yii\db\ActiveRecord
                         //$allowList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_ALLOW])->all();
                         if(!empty($allowList)){
                             foreach($allowList as $a){
-                                if(self::isInRangeByCache($a,$user)){
+                                if(CommonFunc::getByCache(self::className(),'isInRange',[$a->user_match_type,$a->user_match_param_id,$user->id],'yun:dir-permission/is-in-range')){
                                     $isAllow2 = true; //有一条允许就允许
                                     break;
                                 }
@@ -253,7 +253,7 @@ class DirPermission extends \yii\db\ActiveRecord
                 //$denyList = self::find()->where(['dir_id'=>$dir_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
                 if(!empty($denyList)){
                     foreach($denyList as $d){
-                        if(self::isInRangeByCache($d,$user)){
+                        if(CommonFunc::getByCache(self::className(),'isInRange',[$d->user_match_type,$d->user_match_param_id,$user->id],'yun:dir-permission/is-in-range')){
                             $isAllow2 = false; //有一条禁止就禁止
                             break;
                         }
@@ -267,7 +267,7 @@ class DirPermission extends \yii\db\ActiveRecord
                         //$denyList = self::find()->where(['dir_id'=>$p_id,'permission_type'=>$ptArr,'operation'=>$operation_id,'mode'=>self::MODE_DENY])->all();
                         if(!empty($denyList)){
                             foreach($denyList as $d){
-                                if(self::isInRangeByCache($d,$user)){
+                                if(CommonFunc::getByCache(self::className(),'isInRange',[$p->user_match_type,$p->user_match_param_id,$user->id],'yun:dir-permission/is-in-range')){
                                     $isAllow2 = false; //有一条禁止就禁止
                                     break;
                                 }
