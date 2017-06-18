@@ -4,6 +4,7 @@ namespace oa\modules\admin\controllers;
 
 use oa\models\Flow;
 use oa\models\Form;
+use oa\models\FormCategory;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
@@ -48,6 +49,7 @@ class TaskController extends BaseController
 
         $params['list'] = $list;
         $params['pages'] = $pages;
+        $params['categoryList'] = TaskCategory::getDropdownList();
         return $this->render('form',$params);
     }
 
@@ -99,6 +101,34 @@ class TaskController extends BaseController
                 $result = true;
             }else{
                 $errormsg = '模板不存在';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg,'info'=>$info];
+    }
+
+
+    public function actionFormGet(){
+        $errormsg = '';
+        $result = false;
+        $info = [];
+        if(Yii::$app->request->isAjax){
+            $id = Yii::$app->request->post('id',0);
+            $form = Form::find()->where(['id'=>$id])->one();
+            if($form){
+                $info['title'] = $form->title;
+                $category = FormCategory::find()->where(['form_id'=>$id])->all();
+                $cateArr = [];
+                foreach($category as $c){
+                    $cateArr[] = $c->category_id;
+                }
+                $info['category_ids'] = implode(',',$cateArr);
+                $result = true;
+            }else{
+                $errormsg = '表单不存在';
             }
         }else{
             $errormsg = '操作错误，请重试!';
@@ -175,6 +205,62 @@ class TaskController extends BaseController
     }
 
 
+    public function actionFormCreate(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $title = trim(Yii::$app->request->post('title',false));
+            $category_id = Yii::$app->request->post('category_id','');
+            if($title==''){
+                $errormsg = '标题不能为空！';
+            }else{
+                $exist = Form::find()->where(['title'=>$title])->one();
+                if($exist){
+                    $errormsg = '标题已存在!';
+                }else{
+                    if($category_id==''){
+                        $errormsg = '请勾选至少一个分类！';
+                    }else{
+                        $form = new Form();
+                        $form->title = $title;
+                        $form->status = 1;
+                        if($form->save()){
+                            $categoryIds = explode(',',$category_id);
+
+                            foreach($categoryIds as $cate_id){
+                                $taskCategory = TaskCategory::find()->where(['id'=>$cate_id])->one();
+                                if($taskCategory){
+                                    $formCategory = new FormCategory();
+                                    $formCategory->form_id = $form->id;
+                                    $formCategory->category_id = $cate_id;
+                                    $formCategory->save();
+                                }
+                            }
+                            /*$user = User::find()->all();
+                            foreach($user as $u){
+                                $taskUser = new TaskApplyUser();
+                                $taskUser->task_id = $task->id;
+                                $taskUser->user_id = $u->id;
+                                $taskUser->save();
+                            }*/
+
+
+                            Yii::$app->getSession()->setFlash('success','新增表单【'.$form->title.'】成功！');
+                            $result = true;
+                        }else{
+                            $errormsg = '保存失败，刷新页面重试!';
+                        }
+                    }
+                }
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
     public function actionEdit(){
         $errormsg = '';
         $result = false;
@@ -212,6 +298,58 @@ class TaskController extends BaseController
 
 
                             Yii::$app->getSession()->setFlash('success', '编辑模板【' . $task->title . '】成功！');
+                            $result = true;
+                        }
+                    }
+                }
+            }else{
+                $errormsg = '模板错误！';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+    public function actionFormEdit(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $id = Yii::$app->request->post('form_id',0);
+            $title = trim(Yii::$app->request->post('title',false));
+            $category_id = Yii::$app->request->post('category_id','');
+            $form = Form::find()->where(['id'=>$id])->one();
+            if($form){
+                if($title==''){
+                    $errormsg = '标题不能为空！';
+                }else {
+                    $exist = Form::find()->where(['title' => $title])->andWhere(['<>', 'id', $id])->one();
+                    if ($exist) {
+                        $errormsg = '标题已存在!';
+                    } else {
+                        if ($category_id == '') {
+                            $errormsg = '请勾选至少一个分类！';
+                        } else {
+                            $form->title = $title;
+                            $form->save();
+
+                            FormCategory::deleteAll(['form_id' => $id]);
+                            $categoryIds = explode(',', $category_id);
+
+                            foreach ($categoryIds as $cate_id) {
+                                $taskCategory = TaskCategory::find()->where(['id' => $cate_id])->one();
+                                if ($taskCategory) {
+                                    $formCategory = new FormCategory();
+                                    $formCategory->form_id = $form->id;
+                                    $formCategory->category_id = $cate_id;
+                                    $formCategory->save();
+                                }
+                            }
+
+
+                            Yii::$app->getSession()->setFlash('success', '编辑表单【' . $form->title . '】成功！');
                             $result = true;
                         }
                     }

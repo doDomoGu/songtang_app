@@ -41,8 +41,9 @@ oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/form.js');
                     <?=CommonFunc::getStatusCn($l->status)?>
                 </td>
                 <td>
-                        <?=Html::a('编辑',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
-                        <?=Html::a('删除',Url::to(''),['class'=>'btn btn-xs btn-danger disabled'])?>
+                    <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary edit-btn','data-id'=>$l->id])?>
+                    <?=Html::button('设置选项',['class'=>'btn btn-xs btn-primary set-item-btn','data-id'=>$l->id])?>
+                    <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
                 </td>
             </tr>
 
@@ -59,18 +60,18 @@ oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/form.js');
 
 <?php
 Modal::begin([
-    'header' => '新增模板',
+    'header' => '新增表单',
     'id'=>'createModal',
     'options'=>['style'=>'margin-top:120px;'],
 ]);
 ?>
 <div id="createContent">
     <form class="form-horizontal" role="form">
-        <input class="aid-value" type="hidden" />
+        <!--<input class="aid-value" type="hidden" />
         <input class="bid-value" type="hidden" />
-        <input class="p_id-value" type="hidden" />
+        <input class="p_id-value" type="hidden" />-->
         <div class="form-group">
-            <label class="col-sm-4 control-label label1">模板标题</label>
+            <label class="col-sm-4 control-label label1">表单标题</label>
             <div class="col-sm-6">
                 <input class="form-control create-title">
             </div>
@@ -81,7 +82,7 @@ Modal::begin([
                 所属分类
             </label>
             <div class="col-sm-6">
-                <?/*=Html::checkboxList('create-category-select','',$taskCategoryList,['class'=>'create-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])*/?>
+                <?=Html::checkboxList('create-category-select','',$categoryList,['class'=>'create-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
             </div>
         </div>
         <!--<div class="form-group">
@@ -124,19 +125,16 @@ Modal::end();
 
 <?php
 Modal::begin([
-    'header' => '编辑模板',
+    'header' => '编辑表单',
     'id'=>'editModal',
     'options'=>['style'=>'margin-top:120px;'],
 ]);
 ?>
 <div id="editContent">
     <form class="form-horizontal" role="form">
-        <input class="aid-value" type="hidden" />
-        <input class="bid-value" type="hidden" />
-        <input class="p_id-value" type="hidden" />
-        <input class="edit-task_id" type="hidden" />
+        <input class="edit-form_id" type="hidden" />
         <div class="form-group">
-            <label class="col-sm-4 control-label label1">模板标题</label>
+            <label class="col-sm-4 control-label label1">表单标题</label>
             <div class="col-sm-6">
                 <input class="form-control edit-title">
             </div>
@@ -147,7 +145,7 @@ Modal::begin([
                 所属分类
             </label>
             <div class="col-sm-6">
-                <?/*=Html::checkboxList('edit-category-select','',$taskCategoryList,['class'=>'edit-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])*/?>
+                <?=Html::checkboxList('edit-category-select','',$categoryList,['class'=>'edit-category-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
             </div>
         </div>
         <div class="form-group">
