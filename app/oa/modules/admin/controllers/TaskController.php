@@ -5,6 +5,7 @@ namespace oa\modules\admin\controllers;
 use oa\models\Flow;
 use oa\models\Form;
 use oa\models\FormCategory;
+use oa\models\FormItem;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
@@ -444,6 +445,20 @@ class TaskController extends BaseController
         }
     }
 
+    public function actionFormItem(){
+        $id = Yii::$app->request->get('id',false);
+        $form = Form::find()->where(['id'=>$id])->one();
+        if($form){
+            $formItem = FormItem::find()->where(['form_id'=>$id])->orderBy('ord asc')->all();
+            $params['list'] = $formItem;
+            $params['form'] = $form;
+            return $this->render('form_item',$params);
+        }else{
+            Yii::$app->getSession()->setFlash('error','表单ID错误!');
+            return $this->redirect(AdminFunc::adminUrl('task'));
+        }
+    }
+
     public function actionFlowCreate(){
         $errormsg = '';
         $result = false;
@@ -479,6 +494,50 @@ class TaskController extends BaseController
                         }else{
                             $errormsg = '保存失败，刷新页面重试!';
                         }
+                    /*}*/
+                }
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+    public function actionFormItemCreate(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $form_id =intval(Yii::$app->request->post('form_id',0));
+            $key = trim(Yii::$app->request->post('key',false));
+            $label = trim(Yii::$app->request->post('label',false));
+            $type = intval(Yii::$app->request->post('type',0));
+            $options = trim(Yii::$app->request->post('options',''));
+            if($key==false || $label==false){
+                $errormsg = '名称不能为空！';
+            }else{
+                $form = Form::find()->where(['id'=>$form_id])->one();
+                if(!$form){
+                    $errormsg = '对应的表单ID不存在！';
+                }else{
+                    /*$existUser = User::find()->where(['id'=>$user_id])->one();
+                    if(!$existUser){
+                        $errormsg = '所选职员ID不存在！';
+                    }else{*/
+                    $last = FormItem::find()->where(['form_id'=>$form_id])->orderBy('ord desc')->one();
+                    $formItem = new FormItem();
+                    $formItem->form_id = $form_id;
+                    $formItem->item_key = $key;
+                    $formItem->item_value = json_encode(['label'=>$label,'type'=>$type,'options'=>explode(',',$options)]);;
+                    $formItem->ord = $last?intval($last->ord) + 1 : 1;
+                    $formItem->status = 1;
+                    if($formItem->save()){
+                        Yii::$app->getSession()->setFlash('success','新增选项【'.$form->title.'】成功！');
+                        $result = true;
+                    }else{
+                        $errormsg = '保存失败，刷新页面重试!';
+                    }
                     /*}*/
                 }
             }

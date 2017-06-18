@@ -42,7 +42,7 @@ oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/form.js');
                 </td>
                 <td>
                     <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary edit-btn','data-id'=>$l->id])?>
-                    <?=Html::button('设置选项',['class'=>'btn btn-xs btn-primary set-item-btn','data-id'=>$l->id])?>
+                    <?=Html::a('设置选项',['/admin/task/form-item','id'=>$l->id],['class'=>'btn btn-xs btn-primary set-item-btn','data-id'=>$l->id])?>
                     <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
                 </td>
             </tr>

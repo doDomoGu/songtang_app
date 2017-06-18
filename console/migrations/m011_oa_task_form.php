@@ -30,7 +30,7 @@ class m011_oa_form extends Migration
             'id'=> $this->primaryKey(),
             'form_id'=>$this->integer(11),
             'ord'=>$this->integer(5),
-            'item_key'=>$this->string(11),
+            'item_key'=>$this->string(200),
             'item_value'=>$this->text(),
             'status'=>$this->smallInteger(1)
         ]);

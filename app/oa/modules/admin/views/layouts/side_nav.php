@@ -43,7 +43,7 @@
                         分类
                     </a>
                 </li>
-                <li class="<?=$this->context->id=='task' && $this->context->action->id=='form'?'active':''?>">
+                <li class="<?=$this->context->id=='task' && substr($this->context->action->id,0,4)=='form'?'active':''?>">
                     <a href="<?=AdminFunc::adminUrl('task/form')?>">
                         表单
                     </a>
