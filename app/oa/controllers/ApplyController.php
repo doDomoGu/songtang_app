@@ -1,6 +1,7 @@
 <?php
 namespace oa\controllers;
 
+use Codeception\PHPUnit\Constraint\Page;
 use common\components\CommonFunc;
 use login\models\UserIdentity;
 use oa\components\Func;
@@ -11,6 +12,7 @@ use oa\models\ApplyDoForm;
 use oa\models\ApplyRecord;
 use oa\models\Flow;
 use oa\models\Form;
+use oa\models\FormItem;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
@@ -332,7 +334,34 @@ class ApplyController extends BaseController
                         $formSelect = $formSelect?$formSelect:$k;
                         $formSelectHtml .='<option value="'.$k.'">'.$v.'</option>';
                     }
-                    $formContentHtml = '===='. $formSelect.' ===';
+                    //获取表单内容
+                    $formItems = FormItem::find()->where(['form_id'=>$formSelect,'status'=>1])->orderBy('ord asc')->all();
+                    if($formItems){
+                        $formContentHtml .='<section class="task-form-section">'.
+                            '<h1>申请表-表单：</h1>';
+                        //$i = 0;
+                        foreach($formItems as $item){
+
+                                $valueArr = FormItem::jsonDecodeValue($item->item_value);
+                                //$i++;
+
+
+                                $htmlOne = '<li class="form-item">';
+                                $htmlOne.= '<span class="item-label">'.$valueArr['label'].'</span>';
+$itemContent = '== ==';
+                                $htmlOne.= '<span class="item-content">'.$itemContent.'</span>';
+                                /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
+                                $htmlOne.= '<div>标题：'.$f->title.'</div>';
+                                $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
+                                $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
+
+                                $htmlOne.= '<div>操作人：'.$operation_user.'</div>';*/
+                                $htmlOne.= '</li>';
+                                $formContentHtml .= $htmlOne;
+
+                        }
+                        $formContentHtml .= '</section>';
+                    }
 
                 }else{
                     $formSelectHtml .='<option value="">==请选择==</option>';

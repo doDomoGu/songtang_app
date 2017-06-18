@@ -31,24 +31,26 @@ $this->title = '发起申请';
         'labelOptions' => ['class' => 'col-lg-3 control-label'],
     ],
 ]); ?>
-<?= $form->field($model, 'title')->label(Html::img('/images/main/apply/create-head.png').'&nbsp;&nbsp;'.$model->attributeLabels()['title'],['style'=>'text-align:left;padding-left:60px;']) ?>
+<?= $form->field($model, 'title',['template'=>"{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9\">{error}</div><div class=\"col-lg-offset-3 col-lg-9 \"></div>"
+])->label(Html::img('/images/main/apply/create-head.png').'&nbsp;&nbsp;'.$model->attributeLabels()['title'],['style'=>'text-align:left;padding-left:60px;']) ?>
 
 <?= $form->field($model, 'task_category',[
-    'template'=>"{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-2\">{error}</div><div class=\"col-lg-offset-3 col-lg-7 \"></div>"
+    'template'=>"{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9\">{error}</div><div class=\"col-lg-offset-3 col-lg-9 \"></div>"
 ])->dropDownList($taskCategory,['prompt'=>'==请选择==','class'=>['form-control task-category-select'],'encode'=>false ])->label(Html::img('/images/main/apply/create-head-2.png').'&nbsp;&nbsp;'.$model->attributeLabels()['task_category'],['style'=>'text-align:left;padding-left:60px;'])  ?>
 
 
 <?= $form->field($model, 'task_id',[
-    'template'=>"{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-2\">{error}</div><div class=\"col-lg-offset-3 col-lg-7 task-preview \"></div>"
+    'template'=>"{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9\">{error}</div><div class=\"col-lg-offset-3 col-lg-9 task-preview \"></div>"
 ])->dropDownList([],['prompt'=>'==请选择==','class'=>['form-control task-select']])->label(Html::img('/images/main/apply/create-head-2.png').'&nbsp;&nbsp;'.$model->attributeLabels()['task_id'],['style'=>'text-align:left;padding-left:60px;'])  ?>
 
 <?= $form->field($model, 'form_id',[
-    'template'=>"{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-2\">{error}</div><div class=\"col-lg-offset-3 col-lg-7 form-content \"></div>"
+    'template'=>"{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9\">{error}</div><div class=\"col-lg-offset-3 col-lg-9 form-content \"></div>"
 ])->dropDownList([],['prompt'=>'==请选择==','class'=>['form-control form-select']])->label(Html::img('/images/main/apply/create-head-2.png').'&nbsp;&nbsp;'.$model->attributeLabels()['form_id'],['style'=>'text-align:left;padding-left:60px;'])  ?>
 
 
 
-<?= $form->field($model, 'message')->textarea(['rows'=>10])->label(Html::img('/images/main/apply/create-head-3.png').'&nbsp;&nbsp;'.$model->attributeLabels()['message'],['style'=>'text-align:left;padding-left:60px;'])   ?>
+<?= $form->field($model, 'message',['template'=>"{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9\">{error}</div><div class=\"col-lg-offset-3 col-lg-9 \"></div>"
+])->textarea(['rows'=>10])->label(Html::img('/images/main/apply/create-head-3.png').'&nbsp;&nbsp;'.$model->attributeLabels()['message'],['style'=>'text-align:left;padding-left:60px;'])   ?>
 
 
 <div class="form-group">

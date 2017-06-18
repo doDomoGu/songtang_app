@@ -35,11 +35,11 @@
     width:160px;
 }
 .task-preview .flow .approval-sign {
-    width:300px;
+    width:460px;
 }
 
 .flow-user {
-    width:50%;
+    width:90%;
     display: inline;
 }
 
@@ -87,4 +87,47 @@
     background-position-x: 0;
     background-position-y: 2px;
     background-repeat: no-repeat;
+}
+
+
+
+
+.form-content {
+    padding:15px;
+
+}
+
+.form-content .task-form-section {
+    border:1px solid #aaa;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+    padding:15px;
+    font-size:14px;
+
+}
+.form-content h1 {
+    font-size: 14px;
+    margin:0;
+
+}
+
+
+.form-content .form-item {
+    margin-top:14px;
+    list-style: none;
+    border-bottom: 1px solid #ccc;
+    padding-bottom:4px;
+    overflow: hidden;
+    font-size:14px;
+    font-weight: bold;
+}
+
+.form-content .form-item .item-label
+{
+    display:block;
+    float:left;
+    width:160px;
+}
+
+.form-content li {
+    list-style: none;
 }

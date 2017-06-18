@@ -39,6 +39,9 @@ $(function(){
         $('#applycreateform-task_category').on('change',function(){
             $('#applycreateform-task_id').html('<option value="">==请选择==</option>');
             $('.task-preview').html('').hide();
+            $('#applycreateform-form_id').html('<option value="">==请选择==</option>');
+            $('.form-content').html('').hide();
+
 
             $.ajax({
                 url: '/apply/get-task-list',
