@@ -10,10 +10,12 @@ use oa\models\ApplyCreateForm;
 use oa\models\ApplyDoForm;
 use oa\models\ApplyRecord;
 use oa\models\Flow;
+use oa\models\Form;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
 use oa\models\TaskCategoryId;
+use oa\models\TaskForm;
 use oa\models\TaskUserWildcard;
 use ucenter\models\User;
 use yii\bootstrap\Html;
@@ -267,6 +269,8 @@ class ApplyController extends BaseController
         $errormsg = '';
         $result = false;
         $html = '';
+        $formSelectHtml = '';
+        $formContentHtml = '';
         if(Yii::$app->request->isAjax){
             $task_id = trim(Yii::$app->request->post('task_id',false));
             $task = Task::find()->where(['id'=>$task_id])->one();
@@ -308,6 +312,32 @@ class ApplyController extends BaseController
                 }else{
                     $errormsg = '申请任务表没有设置流程！';
                 }
+
+                $taskForms = TaskForm::find()->where(['task_id'=>$task_id])->all();
+                $formList = [];
+                foreach($taskForms as $tf){
+
+                    $form = Form::find()->where(['id'=>$tf->form_id,'status'=>1])->one();
+                    if($form){
+                        $formList[$form->id] = $form->title;
+                    }
+                }
+
+
+                //$list = Task::getList($district_id,$industry_id,$company_id);
+
+                if(!empty($formList)){
+                    $formSelect = '';
+                    foreach($formList as $k=>$v){
+                        $formSelect = $formSelect?$formSelect:$k;
+                        $formSelectHtml .='<option value="'.$k.'">'.$v.'</option>';
+                    }
+                    $formContentHtml = '===='. $formSelect.' ===';
+
+                }else{
+                    $formSelectHtml .='<option value="">==请选择==</option>';
+                }
+
             }else{
                 $errormsg = '申请任务表不存在！';
             }
@@ -316,7 +346,7 @@ class ApplyController extends BaseController
         }
         $response=Yii::$app->response;
         $response->format=Response::FORMAT_JSON;
-        $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html];
+        $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html,'formSelectHtml'=>$formSelectHtml,'formContentHtml'=>$formContentHtml];
     }
 
     public function actionPrint(){

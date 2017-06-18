@@ -42,6 +42,11 @@ $this->title = '发起申请';
     'template'=>"{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-2\">{error}</div><div class=\"col-lg-offset-3 col-lg-7 task-preview \"></div>"
 ])->dropDownList([],['prompt'=>'==请选择==','class'=>['form-control task-select']])->label(Html::img('/images/main/apply/create-head-2.png').'&nbsp;&nbsp;'.$model->attributeLabels()['task_id'],['style'=>'text-align:left;padding-left:60px;'])  ?>
 
+<?= $form->field($model, 'form_id',[
+    'template'=>"{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-2\">{error}</div><div class=\"col-lg-offset-3 col-lg-7 form-content \"></div>"
+])->dropDownList([],['prompt'=>'==请选择==','class'=>['form-control form-select']])->label(Html::img('/images/main/apply/create-head-2.png').'&nbsp;&nbsp;'.$model->attributeLabels()['form_id'],['style'=>'text-align:left;padding-left:60px;'])  ?>
+
+
 
 <?= $form->field($model, 'message')->textarea(['rows'=>10])->label(Html::img('/images/main/apply/create-head-3.png').'&nbsp;&nbsp;'.$model->attributeLabels()['message'],['style'=>'text-align:left;padding-left:60px;'])   ?>
 

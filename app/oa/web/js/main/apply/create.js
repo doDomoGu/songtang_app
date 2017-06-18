@@ -3,6 +3,9 @@ $(function(){
     $('.task-select').on('change',function(e) {
         var task_id = $(this).val();
         $('.task-preview').html('').hide();
+
+        $('#applycreateform-form_id').html('<option value="">==请选择==</option>');
+        $('.form-content').html('').hide();
         if(task_id>0){
             $.ajax({
                 url: '/apply/get-task-preview',
@@ -15,6 +18,8 @@ $(function(){
                 success: function (data) {
                     if(data.result){
                         $('.task-preview').html(data.html).show();
+                        $('#applycreateform-form_id').html(data.formSelectHtml);
+                        $('.form-content').html(data.formContentHtml).show();
                     }else{
                         $('.task-preview').html(data.errormsg).show();
 

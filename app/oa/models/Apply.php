@@ -36,6 +36,7 @@ class Apply extends \yii\db\ActiveRecord
             'title' => '申请标题',
             'user_id' => '发起人ID',
             'task_id' => '对应任务表Id',
+            'form_id' => '对应表单Id',
             'flow_step' => '流程执行到第几步',
             'message' => '申请人填写的备注/内容',
             'add_time' => '开始时间',
@@ -49,7 +50,7 @@ class Apply extends \yii\db\ActiveRecord
     {
         return [
             [['title','user_id','task_id','flow_step','task_category'], 'required'],
-            [['user_id','task_id','flow_step','status','task_category'], 'integer'],
+            [['user_id','task_id','flow_step','status','task_category','form_id'], 'integer'],
             [['add_time','edit_time','message','flow_user'],'safe']
         ];
     }
