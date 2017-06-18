@@ -18,8 +18,11 @@ $(function(){
                 success: function (data) {
                     if(data.result){
                         $('.task-preview').html(data.html).show();
+
                         $('#applycreateform-form_id').html(data.formSelectHtml);
-                        $('.form-content').html(data.formContentHtml).show();
+                        if(data.formContentHtml!='') {
+                            $('.form-content').html(data.formContentHtml).show();
+                        }
                     }else{
                         $('.task-preview').html(data.errormsg).show();
 

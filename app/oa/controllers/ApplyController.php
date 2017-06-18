@@ -9,6 +9,7 @@ use oa\components\OaFunc;
 use oa\models\Apply;
 use oa\models\ApplyCreateForm;
 use oa\models\ApplyDoForm;
+use oa\models\ApplyFormContent;
 use oa\models\ApplyRecord;
 use oa\models\Flow;
 use oa\models\Form;
@@ -65,6 +66,8 @@ class ApplyController extends BaseController
             $new->add_time = date('Y-m-d H:i:s');
             $new->edit_time = date('Y-m-d H:i:s');
             $new->status = 1;
+            $new->form_id = intval($new->form_id);
+
             //检查任务表(task)中有没有需要选择操作人的流程(flow)
             $flowList = Flow::find()->where(['task_id'=>$new->task_id])->all();
             $needUserSelectCount = 0;
@@ -82,13 +85,11 @@ class ApplyController extends BaseController
                 echo 'flow user select wrong';exit;
             }
 
-
             if($flowUserSelect){
                 $new->flow_user = Apply::flowUserArr2Str($flowUserSelect);
             }else{
                 $new->flow_user = '';
             }
-
             if($new->save()){
                 $r = new ApplyRecord();
                 $r->apply_id = $new->id;
@@ -114,6 +115,21 @@ class ApplyController extends BaseController
 
                 $r->save();
 
+
+                //表单
+                $form = Form::find()->where(['id'=>$new->form_id,'status'=>1])->one();
+                if($form){
+                    $form_item = Yii::$app->request->post('form_item',false);
+                    if($form_item && is_array($form_item)){
+                        foreach($form_item as $item_k=>$item_v){
+                            $applyFormContent = new ApplyFormContent();
+                            $applyFormContent->apply_id = $new->id;
+                            $applyFormContent->item_key = $item_k;
+                            $applyFormContent->item_value = $item_v;
+                            $applyFormContent->save();
+                        }
+                    }
+                }
 
 
                 //Yii::$app->session->setFlash()
@@ -342,14 +358,12 @@ class ApplyController extends BaseController
                         //$i = 0;
                         foreach($formItems as $item){
 
-                                $valueArr = FormItem::jsonDecodeValue($item->item_value);
+                                $valueArr = FormItem::jsonDecodeValue($item->item_value,$item->item_key,true);
                                 //$i++;
-
 
                                 $htmlOne = '<li class="form-item">';
                                 $htmlOne.= '<span class="item-label">'.$valueArr['label'].'</span>';
-$itemContent = '== ==';
-                                $htmlOne.= '<span class="item-content">'.$itemContent.'</span>';
+                                $htmlOne.= '<span class="item-content">'.$valueArr['itemContent'].'</span>';
                                 /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
                                 $htmlOne.= '<div>标题：'.$f->title.'</div>';
                                 $htmlOne.= '<div>类型：'.$f->typeName.'</div>';

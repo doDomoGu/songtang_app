@@ -35,7 +35,7 @@ use oa\models\FormItem;
                 <td><?=$l->id?></td>
                 <td><?=$l->item_key?></td>
                 <td><?=$valueArr['label']?></td>
-                <td><?=$valueArr['type']?></td>
+                <td><?=$valueArr['type_cn']?></td>
                 <td><?=$valueArr['options']?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>

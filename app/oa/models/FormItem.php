@@ -5,6 +5,7 @@ namespace oa\models;
 //oa 模板和表单的对应关系
 
 use Yii;
+use yii\helpers\Html;
 
 class FormItem extends \yii\db\ActiveRecord
 {
@@ -72,10 +73,11 @@ class FormItem extends \yii\db\ActiveRecord
     }
 
 
-    public static function jsonDecodeValue($value){
+    public static function jsonDecodeValue($value,$key=false,$getContent=false){
         $return = [
             'label'=> '',
             'type'=> 0,
+            'type_cn'=> '',
             'options'=> ''
         ];
 
@@ -83,16 +85,45 @@ class FormItem extends \yii\db\ActiveRecord
         if($arr){
             if(isset($arr['label']) && isset($arr['type'])){
                 $return['label'] = $arr['label'];
+                $return['type'] = isset($arr['type'])?$arr['type']:self::TYPE_NULL;
                 $itemType = self::itemType();
-                $return['type'] = isset($itemType[$arr['type']])?$itemType[$arr['type']]:$itemType[self::TYPE_NULL];
+                $return['type_cn'] = isset($itemType[$arr['type']])?$itemType[$arr['type']]:$itemType[self::TYPE_NULL];
                 if(isset($arr['options']) && is_array($arr['options'])){
                     $return['options'] = implode('<br/>' ,$arr['options']);
                 }
+
+                if($getContent)
+                    $return['itemContent'] = self::generateItemContent($return['type'],$key,$arr['options']);
             }
         }
         return $return;
-
     }
+
+    public static function generateItemContent($type,$key,$options){
+        $input_key = 'form_item['.$key.']';
+        switch($type){
+            case self::TYPE_TEXT:
+            case self::TYPE_NUMBER:
+                $content = Html::textInput($input_key);
+                break;
+            case self::TYPE_RADIO:
+                if(!is_array($options)){
+                    $options = [];
+                }
+                $content = Html::radioList($input_key,null,$options);
+                break;
+            case self::TYPE_CHECKBOX:
+                if(!is_array($options)){
+                    $options = [];
+                }
+                $content = Html::checkboxList($input_key,null,$options);
+                break;
+            default:
+                $content = '';
+        }
+        return $content;
+    }
+
 
     /*public function getUser(){
         return $this->hasOne(User::className(), array('id' => 'user_id'));

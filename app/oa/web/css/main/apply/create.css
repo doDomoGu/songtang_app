@@ -121,12 +121,18 @@
     font-weight: bold;
 }
 
-.form-content .form-item .item-label
+.form-content .form-item .item-label,
+.form-content .form-item .item-content
 {
     display:block;
     float:left;
     width:160px;
 }
+
+.form-content .form-item .item-content {
+    width:460px;
+}
+
 
 .form-content li {
     list-style: none;
