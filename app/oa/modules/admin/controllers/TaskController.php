@@ -9,6 +9,7 @@ use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
 use oa\models\TaskCategoryId;
+use oa\models\TaskForm;
 use oa\models\TaskUserWildcard;
 use oa\modules\admin\components\AdminFunc;
 use ucenter\models\Company;
@@ -79,6 +80,7 @@ class TaskController extends BaseController
         $params['aid'] = $aid;
         $params['bid'] = $bid;
         $params['taskCategoryList'] = TaskCategory::getDropdownList();
+        $params['formList'] = Form::getDropdownList();
         return $this->render('index',$params);
     }
 
@@ -129,6 +131,33 @@ class TaskController extends BaseController
                 $result = true;
             }else{
                 $errormsg = '表单不存在';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg,'info'=>$info];
+    }
+
+    public function actionTaskFormGet(){
+        $errormsg = '';
+        $result = false;
+        $info = [];
+        if(Yii::$app->request->isAjax){
+            $id = Yii::$app->request->post('id',0);
+            $task = Task::find()->where(['id'=>$id])->one();
+            if($task){
+                $info['title'] = $task->title;
+                $form = TaskForm::find()->where(['task_id'=>$id])->all();
+                $formArr = [];
+                foreach($form as $f){
+                    $formArr[] = $f->form_id;
+                }
+                $info['form_ids'] = implode(',',$formArr);
+                $result = true;
+            }else{
+                $errormsg = '模板不存在';
             }
         }else{
             $errormsg = '操作错误，请重试!';
@@ -354,6 +383,42 @@ class TaskController extends BaseController
                         }
                     }
                 }
+            }else{
+                $errormsg = '模板错误！';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+    public function actionTaskFormEdit(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $task_id = Yii::$app->request->post('task_id',0);
+            $form_id = Yii::$app->request->post('form_id','');
+            $task = Task::find()->where(['id'=>$task_id])->one();
+            if($task){
+                TaskForm::deleteAll(['task_id' => $task_id]);
+                $formIds = explode(',', $form_id);
+
+                foreach ($formIds as $f_id) {
+                    $form = Form::find()->where(['id' => $f_id])->one();
+                    if ($form) {
+                        $taskForm = new TaskForm();
+                        $taskForm->task_id = $task->id;
+                        $taskForm->form_id = $f_id;
+                        $taskForm->save();
+                    }
+                }
+
+
+                Yii::$app->getSession()->setFlash('success', '编辑模板【' . $task->title . '】成功！');
+                $result = true;
+
             }else{
                 $errormsg = '模板错误！';
             }

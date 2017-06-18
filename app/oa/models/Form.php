@@ -53,6 +53,17 @@ class Form extends \yii\db\ActiveRecord
 
     }
 
+
+    public static function getDropdownList(){
+        $list = [];
+
+        $form = Form::find()->where(['status'=>1])->all();
+        foreach($form as $f){
+            $list[$f->id] = $f->title;
+        }
+        return $list;
+    }
+
     /*public function getUser(){
         return $this->hasOne(User::className(), array('id' => 'user_id'));
     }

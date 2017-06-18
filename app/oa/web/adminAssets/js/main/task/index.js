@@ -63,6 +63,35 @@ $(function () {
         });
     });
 
+    $('#edit-form-submit-btn').click(function(){
+        $('#editFormContent .errormsg-text').html('').hide();
+        var form_ids = [];
+        $('input[name="edit-form-select[]"]:checked').each(function(){
+            form_ids.push($(this).val());
+        });
+
+        var form_id = form_ids.join(',');
+
+        $.ajax({
+            url: '/admin/task/task-form-edit',
+            type: 'post',
+            //async : false,
+            dataType: 'json',
+            data: {
+                task_id: $('#editFormContent .edit-task_id').val(),
+                form_id: form_id
+            },
+            success: function (data) {
+                if(data.result){
+                    location.href='/admin/task';
+                }else{
+                    $('#editFormContent .errormsg-text').html(data.errormsg).show();
+
+                }
+            }
+        });
+    });
+
     $('#checkall').click(function(){
         if($(this).prop('checked')){
             $('input[name="create-category-select[]"]').prop('checked',true);
@@ -111,7 +140,7 @@ $(function () {
             return false;
         }
 
-    })
+    });
 
 
     $('.edit-btn').click(function(){
@@ -149,8 +178,45 @@ $(function () {
             }
         });
 
-    })
+    });
 
+
+    $('.edit-form-btn').click(function(){
+        var task_id = $(this).attr('data-id');
+
+
+        $.ajax({
+            url: '/admin/task/task-form-get',
+            type: 'post',
+            //async : false,
+            dataType: 'json',
+            data: {
+                id: task_id
+            },
+            success: function (data) {
+                if(data.result){
+                    $('#editFormContent .edit-title').val(data.info.title);
+                    $('#editFormContent .edit-task_id').val(task_id);
+
+                    var _form_select = data.info.form_ids.split(',');
+
+                    $('#editFormContent .edit-form-select input[name="edit-form-select[]"]').prop('checked',false);
+                    $('#editFormContent .edit-form-select input[name="edit-form-select[]"]').each(function () {
+                        if(_form_select.indexOf($(this).val())>-1){
+                            $(this).prop('checked',true);
+                        }
+                    })
+
+                    $('#editFormModal').modal('show');
+                }else{
+                    alert(data.errormsg);
+                    return false;
+                    //$('#createContent .errormsg-text').html(data.errormsg).show();
+                }
+            }
+        });
+
+    });
 
 
     $('.create-category-select input').each(function(){

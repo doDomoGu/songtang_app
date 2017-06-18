@@ -20,6 +20,7 @@
             <th>#</th>
             <th>模板标题</th>
             <th width="200">所属分类</th>
+            <th width="200">表单分配</th>
             <!--<th width="200">关联表单</th>-->
             <!-- <th width="100">所属地区 </th>-->
             <!--<th>所属行业</th>-->
@@ -37,13 +38,15 @@
                 /*$categoryList = Task::getCategory($l->id);
                 $category = implode(' , ',$categoryList);*/
 
-                $category = Task::getCategory2($l->id);
+                $categoryContent = Task::getCategory2($l->id);
+                $formContent = Task::getForm($l->id);
             ?>
 
             <tr>
                 <td><?=$l->id?></td>
                 <td><?=$l->title?></td>
-                <td><?=$category?></td>
+                <td><?=$categoryContent?></td>
+                <td><?=$formContent?></td>
                 <!--<td><?/*=commonFunc::getByCache(District::className(),'getName',[$l->district_id],'ucenter:district/name')*/?></td>-->
                 <!--<td><?/*=$l->industry_id>0?$industryArr[$l->industry_id]:'--'*/?></td>-->
                 <!--<td><?/*=commonFunc::getByCache(Company::className(),'getName',[$l->company_id],'ucenter:company/name')*/?></td>-->
@@ -77,9 +80,11 @@
                     <?php $isApplied = Task::isApplied($l->id);?>
                     <?php if($isApplied):?>
                         <?=Html::a('编辑',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
+                        <?=Html::a('相关表单',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
                         <?=Html::a('删除',Url::to(''),['class'=>'btn btn-xs btn-danger disabled'])?>
                     <?php else:?>
                         <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary edit-btn','data-id'=>$l->id])?>
+                        <?=Html::button('相关表单',['class'=>'btn btn-xs btn-primary edit-form-btn','data-id'=>$l->id])?>
                         <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
                     <?php endif;?>
                 </td>
@@ -197,6 +202,47 @@ Modal::begin([
         </div>
     </form>
 </div>
+<?php
+Modal::end();
+?>
+
+
+<?php
+Modal::begin([
+    'header' => '编辑模板相关表单',
+    'id'=>'editFormModal',
+    'options'=>['style'=>'margin-top:120px;'],
+]);
+?>
+    <div id="editFormContent">
+        <form class="form-horizontal" role="form">
+            <input class="aid-value" type="hidden" />
+            <input class="bid-value" type="hidden" />
+            <input class="p_id-value" type="hidden" />
+            <input class="edit-task_id" type="hidden" />
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">模板标题</label>
+                <div class="col-sm-6">
+                    <input class="form-control edit-title">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">
+                    <!--<input type="checkbox" id="edit-checkall" />-->
+                    相关表单
+                </label>
+                <div class="col-sm-6">
+                    <?=Html::checkboxList('edit-form-select','',$formList,['class'=>'edit-form-select','prompt'=>'==请选择==','encode'=>false,'separator'=>'<br/>'])?>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-6">
+                    <button type="button" class="btn btn-success" id="edit-form-submit-btn">提交</button>
+                    <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
+                </div>
+            </div>
+        </form>
+    </div>
 <?php
 Modal::end();
 ?>

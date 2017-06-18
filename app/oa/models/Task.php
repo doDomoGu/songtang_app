@@ -71,6 +71,21 @@ class Task extends \yii\db\ActiveRecord
     }
 
 
+    public static function getForm($task_id){
+        $taskFormId = TaskForm::find()->where(['task_id'=>$task_id])->all();
+        $ids = [];
+        foreach($taskFormId as $t){
+            $ids[] = $t->form_id;
+        }
+        $forms = Form::find()->where(['id'=>$ids])->all();
+        $list = [];
+        foreach($forms as $f){
+            $list[] = $f->title;
+        }
+        $return = implode(' <br/> ',$list);
+        return $return ;
+    }
+
 
     public function getDistrict(){
         return $this->hasOne(District::className(), array('id' => 'district_id'));
