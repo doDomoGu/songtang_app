@@ -3,6 +3,7 @@
 namespace oa\modules\admin\controllers;
 
 use oa\models\Flow;
+use oa\models\Form;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
 use oa\models\TaskCategory;
@@ -34,10 +35,19 @@ class TaskController extends BaseController
 
     public function actionForm()
     {
-        $list = TaskCategory::find()->all();
+        $query = Form::find();
 
+        $count = $query->count();
+        $pageSize = 10;
+        $pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
+        $list = $query
+            ->offset($pages->offset)
+            ->limit($pages->limit)
+            ->orderBy('id desc')
+            ->all();
 
         $params['list'] = $list;
+        $params['pages'] = $pages;
         return $this->render('form',$params);
     }
 

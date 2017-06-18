@@ -15,9 +15,15 @@ class m011_oa_form extends Migration
         $this->createTable('form', [
             'id'=> $this->primaryKey(),
             'title'=>$this->string(200),
-            'category_id'=>$this->integer(11),
             'status'=>$this->smallInteger(1)
         ]);
+
+        //添加 模板表单的分类关系表
+        $this->createTable('form_category', [
+            'form_id'=> $this->integer(11),
+            'category_id'=> $this->integer(11)
+        ]);
+        $this->addPrimaryKey('primayKey','form_category',['form_id','category_id']);
 
         //添加 表单内容
         $this->createTable('form_item', [
@@ -42,6 +48,7 @@ class m011_oa_form extends Migration
     {
         $this->dropTable('task_form');
         $this->dropTable('form_item');
+        $this->dropTable('form_category');
         $this->dropTable('form');
 
     }
