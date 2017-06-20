@@ -512,8 +512,10 @@ class TaskController extends BaseController
             $form_id =intval(Yii::$app->request->post('form_id',0));
             $key = trim(Yii::$app->request->post('key',false));
             $label = trim(Yii::$app->request->post('label',false));
-            $type = intval(Yii::$app->request->post('type',0));
-            $options = trim(Yii::$app->request->post('options',''));
+            $label_width = trim(Yii::$app->request->post('label_width',false));
+            $input_width = trim(Yii::$app->request->post('input_width',false));
+            $input_type = intval(Yii::$app->request->post('input_type',0));
+            $input_options = trim(Yii::$app->request->post('input_options',''));
             if($key==false || $label==false){
                 $errormsg = '名称不能为空！';
             }else{
@@ -521,24 +523,32 @@ class TaskController extends BaseController
                 if(!$form){
                     $errormsg = '对应的表单ID不存在！';
                 }else{
-                    /*$existUser = User::find()->where(['id'=>$user_id])->one();
-                    if(!$existUser){
-                        $errormsg = '所选职员ID不存在！';
-                    }else{*/
-                    $last = FormItem::find()->where(['form_id'=>$form_id])->orderBy('ord desc')->one();
-                    $formItem = new FormItem();
-                    $formItem->form_id = $form_id;
-                    $formItem->item_key = $key;
-                    $formItem->item_value = json_encode(['label'=>$label,'type'=>$type,'options'=>explode(',',$options)]);;
-                    $formItem->ord = $last?intval($last->ord) + 1 : 1;
-                    $formItem->status = 1;
-                    if($formItem->save()){
-                        Yii::$app->getSession()->setFlash('success','新增选项【'.$form->title.'】成功！');
-                        $result = true;
+                    $existItem = FormItem::find()->where(['form_id'=>$form_id,'item_key'=>$key])->one();
+                    if(!$existItem){
+                        $last = FormItem::find()->where(['form_id'=>$form_id])->orderBy('ord desc')->one();
+                        $formItem = new FormItem();
+                        $formItem->form_id = $form_id;
+                        $formItem->item_key = $key;
+                        $valueArr = [
+                            'label'=>$label,
+                            'label_width'=>$label_width,
+                            'input_width'=>$input_width,
+                            'input_type'=>$input_type,
+                            'input_options'=>explode(',',$input_options)
+                        ];
+
+                        $formItem->item_value = json_encode($valueArr);;
+                        $formItem->ord = $last?intval($last->ord) + 1 : 1;
+                        $formItem->status = 1;
+                        if($formItem->save()){
+                            Yii::$app->getSession()->setFlash('success','新增选项【'.$form->title.'】成功！');
+                            $result = true;
+                        }else{
+                            $errormsg = '保存失败，刷新页面重试!';
+                        }
                     }else{
-                        $errormsg = '保存失败，刷新页面重试!';
+                        $errormsg = 'Key名重复!';
                     }
-                    /*}*/
                 }
             }
         }else{

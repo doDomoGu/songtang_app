@@ -11,8 +11,10 @@ $(function () {
                 form_id : form_id,
                 key: $('#createContent .create-key').val(),
                 label: $('#createContent .create-label').val(),
-                type: $('#createContent .create-type-select').val(),
-                options: $('#createContent .create-options').val()
+                label_width: $('#createContent .create-label_width').val(),
+                input_width: $('#createContent .create-input_width').val(),
+                input_type: $('#createContent .create-input_type-select').val(),
+                input_options: $('#createContent .create-input_options').val()
             },
             success: function (data) {
                 if(data.result){

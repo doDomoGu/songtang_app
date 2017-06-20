@@ -130,7 +130,8 @@ class ApplyController extends BaseController
                                 $applyFormContent->item_key = $item_k;
                                 $item_value = FormItem::jsonDecodeValue($formItem->item_value);
                                 $item_value['value'] = $item_v;
-                                $applyFormContent->item_value = $item_value;
+                                $applyFormContent->item_value = json_encode($item_value);
+
                                 $applyFormContent->save();
                             }
                         }

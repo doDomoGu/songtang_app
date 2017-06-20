@@ -74,15 +74,27 @@ Modal::begin([
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-4 control-label label1">标签宽度</label>
+                <div class="col-sm-6">
+                    <input class="form-control create-label_width">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">输入框宽度</label>
+                <div class="col-sm-6">
+                    <input class="form-control create-input_width">
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-4 control-label label1">类型</label>
                 <div class="col-sm-6">
-                    <?=\yii\helpers\Html::dropDownList('type-select',null,FormItem::itemType(),['class'=>'form-control create-type-select'])?>
+                    <?=\yii\helpers\Html::dropDownList('input_type-select',null,FormItem::itemType(),['class'=>'form-control create-input_type-select'])?>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">选项参数</label>
                 <div class="col-sm-6">
-                    <textarea class="form-control create-options" ></textarea>
+                    <textarea class="form-control create-input_options" ></textarea>
                     <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>
