@@ -122,11 +122,17 @@ class ApplyController extends BaseController
                     $form_item = Yii::$app->request->post('form_item',false);
                     if($form_item && is_array($form_item)){
                         foreach($form_item as $item_k=>$item_v){
-                            $applyFormContent = new ApplyFormContent();
-                            $applyFormContent->apply_id = $new->id;
-                            $applyFormContent->item_key = $item_k;
-                            $applyFormContent->item_value = $item_v;
-                            $applyFormContent->save();
+                            $formItem = FormItem::find()->where(['form_id'=>$form->id,'item_key'=>$item_k])->one();
+                            if($formItem){
+                                $applyFormContent = new ApplyFormContent();
+                                $applyFormContent->apply_id = $new->id;
+                                $applyFormContent->ord = $formItem->ord;
+                                $applyFormContent->item_key = $item_k;
+                                $item_value = FormItem::jsonDecodeValue($formItem->item_value);
+                                $item_value['value'] = $item_v;
+                                $applyFormContent->item_value = $item_value;
+                                $applyFormContent->save();
+                            }
                         }
                     }
                 }
@@ -444,6 +450,17 @@ class ApplyController extends BaseController
             '</section>';
 
         //1.发起申请
+        $form_id = $apply->form_id;
+        $applyFromContent = ApplyFormContent::find()->where(['apply_id'=>$apply->id])->orderBy('ord asc')->all();
+        if(!empty($applyFromContent)){
+            $html.= '<section id="apply-form-content">';
+            foreach($applyFromContent as $afc){
+                $html .= '<span class="form-content-label" style="width:'.$afc['label_width'].'px;"></span>';
+                $html .= '<span class="form-content-input"></span>';
+            }
+            $html.= '</section>';
+        }
+
         $html .= '<section id="apply-message">' .
             '<span class="message-title">'.Html::img('/images/main/apply/modal-message.png').' 申请内容：</span><span class="message-txt">'.(str_replace("\r\n",'<br/>',$apply->message)).'</span>'.
             '</section>';

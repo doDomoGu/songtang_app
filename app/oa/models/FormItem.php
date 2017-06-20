@@ -50,8 +50,11 @@ class FormItem extends \yii\db\ActiveRecord
      *
      * value 数组结构 （以json格式存入item_value)
      * label: 标签名称  例如：请假表中的"天数"，"请假日期"，"请假类型"
-     * type: 选项类型  text:文本类型,number:数字类型,date:日期类型,radio:单选,checkbox:多选 等等
-     * options: 当type为radio和checkbox时支持 一维数组，下标为自然排序 从0开始
+     * label_width: 标签的宽度  单位：像素
+     * input_type: 选项类型(数值）  text:文本类型,number:数字类型,date:日期类型,radio:单选,checkbox:多选 等等
+     * input_type_cn: 选项类型(中文名称)  text:文本类型,number:数字类型,date:日期类型,radio:单选,checkbox:多选 等等
+     * input_width: 选项的宽度   单位：像素
+     * input_options: 当type为radio和checkbox时支持 一维数组，下标为自然排序 从0开始
      *
      *
      *
@@ -76,24 +79,28 @@ class FormItem extends \yii\db\ActiveRecord
     public static function jsonDecodeValue($value,$key=false,$getContent=false){
         $return = [
             'label'=> '',
-            'type'=> 0,
-            'type_cn'=> '',
-            'options'=> ''
+            'label_width'=> 180,
+            'input_type'=> 0,
+            'input_type_cn'=> '',
+            'input_width'=> 280,
+            'input_options'=> '',
+            'value'
         ];
 
         $arr = json_decode($value,true);
         if($arr){
             if(isset($arr['label']) && isset($arr['type'])){
                 $return['label'] = $arr['label'];
-                $return['type'] = isset($arr['type'])?$arr['type']:self::TYPE_NULL;
+                $return['label_width'] = $arr['label_width'];
+                $return['input_type'] = isset($arr['input_type'])?$arr['input_type']:self::TYPE_NULL;
                 $itemType = self::itemType();
-                $return['type_cn'] = isset($itemType[$arr['type']])?$itemType[$arr['type']]:$itemType[self::TYPE_NULL];
-                if(isset($arr['options']) && is_array($arr['options'])){
-                    $return['options'] = implode('<br/>' ,$arr['options']);
+                $return['input_type_cn'] = isset($itemType[$arr['input_type']])?$itemType[$arr['input_type']]:$itemType[self::TYPE_NULL];
+                $return['input_width'] = $arr['input_width'];
+                if(isset($arr['input_options']) && is_array($arr['input_options'])){
+                    $return['input_options'] = implode('<br/>' ,$arr['input_options']);
                 }
-
                 if($getContent)
-                    $return['itemContent'] = self::generateItemContent($return['type'],$key,$arr['options']);
+                    $return['itemContent'] = self::generateItemContent($return['input_type'],$key,$arr['input_options']);
             }
         }
         return $return;

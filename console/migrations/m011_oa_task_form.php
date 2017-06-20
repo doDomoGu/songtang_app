@@ -47,6 +47,7 @@ class m011_oa_form extends Migration
         $this->createTable('apply_form_content', [
             'id'=> $this->primaryKey(),
             'apply_id'=>$this->integer(11),
+            'ord'=>$this->integer(5),
             'item_key'=>$this->string(200),
             'item_value'=>$this->text()
         ]);
