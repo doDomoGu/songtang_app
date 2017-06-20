@@ -91,11 +91,23 @@ class FormItem extends \yii\db\ActiveRecord
         if($arr){
             if(isset($arr['label']) && isset($arr['type'])){
                 $return['label'] = $arr['label'];
-                $return['label_width'] = $arr['label_width'];
-                $return['input_type'] = isset($arr['input_type'])?$arr['input_type']:self::TYPE_NULL;
+                if(isset($arr['label_width']))
+                    $return['label_width'] = $arr['label_width'];
                 $itemType = self::itemType();
-                $return['input_type_cn'] = isset($itemType[$arr['input_type']])?$itemType[$arr['input_type']]:$itemType[self::TYPE_NULL];
-                $return['input_width'] = $arr['input_width'];
+                if(isset($arr['input_type'])){
+                    $return['input_type'] = $arr['input_type'];
+                    if(isset($itemType[$arr['input_type']])){
+                        $return['input_type_cn'] = $itemType[$arr['input_type']];
+                    }else{
+                        $return['input_type_cn'] = $itemType[self::TYPE_NULL];
+                    }
+                }else{
+                    $return['input_type'] = self::TYPE_NULL;
+                    $return['input_type_cn'] = $itemType[self::TYPE_NULL];
+                }
+                
+                if(isset($arr['input_width']))
+                    $return['input_width'] = $arr['input_width'];
                 if(isset($arr['input_options']) && is_array($arr['input_options'])){
                     $return['input_options'] = implode('<br/>' ,$arr['input_options']);
                 }

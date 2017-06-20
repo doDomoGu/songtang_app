@@ -331,7 +331,11 @@ class ApplyController extends BaseController
                     foreach($flows as $f){
                         $i++;
                         if($f->user_id>0){
-                            $operation_user = $f->user->getFullRoute();
+                            if($f->user){
+                                $operation_user = $f->user->getFullRoute();
+                            }else{
+                                $operation_user = 'N/A';
+                            }
                         }else{
                             if(empty($userItems)){
                                 $userItems = User::getItems();

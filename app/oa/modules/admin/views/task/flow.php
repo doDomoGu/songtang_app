@@ -30,7 +30,7 @@ use yii\helpers\Url;
                 <td><?=$l->step?></td>
                 <td><?=$l->title?></td>
                 <td><?=Flow::getTypeCn($l->type)?></td>
-                <td><?=$l->user_id>0?$l->user->name: '<span style="color:#f44b00;">[由发起人选择]</span>' ?></td>
+                <td><?=$l->user_id>0?($l->user?$l->user->name:'N/A'): '<span style="color:#f44b00;">[由发起人选择]</span>' ?></td>
                 <!--<td><?/*=$l->enable_transfer==0?'禁止':'允许'*/?></td>-->
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>

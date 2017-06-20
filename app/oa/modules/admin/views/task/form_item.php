@@ -35,8 +35,8 @@ use oa\models\FormItem;
                 <td><?=$l->id?></td>
                 <td><?=$l->item_key?></td>
                 <td><?=$valueArr['label']?></td>
-                <td><?=$valueArr['type_cn']?></td>
-                <td><?=$valueArr['options']?></td>
+                <td><?=$valueArr['input_type_cn']?></td>
+                <td><?=$valueArr['input_options']?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>
                     <?/*=Html::a('编辑','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs','data-title'=>$l->title,'data-type'=>$l->type,'data-user-id'=>$l->user_id,'data-id'=>$l->id])*/?>

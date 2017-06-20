@@ -1,6 +1,7 @@
 <?php
 
 namespace oa\models;
+use ucenter\models\User;
 use Yii;
 //oa 流程
 class Flow extends \yii\db\ActiveRecord
@@ -76,7 +77,7 @@ class Flow extends \yii\db\ActiveRecord
     }
 
     public function getUser(){
-        return $this->hasOne('ucenter\models\User', array('id' => 'user_id'));
+        return $this->hasOne(User::className(), array('id' => 'user_id'));
     }
 
     public function getTypeName(){

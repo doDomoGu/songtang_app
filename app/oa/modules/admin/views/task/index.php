@@ -29,7 +29,7 @@
             <!--<th>状态</th>-->
             <th>流程设置</th>
             <th>发起人设置</th>
-            <th>是否完成设置</th>
+            <th>状态</th>
             <th>操作</th>
         </tr>
         <tbody>
@@ -70,22 +70,24 @@
                 </td>
                 <td>
                     <?php if($l->set_complete==1):?>
-                        已完成  <br/><button data-id="<?=$l->id?>" class="complete2-btn btn btn-danger btn-xs">改为未完成（测试用）</button>
+                        <span style="color:forestgreen;">使用中</span>
                     <?php else:?>
-                        <button data-id="<?=$l->id?>" class="complete-btn btn btn-danger btn-xs">确认设置完成</button>
+                        <span style="color:darkred;">暂停</span>
+
                     <?php endif;?>
                 </td>
                 <td>
                     <?/*=Html::a('编辑','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs'])*/?>
-                    <?php $isApplied = Task::isApplied($l->id);?>
-                    <?php if($isApplied):?>
+                    <?php if($l->set_complete==1):?>
                         <?=Html::a('编辑',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
                         <?=Html::a('相关表单',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
                         <?=Html::a('删除',Url::to(''),['class'=>'btn btn-xs btn-danger disabled'])?>
+                        <?=Html::button('暂停',['class'=>"complete2-btn btn btn-warning btn-xs",'data-id'=>$l->id])?>
                     <?php else:?>
                         <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary edit-btn','data-id'=>$l->id])?>
                         <?=Html::button('相关表单',['class'=>'btn btn-xs btn-primary edit-form-btn','data-id'=>$l->id])?>
                         <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
+                        <?=Html::button('启用',['class'=>"complete-btn btn btn-warning btn-xs",'data-id'=>$l->id])?>
                     <?php endif;?>
                 </td>
             </tr>
