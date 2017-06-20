@@ -84,12 +84,13 @@ class FormItem extends \yii\db\ActiveRecord
             'input_type_cn'=> '',
             'input_width'=> 280,
             'input_options'=> '',
-            'value'
+            'value'=>'',
+            'itemContent' => ''
         ];
 
         $arr = json_decode($value,true);
         if($arr){
-            if(isset($arr['label']) && isset($arr['type'])){
+            if(isset($arr['label']) && isset($arr['input_type'])){
                 $return['label'] = $arr['label'];
                 if(isset($arr['label_width']))
                     $return['label_width'] = $arr['label_width'];
@@ -105,14 +106,14 @@ class FormItem extends \yii\db\ActiveRecord
                     $return['input_type'] = self::TYPE_NULL;
                     $return['input_type_cn'] = $itemType[self::TYPE_NULL];
                 }
-                
+
                 if(isset($arr['input_width']))
                     $return['input_width'] = $arr['input_width'];
                 if(isset($arr['input_options']) && is_array($arr['input_options'])){
                     $return['input_options'] = implode('<br/>' ,$arr['input_options']);
                 }
                 if($getContent)
-                    $return['itemContent'] = self::generateItemContent($return['input_type'],$key,$arr['input_options']);
+                    $return['itemContent'] = self::generateItemContent($return['input_type'],$key,$return['input_options']);
             }
         }
         return $return;

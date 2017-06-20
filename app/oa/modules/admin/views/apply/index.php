@@ -12,14 +12,14 @@ $this->title = '申请列表';
         <tr>
             <th>#</th>
             <th>标题</th>
-            <th>发起人</th>
+            <th width="80">发起人</th>
             <th>对应任务</th>
             <th>当前步骤</th>
             <th>当前操作人</th>
             <!--<th width="200">所属地区 <?/*=Html::dropDownList('area-select',$aid,$aArr,['prompt'=>'----','id'=>'area-select'])*/?></th>
             <th>所属业态 <?/*=$aid>0?Html::dropDownList('business-select',$bid,$bArr,['prompt'=>'----','id'=>'business-select']):''*/?></th>
             <th>所属部门</th>-->
-            <th>状态</th>
+            <th width="80">状态</th>
             <th>申请时间</th>
             <th>最后操作时间</th>
             <th>操作</th>
@@ -47,4 +47,7 @@ $this->title = '申请列表';
         <?php endforeach;?>
         </tbody>
     </table>
+    <div class="clearfix text-center">
+        <?= \yii\widgets\LinkPager::widget(['pagination' => $pages]); ?>
+    </div>
 </section>

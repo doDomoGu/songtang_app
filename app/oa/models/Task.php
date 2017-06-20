@@ -77,10 +77,10 @@ class Task extends \yii\db\ActiveRecord
         foreach($taskFormId as $t){
             $ids[] = $t->form_id;
         }
-        $forms = Form::find()->where(['id'=>$ids])->all();
+        $forms = Form::find()->where(['id'=>$ids,'status'=>1])->all();
         $list = [];
         foreach($forms as $f){
-            $list[] = $f->title;
+            $list[] = $f->title.($f->set_complete==0?'[暂停中]':'');
         }
         $return = implode(' <br/> ',$list);
         return $return ;

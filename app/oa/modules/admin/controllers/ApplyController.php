@@ -12,25 +12,27 @@ use ucenter\models\Area;
 use ucenter\models\Business;
 use ucenter\models\Position;
 use Yii;
+use yii\data\Pagination;
 
 
 class ApplyController extends BaseController
 {
     public function actionIndex()
     {
-        /*$aid = Yii::$app->request->get('aid',false);
-        $bid = Yii::$app->request->get('bid',false);*/
-        $list = Apply::find()->all();
+        $query = Apply::find();
 
+        $count = $query->count();
+        $pageSize = 20;
+        $pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
+        $list = $query
+            ->offset($pages->offset)
+            ->limit($pages->limit)
+            ->orderBy('id desc')
+            ->all();
 
         $params['list'] = $list;
-        /*$params['aArr'] = Area::getNameArr();
-        $params['bArr'] = Business::getNameArr();
-        $params['pArr'] = Position::getNameArr();
-        $params['bArr2'] = Area::getRelationsArr($aid);*/
+        $params['pages'] = $pages;
 
-        /*$params['aid'] = $aid;
-        $params['bid'] = $bid;*/
         return $this->render('index',$params);
     }
 

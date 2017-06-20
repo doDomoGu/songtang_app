@@ -104,14 +104,14 @@ $(function () {
 
     $('.complete-btn').on('click',function() {
         var id = $(this).attr('data-id');
-        if (confirm('确认已完成设置？（确认后无法再返回设置）')) {
+        if (confirm('启用这个模板？')) {
             location.href = '/admin/task/set-complete?id=' + id;
         }
     });
 
     $('.complete2-btn').on('click',function() {
         var id = $(this).attr('data-id');
-        if (confirm('改为未完成')) {
+        if (confirm('暂停这个模板？x')) {
             location.href = '/admin/task/set-complete2?id=' + id;
         }
     });

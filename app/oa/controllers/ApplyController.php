@@ -367,7 +367,7 @@ class ApplyController extends BaseController
                 $formList = [];
                 foreach($taskForms as $tf){
 
-                    $form = Form::find()->where(['id'=>$tf->form_id,'status'=>1])->one();
+                    $form = Form::find()->where(['id'=>$tf->form_id,'status'=>1,'set_complete'=>1])->one();
                     if($form){
                         $formList[$form->id] = $form->title;
                     }
@@ -392,7 +392,6 @@ class ApplyController extends BaseController
 
                                 $valueArr = FormItem::jsonDecodeValue($item->item_value,$item->item_key,true);
                                 //$i++;
-
                                 $htmlOne = '<li class="form-item">';
                                 $htmlOne.= '<span class="item-label">'.$valueArr['label'].'</span>';
                                 $htmlOne.= '<span class="item-content">'.$valueArr['itemContent'].'</span>';
@@ -408,7 +407,6 @@ class ApplyController extends BaseController
                         }
                         $formContentHtml .= '</section>';
                     }
-
                 }else{
                     $formSelectHtml .='<option value="">==请选择==</option>';
                 }

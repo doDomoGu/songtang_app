@@ -37,16 +37,33 @@ class ApplyCreateForm extends Model
             [['title','task_id','task_category'], 'required'],
             [['form_id','task_id', 'task_category'], 'integer'],
             [['message'], 'safe'],
-            ['task_id','validateTaskStatus']
+            ['task_id','validateTaskStatus'],
+            ['form_id','validateFormStatus']
         ];
     }
 
     public function validateTaskStatus($attribute, $params)
     {
-        $task = Task::find()->where(['id'=>$this->attribute,'status'=>1,'set_complete'=>1])->one();
+        $task = Task::find()->where(['id'=>$this->$attribute,'status'=>1,'set_complete'=>1])->one();
         if (!$task){
             $this->addError($attribute,'申请表模板状态不正确');
             return false;
+        }
+        return true;
+    }
+
+    public function validateFormStatus($attribute, $params)
+    {
+        $form = Form::find()->where(['id'=>$this->$attribute,'status'=>1,'set_complete'=>1])->one();
+        if (!$form){
+            $this->addError($attribute,'申请表表单状态不正确');
+            return false;
+        }else{
+            $taskForm = TaskForm::find()->where(['task_id'=>$this->task_id,'form_id'=>$form->id])->one();
+            if(!$taskForm){
+                $this->addError($attribute,'申请表模板与表单没有关联关系');
+                return false;
+            }
         }
         return true;
     }

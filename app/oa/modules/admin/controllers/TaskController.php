@@ -598,9 +598,9 @@ class TaskController extends BaseController
         if($task){
             $task->set_complete = 1;
             $task->save();
-            Yii::$app->getSession()->setFlash('success','任务表【'.$task->title.'】确认完成设置！');
+            Yii::$app->getSession()->setFlash('success','模板【'.$task->title.'】启用成功！');
         }else{
-            Yii::$app->getSession()->setFlash('error','任务表ID不存在！');
+            Yii::$app->getSession()->setFlash('error','模板ID不存在！');
         }
         return $this->redirect('/admin/task');
 
@@ -612,13 +612,45 @@ class TaskController extends BaseController
         if($task){
             $task->set_complete = 0;
             $task->save();
-            Yii::$app->getSession()->setFlash('success','任务表【'.$task->title.'】改为未完成！');
+            Yii::$app->getSession()->setFlash('success','模板【'.$task->title.'】暂停使用！');
         }else{
             Yii::$app->getSession()->setFlash('error','任务表ID不存在！');
         }
         return $this->redirect('/admin/task');
 
     }
+
+    public function actionFormSetComplete(){
+        $id = Yii::$app->request->get('id',false);
+        $form = Form::find()->where(['id'=>$id])->one();
+        if($form){
+            $form->set_complete = 1;
+            $form->save();
+            Yii::$app->getSession()->setFlash('success','表单【'.$form->title.'】启用成功！');
+        }else{
+            Yii::$app->getSession()->setFlash('error','表单ID不存在！');
+        }
+        return $this->redirect('/admin/task/form');
+
+    }
+
+    public function actionFormSetComplete2(){
+        $id = Yii::$app->request->get('id',false);
+        $form = Form::find()->where(['id'=>$id])->one();
+        if($form){
+            $form->set_complete = 0;
+            $form->save();
+            Yii::$app->getSession()->setFlash('success','表单【'.$form->title.'】暂停使用！');
+        }else{
+            Yii::$app->getSession()->setFlash('error','表单ID不存在！');
+        }
+        return $this->redirect('/admin/task/form');
+
+    }
+
+
+
+
 
 
     public function actionApplyUserDel(){

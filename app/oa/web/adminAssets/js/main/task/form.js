@@ -172,7 +172,21 @@ $(function () {
         }
 
         //if()
-    })
+    });
+
+    $('.complete-btn').on('click',function() {
+        var id = $(this).attr('data-id');
+        if (confirm('启用这个表单？')) {
+            location.href = '/admin/task/form-set-complete?id=' + id;
+        }
+    });
+
+    $('.complete2-btn').on('click',function() {
+        var id = $(this).attr('data-id');
+        if (confirm('暂停这个表单')) {
+            location.href = '/admin/task/form-set-complete2?id=' + id;
+        }
+    });
 
     /*$('#editModal').on('show.bs.modal',function(e) {
         $('#editContent .errormsg-text').html('').hide();

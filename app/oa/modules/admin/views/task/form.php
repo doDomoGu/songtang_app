@@ -38,12 +38,25 @@ oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/form.js');
                 <td><?=$l->title?></td>
                 <td><?=$category?></td>
                 <td>
-                    <?=CommonFunc::getStatusCn($l->status)?>
+                    <?php if($l->set_complete==1):?>
+                        <span style="color:forestgreen;">使用中</span>
+                    <?php else:?>
+                        <span style="color:darkred;">暂停</span>
+
+                    <?php endif;?>
                 </td>
                 <td>
-                    <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary edit-btn','data-id'=>$l->id])?>
-                    <?=Html::a('设置选项',['/admin/task/form-item','id'=>$l->id],['class'=>'btn btn-xs btn-primary set-item-btn','data-id'=>$l->id])?>
-                    <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
+                    <?php if($l->set_complete==1):?>
+                        <?=Html::a('编辑',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
+                        <?=Html::a('相关表单',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
+                        <?=Html::a('删除',Url::to(''),['class'=>'btn btn-xs btn-danger disabled'])?>
+                        <?=Html::button('暂停',['class'=>"complete2-btn btn btn-warning btn-xs",'data-id'=>$l->id])?>
+                    <?php else:?>
+                        <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary edit-btn','data-id'=>$l->id])?>
+                        <?=Html::a('设置选项',['/admin/task/form-item','id'=>$l->id],['class'=>'btn btn-xs btn-primary set-item-btn','data-id'=>$l->id])?>
+                        <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
+                        <?=Html::button('启用',['class'=>"complete-btn btn btn-warning btn-xs",'data-id'=>$l->id])?>
+                    <?php endif;?>
                 </td>
             </tr>
 

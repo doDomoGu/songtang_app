@@ -15,6 +15,7 @@ class m011_oa_form extends Migration
         $this->createTable('form', [
             'id'=> $this->primaryKey(),
             'title'=>$this->string(200),
+            'set_complete'=>$this->smallInteger(1),
             'status'=>$this->smallInteger(1)
         ]);
 
