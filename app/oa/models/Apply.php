@@ -64,6 +64,10 @@ class Apply extends \yii\db\ActiveRecord
         return $this->hasOne(Flow::className(), array('step' => 'flow_step','task_id'=>'task_id'));
     }
 
+    public function getCurRecord(){
+        return $this->hasOne(ApplyRecord::className(), array('step' => 'flow_step','apply_id'=>'id'));
+    }
+
     public function getTask(){
         return $this->hasOne(Task::className(), array('id' => 'task_id'));
     }
@@ -313,6 +317,25 @@ class Apply extends \yii\db\ActiveRecord
             }else{
                 return 'N/A #11';
             }
+        }
+    }
+
+
+    public static function getCurOperationUser($apply){
+        if($apply->status == Apply::STATUS_NORMAL){
+            $curRecord = ApplyRecord::find()->where(['apply_id'=>$apply->id,'step'=>$apply->flow_step])->one();
+            if($curRecord){
+                $user = User::find()->where(['id'=>$curRecord->user_id])->one();
+                if($user){
+                    return '**'.$user->name;
+                }else{
+                    return '[找不到志愿信息]';
+                }
+            }else{
+                return '[找不到当前的操作步骤]';
+            }
+        }else{
+            return '[申请不是执行中状态]';
         }
     }
 }
