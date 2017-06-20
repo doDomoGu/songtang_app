@@ -20,7 +20,7 @@ class ApplyCreateForm extends Model
             'title' => '申请标题',
             'user_id' => '发起人ID',
             'task_id' => '选择申请任务',
-            'form_id' => '选择申请表-表单',
+            'form_id' => '选择申请表表单',
             'task_category' => '分类',
             'flow_step' => '流程执行到第几步',
             'message' => '申请备注/内容',
