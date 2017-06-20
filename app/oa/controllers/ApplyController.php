@@ -138,6 +138,28 @@ class ApplyController extends BaseController
                 }
 
 
+                //生成接下来的流程
+                $flows = Flow::find()->where(['task_id'=>$new->task_id])->orderBy('step asc')->all();
+                foreach($flows as $flow){
+                    $r = new ApplyRecord();
+                    $r->apply_id = $new->id;
+                    $r->flow_id = 0;
+                    $r->step = $flow->step;
+                    $r->title = $flow->title;
+                    $r->type = $flow->type;
+                    if($new->user_id>0){
+                        $r->user_id = $new->user_id;
+                    }else{
+                        $r->user_id = $flowUserSelect[$new->step];
+                    }
+                    $r->result = 0;
+                    $r->message = '';
+                    $r->add_time = '0000-00-00 00:00:00';
+                    $r->attachment = json_encode([]);
+                    $r->save();
+                }
+
+
                 //Yii::$app->session->setFlash()
                 return $this->redirect('/apply/my');
             }
@@ -475,10 +497,22 @@ class ApplyController extends BaseController
 
 
         //2.操作记录
-        $records = ApplyRecord::find()->where(['apply_id'=>$apply->id])->all();
-        if(!empty($records)){
+        $records = ApplyRecord::find()->where(['apply_id'=>$apply->id])->orderBy('step asc')->all();
+        $recordsDone = [];
+        $recordsTodo = [];
+        foreach($records as $r){
+            if($r->step==0){
+                continue;
+            }else if($r->step < $apply->flow_step){
+                $recordsDone[] = $r;
+            }else{
+                $recordsTodo[] = $r;
+            }
+        }
+
+        if(!empty($recordsDone)){
             $i = 1;
-            foreach($records as $r){
+            foreach($recordsDone as $r){
                 if($r->step==0) continue;
 /*                if($r->flow->user_id>0){
                     $username = $r->flow->user->name;
@@ -511,12 +545,10 @@ class ApplyController extends BaseController
         }
 
         //3.剩余未完成操作  * 只有申请表(apply)状态为执行中(status=1)
-        if($apply->status==1){
-            $curStep = $apply->flow_step;
-            $flow = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>=','step',$curStep])->all();
+        if($apply->status==1 && !empty($recordsTodo)){
             $i = 1;
-            foreach($flow as $f){
-                $username = Apply::getOperationUser($apply,$f);
+            foreach($recordsTodo as $r){
+                //$username = Apply::getOperationUser($apply,$f);
                 /*if($f->user_id>0){
                     $username = $f->user->name;
                 }else{
@@ -524,8 +556,8 @@ class ApplyController extends BaseController
                 }*/
 
                 $htmlOne = '<li class="flow not-do">';
-                $htmlOne.= '<span class="r-not-do approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$f->title.'</span>';
-                $htmlOne.= '<span class="r-not-do approval-sign">'.$username.'</span>';
+                $htmlOne.= '<span class="r-not-do approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->title.'</span>';
+                $htmlOne.= '<span class="r-not-do approval-sign">'.$r->user->name.'</span>';
                 $htmlOne.= '<span class="r-not-do approval-result">还未操作</span>';
                 $htmlOne.= '<span class="r-not-do approval-message">--</span>';
                 $htmlOne.= '<span class="r-not-do approval-time">--</span>';
@@ -752,7 +784,7 @@ class ApplyController extends BaseController
             $post = Yii::$app->request->post();
             $apply = Apply::find()->where(['id'=>$post['apply_id']])->one();
             if($apply){
-                $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
+                /*$flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
                 $flag = false;
                 if($flow->user_id>0){
                     if($flow->user_id==Yii::$app->user->id){
@@ -764,24 +796,20 @@ class ApplyController extends BaseController
                         $flag = true;
                     }
                 }
-                if($flag){
+                if($flag){*/
 
-                    $record = new ApplyRecord();
-                    $record->result = $post['result'];
-                    $record->message = $post['message'];
-                    $record->apply_id = $apply->id;
-                    $record->flow_id = $flow->id;
-                    $record->type = $flow->type;
-                    $record->user_id = Yii::$app->user->id;
-                    $record->step = $flow->step;
-                    $record->title = $flow->title;
-                    $record->attachment = isset($post['attachment'])?json_encode($post['attachment']):json_encode([]);
+                //获取apply_record表中当前的操作的步骤数
+                $curRecord = ApplyRecord::find()->where(['apply_id'=>$apply->id])->andWhere(['>','add_time',0])->orderBy('step asc')->one();
+                if($curRecord && $curRecord->step == $apply->flow_step){
 
+                    $curRecord->result = $post['result'];
+                    $curRecord->message = $post['message'];
+                    $curRecord->attachment = isset($post['attachment'])?json_encode($post['attachment']):json_encode([]);
 
-                    $record->add_time = date('Y-m-d H:i:s');
-                    if($record->save()){
+                    $curRecord->add_time = date('Y-m-d H:i:s');
+                    if($curRecord->save()){
                         //操作类型为 1 approval审核 和 3 execute执行  结果为0 进行打回操作
-                        if($record->result==0 && in_array($flow->type,[Flow::TYPE_APPROVAL,Flow::TYPE_EXECUTE])){
+                        if($curRecord->result==0 && in_array($curRecord->type,[Flow::TYPE_APPROVAL,Flow::TYPE_EXECUTE])){
 
                             $apply->status = Apply::STATUS_FAILURE;
 
@@ -794,8 +822,8 @@ class ApplyController extends BaseController
                             }*/
                         }else{
                             //查找是否还有后续流程
-                            $exist = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$flow->step])->one();
-                            if($exist){
+                            $recordTodo = ApplyRecord::find()->where(['apply_id'=>$apply->id])->andWhere(['>','step',$curRecord->step])->one();
+                            if($recordTodo){
                                 $apply->flow_step++;
                             }else{
                                 // 没有就完成此申请  改为成功状态

@@ -36,8 +36,19 @@ class ApplyCreateForm extends Model
         return [
             [['title','task_id','task_category'], 'required'],
             [['form_id','task_id', 'task_category'], 'integer'],
-            [['message'], 'safe']
+            [['message'], 'safe'],
+            ['task_id','validateTaskStatus']
         ];
+    }
+
+    public function validateTaskStatus($attribute, $params)
+    {
+        $task = Task::find()->where(['id'=>$this->attribute,'status'=>1,'set_complete'=>1])->one();
+        if (!$task){
+            $this->addError($attribute,'申请表模板状态不正确');
+            return false;
+        }
+        return true;
     }
 
 

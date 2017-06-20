@@ -1,6 +1,7 @@
 <?php
 
 namespace oa\models;
+use ucenter\models\User;
 use Yii;
 //oa 申请 进行操作的记录
 class ApplyRecord extends \yii\db\ActiveRecord
@@ -35,5 +36,10 @@ class ApplyRecord extends \yii\db\ActiveRecord
 
     public function getFlow(){
         return $this->hasOne(Flow::className(), array('id' => 'flow_id'));
+    }
+
+
+    public function getUser(){
+        return $this->hasOne(User::className(), array('id' => 'user_id'));
     }
 }
