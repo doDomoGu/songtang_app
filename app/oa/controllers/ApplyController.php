@@ -149,7 +149,7 @@ class ApplyController extends BaseController
                     $r->title = $flow->title;
                     $r->type = $flow->type;
                     if($new->user_id>0){
-                        $r->user_id = $new->user_id;
+                        $r->user_id = $flow->user_id;
                     }else{
                         $r->user_id = $flowUserSelect[$new->step];
                     }
