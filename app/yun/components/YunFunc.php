@@ -21,7 +21,8 @@ class YunFunc extends Component {
             'children-arr'
         ],
         'dir-permission'=>[
-            'list'
+            'list',
+            'is-in-range'
         ]
     ];
 

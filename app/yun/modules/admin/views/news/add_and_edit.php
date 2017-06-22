@@ -5,6 +5,8 @@
 
     yun\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
     yun\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
+
+
     yun\assets\AppAsset::addJsFile($this,'js/news-add-and-edit.js');
 ?>
 <input type="hidden" id="qiniuDomain" value="<?=yii::$app->params['qiniu-domain']?>" />

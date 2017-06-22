@@ -5,8 +5,13 @@
     use ucenter\models\Industry;
     use yii\bootstrap\BaseHtml;
 
-    yun\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
-    yun\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
+   /* yun\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
+    yun\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');*/
+    yun\assets\AppAsset::addJsFile($this,'https://yun-source.songtang.net/resource/js/qiniu/plupload.full.min.js');
+    yun\assets\AppAsset::addJsFile($this,'https://yun-source.songtang.net/resource/js/qiniu/qiniu.min.js');
+
+
+
     yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/upload_common.js');
 
     $districtItems = District::getItems(true);

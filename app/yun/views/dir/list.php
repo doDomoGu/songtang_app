@@ -5,9 +5,10 @@
     use ucenter\models\District;
     use ucenter\models\Industry;
     use yun\models\DirPermission;
+    use common\components\CommonFunc;
 
-    $districtItems = District::getItems(true);
-    $industryItems = Industry::getItems(true);
+    $districtItems = CommonFunc::getByCache(District::className(),'getItems',[1],'ucenter:district/items');
+    $industryItems = CommonFunc::getByCache(Industry::className(),'getItems',[1],'ucenter:industry/items');
 
 //    yun\assets\AppAsset::addCssFile($this,'css/main/dir/index.css');
     AppAsset::addCssFile($this,'css/main/dir/list.css');
@@ -72,6 +73,7 @@
     </div>
     <div id="attr-check">
         <div class="attr-one">
+
             地区：<?php foreach($districtItems as $k=>$a):?>
                 <?php
                     $checked = '';
@@ -109,6 +111,9 @@
             <?php endforeach;?>
             <?/*=BaseHtml::checkboxList('business-check',$attrSearch['business'],$businessItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check business-check']])*/?>
         </div>
+
+
+
     </div>
     <div id="file_head" class="clearfix">
         <ul class="head_cols">
@@ -154,6 +159,7 @@
 <div id="list-main">
 
 </div>
+
 
 <?=$this->render('modal/upload_common')?>
 <?/*=$this->render('modal/upload_person')*/?>

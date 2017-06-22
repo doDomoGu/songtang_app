@@ -40,7 +40,23 @@ return [
             'showScriptName' => false,
             'rules' => [
             ],
-        ]/*,
+        ],
+        'assetManager'=>[
+            'bundles'=>[
+                'yii\web\JqueryAsset'=> [
+                    'sourcePath'=>  null,
+                    'js'=>
+                        ['https://yun-source.songtang.net/resource/js/jquery.js']
+
+                ],
+
+            ],
+
+        ],
+
+
+
+        /*,
         'cache' => [
             'class' => 'yii\caching\FileCache',
             'cachePath' => '@common/runtime/cache',

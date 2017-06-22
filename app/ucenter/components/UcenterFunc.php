@@ -15,10 +15,12 @@ class UcenterFunc extends Component {
     ];
     static $cacheKeyList = [
         'district'=>[
-            'name'
+            'name',
+            'items'
         ],
         'industry'=>[
-            'name'
+            'name',
+            'items'
         ],
         'company'=>[
             'name'
