@@ -270,5 +270,10 @@ $('#editModal').on('show.bs.modal', function (event) {
     modal.find('.modal-body .file_id').val(button.data('file-id'));
     modal.find('.modal-body .district-check').val(button.data('district_id'));
     modal.find('.modal-body .industry-check').val(button.data('industry_id'));
+    modal.find('.modal-body .edit_is_dir').val(button.data('is_dir'));
+    if(button.data('is_dir')==1){
+        modal.find('.modal-body .district-check').parent('p').hide();
+        modal.find('.modal-body .industry-check').parent('p').hide();
+    }
 
 });

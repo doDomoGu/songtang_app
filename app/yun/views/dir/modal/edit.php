@@ -17,7 +17,9 @@ Modal::begin([
     'options'=>['style'=>'margin-top:120px;']
 ]);
 ?>
+
     <div id="editModalContent">
+        <input type="hidden" class="edit_is_dir" />
         <p>
             地区：<?=Html::dropDownList('district-check','',$districtItems,['class'=>'attr-check district-check'])?>
         </p>

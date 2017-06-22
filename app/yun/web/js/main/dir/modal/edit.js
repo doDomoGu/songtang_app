@@ -1,9 +1,13 @@
 $('#editModalContent button.btn').click(function(){
     _filename_new = $('#editModalContent .filename_new').val();
     _file_id = $('#editModalContent .file_id').val();
-    _district_id = $('#editModalContent .district-check').val();
-    _industry_id = $('#editModalContent .industry-check').val();
-
+    if($('#editModalContent .edit_is_dir').val()==1){
+        _district_id = 10000;
+        _industry_id = 10000;
+    }else{
+        _district_id = $('#editModalContent .district-check').val();
+        _industry_id = $('#editModalContent .industry-check').val();
+    }
 
     _dir_id = $('#var_dir_id').val();
     _p_id = $('#var_p_id').val();

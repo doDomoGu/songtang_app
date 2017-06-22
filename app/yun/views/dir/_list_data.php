@@ -64,7 +64,7 @@
                         <?php endif;?>
                         <?php //TODO
                         if($l->user_id==yii::$app->user->id):?>
-                            <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
+                            <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-is_dir'=>0,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'btn disabled'])?>
@@ -73,7 +73,7 @@
 
                     <?php else:?>
                         <?php if($l->user_id==yii::$app->user->id):?>
-                            <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
+                            <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-is_dir'=>1,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'btn disabled'])?>
