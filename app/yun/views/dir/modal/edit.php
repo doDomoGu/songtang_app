@@ -1,16 +1,29 @@
 <?php
     use yii\bootstrap\Modal;
+    use yii\bootstrap\Html;
+    use ucenter\models\District;
+    use ucenter\models\Industry;
+
     yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/edit.js');
+
+    $districtItems = District::getItems(true);
+    $industryItems = Industry::getItems(true);
 ?>
 <?php
 Modal::begin([
-    'header' => '修改文件/文件夹名',
+    'header' => '修改文件/文件夹',
     'id'=>'editModal',
     /*'size'=>'modal-lg',*/
     'options'=>['style'=>'margin-top:120px;']
 ]);
 ?>
     <div id="editModalContent">
+        <p>
+            地区：<?=Html::dropDownList('district-check','',$districtItems,['class'=>'attr-check district-check'])?>
+        </p>
+        <p>
+            行业：<?=Html::dropDownList('industry-check','',$industryItems,['class'=>'attr-check industry-check'])?>
+        </p>
         <p>
             <label>文件/文件夹名（旧）：</label>
             <span class="filename_old"></span>

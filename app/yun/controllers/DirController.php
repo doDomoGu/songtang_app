@@ -831,15 +831,27 @@ class DirController extends BaseController
         $file = File::find()->where(['id'=>$file_id,'status'=>1,'user_id'=>Yii::$app->user->id])->one();
         if($file && $filename_new!=''){
             if($file->p_id>0){
-                $exist = File::find()->where(['filename'=>$filename_new,'p_id'=>$file->p_id])->all();
+                $exist = File::find()->where(['filename'=>$filename_new,'p_id'=>$file->p_id])->andWhere(['<>','filename',$file->filename])->all();
             }else{
-                $exist = File::find()->where(['filename'=>$filename_new,'dir_id'=>$file->dir_id])->all();
+                $exist = File::find()->where(['filename'=>$filename_new,'dir_id'=>$file->dir_id])->andWhere(['<>','filename',$file->filename])->all();
             }
             if(!empty($exist)){
                 $error_message = '文件名重名';
             }else{
                 $file->filename = $filename_new;
                 if($file->save()){
+                    $disAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_DISTRICT])->one();
+                    if($disAttr){
+                        $disAttr->attr_id = Yii::$app->request->post('district_id');
+                        $disAttr->save();
+                    }
+
+                    $indAttr = FileAttribute::find()->where(['file_id'=>$file_id,'attr_type'=>Attribute::TYPE_INDUSTRY])->one();
+                    if($indAttr){
+                        $indAttr->attr_id = Yii::$app->request->post('industry_id');
+                        $indAttr->save();
+                    }
+
                     $result = true;
                 }
             }

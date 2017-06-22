@@ -29,9 +29,10 @@
                 <div class="file_attrs <?=$l->filetype == 0?'hidden':''?>">
                     <?php if(!empty($l->districtAttrs)):?>
                         <div class="area_attrs">
-                        <?php foreach($l->districtAttrs as $a):?>
+                        <?php foreach($l->districtAttrs as $k=>$a):?>
                             <?php if($a!='--'):?>
                             <span class="label label-primary"><?=$a?></span>
+                                <?php $district_id = $k;?>
                             <?php endif;?>
                         <?php endforeach;?>
                         </div>
@@ -39,9 +40,10 @@
 
                     <?php if(!empty($l->industryAttrs)):?>
                         <div class="business_attrs">
-                        <?php foreach($l->industryAttrs as $b):?>
+                        <?php foreach($l->industryAttrs as $k=>$b):?>
                             <?php if($b!='--'):?>
                             <span class="label label-warning"><?=$b?></span>
+                                <?php $industry_id = $k;?>
                             <?php endif;?>
                         <?php endforeach;?>
                         </div>
@@ -62,7 +64,7 @@
                         <?php endif;?>
                         <?php //TODO
                         if($l->user_id==yii::$app->user->id):?>
-                            <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'editBtn btn','data-filename'=>$l->filename,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
+                            <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'btn disabled'])?>
@@ -71,7 +73,7 @@
 
                     <?php else:?>
                         <?php if($l->user_id==yii::$app->user->id):?>
-                            <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-filename'=>$l->filename,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
+                            <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'btn disabled'])?>

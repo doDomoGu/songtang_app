@@ -1,16 +1,24 @@
 $('#editModalContent button.btn').click(function(){
     _filename_new = $('#editModalContent .filename_new').val();
     _file_id = $('#editModalContent .file_id').val();
+    _district_id = $('#editModalContent .district-check').val();
+    _industry_id = $('#editModalContent .industry-check').val();
+
+
     _dir_id = $('#var_dir_id').val();
     _p_id = $('#var_p_id').val();
     /*console.log(_dirname);*/
-    if(_filename_new!=''){
+    /*if(_filename_new!=''){
+
+    }*/
         $.ajax({
             url: '/dir/edit-filename',
             type: 'post',
             data: {
                 filename_new:_filename_new,
-                file_id:_file_id
+                file_id:_file_id,
+                district_id:_district_id,
+                industry_id:_industry_id
             },
             dataType:'json',
             success: function (data) {
@@ -26,7 +34,7 @@ $('#editModalContent button.btn').click(function(){
                 }
             }
         });
-    }else{
+    /*}else{
         $('#editModalContent .edit-error').html('<span style="color:red;">不能为空！</span>');
-    }
+    }*/
 });

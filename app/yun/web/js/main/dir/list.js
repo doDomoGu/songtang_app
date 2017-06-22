@@ -264,6 +264,11 @@ $('.list-grid-switch a').click(function(){
 $('#editModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var modal = $(this);
+
     modal.find('.modal-body .filename_old').html(button.data('filename'));
+    modal.find('.modal-body .filename_new').val(button.data('filename'));
     modal.find('.modal-body .file_id').val(button.data('file-id'));
+    modal.find('.modal-body .district-check').val(button.data('district_id'));
+    modal.find('.modal-body .industry-check').val(button.data('industry_id'));
+
 });

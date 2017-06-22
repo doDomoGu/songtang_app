@@ -50,7 +50,7 @@ class File extends \yii\db\ActiveRecord
         $arr = [];
         $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_DISTRICT])->all();
         foreach($attrs as $a){
-            $arr[] = $a->district->name;
+            $arr[$a->attr_id] = $a->district->name;
         }
         return $arr;
     }
@@ -71,7 +71,7 @@ class File extends \yii\db\ActiveRecord
         $arr = [];
         $attrs = FileAttribute::find()->where(['file_id'=>$this->id,'attr_type'=>Attribute::TYPE_INDUSTRY])->all();
         foreach($attrs as $a){
-            $arr[] = $a->industry->name;
+            $arr[$a->attr_id] = $a->industry->name;
         }
         return $arr;
     }
