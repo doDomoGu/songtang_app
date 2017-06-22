@@ -32,7 +32,7 @@ Modal::begin([
         </p>
         <p>
             <label>文件/文件夹名（新）：</label>
-            <input class="filename_new" name="filename_new" >
+            <input class="filename_new" name="filename_new" size="50">
             <span class="edit-error"></span>
         </p>
         <p>
