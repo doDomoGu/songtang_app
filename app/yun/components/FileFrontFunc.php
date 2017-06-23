@@ -1,6 +1,7 @@
 <?php
 namespace yun\components;
 
+use common\components\CommonFunc;
 use yun\models\Attribute;
 use yun\models\DownloadRecord;
 use yun\models\File;
@@ -80,19 +81,23 @@ class FileFrontFunc extends Component {
         if(!empty($attrSearch)){
             $fidArr = [];
             if(isset($attrSearch['district']) && !empty($attrSearch['district'])){
-                $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_DISTRICT,'attr_id'=>$attrSearch['district']])->groupBy('file_id')->all();
+                /*$faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_DISTRICT,'attr_id'=>$attrSearch['district']])->groupBy('file_id')->all();
                 foreach($faList as $l){
                     $fidArr[] = $l->file_id;
-                }
+                }*/
+                //var_dump(implode('-',$attrSearch['district']));exit;
+                $fidArr = CommonFunc::getByCache(FileAttribute::className(),'getFileIdsByDistrict',['"'.implode('_',$attrSearch['district']).'"'],'yun:file-attribute/fileids-by-district');
             }
             $query = $query->andWhere(['id'=>$fidArr]);
 
             $fidArr2 = [];
             if(isset($attrSearch['industry']) && !empty($attrSearch['industry'])){
-                $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_INDUSTRY,'attr_id'=>$attrSearch['industry']])->groupBy('file_id')->all();
+                /*$faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_INDUSTRY,'attr_id'=>$attrSearch['industry']])->groupBy('file_id')->all();
                 foreach($faList as $l){
                     $fidArr2[] = $l->file_id;
-                }
+                }*/
+
+                $fidArr2 = CommonFunc::getByCache(FileAttribute::className(),'getFileIdsByIndustry',['"'.implode('-',$attrSearch['industry']).'"'],'yun:file-attribute/fileids-by-industry');
             }
             $query = $query->andWhere(['id'=>$fidArr2]);
         }

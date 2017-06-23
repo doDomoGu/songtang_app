@@ -145,6 +145,7 @@ class CommonFunc extends Component {
         if(!empty($params)){ //数组，多个数据
             $dataArr = $cache->get($key);
             $id = implode('|',$params);
+
             if(!empty($dataArr) && isset($dataArr[$id])){
                 $data = $dataArr[$id];
             }else {
@@ -160,6 +161,7 @@ class CommonFunc extends Component {
                 }
                 $id = implode('|', $paramTemp);
                 $paramStr = implode(',', $paramTemp);
+
                 eval("\$data = $classname::$func($paramStr);");
 
                 if (empty($dataArr)) {
@@ -167,6 +169,7 @@ class CommonFunc extends Component {
                 } else {
                     $arr = ArrayHelper::merge($dataArr, [$id => $data]);
                 }
+
                 $cache->set($key, $arr);
             }
         }else{ //单一数据

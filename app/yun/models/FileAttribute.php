@@ -32,5 +32,23 @@ class FileAttribute extends \yii\db\ActiveRecord
     }
 
 
+    public static function getFileIdsByDistrict($district_ids){
+        $fidArr = [];
+        $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_DISTRICT,'attr_id'=>explode('_',$district_ids)])->groupBy('file_id')->all();
+        foreach($faList as $l){
+            $fidArr[] = $l->file_id;
+        }
+        return $fidArr;
+    }
+
+    public static function getFileIdsByIndustry($industry_ids){
+        $fidArr = [];
+        $faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_INDUSTRY,'attr_id'=>explode('-',$industry_ids)])->groupBy('file_id')->all();
+        foreach($faList as $l){
+            $fidArr[] = $l->file_id;
+        }
+        return $fidArr;
+    }
+
 
 }

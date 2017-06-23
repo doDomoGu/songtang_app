@@ -8,7 +8,8 @@ use yun\models\Dir;
 class YunFunc extends Component {
     static $cacheList = [
         'dir'=>'目录',
-        'dir-permission'=>'权限'
+        'dir-permission'=>'权限',
+        'file-attribute'=>'文件属性'
     ];
     static $cacheKeyList = [
         'dir'=>[
@@ -23,6 +24,10 @@ class YunFunc extends Component {
         'dir-permission'=>[
             'list',
             'is-in-range'
+        ],
+        'file-attribute'=>[
+            'fileids-by-industry',
+            'fileids-by-district'
         ]
     ];
 
