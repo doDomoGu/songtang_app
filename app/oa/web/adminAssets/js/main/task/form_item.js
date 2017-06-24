@@ -14,7 +14,8 @@ $(function () {
                 label_width: $('#createContent .create-label_width').val(),
                 input_width: $('#createContent .create-input_width').val(),
                 input_type: $('#createContent .create-input_type-select').val(),
-                input_options: $('#createContent .create-input_options').val()
+                input_options: $('#createContent .create-input_options').val(),
+                position: $('#createContent .create-position').val()
             },
             success: function (data) {
                 if(data.result){
@@ -69,12 +70,36 @@ $(function () {
         });
     });
 
-
-    $('.delete-all').click(function(){
-        if(confirm('确定要更删除所有流程么？')){
-            var _id = $('#createContent .task-id').val();
+    $('.del-btn').click(function(){
+        if(confirm('确定要删除这个选项么？')){
+            var form_id = $('#createContent .form-id').val();
+            var item_id = $(this).attr('data-id');
             $.ajax({
-                url: '/admin/task/flow-delete-all',
+                url: '/admin/task/form-item-del',
+                type: 'post',
+                //async : false,
+                dataType: 'json',
+                data: {
+                    form_id: form_id,
+                    item_id: item_id
+                },
+                success: function (data) {
+                    if(data.result){
+                        location.href='/admin/task/form-item?id='+form_id;
+                    }else{
+                        alert(data.errormsg);
+                    }
+                }
+            });
+        }
+    });
+
+
+    $('.del-all-btn').click(function(){
+        if(confirm('确定要删除所有选项么？')){
+            var _id = $('#createContent .form-id').val();
+            $.ajax({
+                url: '/admin/task/form-item-del-all',
                 type: 'post',
                 //async : false,
                 dataType: 'json',
@@ -83,7 +108,7 @@ $(function () {
                 },
                 success: function (data) {
                     if(data.result){
-                        location.href='/admin/task/flow?tid='+_id;
+                        location.href='/admin/task/form-item?id='+_id;
                     }else{
                         alert(data.errormsg);
                     }

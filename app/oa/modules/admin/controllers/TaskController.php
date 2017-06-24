@@ -452,6 +452,8 @@ class TaskController extends BaseController
             $formItem = FormItem::find()->where(['form_id'=>$id])->orderBy('ord asc')->all();
             $params['list'] = $formItem;
             $params['form'] = $form;
+
+            $params['positionList'] = FormItem::getPositionList($id);
             return $this->render('form_item',$params);
         }else{
             Yii::$app->getSession()->setFlash('error','表单ID错误!');
@@ -516,6 +518,7 @@ class TaskController extends BaseController
             $input_width = trim(Yii::$app->request->post('input_width',false));
             $input_type = intval(Yii::$app->request->post('input_type',0));
             $input_options = trim(Yii::$app->request->post('input_options',''));
+            $position = trim(Yii::$app->request->post('position',''));
             if($key==false || $label==false){
                 $errormsg = '名称不能为空！';
             }else{
@@ -525,26 +528,47 @@ class TaskController extends BaseController
                 }else{
                     $existItem = FormItem::find()->where(['form_id'=>$form_id,'item_key'=>$key])->one();
                     if(!$existItem){
-                        $last = FormItem::find()->where(['form_id'=>$form_id])->orderBy('ord desc')->one();
-                        $formItem = new FormItem();
-                        $formItem->form_id = $form_id;
-                        $formItem->item_key = $key;
-                        $valueArr = [
-                            'label'=>$label,
-                            'label_width'=>$label_width,
-                            'input_width'=>$input_width,
-                            'input_type'=>$input_type,
-                            'input_options'=>explode(',',$input_options)
-                        ];
-
-                        $formItem->item_value = json_encode($valueArr);;
-                        $formItem->ord = $last?intval($last->ord) + 1 : 1;
-                        $formItem->status = 1;
-                        if($formItem->save()){
-                            Yii::$app->getSession()->setFlash('success','新增选项【'.$form->title.'】成功！');
-                            $result = true;
+                        if($position == 'first'){
+                            $ord = 1;
+                            FormItem::ordDownAll($form_id,$ord);
+                        }elseif($position == 'last'){
+                            $last = FormItem::find()->where(['form_id'=>$form_id])->orderBy('ord desc')->one();
+                            if($last){
+                                $ord = intval($last->ord) + 1;
+                            }else{
+                                $ord = 1;
+                            }
                         }else{
-                            $errormsg = '保存失败，刷新页面重试!';
+                            $existItem2 = FormItem::find()->where(['form_id'=>$form_id,'ord'=>$position])->one();
+                            if($existItem2){
+                                $ord = $position+1;
+                                FormItem::ordDownAll($form_id,$ord);
+                            }else{
+                                $errormsg = '对应排序的选项不存在！';
+                            }
+                        }
+
+                        if($errormsg ==''){
+                            $formItem = new FormItem();
+                            $formItem->form_id = $form_id;
+                            $formItem->item_key = $key;
+                            $valueArr = [
+                                'label'=>$label,
+                                'label_width'=>$label_width,
+                                'input_width'=>$input_width,
+                                'input_type'=>$input_type,
+                                'input_options'=>explode(',',$input_options)
+                            ];
+
+                            $formItem->item_value = json_encode($valueArr);;
+                            $formItem->ord = $ord;
+                            $formItem->status = 1;
+                            if($formItem->save()){
+                                Yii::$app->getSession()->setFlash('success','新增选项【'.$form->title.'】成功！');
+                                $result = true;
+                            }else{
+                                $errormsg = '保存失败，刷新页面重试!';
+                            }
                         }
                     }else{
                         $errormsg = 'Key名重复!';
@@ -908,6 +932,65 @@ $params['applyUserList'] = $applyUserList;
                 Yii::$app->getSession()->setFlash('success','清空任务表流程成功！');
                 $result = true;
 
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+
+    public function actionFormItemDelAll(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $form_id = Yii::$app->request->post('id','');
+            $form = Form::find()->where(['id'=>$form_id])->one();
+            if($form){
+                if($form->set_complete == 0){
+                    FormItem::deleteAll(['form_id'=>$form_id]);
+
+                    Yii::$app->getSession()->setFlash('success','清空表单【'.$form->title.'】选项成功！');
+                    $result = true;
+                }else{
+                    $errormsg = '表单不是暂停状态不能修改选项！';
+                }
+            }else{
+                $errormsg = '对应的表单不存在！';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+    public function actionFormItemDel(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $form_id = Yii::$app->request->post('form_id','');
+            $item_id = Yii::$app->request->post('item_id','');
+            $form = Form::find()->where(['id'=>$form_id])->one();
+            if($form){
+                if($form->set_complete == 0){
+                    $form_item = FormItem::find()->where(['id'=>$item_id])->one();
+                    if($form_item){
+                        $form_item->delete();
+                        FormItem::ordUpAll($form->id,$form_item->ord);
+                        Yii::$app->getSession()->setFlash('success','删除表单【'.$form->title.'】选项['.$form_item->item_key.']成功！');
+                        $result = true;
+                    }else{
+                        $errormsg = '对应表单选项不存在！';
+                    }
+                }else{
+                    $errormsg = '表单不是暂停状态不能修改选项！';
+                }
+            }else{
+                $errormsg = '对应的表单不存在！';
             }
         }else{
             $errormsg = '操作错误，请重试!';

@@ -153,4 +153,40 @@ class FormItem extends \yii\db\ActiveRecord
         return $this->hasOne(Task::className(), array('id' => 'task_id'));
     }*/
 
+    //用来当删除一个选项时将他之后的所有选项往前移一位
+    public static function ordUpAll($form_id,$ord){
+        $items = FormItem::find()->where(['form_id'=>$form_id])->andWhere(['>=','ord',$ord])->all();
+        foreach($items as $item){
+            $item->ord--
+
+            ;
+            $item->save();
+        }
+    }
+
+    //用来当插入一个选项时将他之后的所有选项往后移一位
+    public static function ordDownAll($form_id,$ord){
+        $items = FormItem::find()->where(['form_id'=>$form_id])->andWhere(['>=','ord',$ord])->all();
+        foreach($items as $item){
+            $item->ord++;
+            $item->save();
+        }
+    }
+
+
+    public static function getPositionList($form_id){
+        $list = [
+            'first'=> '最前'
+        ];
+        $items = FormItem::find()->where(['form_id'=>$form_id])->orderBy('ord asc')->all();
+        if(!empty($items)){
+            foreach($items as $item){
+                $list[$item['ord']] = '在"'.$item['item_key'].'"之后';
+            }
+        }
+
+
+        $list['last'] = '最后';
+        return $list;
+    }
 }

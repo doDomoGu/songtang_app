@@ -11,14 +11,15 @@ use oa\models\FormItem;
 <section>
     <div style="margin-bottom: 10px;">
         <?php /*if($task->set_complete==0):*/?>
-        <?=Html::a('新增选项','javascript:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?=Html::button('新增选项',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?=Html::button('清空选项',['class'=>'btn btn-danger del-all-btn'])?>
         <?/*=Html::a('清空选项','javascript:void(0)',['class'=>'btn btn-danger delete-all'])*/?>
         <?php /*endif;*/?>
         <?=Html::a('返回','/admin/task/form',['class'=>'btn btn-default'])?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
-            <th>#</th>
+            <th>排序</th>
             <th>Key</th>
             <th>标签名</th>
             <th>类型</th>
@@ -32,14 +33,15 @@ use oa\models\FormItem;
                 $valueArr = FormItem::jsonDecodeValue($l->item_value);
             ?>
             <tr>
-                <td><?=$l->id?></td>
+                <td><?=$l->ord?></td>
                 <td><?=$l->item_key?></td>
                 <td><?=$valueArr['label']?></td>
                 <td><?=$valueArr['input_type_cn']?></td>
                 <td><?=$valueArr['input_options']?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
                 <td>
-                    <?/*=Html::a('编辑','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs','data-title'=>$l->title,'data-type'=>$l->type,'data-user-id'=>$l->user_id,'data-id'=>$l->id])*/?>
+                    <?/*=Html::button('编辑',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs','data-title'=>$l->title,'data-type'=>$l->type,'data-user-id'=>$l->user_id,'data-id'=>$l->id])*/?>
+                    <?=Html::button('删除',['class'=>'btn btn-danger btn-xs del-btn','data-id'=>$l->id])?>
                 </td>
             </tr>
 
@@ -61,6 +63,12 @@ Modal::begin([
     <div id="createContent">
         <form class="form-horizontal" role="form">
             <input class="form-id" type="hidden" value="<?=$form->id?>" />
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">插入位置</label>
+                <div class="col-sm-6">
+                    <?=Html::dropDownList('create-position','last',$positionList,['class'=>'form-control create-position','style'=>'width:100%;'])?>
+                </div>
+            </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">key</label>
                 <div class="col-sm-6">
