@@ -24,23 +24,37 @@ use oa\models\FormItem;
             <th>标签名</th>
             <th>类型</th>
             <th>选项参数</th>
-            <th>状态</th>
+            <!--<th>状态</th>-->
             <th>操作</th>
         </tr>
         <tbody>
         <?php foreach($list as $l):?>
             <?php
-                $valueArr = FormItem::jsonDecodeValue($l->item_value);
+                $vArr = FormItem::jsonDecodeValue($l->item_value);
+                $label = $vArr['label'];
+                $input_type = $vArr['input_type'];
+                $input_type_cn = $vArr['input_type_cn'];
+                $input_options = $vArr['input_options'];
+                $input_options_html = $vArr['input_options_html'];
+                $label_width = $vArr['label_width'];
+                $input_width = $vArr['input_width'];
             ?>
             <tr>
                 <td><?=$l->ord?></td>
                 <td><?=$l->item_key?></td>
-                <td><?=$valueArr['label']?></td>
-                <td><?=$valueArr['input_type_cn']?></td>
-                <td><?=$valueArr['input_options']?></td>
-                <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
+                <td><?=$label?></td>
+                <td><?=$input_type_cn?></td>
+                <td><?=str_replace("\n","<br/>",$input_options_html)?></td>
+                <!--<td><?/*=\common\components\CommonFunc::getStatusCn($l->status)*/?></td>-->
                 <td>
-                    <?/*=Html::button('编辑',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs','data-title'=>$l->title,'data-type'=>$l->type,'data-user-id'=>$l->user_id,'data-id'=>$l->id])*/?>
+                    <?=Html::button('编辑',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs',
+                        'data-key'=>$l->item_key,
+                        'data-label'=>$label,
+                        'data-label_width'=>$label_width,
+                        'data-input_width'=>$input_width,
+                        'data-input_type'=>$input_type,
+                        'data-id'=>$l->id,
+                        'data-input_options'=>$input_options_html])?>
                     <?=Html::button('删除',['class'=>'btn btn-danger btn-xs del-btn','data-id'=>$l->id])?>
                 </td>
             </tr>
@@ -120,52 +134,60 @@ Modal::end();
 
 <?php
 Modal::begin([
-    'header' => '编辑流程',
+    'header' => '编辑选项',
     'id'=>'editModal',
     'options'=>['style'=>'margin-top:120px;'],
 ]);
 ?>
-<div id="editContent">
-    <form class="form-horizontal" role="form">
-        <input class="task-id" type="hidden" value="<?=$form->id?>" />
-        <input class="edit-flow-id" type="hidden"  />
-        <div class="form-group">
-            <label class="col-sm-4 control-label label1">标题</label>
-            <div class="col-sm-6">
-                <input class="form-control create-title">
+    <div id="editContent">
+        <form class="form-horizontal" role="form">
+            <input class="form-id" type="hidden" value="<?=$form->id?>" />
+            <input class="edit-form-item-id" type="hidden" value="" />
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">key</label>
+                <div class="col-sm-6">
+                    <input class="form-control create-key">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label label1">类型</label>
-            <div class="col-sm-6">
-                <select class="form-control create-type-select">
-                    <?=Flow::getOptions()?>
-                </select>
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">标签名</label>
+                <div class="col-sm-6">
+                    <input class="form-control create-label">
+                </div>
             </div>
-        </div>
-        <div class="form-group" style="display:none;">
-            <label class="col-sm-4 control-label label1">是否允许转发</label>
-            <div class="col-sm-6">
-                <select class="form-control create-enable-transfer-select">
-                    <option value="0">禁止</option>
-                    <option value="1">允许</option>
-                </select>
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">标签宽度</label>
+                <div class="col-sm-6">
+                    <input class="form-control create-label_width">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label label1">职员</label>
-            <div class="col-sm-6">
-                <?=\yii\bootstrap\BaseHtml::dropDownList('user-select','',\common\components\CommonFunc::getByCache(\ucenter\models\User::className(),'getItems',[],'ucenter:user/items'),['class'=>"form-control create-user-select",'prompt'=>'---'])?>
-                <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">输入框宽度</label>
+                <div class="col-sm-6">
+                    <input class="form-control create-input_width">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-6">
-                <button type="button" class="btn btn-success" id="edit-btn">提交</button>
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">类型</label>
+                <div class="col-sm-6">
+                    <?=\yii\helpers\Html::dropDownList('input_type-select',null,FormItem::itemType(),['class'=>'form-control create-input_type-select'])?>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">选项参数</label>
+                <div class="col-sm-6">
+                    <textarea class="form-control create-input_options" ></textarea>
+                    <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-6">
+                    <button type="button" class="btn btn-success" id="edit-submit-btn">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
 <?php
 Modal::end();
 ?>

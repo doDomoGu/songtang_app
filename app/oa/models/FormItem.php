@@ -84,6 +84,7 @@ class FormItem extends \yii\db\ActiveRecord
             'input_type_cn'=> '',
             'input_width'=> 280,
             'input_options'=> '',
+            'input_options_html'=> '',
             'value'=>'',
             'itemContent' => ''
         ];
@@ -110,7 +111,8 @@ class FormItem extends \yii\db\ActiveRecord
                 if(isset($arr['input_width']))
                     $return['input_width'] = $arr['input_width'];
                 if(isset($arr['input_options']) && is_array($arr['input_options'])){
-                    $return['input_options'] = implode('<br/>' ,$arr['input_options']);
+                    $return['input_options'] = $arr['input_options'];
+                    $return['input_options_html'] = implode("\n" ,$arr['input_options']);
                 }
                 if($getContent)
                     $return['itemContent'] = self::generateItemContent($return['input_type'],$key,$return['input_options']);

@@ -557,10 +557,10 @@ class TaskController extends BaseController
                                 'label_width'=>$label_width,
                                 'input_width'=>$input_width,
                                 'input_type'=>$input_type,
-                                'input_options'=>explode(',',$input_options)
+                                'input_options'=>explode("\n",$input_options)
                             ];
 
-                            $formItem->item_value = json_encode($valueArr);;
+                            $formItem->item_value = json_encode($valueArr);
                             $formItem->ord = $ord;
                             $formItem->status = 1;
                             if($formItem->save()){

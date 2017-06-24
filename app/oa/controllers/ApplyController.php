@@ -474,14 +474,14 @@ class ApplyController extends BaseController
             '<span class="date">'.Html::img('/images/main/apply/modal-date.png').' 申请日期：</span><span class="date-txt">'. date('Y-m-d',strtotime($apply->add_time)).'</span>'.
             '</section>';
 
-        //1.发起申请
-        $form_id = $apply->form_id;
+        //1.发起申请 的 表单内容
+        //$form_id = $apply->form_id;
         $applyFromContent = ApplyFormContent::find()->where(['apply_id'=>$apply->id])->orderBy('ord asc')->all();
         if(!empty($applyFromContent)){
             $html.= '<section id="apply-form-content">';
             foreach($applyFromContent as $afc){
-                $html .= '<span class="form-content-label" style="width:'.$afc['label_width'].'px;"></span>';
-                $html .= '<span class="form-content-input"></span>';
+                $html .= '<span class="form-content-label" style="width:'.$afc['label_width'].'px;">'.$afc['label'].'</span>';
+                $html .= '<span class="form-content-input" style="width:'.$afc['input_width'].'px;"></span>';
             }
             $html.= '</section>';
         }
@@ -489,6 +489,10 @@ class ApplyController extends BaseController
         $html .= '<section id="apply-message">' .
             '<span class="message-title">'.Html::img('/images/main/apply/modal-message.png').' 申请内容：</span><span class="message-txt">'.(str_replace("\r\n",'<br/>',$apply->message)).'</span>'.
             '</section>';
+
+
+        //2.操作步骤记录
+        //列表头
         $html .= '<section id="apply-main">' .
             '<div class="apply-main-title">'.
             '<span class="apply-title apply-user">'.Html::img('/images/main/apply/modal-user.png').' 审批流程</span>'.
@@ -499,7 +503,7 @@ class ApplyController extends BaseController
             '</div>';
 
 
-        //2.操作记录
+        //列表内容
         $records = ApplyRecord::find()->where(['apply_id'=>$apply->id])->orderBy('step asc')->all();
         $recordsDone = [];
         $recordsTodo = [];
@@ -574,7 +578,7 @@ class ApplyController extends BaseController
             }
         }
 
-        //4. 打印
+        //4. 打印按钮
         $html .= '<div id="a-print" class="hidden-print"><a data-id="'.$apply->id.'" type="button" class="print-btn">打印</a></div>';
 
         $html .= '</section>';
