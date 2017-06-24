@@ -27,6 +27,7 @@
                 <?php endif;?>
                 </span>
                 <div class="file_attrs <?=$l->filetype == 0?'hidden':''?>">
+                    <?php $district_id = 10000;?>
                     <?php if(!empty($l->districtAttrs)):?>
                         <div class="area_attrs">
                         <?php foreach($l->districtAttrs as $k=>$a):?>
@@ -37,7 +38,7 @@
                         <?php endforeach;?>
                         </div>
                     <?php endif;?>
-
+                    <?php $industry_id = 10000;?>
                     <?php if(!empty($l->industryAttrs)):?>
                         <div class="business_attrs">
                         <?php foreach($l->industryAttrs as $k=>$b):?>

@@ -78,7 +78,7 @@ class FileFrontFunc extends Component {
 
         /*        $files = $files->where(['dir_id'=>$dir_id,'status'=>1]);
                 $files = $files->andWhere(['p_id'=>$p_id,'status'=>1]);*/
-        if(!empty($attrSearch)){
+        if(1!=1 && !empty($attrSearch)){
             $fidArr = [];
             if(isset($attrSearch['district']) && !empty($attrSearch['district'])){
                 /*$faList = FileAttribute::find()->where(['attr_type'=>Attribute::TYPE_DISTRICT,'attr_id'=>$attrSearch['district']])->groupBy('file_id')->all();
@@ -121,26 +121,25 @@ class FileFrontFunc extends Component {
         $file->save();
     }
 
-    public static function sizeFormat($size)
-    {
+    public static function sizeFormat($size){
         if($size<1024)
         {
-            return $size."B";
+            return $size." B";
         }
         else if($size<(1024*1000))
         {
             $size=round($size/1024,0);
-            return $size."KB";
+            return $size." KB";
         }
         else if($size<(1024*1024*1000))
         {
             $size=number_format($size/(1024*1024),1);
-            return $size."M";
+            return $size." M";
         }
         else
         {
             $size=round($size/(1024*1024*1000),1);
-            return $size."G";
+            return $size." G";
         }
     }
 
