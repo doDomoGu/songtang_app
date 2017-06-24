@@ -38,7 +38,6 @@ $(function () {
         var input_width = btn.data("input_width");
         var input_type = btn.data("input_type");
         var input_options = btn.data("input_options");
-console.log(input_options);
 
         $('#editContent .edit-form-item-id').val(id);
         $('#editContent .create-key').val(key);
@@ -55,25 +54,79 @@ console.log(input_options);
         $('#editContent .errormsg-text').html('').hide();
         var form_id =$('#editContent .form-id').val();
         $.ajax({
-            url: '/admin/task/flow-edit',
+            url: '/admin/task/form-item-edit',
             type: 'post',
             //async : false,
             dataType: 'json',
             data: {
                 form_id : form_id,
                 item_id: $('#editContent .edit-form-item-id').val(),
-                title: $('#editContent .create-title').val(),
-                type: $('#editContent .create-type-select').val(),
-                user_id: $('#editContent .create-user-select').val()
+                key: $('#editContent .create-key').val(),
+                label: $('#editContent .create-label').val(),
+                label_width: $('#editContent .create-label_width').val(),
+                input_width: $('#editContent .create-input_width').val(),
+                input_type: $('#editContent .create-input_type-select').val(),
+                input_options: $('#editContent .create-input_options').val()
             },
             success: function (data) {
                 if(data.result){
-                    location.href='/admin/task/flow?tid='+tid;
+                    location.href='/admin/task/form-item?id='+form_id;
                 }else{
                     $('#editContent .errormsg-text').html(data.errormsg).show();
                 }
             }
         });
+    });
+
+    $('.ord-up-btn').click(function(){
+        if(confirm('确定要把这个选项往上移么？')){
+            var form_id = $('#createContent .form-id').val();
+            var item_id = $(this).attr('data-id');
+            $.ajax({
+                url: '/admin/task/form-item-ord-change',
+                type: 'post',
+                //async : false,
+                dataType: 'json',
+                data: {
+                    form_id: form_id,
+                    item_id: item_id,
+                    action: 'up'
+                },
+                success: function (data) {
+                    if(data.result){
+                        location.href='/admin/task/form-item?id='+form_id;
+                    }else{
+                        alert(data.errormsg);
+                    }
+                }
+            });
+        }
+    });
+
+
+    $('.ord-down-btn').click(function(){
+        if(confirm('确定要把这个选项往下移么？')){
+            var form_id = $('#createContent .form-id').val();
+            var item_id = $(this).attr('data-id');
+            $.ajax({
+                url: '/admin/task/form-item-ord-change',
+                type: 'post',
+                //async : false,
+                dataType: 'json',
+                data: {
+                    form_id: form_id,
+                    item_id: item_id,
+                    action: 'down'
+                },
+                success: function (data) {
+                    if(data.result){
+                        location.href='/admin/task/form-item?id='+form_id;
+                    }else{
+                        alert(data.errormsg);
+                    }
+                }
+            });
+        }
     });
 
     $('.del-btn').click(function(){

@@ -25,10 +25,10 @@ use oa\models\FormItem;
             <th>类型</th>
             <th>选项参数</th>
             <!--<th>状态</th>-->
-            <th>操作</th>
+            <th width="200">操作</th>
         </tr>
         <tbody>
-        <?php foreach($list as $l):?>
+        <?php $count = count($list); $i=0;foreach($list as $l):$i++;?>
             <?php
                 $vArr = FormItem::jsonDecodeValue($l->item_value);
                 $label = $vArr['label'];
@@ -56,6 +56,8 @@ use oa\models\FormItem;
                         'data-id'=>$l->id,
                         'data-input_options'=>$input_options_html])?>
                     <?=Html::button('删除',['class'=>'btn btn-danger btn-xs del-btn','data-id'=>$l->id])?>
+                    <?=Html::button('上移',['class'=>'btn btn-success btn-xs ord-up-btn'.($i==1?' disabled':''),'data-id'=>$l->id])?>
+                    <?=Html::button('下移',['class'=>'btn btn-success btn-xs ord-down-btn'.($i==$count?' disabled':''),'data-id'=>$l->id])?>
                 </td>
             </tr>
 

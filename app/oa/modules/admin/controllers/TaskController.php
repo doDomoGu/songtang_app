@@ -626,6 +626,66 @@ class TaskController extends BaseController
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 
+
+
+    public function actionFormItemEdit(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $form_id =intval(Yii::$app->request->post('form_id',0));
+            $item_id =intval(Yii::$app->request->post('item_id',0));
+            $key = trim(Yii::$app->request->post('key',false));
+            $label = trim(Yii::$app->request->post('label',false));
+            $label_width = trim(Yii::$app->request->post('label_width',false));
+            $input_width = trim(Yii::$app->request->post('input_width',false));
+            $input_type = intval(Yii::$app->request->post('input_type',0));
+            $input_options = trim(Yii::$app->request->post('input_options',''));
+            $position = trim(Yii::$app->request->post('position',''));
+            if($key==false || $label==false){
+                $errormsg = '名称不能为空！';
+            }else{
+                $form = Form::find()->where(['id'=>$form_id])->one();
+                if(!$form){
+                    $errormsg = '对应的表单ID不存在！';
+                }else{
+                    $existItem = FormItem::find()->where(['id'=>$item_id])->one();
+                    if($existItem){
+                        $existKey = FormItem::find()->where(['item_key'=>$key])->andWhere(['<>','id',$item_id])->one();
+                        if(!$existKey){
+
+                            $existItem->item_key = $key;
+                            $valueArr = [
+                                'label'=>$label,
+                                'label_width'=>$label_width,
+                                'input_width'=>$input_width,
+                                'input_type'=>$input_type,
+                                'input_options'=>explode("\n",$input_options)
+                            ];
+
+                            $existItem->item_value = json_encode($valueArr);
+                            if($existItem->save()){
+                                Yii::$app->getSession()->setFlash('success','编辑选项成功！');
+                                $result = true;
+                            }else{
+                                $errormsg = '保存失败，刷新页面重试!';
+                            }
+                        }else{
+                            $errormsg = 'Key名已存在!';
+                        }
+                    }else{
+                        $errormsg = '对应选项不存在!';
+                    }
+                }
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+
     public function actionSetComplete(){
         $id = Yii::$app->request->get('id',false);
         $task = Task::find()->where(['id'=>$id])->one();
@@ -754,6 +814,59 @@ $params['applyUserList'] = $applyUserList;
             Yii::$app->getSession()->setFlash('error','发起人设置对应的任务id不存在!');
             return $this->redirect(AdminFunc::adminUrl('task'));
         }
+    }
+
+    public function actionFormItemOrdChange(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+
+            $form_id = intval(Yii::$app->request->post('form_id',0));
+            $item_id = intval(Yii::$app->request->post('item_id',0));
+            $action = Yii::$app->request->post('action','');
+
+            $form = Form::find()->where(['id'=>$form_id])->one();
+            if(!$form){
+                $errormsg = '对应的表单ID不存在！';
+            }else {
+                $item = FormItem::find()->where(['form_id' => $form_id, 'id' => $item_id])->one();
+                if (!$item) {
+                    $errormsg = '对应选项不存在！';
+                }else{
+                    $ord = $item->ord;
+                    if($action == 'up'){
+                        $ord2 = $ord - 1;
+
+                    }elseif($action == 'down'){
+                        $ord2 = $ord + 1;
+
+                    }else{
+                        $errormsg = '动作参数错误！';
+                    }
+
+
+                    if($errormsg==''){
+                        $item2 = FormItem::find()->where(['form_id'=>$form_id, 'ord'=>$ord2])->one();
+                        if($item2){
+                            $item2->ord = $ord;
+                            $item2->save();
+                            $item->ord = $ord2;
+                            $item->save();
+
+                            Yii::$app->getSession()->setFlash('success','修改选项排序成功！');
+                            $result = true;
+                        }else{
+                            $errormsg = '要交换顺序的选项不存在！';
+                        }
+                    }
+                }
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 
 
