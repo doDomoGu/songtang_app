@@ -148,10 +148,10 @@ class ApplyController extends BaseController
                     $r->step = $flow->step;
                     $r->title = $flow->title;
                     $r->type = $flow->type;
-                    if($new->user_id>0){
+                    if($flow->user_id>0){
                         $r->user_id = $flow->user_id;
                     }else{
-                        $r->user_id = $flowUserSelect[$new->step];
+                        $r->user_id = $flowUserSelect[$flow->step];
                     }
                     $r->result = 0;
                     $r->message = '';
@@ -480,8 +480,10 @@ class ApplyController extends BaseController
         if(!empty($applyFromContent)){
             $html.= '<section id="apply-form-content">';
             foreach($applyFromContent as $afc){
-                $html .= '<span class="form-content-label" style="width:'.$afc['label_width'].'px;">'.$afc['label'].'</span>';
-                $html .= '<span class="form-content-input" style="width:'.$afc['input_width'].'px;"></span>';
+                $valueArr = FormItem::jsonDecodeValue($afc->item_value,$afc->item_key,true);
+
+                $html .= '<span class="form-content-item"><span class="form-content-label" style="width:'.$valueArr['label_width'].'px;">'.$valueArr['label'].'</span>';
+                $html .= '<span class="form-content-input" style="width:'.$valueArr['input_width'].'px;">'.$valueArr['itemContent'].'</span></span>';
             }
             $html.= '</section>';
         }
@@ -562,9 +564,12 @@ class ApplyController extends BaseController
                     $username = '[自由选择]';
                 }*/
 
+                $flow_user = CommonFunc::getByCache(UserIdentity::className(),'findIdentityOne',[$r->user_id],'ucenter:user/identity');
+                $username = $flow_user?$flow_user->name:'N/A';
+
                 $htmlOne = '<li class="flow not-do">';
                 $htmlOne.= '<span class="r-not-do approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->title.'</span>';
-                $htmlOne.= '<span class="r-not-do approval-sign">'.$r->user->name.'</span>';
+                $htmlOne.= '<span class="r-not-do approval-sign">'.$username.'</span>';
                 $htmlOne.= '<span class="r-not-do approval-result">还未操作</span>';
                 $htmlOne.= '<span class="r-not-do approval-message">--</span>';
                 $htmlOne.= '<span class="r-not-do approval-time">--</span>';

@@ -156,7 +156,8 @@
 
 #apply-header,
 #apply-message,
-#apply-main
+#apply-main,
+#apply-form-content
 {
     font-size:16px;
     font-weight: bold;
@@ -183,7 +184,8 @@
     width:100px;
 }
 
-#apply-message {
+#apply-message,
+#apply-form-content{
     margin-top:14px;
     overflow:hidden;
 
@@ -290,3 +292,31 @@
 #a-print .print-btn:hover {
     opacity: 0.8;
 }
+
+
+
+#apply-form-content {
+
+}
+#apply-form-content .form-content-item .form-content-label,
+#apply-form-content .form-content-item .form-content-input{
+    display:block;
+    float:left;
+    width:160px;
+}
+
+#apply-form-content .form-content-item .form-content-input{
+    width:360px;
+}
+
+#apply-form-content .form-content-item {
+    margin-top:14px;
+    list-style: none;
+    border-bottom: 1px solid #ccc;
+    padding-bottom:4px;
+    overflow: hidden;
+    font-size:14px;
+    font-weight: bold;
+    float:left;
+}
+
