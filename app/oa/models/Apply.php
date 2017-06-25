@@ -327,9 +327,9 @@ class Apply extends \yii\db\ActiveRecord
             if($curRecord){
                 $user = User::find()->where(['id'=>$curRecord->user_id])->one();
                 if($user){
-                    return '**'.$user->name;
+                    return $user->name;
                 }else{
-                    return '[找不到志愿信息]';
+                    return '[找不到职员信息]';
                 }
             }else{
                 return '[找不到当前的操作步骤]';

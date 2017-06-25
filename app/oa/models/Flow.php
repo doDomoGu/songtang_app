@@ -103,6 +103,29 @@ class Flow extends \yii\db\ActiveRecord
         return $return;
     }
 
+    public static function typeName($type){
+        switch ($type){
+            case self::TYPE_APPROVAL:
+                $return = self::TYPE_APPROVAL_CN;
+                break;
+            case self::TYPE_EXAMINE:
+                $return = self::TYPE_EXAMINE_CN;
+                break;
+            case self::TYPE_WATCH:
+                $return = self::TYPE_WATCH_CN;
+                break;
+            case self::TYPE_EXECUTE:
+                $return = self::TYPE_EXECUTE_CN;
+                break;
+            case self::TYPE_FEEDBACK:
+                $return = self::TYPE_FEEDBACK_CN;
+                break;
+            default:
+                $return = 'N/A';
+        }
+        return $return;
+    }
+
     public static function getOptions(){
         $html = '<option value="'.self::TYPE_APPROVAL.'">'.self::TYPE_APPROVAL_CN.'</option>';
         $html .= '<option value="'.self::TYPE_EXAMINE.'">'.self::TYPE_EXAMINE_CN.'</option>';
