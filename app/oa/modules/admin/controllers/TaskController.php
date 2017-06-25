@@ -892,6 +892,58 @@ $params['applyUserList'] = $applyUserList;
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 
+    public function actionFlowStepChange(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+
+            $task_id = intval(Yii::$app->request->post('task_id',0));
+            $flow_id = intval(Yii::$app->request->post('flow_id',0));
+            $action = Yii::$app->request->post('action','');
+
+            $task = Task::find()->where(['id'=>$task_id])->one();
+            if(!$task){
+                $errormsg = '对应的模板ID不存在！';
+            }else {
+                $flow = Flow::find()->where(['task_id' => $task_id, 'id' => $flow_id])->one();
+                if (!$flow) {
+                    $errormsg = '对应流程步骤不存在！';
+                }else{
+                    $step = $flow->step;
+                    if($action == 'up'){
+                        $step2 = $step - 1;
+
+                    }elseif($action == 'down'){
+                        $step2 = $step + 1;
+
+                    }else{
+                        $errormsg = '动作参数错误！';
+                    }
+
+
+                    if($errormsg==''){
+                        $flow2 = Flow::find()->where(['task_id'=>$task_id, 'step'=>$step2])->one();
+                        if($flow2){
+                            $flow2->step = $step;
+                            $flow2->save();
+                            $flow->step = $step2;
+                            $flow->save();
+
+                            Yii::$app->getSession()->setFlash('success','修改步骤顺序成功！');
+                            $result = true;
+                        }else{
+                            $errormsg = '要交换顺序的流程不存在！';
+                        }
+                    }
+                }
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
 
     public function actionApplyUserAdd(){
         $errormsg = '';
@@ -951,6 +1003,40 @@ $params['applyUserList'] = $applyUserList;
                 $result = true;
             }else{
                 $errormsg = '设置 没找到!';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+
+
+    public function actionFlowDel(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $task_id = intval(Yii::$app->request->post('task_id',0));
+            $flow_id = intval(Yii::$app->request->post('flow_id',0));
+            $task = Task::find()->where(['id'=>$task_id])->one();
+            if($task){
+                if($task->set_complete == 0){
+                    $flow = Flow::find()->where(['task_id'=>$task_id,'id'=>$flow_id])->one();
+                    if($flow){
+                        $flow->delete();
+                        Flow::ordUpAll($task_id,$flow->step);
+                        Yii::$app->getSession()->setFlash('success','删除流程【'.$flow->title.'】成功！');
+                        $result = true;
+                    }else{
+                        $errormsg = '对应流程不存在！';
+                    }
+                }else{
+                    $errormsg = '对应的模板不是暂停状态不能修改流程！';
+                }
+            }else{
+                $errormsg = '对应的模板ID不存在！';
             }
         }else{
             $errormsg = '操作错误，请重试!';
@@ -1113,7 +1199,7 @@ $params['applyUserList'] = $applyUserList;
             $form = Form::find()->where(['id'=>$form_id])->one();
             if($form){
                 if($form->set_complete == 0){
-                    $form_item = FormItem::find()->where(['id'=>$item_id])->one();
+                    $form_item = FormItem::find()->where(['form_id'=>$form_id,'id'=>$item_id])->one();
                     if($form_item){
                         $form_item->delete();
                         FormItem::ordUpAll($form->id,$form_item->ord);

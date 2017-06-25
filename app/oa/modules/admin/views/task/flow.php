@@ -22,10 +22,10 @@ use yii\helpers\Url;
             <th>指定操作人</th>
             <!--<th>转发</th>-->
             <!--<th>状态</th>-->
-            <th>操作</th>
+            <th width="200">操作</th>
         </tr>
         <tbody>
-        <?php foreach($list as $l):?>
+        <?php $count = count($list);$i=0;foreach($list as $l):$i++;?>
             <tr>
                 <td><?=$l->step?></td>
                 <td><?=$l->title?></td>
@@ -34,7 +34,10 @@ use yii\helpers\Url;
                 <!--<td><?/*=$l->enable_transfer==0?'禁止':'允许'*/?></td>-->
                 <!--<td><?/*=\common\components\CommonFunc::getStatusCn($l->status)*/?></td>-->
                 <td>
-                    <?=Html::a('编辑','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs','data-title'=>$l->title,'data-type'=>$l->type,'data-user-id'=>$l->user_id,'data-id'=>$l->id])?>
+                    <?=Html::button('编辑',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs','data-title'=>$l->title,'data-type'=>$l->type,'data-user-id'=>$l->user_id,'data-id'=>$l->id])?>
+                    <?=Html::button('删除',['class'=>'btn btn-danger btn-xs del-btn','data-id'=>$l->id])?>
+                    <?=Html::button('上移',['class'=>'btn btn-success btn-xs ord-up-btn'.($i==1?' disabled':''),'data-id'=>$l->id])?>
+                    <?=Html::button('下移',['class'=>'btn btn-success btn-xs ord-down-btn'.($i==$count?' disabled':''),'data-id'=>$l->id])?>
                 </td>
             </tr>
 
@@ -88,7 +91,7 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">职员</label>
                 <div class="col-sm-6">
-                    <?=\yii\bootstrap\BaseHtml::dropDownList('user-select','',\ucenter\models\User::getItems(),['class'=>"form-control create-user-select",'prompt'=>'---'])?>
+                    <?=\yii\bootstrap\BaseHtml::dropDownList('user-select','',\common\components\CommonFunc::getByCache(\ucenter\models\User::className(),'getItems',[],'ucenter:user/items'),['class'=>"form-control create-user-select",'prompt'=>'---'])?>
                     <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>

@@ -91,137 +91,78 @@ $(function () {
         }
     });
 
-    $('.order-change').click(function(){
-        if($(this).hasClass('disabled')){
-            return false;
-        }else{
-            if(confirm('确定要更改排序么？')){
-                var _id = $(this).attr('data-id');
-                var _act = $(this).attr('data-act');
-                $.ajax({
-                    url: '/setting/change-ord',
-                    type: 'post',
-                    //async : false,
-                    dataType: 'json',
-                    data: {
-                        id: _id,
-                        type: 'area',
-                        act: _act
-                    },
-                    success: function (data) {
-                        if(data.result){
-                            location.href='/setting/area';
-                        }else{
-                            alert(data.errormsg);
-                        }
-                    }
-                });
-            }
-        }
-    });
-
-
-    $('#editRelationModal').on('show.bs.modal',function(e){
-        $('#editRelationContent .errormsg-text').html('').hide();
-        var btn = $(e.relatedTarget);
-        var id = btn.data("id");
-        var flag = true;
-        $.ajax({
-            url: '/setting/get-info',
-            type: 'post',
-            async : false,
-            dataType: 'json',
-            data: {
-                id: id,
-                type: 'area'
-            },
-            success: function (data) {
-                if(data.result){
-                    $('#editRelationContent .name-text').html(data.info.name);
-                    $('#editRelationContent .id-value').val(data.info.id);
-                }else{
-                    $('#editRelationContent .errormsg-text').html(data.errormsg).show();
-                    flag = false;
-                }
-            }
-        });
-        if(flag){
+    $('.ord-up-btn').click(function(){
+        if(confirm('确定要把这个流程往上移么？')){
+            var task_id = $('#createContent .task-id').val();
+            var flow_id = $(this).attr('data-id');
             $.ajax({
-                url: '/setting/get-relation-items',
+                url: '/admin/task/flow-step-change',
                 type: 'post',
-                async : false,
+                //async : false,
                 dataType: 'json',
                 data: {
-                    type:'area'
+                    task_id: task_id,
+                    flow_id: flow_id,
+                    action: 'up'
                 },
                 success: function (data) {
                     if(data.result){
-                        var html = '';
-                        for(var i in data.items){
-                            html += '<label><input name="relationCheck" value="'+data.items[i].id+'" type="checkbox">'+data.items[i].name+'</label> ';
-                        }
-                        $('.relation-checkboxlist').html(html);
-                        //location.href='/dept-setting/area';
+                        location.href='/admin/task/flow?tid='+task_id;
                     }else{
-                        $('#editRelationContent .errormsg-text').html(data.errormsg).show();
-                        flag = false;
+                        alert(data.errormsg);
                     }
                 }
             });
         }
-
-
-
-        $.ajax({
-            url: '/setting/get-relation-check',
-            type: 'post',
-            async : false,
-            dataType: 'json',
-            data: {
-                id: id,
-                type : 'area'
-            },
-            success: function (data) {
-                if(data.result){
-                    $('#editRelationContent input[name="relationCheck"]').each(function(index, element) {
-                        if($.inArray(parseInt($(this).val()),data.check)>-1){
-                            $(this).prop('checked',true);
-                        }
-                    });
-                }else{
-                    $('#editRelationContent .errormsg-text').html(data.errormsg).show();
-
-                }
-            }
-        });
     });
 
 
-    $('#edit-relation-btn').click(function(){
-        var checks = [];
-        $('#editRelationContent input[name="relationCheck"]:checked').each(function(index, element) {
-            checks.push($(this).val());
-        });
-
-        $('#editRelationContent .errormsg-text').html('').hide();
-        $.ajax({
-            url: '/setting/edit-relation-check',
-            type: 'post',
-            //async : false,
-            dataType: 'json',
-            data: {
-                id: $('#editRelationContent .id-value').val(),
-                checks: checks,
-                type: 'area'
-            },
-            success: function (data) {
-                if(data.result){
-                    location.href='/setting/area';
-                }else{
-                    $('#editRelationContent .errormsg-text').html(data.errormsg).show();
-
+    $('.ord-down-btn').click(function(){
+        if(confirm('确定要把这个流程往下移么？')){
+            var task_id = $('#createContent .task-id').val();
+            var flow_id = $(this).attr('data-id');
+            $.ajax({
+                url: '/admin/task/flow-step-change',
+                type: 'post',
+                //async : false,
+                dataType: 'json',
+                data: {
+                    task_id: task_id,
+                    flow_id: flow_id,
+                    action: 'down'
+                },
+                success: function (data) {
+                    if(data.result){
+                        location.href='/admin/task/flow?tid='+task_id;
+                    }else{
+                        alert(data.errormsg);
+                    }
                 }
-            }
-        });
+            });
+        }
+    });
+
+    $('.del-btn').click(function(){
+        if(confirm('确定要删除这个选项么？')){
+            var task_id = $('#createContent .task-id').val();
+            var flow_id = $(this).attr('data-id');
+            $.ajax({
+                url: '/admin/task/flow-del',
+                type: 'post',
+                //async : false,
+                dataType: 'json',
+                data: {
+                    task_id: task_id,
+                    flow_id: flow_id
+                },
+                success: function (data) {
+                    if(data.result){
+                        location.href='/admin/task/flow?tid='+task_id;
+                    }else{
+                        alert(data.errormsg);
+                    }
+                }
+            });
+        }
     });
 });
