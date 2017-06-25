@@ -12,7 +12,8 @@ $(function () {
                 title: $('#createContent .create-title').val(),
                 type: $('#createContent .create-type-select').val(),
                 user_id: $('#createContent .create-user-select').val(),
-                enable_transfer: $('#createContent .create-enable-transfer-select').val()
+                enable_transfer: $('#createContent .create-enable-transfer-select').val(),
+                position: $('#createContent .create-position').val()
             },
             success: function (data) {
                 if(data.result){

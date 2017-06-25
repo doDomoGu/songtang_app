@@ -176,4 +176,41 @@ class Flow extends \yii\db\ActiveRecord
         return $return;
     }
 
+
+    //用来当删除一个选项时将他之后的所有选项往前移一位
+    public static function ordUpAll($task_id,$step){
+        $items = self::find()->where(['task_id'=>$task_id])->andWhere(['>=','step',$step])->all();
+        foreach($items as $item){
+            $item->step--
+
+            ;
+            $item->save();
+        }
+    }
+
+    //用来当插入一个选项时将他之后的所有选项往后移一位
+    public static function ordDownAll($task_id,$step){
+        $items = self::find()->where(['task_id'=>$task_id])->andWhere(['>=','step',$step])->all();
+        foreach($items as $item){
+            $item->step++;
+            $item->save();
+        }
+    }
+
+    public static function getPositionList($task_id){
+        $list = [
+            'first'=> '最前'
+        ];
+        $items = self::find()->where(['task_id'=>$task_id])->orderBy('step asc')->all();
+        if(!empty($items)){
+            foreach($items as $item){
+                $list[$item['step']] = '在"'.$item['title'].'"之后';
+            }
+        }
+
+
+        $list['last'] = '最后';
+        return $list;
+    }
+
 }

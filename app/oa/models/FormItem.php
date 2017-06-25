@@ -157,7 +157,7 @@ class FormItem extends \yii\db\ActiveRecord
 
     //用来当删除一个选项时将他之后的所有选项往前移一位
     public static function ordUpAll($form_id,$ord){
-        $items = FormItem::find()->where(['form_id'=>$form_id])->andWhere(['>=','ord',$ord])->all();
+        $items = self::find()->where(['form_id'=>$form_id])->andWhere(['>=','ord',$ord])->all();
         foreach($items as $item){
             $item->ord--
 
@@ -168,7 +168,7 @@ class FormItem extends \yii\db\ActiveRecord
 
     //用来当插入一个选项时将他之后的所有选项往后移一位
     public static function ordDownAll($form_id,$ord){
-        $items = FormItem::find()->where(['form_id'=>$form_id])->andWhere(['>=','ord',$ord])->all();
+        $items = self::find()->where(['form_id'=>$form_id])->andWhere(['>=','ord',$ord])->all();
         foreach($items as $item){
             $item->ord++;
             $item->save();
@@ -180,7 +180,7 @@ class FormItem extends \yii\db\ActiveRecord
         $list = [
             'first'=> '最前'
         ];
-        $items = FormItem::find()->where(['form_id'=>$form_id])->orderBy('ord asc')->all();
+        $items = self::find()->where(['form_id'=>$form_id])->orderBy('ord asc')->all();
         if(!empty($items)){
             foreach($items as $item){
                 $list[$item['ord']] = '在"'.$item['item_key'].'"之后';

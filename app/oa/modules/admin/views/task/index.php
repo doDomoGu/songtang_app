@@ -27,8 +27,6 @@
             <!--<th width="100">所属公司 </th>-->
             <!--<th>所属部门</th>-->
             <!--<th>状态</th>-->
-            <th>流程设置</th>
-            <th>发起人设置</th>
             <th>状态</th>
             <th>操作</th>
         </tr>
@@ -52,22 +50,8 @@
                 <!--<td><?/*=commonFunc::getByCache(Company::className(),'getName',[$l->company_id],'ucenter:company/name')*/?></td>-->
                 <!--<td><?/*=commonFunc::getByCache(Department::className(),'getFullRoute',[$l->department_id],'ucenter:department/full-route')*/?></td>-->
                 <!--<td><?/*=CommonFunc::getStatusCn($l->status)*/?></td>-->
-                <td>
-                    <?=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
-                    <?php /*if($l->set_complete==1):*/?><!--
-                        <?/*=Html::a('查看流程',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
-                    <?php /*else:*/?>
-                        <?/*=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])*/?>
-                    --><?php /*endif;*/?>
-                </td>
-                <td>
-                    <?=Html::a('设置发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
-                    <?php /*if($l->set_complete==1):*/?><!--
-                        <?/*=Html::a('查看发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
-                    <?php /*else:*/?>
-                        <?/*=Html::a('发起人设置',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])*/?>
-                    --><?php /*endif;*/?>
-                </td>
+
+
                 <td>
                     <?php if($l->set_complete==1):?>
                         <span style="color:forestgreen;">使用中</span>
@@ -81,11 +65,15 @@
                     <?php if($l->set_complete==1):?>
                         <?=Html::a('编辑',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
                         <?=Html::a('相关表单',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
+                        <?=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-success disabled'])?>
+                        <?=Html::a('设置发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-success disabled'])?>
                         <?=Html::a('删除',Url::to(''),['class'=>'btn btn-xs btn-danger disabled'])?>
                         <?=Html::button('暂停',['class'=>"complete2-btn btn btn-warning btn-xs",'data-id'=>$l->id])?>
                     <?php else:?>
                         <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary edit-btn','data-id'=>$l->id])?>
                         <?=Html::button('相关表单',['class'=>'btn btn-xs btn-primary edit-form-btn','data-id'=>$l->id])?>
+                        <?=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
+                        <?=Html::a('设置发起人',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-success'])?>
                         <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
                         <?=Html::button('启用',['class'=>"complete-btn btn btn-warning btn-xs",'data-id'=>$l->id])?>
                     <?php endif;?>

@@ -443,6 +443,7 @@ class TaskController extends BaseController
             $flow = Flow::find()->where(['task_id'=>$tid])->orderBy('step asc')->all();
             $params['list'] = $flow;
             $params['task'] = $task;
+            $params['positionList'] = Flow::getPositionList($tid);
             return $this->render('flow',$params);
         }else{
             Yii::$app->getSession()->setFlash('error','流程设置对应的任务id不存在!');
@@ -475,6 +476,7 @@ class TaskController extends BaseController
             $user_id = intval(Yii::$app->request->post('user_id',0));
             $tid = intval(Yii::$app->request->post('tid',0));
             $enable_transfer = intval(Yii::$app->request->post('enable_transfer',0));
+            $position = trim(Yii::$app->request->post('position',''));
             if($title==''){
                 $errormsg = '名称不能为空！';
             }else{
@@ -482,18 +484,34 @@ class TaskController extends BaseController
                 if(!$exist){
                     $errormsg = '对应的任务ID不存在！';
                 }else{
-                    /*$existUser = User::find()->where(['id'=>$user_id])->one();
-                    if(!$existUser){
-                        $errormsg = '所选职员ID不存在！';
-                    }else{*/
+
+                    if($position == 'first'){
+                        $step = 1;
+                        Flow::ordDownAll($tid,$step);
+                    }elseif($position == 'last'){
                         $last = Flow::find()->where(['task_id'=>$tid])->orderBy('step desc')->one();
+                        if($last){
+                            $step = intval($last->step) + 1;
+                        }else{
+                            $step = 1;
+                        }
+                    }else{
+                        $existItem2 = Flow::find()->where(['task_id'=>$tid,'step'=>$position])->one();
+                        if($existItem2){
+                            $step = $position + 1;
+                            Flow::ordDownAll($tid,$step);
+                        }else{
+                            $errormsg = '对应步骤的流程不存在！';
+                        }
+                    }
+                    if($errormsg==''){
                         $flow = new Flow();
                         $flow->title = $title;
                         $flow->task_id = $tid;
                         $flow->user_id = $user_id;
                         $flow->type = $type;
                         $flow->enable_transfer = $enable_transfer;
-                        $flow->step = isset($last)?$last->step+1:1;
+                        $flow->step = $step;
                         $flow->status = 1;
                         if($flow->save()){
                             Yii::$app->getSession()->setFlash('success','新增流程【'.$flow->title.'】成功！');
@@ -501,7 +519,7 @@ class TaskController extends BaseController
                         }else{
                             $errormsg = '保存失败，刷新页面重试!';
                         }
-                    /*}*/
+                    }
                 }
             }
         }else{

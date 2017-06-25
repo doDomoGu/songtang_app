@@ -21,7 +21,7 @@ use yii\helpers\Url;
             <th>操作类型</th>
             <th>指定操作人</th>
             <!--<th>转发</th>-->
-            <th>状态</th>
+            <!--<th>状态</th>-->
             <th>操作</th>
         </tr>
         <tbody>
@@ -32,7 +32,7 @@ use yii\helpers\Url;
                 <td><?=Flow::getTypeCn($l->type)?></td>
                 <td><?=$l->user_id>0?($l->user?$l->user->name:'N/A'): '<span style="color:#f44b00;">[由发起人选择]</span>' ?></td>
                 <!--<td><?/*=$l->enable_transfer==0?'禁止':'允许'*/?></td>-->
-                <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
+                <!--<td><?/*=\common\components\CommonFunc::getStatusCn($l->status)*/?></td>-->
                 <td>
                     <?=Html::a('编辑','script:void(0)',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs','data-title'=>$l->title,'data-type'=>$l->type,'data-user-id'=>$l->user_id,'data-id'=>$l->id])?>
                 </td>
@@ -56,6 +56,12 @@ Modal::begin([
     <div id="createContent">
         <form class="form-horizontal" role="form">
             <input class="task-id" type="hidden" value="<?=$task->id?>" />
+            <div class="form-group">
+                <label class="col-sm-4 control-label label1">插入位置</label>
+                <div class="col-sm-6">
+                    <?=Html::dropDownList('create-position','last',$positionList,['class'=>'form-control create-position','style'=>'width:100%;'])?>
+                </div>
+            </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">标题</label>
                 <div class="col-sm-6">
