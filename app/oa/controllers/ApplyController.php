@@ -120,21 +120,19 @@ class ApplyController extends BaseController
                 $form = Form::find()->where(['id'=>$new->form_id,'status'=>1])->one();
                 if($form){
                     $form_item = Yii::$app->request->post('form_item',false);
-                    if($form_item && is_array($form_item)){
-                        foreach($form_item as $item_k=>$item_v){
-                            $formItem = FormItem::find()->where(['form_id'=>$form->id,'item_key'=>$item_k])->one();
-                            if($formItem){
-                                $applyFormContent = new ApplyFormContent();
-                                $applyFormContent->apply_id = $new->id;
-                                $applyFormContent->ord = $formItem->ord;
-                                $applyFormContent->item_key = $item_k;
-                                $item_value = FormItem::jsonDecodeValue($formItem->item_value);
-                                $item_value['value'] = $item_v;
-                                $applyFormContent->item_value = json_encode($item_value);
 
-                                $applyFormContent->save();
-                            }
+                    $items = FormItem::find()->where(['form_id'=>$form->id])->orderBy('ord asc')->all();
+                    foreach($items as $item){
+                        $applyFormContent = new ApplyFormContent();
+                        $applyFormContent->apply_id = $new->id;
+                        $applyFormContent->ord = $item->ord;
+                        $applyFormContent->item_key = $item->item_key;
+                        $item_value = FormItem::jsonDecodeValue($item->item_value);
+                        if(isset($form_item[$item->item_key])){
+                            $item_value['value'] = $form_item[$item->item_key];
                         }
+                        $applyFormContent->item_value = json_encode($item_value);
+                        $applyFormContent->save();
                     }
                 }
 
@@ -533,9 +531,9 @@ class ApplyController extends BaseController
                 $username = $flow_user?$flow_user->name:'N/A';
 
                 $htmlOne = '<li class="flow done">';
-                $htmlOne.= '<span class="r-done approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->flow->title.'</span>';
+                $htmlOne.= '<span class="r-done approval-title">'.Html::img('/images/main/apply/modal-approval-'.$i.'.png').' '.$r->title.'</span>';
                 $htmlOne.= '<span class="r-done approval-sign">'.$username.'</span>';
-                $htmlOne.= '<span class="r-done approval-result">'.Flow::getResultCn($r->flow->type,$r->result).'</span>';
+                $htmlOne.= '<span class="r-done approval-result">'.Flow::getResultCn($r->type,$r->result).'</span>';
                 $htmlOne.= '<span class="r-done approval-message">'.($r->message?$r->message:'&nbsp').'</span>';
                 $htmlOne.= '<span class="r-done approval-time">'.substr($r->add_time,0,-3).'</span>';
                 $htmlOne.= '</li>';
@@ -706,14 +704,27 @@ class ApplyController extends BaseController
             $html .= '</li>';
 
             //2.操作记录
-            $records = ApplyRecord::find()->where(['apply_id'=>$id])->all();
-            if(!empty($records)){
-                foreach($records as $r){
+            $records = ApplyRecord::find()->where(['apply_id'=>$id])->orderBy('step asc')->all();
+            $recordsDone = [];
+            $recordsTodo = [];
+            foreach($records as $r){
+                if($r->step==0){
+                    continue;
+                }else if($r->step < $apply->flow_step){
+                    $recordsDone[] = $r;
+                }else{
+                    $recordsTodo[] = $r;
+                }
+            }
+
+            if(!empty($recordsDone)){
+                foreach($recordsDone as $r){
                     if($r->step==0) continue;
                     $htmlOne = '<li>';
-                    $htmlOne.= '<div>步骤'.$r->flow->step.'</div>';
-                    $htmlOne.= '<div>标题：<b>'.$r->flow->title.'</b>  操作类型：<b>'.$r->flow->typeName.'</b></div>';
-                    $username = Apply::getOperationUser($apply,$r->flow);
+                    $htmlOne.= '<div>步骤'.$r->step.'</div>';
+                    $htmlOne.= '<div>标题：<b>'.$r->title.'</b>  操作类型：<b>'.Flow::typeName($r->type).'</b></div>';
+                    $flow_user = CommonFunc::getByCache(UserIdentity::className(),'findIdentityOne',[$r->user_id],'ucenter:user/identity');
+                    $username = $flow_user?$flow_user->name:'N/A';
                     $htmlOne.= '<div>操作人：<b>'.$username.'</b> 时间: <b>'.$r->add_time.'</b> </div><div>结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
                     $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
                     $attchList = json_decode($r->attachment,true);
@@ -733,16 +744,17 @@ class ApplyController extends BaseController
 
             //3.剩余未完成操作
             $html2 = '';
-            $curStep = $apply->flow_step;
-            $flowNotDo = Flow::find()->where(['task_id'=>$apply->task_id])->andWhere(['>','step',$curStep])->all();
-            foreach($flowNotDo as $f){
-                $htmlOne = '<li class="not-do">';
-                $htmlOne.= '<div>步骤'.$f->step.' 还未操作</div>';
-                $htmlOne.= '<div>标题：<b>'.$f->title.'</b>  操作类型：<b>'.$f->typeName.'</b></div>';
-                $username = Apply::getOperationUser($apply,$f);
-                $htmlOne.= '<div>操作人：<b>'.$username.'</b> </div>';
-                $htmlOne.= '</li>';
-                $html2 .= $htmlOne;
+            if($apply->status==1 && !empty($recordsTodo)){
+                foreach($recordsTodo as $r) {
+                    $htmlOne = '<li class="not-do">';
+                    $htmlOne .= '<div>步骤' . $r->step . ' 还未操作</div>';
+                    $htmlOne .= '<div>标题：<b>' . $r->title . '</b>  操作类型：<b>' .Flow::typeName($r->type). '</b></div>';
+                    $flow_user = CommonFunc::getByCache(UserIdentity::className(),'findIdentityOne',[$r->user_id],'ucenter:user/identity');
+                    $username = $flow_user?$flow_user->name:'N/A';
+                    $htmlOne .= '<div>操作人：<b>' . $username . '</b> </div>';
+                    $htmlOne .= '</li>';
+                    $html2 .= $htmlOne;
+                }
             }
             $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
             $flag = false;
@@ -767,7 +779,7 @@ class ApplyController extends BaseController
                 $params['apply'] = $apply;
                 $params['flow'] = $flow;
                 $params['records'] = $records;
-                $params['flowNotDo'] = $flowNotDo;
+                //$params['flowNotDo'] = $flowNotDo;
                 $params['html'] = $html;
                 $params['html2'] = $html2;
                 if($this->isMobile){
@@ -811,8 +823,8 @@ class ApplyController extends BaseController
                 if($flag){*/
 
                 //获取apply_record表中当前的操作的步骤数
-                $curRecord = ApplyRecord::find()->where(['apply_id'=>$apply->id])->andWhere(['>','add_time',0])->orderBy('step asc')->one();
-                if($curRecord && $curRecord->step == $apply->flow_step){
+                $curRecord = ApplyRecord::find()->where(['apply_id'=>$apply->id,'step'=>$apply->flow_step])->one();
+                if($curRecord ){
 
                     $curRecord->result = $post['result'];
                     $curRecord->message = $post['message'];

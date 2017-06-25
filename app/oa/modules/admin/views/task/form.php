@@ -48,7 +48,7 @@ oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/form.js');
                 <td>
                     <?php if($l->set_complete==1):?>
                         <?=Html::a('编辑',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
-                        <?=Html::a('相关表单',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
+                        <?=Html::a('设置选项',Url::to(''),['class'=>'btn btn-xs btn-primary disabled'])?>
                         <?=Html::a('删除',Url::to(''),['class'=>'btn btn-xs btn-danger disabled'])?>
                         <?=Html::button('暂停',['class'=>"complete2-btn btn btn-warning btn-xs",'data-id'=>$l->id])?>
                     <?php else:?>

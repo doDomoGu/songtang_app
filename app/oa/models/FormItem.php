@@ -114,31 +114,34 @@ class FormItem extends \yii\db\ActiveRecord
                     $return['input_options'] = $arr['input_options'];
                     $return['input_options_html'] = implode("\n" ,$arr['input_options']);
                 }
+                if(isset($arr['value']))
+                    $return['value'] = $arr['value'];
+
                 if($getContent)
-                    $return['itemContent'] = self::generateItemContent($return['input_type'],$key,$return['input_options']);
+                    $return['itemContent'] = self::generateItemContent($return['input_type'],$key,$return['input_options'],$return['value']);
             }
         }
         return $return;
     }
 
-    public static function generateItemContent($type,$key,$options){
+    public static function generateItemContent($type,$key,$options,$value){
         $input_key = 'form_item['.$key.']';
         switch($type){
             case self::TYPE_TEXT:
             case self::TYPE_NUMBER:
-                $content = Html::textInput($input_key);
+                $content = Html::textInput($input_key,$value);
                 break;
             case self::TYPE_RADIO:
                 if(!is_array($options)){
                     $options = [];
                 }
-                $content = Html::radioList($input_key,null,$options);
+                $content = Html::radioList($input_key,$value,$options);
                 break;
             case self::TYPE_CHECKBOX:
                 if(!is_array($options)){
                     $options = [];
                 }
-                $content = Html::checkboxList($input_key,null,$options);
+                $content = Html::checkboxList($input_key,$value,$options);
                 break;
             default:
                 $content = '';
