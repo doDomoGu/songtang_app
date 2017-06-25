@@ -4,8 +4,8 @@ use yii\bootstrap\ActiveForm;
 
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/create.js');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/create.css');
-oa\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
-oa\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
+oa\assets\AppAsset::addJsFile($this,'https://yun-source.songtang.net/resource/js/qiniu/plupload.full.min.js');
+oa\assets\AppAsset::addJsFile($this,'https://yun-source.songtang.net/resource/js/qiniu/qiniu.min.js');
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/create-apply-attachment-upload.js');
 
 
@@ -40,11 +40,11 @@ $this->title = '发起申请';
 
 
 <?= $form->field($model, 'task_id',[
-    'template'=>"{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9\">{error}</div><div class=\"col-lg-offset-3 col-lg-9 task-preview \"></div>"
+    'template'=>"{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9\">{error}</div><div class=\"col-lg-12 task-preview \" style=\"width:920px;\"></div>"
 ])->dropDownList([],['prompt'=>'==请选择==','class'=>['form-control task-select']])->label(Html::img('/images/main/apply/create-head-2.png').'&nbsp;&nbsp;'.$model->attributeLabels()['task_id'],['style'=>'text-align:left;padding-left:60px;'])  ?>
 
 <?= $form->field($model, 'form_id',[
-    'template'=>"{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9\">{error}</div><div class=\"col-lg-offset-3 col-lg-9 form-content \"></div>"
+    'template'=>"{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-lg-9\">{error}</div><div class=\"col-lg-12 form-content \" style=\"width:920px;\"></div>"
 ])->dropDownList([],['prompt'=>'==请选择==','class'=>['form-control form-select']])->label(Html::img('/images/main/apply/create-head-2.png').'&nbsp;&nbsp;'.$model->attributeLabels()['form_id'],['style'=>'text-align:left;padding-left:60px;'])  ?>
 
 

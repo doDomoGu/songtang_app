@@ -1,5 +1,5 @@
 .task-preview {
-    padding:15px;
+    padding:5px 0;
 
 }
 
@@ -93,7 +93,7 @@
 
 
 .form-content {
-    padding:15px;
+    padding:5px 0;
 
 }
 
@@ -110,6 +110,10 @@
 
 }
 
+.form-content,
+.form-content .task-form-section {
+    overflow:hidden;
+}
 
 .form-content .form-item {
     margin-top:14px;
@@ -119,6 +123,7 @@
     overflow: hidden;
     font-size:14px;
     font-weight: bold;
+    float:left;
 }
 
 .form-content .form-item .item-label,

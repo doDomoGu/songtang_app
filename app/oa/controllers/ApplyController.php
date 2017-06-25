@@ -394,8 +394,8 @@ class ApplyController extends BaseController
                                 $valueArr = FormItem::jsonDecodeValue($item->item_value,$item->item_key,true);
                                 //$i++;
                                 $htmlOne = '<li class="form-item">';
-                                $htmlOne.= '<span class="item-label">'.$valueArr['label'].'</span>';
-                                $htmlOne.= '<span class="item-content">'.$valueArr['itemContent'].'</span>';
+                                $htmlOne.= '<span class="item-label" style="width:'.$valueArr['label_width'].'px">'.$valueArr['label'].'</span>';
+                                $htmlOne.= '<span class="item-content" style="width:'.$valueArr['input_width'].'px">'.$valueArr['itemContent'].'</span>';
                                 /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
                                 $htmlOne.= '<div>标题：'.$f->title.'</div>';
                                 $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
