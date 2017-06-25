@@ -253,6 +253,7 @@ class TaskController extends BaseController
                     }else{
                         $form = new Form();
                         $form->title = $title;
+                        $form->set_complete = 0;
                         $form->status = 1;
                         if($form->save()){
                             $categoryIds = explode(',',$category_id);
@@ -352,35 +353,39 @@ class TaskController extends BaseController
             $category_id = Yii::$app->request->post('category_id','');
             $form = Form::find()->where(['id'=>$id])->one();
             if($form){
-                if($title==''){
-                    $errormsg = '标题不能为空！';
-                }else {
-                    $exist = Form::find()->where(['title' => $title])->andWhere(['<>', 'id', $id])->one();
-                    if ($exist) {
-                        $errormsg = '标题已存在!';
-                    } else {
-                        if ($category_id == '') {
-                            $errormsg = '请勾选至少一个分类！';
+                if($form->set_complete == 1){
+                    $errormsg = '表单状态为使用中！';
+                }else{
+                    if($title==''){
+                        $errormsg = '标题不能为空！';
+                    }else {
+                        $exist = Form::find()->where(['title' => $title])->andWhere(['<>', 'id', $id])->one();
+                        if ($exist) {
+                            $errormsg = '标题已存在!';
                         } else {
-                            $form->title = $title;
-                            $form->save();
+                            if ($category_id == '') {
+                                $errormsg = '请勾选至少一个分类！';
+                            } else {
+                                $form->title = $title;
+                                $form->save();
 
-                            FormCategory::deleteAll(['form_id' => $id]);
-                            $categoryIds = explode(',', $category_id);
+                                FormCategory::deleteAll(['form_id' => $id]);
+                                $categoryIds = explode(',', $category_id);
 
-                            foreach ($categoryIds as $cate_id) {
-                                $taskCategory = TaskCategory::find()->where(['id' => $cate_id])->one();
-                                if ($taskCategory) {
-                                    $formCategory = new FormCategory();
-                                    $formCategory->form_id = $form->id;
-                                    $formCategory->category_id = $cate_id;
-                                    $formCategory->save();
+                                foreach ($categoryIds as $cate_id) {
+                                    $taskCategory = TaskCategory::find()->where(['id' => $cate_id])->one();
+                                    if ($taskCategory) {
+                                        $formCategory = new FormCategory();
+                                        $formCategory->form_id = $form->id;
+                                        $formCategory->category_id = $cate_id;
+                                        $formCategory->save();
+                                    }
                                 }
+
+
+                                Yii::$app->getSession()->setFlash('success', '编辑表单【' . $form->title . '】成功！');
+                                $result = true;
                             }
-
-
-                            Yii::$app->getSession()->setFlash('success', '编辑表单【' . $form->title . '】成功！');
-                            $result = true;
                         }
                     }
                 }
@@ -1101,6 +1106,33 @@ $params['applyUserList'] = $applyUserList;
                     }
                 }else{
                     $errormsg = '表单不是暂停状态不能修改选项！';
+                }
+            }else{
+                $errormsg = '对应的表单不存在！';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+    public function actionFormDel(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $form_id = Yii::$app->request->post('form_id','');
+            $form = Form::find()->where(['id'=>$form_id])->one();
+            if($form){
+                if($form->set_complete == 0){
+                    $form->delete();
+                    TaskForm::deleteAll(['form_id'=>$form->id]);
+                    FormCategory::deleteAll(['form_id'=>$form->id]);
+                    Yii::$app->getSession()->setFlash('success','删除表单【'.$form->title.'】成功！');
+                    $result = true;
+                }else{
+                    $errormsg = '表单不是暂停状态不能删除！';
                 }
             }else{
                 $errormsg = '对应的表单不存在！';

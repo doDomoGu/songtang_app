@@ -84,19 +84,19 @@ $(function () {
     });*/
 
     $('.del-btn').click(function(){
-        var task_id = $(this).attr('data-id');
-        if(confirm('确认要删除这个任务表（模板）吗？')){
+        var id = $(this).attr('data-id');
+        if(confirm('确认要删除这个表单吗？表单和模板的关系也会解除！！')){
             $.ajax({
-                url: '/admin/task/delete',
+                url: '/admin/task/form-del',
                 type: 'post',
                 //async : false,
                 dataType: 'json',
                 data: {
-                    id: task_id
+                    form_id: id
                 },
                 success: function (data) {
                     if(data.result){
-                        location.href='/admin/task';
+                        location.href='/admin/task/form';
                     }else{
                         alert('删除失败！');
                         //$('#createContent .errormsg-text').html(data.errormsg).show();
