@@ -23,8 +23,12 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">
-                发起人通过使用匹配职员的属性来选择  <?=Html::button('新增',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success btn-xs'])?>
-
+                发起人通过使用匹配职员的属性来选择
+                <?php if($task->set_complete==0):?>
+                    <?=Html::button('新增',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success btn-xs'])?>
+                <?php else:?>
+                    <?=Html::button('新增',['class'=>'btn btn-success btn-xs disabled'])?>
+                <?php endif;?>
                 <?/*=Html::button('增加',['class'=>'btn btn-xs btn-success add-btn','data-id'=>$task->id])*/?>
             </h3>
         </div>
@@ -47,8 +51,13 @@
                         <td><?=Department::getFullRoute($l->department_id)?></td>
                         <td><?=Position::getName($l->position_id)?></td>
                         <td>
+                    <?php if($task->set_complete==0):?>
                             <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary edit-btn','data-id'=>$l->id,'data-task_id'=>$task->id,'district_id'=>$l->district_id,'industry_id'=>$l->industry_id,'company_id'=>$l->company_id,'department_id'=>$l->department_id,'position_id'=>$l->position_id])?>
                             <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id,'data-task_id'=>$task->id])?>
+                        <?php else:?>
+                        <?=Html::button('编辑',['class'=>'btn btn-xs btn-primary disabled'])?>
+                        <?=Html::button('删除',['class'=>'btn btn-xs btn-danger disabled'])?>
+                        <?php endif;?>
                         </td>
                     </tr>
                 <?php endforeach;?>

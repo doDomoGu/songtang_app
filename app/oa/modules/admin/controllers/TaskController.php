@@ -62,7 +62,7 @@ class TaskController extends BaseController
         $query = Task::find();
 
         $count = $query->count();
-        $pageSize = 10;
+        $pageSize = 20;
         $pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
         $list = $query
             ->offset($pages->offset)

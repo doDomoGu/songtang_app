@@ -8,10 +8,13 @@ use yii\helpers\Url;
 ?>
 <section>
     <div style="margin-bottom: 10px;">
-        <?php /*if($task->set_complete==0):*/?>
-        <?=Html::a('新增流程','javascript:void(0)',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
-        <?=Html::a('清空流程','javascript:void(0)',['class'=>'btn btn-danger delete-all'])?>
-        <?php /*endif;*/?>
+        <?php if($task->set_complete==0):?>
+            <?=Html::button('新增流程',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+            <?=Html::button('清空流程',['class'=>'btn btn-danger delete-all'])?>
+        <?php else:?>
+            <?=Html::button('新增流程',['class'=>'btn btn-success disabled'])?>
+            <?=Html::button('清空流程',['class'=>'btn btn-danger disabled'])?>
+        <?php endif;?>
         <?=Html::a('返回','/admin/task',['class'=>'btn btn-default'])?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
@@ -34,10 +37,14 @@ use yii\helpers\Url;
                 <!--<td><?/*=$l->enable_transfer==0?'禁止':'允许'*/?></td>-->
                 <!--<td><?/*=\common\components\CommonFunc::getStatusCn($l->status)*/?></td>-->
                 <td>
+            <?php if($task->set_complete==0):?>
                     <?=Html::button('编辑',['data-toggle'=>"modal",'data-target'=>"#editModal",'class'=>'btn btn-primary btn-xs','data-title'=>$l->title,'data-type'=>$l->type,'data-user-id'=>$l->user_id,'data-id'=>$l->id])?>
                     <?=Html::button('删除',['class'=>'btn btn-danger btn-xs del-btn','data-id'=>$l->id])?>
                     <?=Html::button('上移',['class'=>'btn btn-success btn-xs ord-up-btn'.($i==1?' disabled':''),'data-id'=>$l->id])?>
                     <?=Html::button('下移',['class'=>'btn btn-success btn-xs ord-down-btn'.($i==$count?' disabled':''),'data-id'=>$l->id])?>
+                <?php else:?>
+                    ---
+                <?php endif;?>
                 </td>
             </tr>
 
