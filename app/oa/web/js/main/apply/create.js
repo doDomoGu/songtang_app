@@ -67,5 +67,29 @@ $(function(){
         })
     }
 
+    $('.form-select').on('change',function(){
+        var form_id = $(this).val();
+        $('.form-content').html('').hide();
+        if(form_id>0){
+            $.ajax({
+                url: '/apply/get-form-preview',
+                type: 'post',
+                //async : false,
+                dataType: 'json',
+                data: {
+                    form_id:form_id
+                },
+                success: function (data) {
+                    if(data.result){
+                        $('.form-content').html(data.html).show();
+                    }else{
+                        //$('.task-preview').html(data.errormsg).show();
+
+                    }
+                }
+            });
+        }
+    });
+
     $('#applycreateform-task_category').change();
 });

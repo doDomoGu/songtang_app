@@ -382,30 +382,8 @@ class ApplyController extends BaseController
                         $formSelectHtml .='<option value="'.$k.'">'.$v.'</option>';
                     }
                     //获取表单内容
-                    $formItems = FormItem::find()->where(['form_id'=>$formSelect,'status'=>1])->orderBy('ord asc')->all();
-                    if($formItems){
-                        $formContentHtml .='<section class="task-form-section">'.
-                            '<h1>申请表-表单：</h1>';
-                        //$i = 0;
-                        foreach($formItems as $item){
+                    $formContentHtml = $this->getHtmlByForm($formSelect);
 
-                                $valueArr = FormItem::jsonDecodeValue($item->item_value,$item->item_key,true);
-                                //$i++;
-                                $htmlOne = '<li class="form-item">';
-                                $htmlOne.= '<span class="item-label" style="width:'.$valueArr['label_width'].'px">'.$valueArr['label'].'</span>';
-                                $htmlOne.= '<span class="item-content" style="width:'.$valueArr['input_width'].'px">'.$valueArr['itemContent'].'</span>';
-                                /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
-                                $htmlOne.= '<div>标题：'.$f->title.'</div>';
-                                $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
-                                $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
-
-                                $htmlOne.= '<div>操作人：'.$operation_user.'</div>';*/
-                                $htmlOne.= '</li>';
-                                $formContentHtml .= $htmlOne;
-
-                        }
-                        $formContentHtml .= '</section>';
-                    }
                 }else{
                     $formSelectHtml .='<option value="">==请选择==</option>';
                 }
@@ -421,6 +399,53 @@ class ApplyController extends BaseController
         $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html,'formSelectHtml'=>$formSelectHtml,'formContentHtml'=>$formContentHtml];
     }
 
+
+    public function actionGetFormPreview(){
+        $errormsg = '';
+        $result = false;
+        $html = '';
+        if(Yii::$app->request->isAjax){
+            $form_id = trim(Yii::$app->request->post('form_id',false));
+            //获取表单内容
+            $html = $this->getHtmlByForm($form_id);
+            $result = true;
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg,'html'=>$html];
+    }
+
+    public function getHtmlByForm($form_id){
+        $formContentHtml = '';
+        $formItems = FormItem::find()->where(['form_id'=>$form_id,'status'=>1])->orderBy('ord asc')->all();
+        if($formItems) {
+            $formContentHtml .= '<section class="task-form-section">' .
+                '<h1>申请表-表单：</h1>';
+            //$i = 0;
+            foreach ($formItems as $item) {
+
+                $valueArr = FormItem::jsonDecodeValue($item->item_value, $item->item_key, true);
+                //$i++;
+                $htmlOne = '<li class="form-item">';
+                $htmlOne .= '<span class="item-label" style="width:' . $valueArr['label_width'] . 'px">' . $valueArr['label'] . '</span>';
+                $htmlOne .= '<span class="item-content" style="width:' . $valueArr['input_width'] . 'px">' . $valueArr['itemContent'] . '</span>';
+                /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
+                $htmlOne.= '<div>标题：'.$f->title.'</div>';
+                $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
+                $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
+
+                $htmlOne.= '<div>操作人：'.$operation_user.'</div>';*/
+                $htmlOne .= '</li>';
+                $formContentHtml .= $htmlOne;
+
+            }
+            $formContentHtml .= '</section>';
+        }
+        return $formContentHtml;
+
+    }
     public function actionPrint(){
         $this->layout = 'main_blank';
         $html  = '';
