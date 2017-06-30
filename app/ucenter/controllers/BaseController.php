@@ -1,6 +1,7 @@
 <?php
 namespace ucenter\controllers;
 
+use common\components\CommonFunc;
 use Yii;
 use yii\web\Controller;
 
@@ -16,6 +17,7 @@ class BaseController extends Controller
         'site/login',
         //'site/captcha',
         'site/error',
+        //'site/add-history'
 
 //        'site/send-test',
 //        'site/test',
@@ -36,12 +38,11 @@ $s=5/0;
                 $code = Yii::$app->response->statusCode;
                 error_log('1 c: '.$this->id.' a: '.$this->action->id.' status:'.$code."\n",3,'/var/www/error.log');
             }*/
-
-
+CommonFunc::addHistory();
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
             $this->checkLogin();  //检测用户是否登录和状态是否正常
 
-            $this->checkAppAuth(); //检测用户是否有当前APP的权限
+           // $this->checkAppAuth(); //检测用户是否有当前APP的权限
 
  //var_dump($s);exit;
             //Yii::$app->setLayoutPath(Yii::$app->viewPath);  //修改读取布局文件的默认文件夹  原本为 views/layouts => views
@@ -74,7 +75,10 @@ $s=5/0;
                 $this->toLogin();
                 return false;
             }else{
-                return true;
+                $this->user = Yii::$app->user->identity;
+                return $this->checkAuth();
+
+                //return true;
             }
         }else{
             return true;
@@ -88,16 +92,17 @@ $s=5/0;
         $session['referrer_url_user'] = Yii::$app->request->getAbsoluteUrl();
 
         $this->redirect(Yii::$app->params['loginUrl']);
-        //Yii::$app->end();
+        Yii::$app->end();
     }
 
     //检查是否有使用这个app权限
     private function checkAppAuth(){
         if(!Yii::$app->user->identity->isUcenterAdmin && !Yii::$app->user->identity->isSuperAdmin){
-            if($this->route != 'site/no-auth'){
-                $this->redirect('/site/no-auth');
+            if($this->getRoute()=='site/no-auth'){
+                return true;
+            }else{
+                return $this->redirect('/site/no-auth');
             }
-            return false;
         }else{
             return true;
         }

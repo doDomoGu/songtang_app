@@ -25,6 +25,8 @@ class BaseController extends Controller
         if (!parent::beforeAction($action)) {
             return false;
         }else{
+            CommonFunc::addHistory();
+
             /*error_log('['.date("Y-m-d H:i:s").'] url :'.Yii::$app->request->getAbsoluteUrl()."\n",3,'/var/www/error.log');
 
 $s=5/0;

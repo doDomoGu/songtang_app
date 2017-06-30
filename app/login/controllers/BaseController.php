@@ -1,6 +1,7 @@
 <?php
 namespace login\controllers;
 
+use common\components\CommonFunc;
 use Yii;
 use yii\web\Controller;
 
@@ -13,6 +14,7 @@ class BaseController extends Controller
         if (!parent::beforeAction($action)) {
             return false;
         }else{
+            CommonFunc::addHistory();
             $this->checkLogin();  //检测用户登录 和 状态是否正常
             return true;
         }

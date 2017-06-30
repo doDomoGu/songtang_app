@@ -1,6 +1,7 @@
 <?php
 namespace yun\controllers;
 
+use common\components\CommonFunc;
 use Yii;
 use yii\web\Controller;
 
@@ -29,6 +30,7 @@ class BaseController extends Controller
             'site/no-auth',
             'site/footer'
         ];
+        CommonFunc::addHistory();
         if(!$this->checkLogin()){
             return false;
         }

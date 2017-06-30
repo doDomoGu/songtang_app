@@ -1,6 +1,7 @@
 <?php
 namespace common\components;
 
+use ucenter\models\UserHistory;
 use yii\base\Component;
 use yii;
 use yii\helpers\ArrayHelper;
@@ -249,4 +250,19 @@ class CommonFunc extends Component {
         }
     }
 
+    public static function addHistory(){
+        $new = new UserHistory();
+        $new->user_id = Yii::$app->user->isGuest?0:Yii::$app->user->id;
+        $new->url = Yii::$app->request->getAbsoluteUrl();
+        $new->controller = Yii::$app->controller->id;
+        $new->action = Yii::$app->controller->action->id;
+        $new->request = Yii::$app->request->queryString;
+        $new->request_method = Yii::$app->request->method;
+        $new->response = Yii::$app->response->statusCode;
+        $new->ip = Yii::$app->request->getUserIP();
+        $new->user_agent = Yii::$app->request->getUserAgent();
+        $new->referer = Yii::$app->request->getReferrer();
+        $new->add_time = date('Y-m-d H:i:s');
+        $new->save();
+    }
 }
