@@ -96,7 +96,7 @@ CommonFunc::addHistory();
     }
 
     //检查是否有使用这个app权限
-    private function checkAppAuth(){
+    private function checkAuth(){
         if(!Yii::$app->user->identity->isUcenterAdmin && !Yii::$app->user->identity->isSuperAdmin){
             if($this->getRoute()=='site/no-auth'){
                 return true;
