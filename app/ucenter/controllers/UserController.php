@@ -607,4 +607,9 @@ $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->po
             ],
         ]);
     }
+
+    //操作记录
+    public function actionHistroy(){
+
+    }
 }
