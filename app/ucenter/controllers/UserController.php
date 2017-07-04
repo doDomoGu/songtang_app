@@ -10,6 +10,7 @@ use ucenter\models\Position;
 use ucenter\models\Structure;
 use ucenter\models\User;
 use ucenter\models\UserForm;
+use ucenter\models\UserHistory;
 use Yii;
 use yii\web\Response;
 use common\components\CommonFunc;
@@ -609,7 +610,32 @@ $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->po
     }
 
     //操作记录
-    public function actionHistroy(){
+    public function actionHistory(){
+        $start_time = date('Y-m-d',strtotime('-1 month'));
 
+        $end_time = date('Y-m-d');
+        var_dump($start_time);
+        var_dump($end_time);
+        exit;
+
+
+        //获取有过访问记录的用户ID
+        $userResult = UserHistory::find()->where(['>','user_id',0])->groupBy('user_id')->all();
+        $userIds = [];
+        foreach($userResult as $u){
+            $userIds[] = $u->user_id;
+        }
+
+
+
+        var_dump($userIds);exit;
+
+
+        $list = UserHistory::find()->all();
+
+
+        $params['list'] = $list;
+
+        return $this->render('history',$params);
     }
 }
