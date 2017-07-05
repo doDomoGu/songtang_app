@@ -614,9 +614,7 @@ $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->po
         $start_time = date('Y-m-d',strtotime('-1 month'));
 
         $end_time = date('Y-m-d');
-        var_dump($start_time);
-        var_dump($end_time);
-        exit;
+
 
 
         //获取有过访问记录的用户ID
@@ -628,10 +626,7 @@ $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->po
 
 
 
-        var_dump($userIds);exit;
-
-
-        $list = UserHistory::find()->all();
+        $list = User::find()->where(['id'=>$userIds])->all();
 
 
         $params['list'] = $list;
