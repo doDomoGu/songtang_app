@@ -626,10 +626,93 @@ $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->po
 
 
 
-        $list = User::find()->where(['id'=>$userIds])->all();
+        $list = User::find()->where(['id'=>$userIds])->orderBy('id asc')->all();
+
+
+
+        $patterns = [
+            'login'=>[
+                'n'=>'登录系统',
+                'u'=>Yii::$app->params['loginUrl'],
+                'a'=>[
+                    'site/index'=>'登录',
+                    'site/logout'=>'退出'
+                ]
+            ],
+            'ucenter'=>[
+                'n'=>'用户中心',
+                'u'=>Yii::$app->params['ucenterAppUrl'],
+                'a'=>[
+                    'site/index'=>'首页',
+                    'user/index'=>'用户列表'
+                ]
+            ],
+            'yun'=>[
+                'n'=>'颂唐云',
+                'u'=>Yii::$app->params['yunAppUrl'],
+                'a'=>[
+                    'site/index'=>'首页',
+                    'dir/index'=>'目录'
+                ]
+            ],
+            'oa'=>[
+                'n'=>'颂唐OA',
+                'u'=>Yii::$app->params['oaAppUrl'],
+                'a'=>[
+                    'site/index'=>'首页',
+                    'apply/my'=>'我的申请',
+                    'apply/create'=>'发起申请'
+                ]
+            ]
+        ];
+
+        /*$actionArr = [
+            'login'=>[
+                'site/index'=>'登录',
+                'site/logout'=>'退出'
+            ],
+            'ucenter'=>[
+                'site/index'=>'首页',
+                'user/index'=>'用户列表'
+            ],
+            'yun'=>[
+                'site/index'=>'首页',
+                'dir/index'=>'目录'
+            ],
+            'oa'=>[
+                'site/index'=>'首页',
+                'apply/my'=>'我的申请',
+                'apply/create'=>'发起申请'
+            ]
+        ];*/
+
+        $history_list = [];
+
+        foreach($list as $l){
+            $temp = [];
+            $userHistory = UserHistory::find()->where(['user_id',$l->id])->all();
+            foreach($userHistory as $uh){
+                $temp2 = [];
+                $flag = false; //是否匹配标志
+                foreach($patterns as $k=>$p){
+                    if(strpos($uh->url,$p['u'])===0){
+                        $temp2[$k][] = $uh;
+                        $flag = true;
+                    }
+                }
+                if($flag == false){
+                    $temp2['other'][] = $uh;
+                }
+            }
+            $history_list[$l->id] = $temp;
+        }
+
+
+
 
 
         $params['list'] = $list;
+        $params['history_list'] = $history_list;
 
         return $this->render('history',$params);
     }
