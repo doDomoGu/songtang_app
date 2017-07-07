@@ -581,19 +581,48 @@ class DirController extends BaseController
                         }
                     }else{
 
+                        $file_path = urlencode($file_path);
+                        $file_path = str_replace('%3A',':',$file_path);
+                        $file_path = str_replace('%2F','/',$file_path);
+                        $file_path = str_replace('+','%20',$file_path);
+                        $sssssssss2 = 'https://yun-source.songtang.net/file:%E5%B7%A5%E5%85%B7%E5%BA%94%E7%94%A8%E4%B8%AD%E5%BF%83%3E%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7%3E%E9%94%80%E5%94%AE%E4%B8%9A%E5%8A%A1%E9%83%A8%E5%B7%A5%E5%85%B7%E7%AE%B1%3E+%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7%7E%E9%94%80%E5%94%AE%E4%B8%BB%E7%AE%A1%E5%9F%B9%E8%AE%AD%E6%89%8B%E5%86%8C%EF%BC%882017%E7%89%88%EF%BC%89%3Eo_1bgupuhpi1q531p32t4a3h1e1u9';
+
+                        $file_path2 = 'https://yun-source.songtang.net/file:%E5%B7%A5%E5%85%B7%E5%BA%94%E7%94%A8%E4%B8%AD%E5%BF%83%3E%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7%3E%E9%94%80%E5%94%AE%E4%B8%9A%E5%8A%A1%E9%83%A8%E5%B7%A5%E5%85%B7%E7%AE%B1%3E%20%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7~%E9%94%80%E5%94%AE%E4%B8%BB%E7%AE%A1%E5%9F%B9%E8%AE%AD%E6%89%8B%E5%86%8C%EF%BC%882017%E7%89%88%EF%BC%89%3Eo_1bgupuhpi1q531p32t4a3h1e1u9';
+                        var_dump($file_path);
+                        var_dump($file_path2);
+                        var_dump($file_path==$file_path2);exit;
+
+                        /*'file:%E5%B7%A5%E5%85%B7%E5%BA%94%E7%94%A8%E4%B8%AD%E5%BF%83%3E%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7%3E%E9%94%80%E5%94%AE%E4%B8%9A%E5%8A%A1%E9%83%A8%E5%B7%A5%E5%85%B7%E7%AE%B1%3E+%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7%7E%E9%94%80%E5%94%AE%E4%B8%BB%E7%AE%A1%E5%9F%B9%E8%AE%AD%E6%89%8B%E5%86%8C%EF%BC%882017%E7%89%88%EF%BC%89%3Eo_1bgupuhpi1q531p32t4a3h1e1u9';
+                        'file:%E5%B7%A5%E5%85%B7%E5%BA%94%E7%94%A8%E4%B8%AD%E5%BF%83%3E%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7%3E%E9%94%80%E5%94%AE%E4%B8%9A%E5%8A%A1%E9%83%A8%E5%B7%A5%E5%85%B7%E7%AE%B1%3E%20%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7~%E9%94%80%E5%94%AE%E4%B8%BB%E7%AE%A1%E5%9F%B9%E8%AE%AD%E6%89%8B%E5%86%8C%EF%BC%882017%E7%89%88%EF%BC%89%3Eo_1bgupuhpi1q531p32t4a3h1e1u9';
+
+$file_path2 = 'https://yun-source.songtang.net/file:%E5%B7%A5%E5%85%B7%E5%BA%94%E7%94%A8%E4%B8%AD%E5%BF%83%3E%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7%3E%E9%94%80%E5%94%AE%E4%B8%9A%E5%8A%A1%E9%83%A8%E5%B7%A5%E5%85%B7%E7%AE%B1%3E%20%E9%A2%82%E5%94%90%E5%9C%B0%E4%BA%A7~%E9%94%80%E5%94%AE%E4%B8%BB%E7%AE%A1%E5%9F%B9%E8%AE%AD%E6%89%8B%E5%86%8C%EF%BC%882017%E7%89%88%EF%BC%89%3Eo_1bgupuhpi1q531p32t4a3h1e1u9';
+var_dump($file_path);
+var_dump($file_path==$file_path2);exit;
+                        $filesize = strlen(file_get_contents($file_path));
+                        var_dump($filesize);exit;
+                        ob_clean();
+                        var_dump($file_path);exit;
+                        $s = @readfile($file_path);
+                        var_dump($s);*/
+
+                        /*header("Content-type: text/html; charset=utf-8");
+                        $file_path = utf8_encode($file_path);
+                        $filesize = strlen(file_get_contents($file_path));
+                        var_dump($filesize);exit;*/
+//var_dump(utf8_encode($file_path));exit;
                         FileFrontFunc::insertDownloadRecord($file,Yii::$app->user->id);
 
                         //Header("HTTP/1.1 303 See Other");
                         /*Header("Location: $file_path");
             var_dump($file_path);exit;
                         Yii::$app->end();*/
-
                         header("Content-type: application/octet-stream;");
                         header("Accept-Ranges: bytes");
                         //Header("Accept-Length: ".filesize($file_path));
                         $filename = $file->filename;
                         $ua = $_SERVER["HTTP_USER_AGENT"];
                         $encoded_filename = urlencode($filename);
+
                         $encoded_filename = str_replace("+", "%20", $encoded_filename);
                         //header('Content-Type: application/octet-stream');
                         if(preg_match("/MSIE/", $ua)){
@@ -607,10 +636,11 @@ class DirController extends BaseController
                         //Header("Content-Disposition: attachment; filename=" . $file->filename);
                         //echo $result;
                         //echo file_get_contents($file_path);
+                        //$file_path = utf8_encode($file_path);
+
                         $filesize = strlen(file_get_contents($file_path));
                         header("Content-Length: ". $filesize);
                         @readfile($file_path);
-
                     }
 
                 }else{
