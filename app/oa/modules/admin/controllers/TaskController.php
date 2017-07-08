@@ -29,7 +29,7 @@ class TaskController extends BaseController
 {
     public function actionCategory()
     {
-        $list = TaskCategory::find()->all();
+        $list = TaskCategory::find()->orderBy(['type'=>SORT_ASC,'status'=>SORT_DESC,'ord'=>SORT_ASC])->all();
 
 
         $params['list'] = $list;

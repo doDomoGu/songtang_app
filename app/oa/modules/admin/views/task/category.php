@@ -15,8 +15,9 @@
             <th>#</th>
             <th>名称</th>
             <th>分类</th>
+            <th>排序</th>
             <th>状态</th>
-            <th>操作</th>
+            <!--<th>操作</th>-->
         </tr>
         <tbody>
         <?php foreach($list as $l):?>
@@ -24,11 +25,12 @@
                 <td><?=$l->id?></td>
                 <td><?=$l->name?></td>
                 <td><?=$l->typeName?></td>
+                <td><?=$l->ord?></td>
                 <td><?=\common\components\CommonFunc::getStatusCn($l->status)?></td>
-                <td>
+                <!--<td>-->
                     <?/*=Html::a('流程设置',Url::to(['task/flow','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?><!--
                     --><?/*=Html::a('发起人设置',Url::to(['task/apply-user','tid'=>$l->id]),['class'=>'btn btn-xs btn-primary'])*/?>
-                </td>
+                <!--</td>-->
             </tr>
 
         <?php endforeach;?>
