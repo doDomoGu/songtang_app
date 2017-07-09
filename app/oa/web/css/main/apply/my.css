@@ -320,3 +320,17 @@
     float:left;
 }
 
+#apply-form-content .form-content-input .table-item-label,
+#apply-form-content .form-content-input .table-item-input {
+    float:left;
+    display:block;
+    font-size:14px;
+}
+
+#apply-form-content .form-content-input .table-item-input {
+    margin-top:10px;
+}
+#apply-form-content .form-content-input .table-item-input input[type="text"] {
+    width:90%;
+}
+

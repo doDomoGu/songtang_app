@@ -131,13 +131,25 @@
 {
     display:block;
     float:left;
-    width:160px;
+    width:120px;
 }
 
 .form-content .form-item .item-content {
-    width:460px;
+    width:324px;
+}
+.form-content .form-item .item-content input[type='text'] {
+    width:90%;
 }
 
+.form-content .form-item .item-content .table-item-label,
+.form-content .form-item .item-content .table-item-input{
+    display:block;
+    float:left;
+}
+
+.form-content .form-item .item-content .table-item-input {
+    margin-top:10px;
+}
 
 .form-content li {
     list-style: none;

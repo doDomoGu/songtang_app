@@ -120,7 +120,7 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">选项参数</label>
                 <div class="col-sm-6">
-                    <textarea class="form-control create-input_options" ></textarea>
+                    <textarea class="form-control create-input_options" rows="10"></textarea>
                     <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>
@@ -181,7 +181,7 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">选项参数</label>
                 <div class="col-sm-6">
-                    <textarea class="form-control create-input_options" ></textarea>
+                    <textarea class="form-control create-input_options" rows="10"></textarea>
                     <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
                 </div>
             </div>

@@ -15,6 +15,7 @@ class FormItem extends \yii\db\ActiveRecord
     const TYPE_RADIO = 3;
     const TYPE_CHECKBOX = 4;
     const TYPE_DATE = 5;
+    const TYPE_TABLE = 6;
 
     const TYPE_NULL_CN = 'N/A';
     const TYPE_TEXT_CN = '文本';
@@ -22,6 +23,7 @@ class FormItem extends \yii\db\ActiveRecord
     const TYPE_RADIO_CN = '单选';
     const TYPE_CHECKBOX_CN = '多选';
     const TYPE_DATE_CN = '日期';
+    const TYPE_TABLE_CN = '表格';
 
 
     public static function getDb(){
@@ -68,7 +70,8 @@ class FormItem extends \yii\db\ActiveRecord
             self::TYPE_NUMBER => self::TYPE_NUMBER_CN,
             self::TYPE_RADIO => self::TYPE_RADIO_CN,
             self::TYPE_CHECKBOX => self::TYPE_CHECKBOX_CN,
-            self::TYPE_DATE => self::TYPE_DATE_CN
+            self::TYPE_DATE => self::TYPE_DATE_CN,
+            self::TYPE_TABLE => self::TYPE_TABLE_CN
             /*'datetime' =>'日期和时间',
             'time' =>'时间',
             'range' =>'时间范围',*/
@@ -79,10 +82,10 @@ class FormItem extends \yii\db\ActiveRecord
     public static function jsonDecodeValue($value,$key=false,$getContent=false){
         $return = [
             'label'=> '',
-            'label_width'=> 180,
+            'label_width'=> 120,
             'input_type'=> 0,
             'input_type_cn'=> '',
-            'input_width'=> 280,
+            'input_width'=> 768,
             'input_options'=> '',
             'input_options_html'=> '',
             'value'=>'',
@@ -142,6 +145,38 @@ class FormItem extends \yii\db\ActiveRecord
                     $options = [];
                 }
                 $content = Html::checkboxList($input_key,$value,$options);
+                break;
+            case self::TYPE_TABLE:
+                $content = '';
+                if(is_array($options)){
+                    $options2 = [];
+                    $line = 0;
+                    foreach($options as $o){
+                        $temp = explode(':',$o);
+                        if(count($temp)==2 && $temp[0]=='line'){
+                            $line = $temp[1];
+                        }else if(count($temp)==3){
+                            $options2[$temp[0]] = ['title'=>$temp[1],'width'=>$temp[2]];
+                        }
+                    }
+
+                    //表格标题行
+                    foreach($options2 as $k=>$v){
+                        $content .= '<span class="table-item-label" style="width:'.$v['width'].'px;">'.$v['title'].'</span>';
+                        //$content = Html::checkboxList($input_key,$value,$options);
+                    }
+
+                    for($i=0;$i<$line;$i++){
+                        foreach($options2 as $k=>$v){
+                            $content .= '<span class="table-item-input" style="width:'.$v['width'].'px;">'.Html::textInput($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'').'</span>';
+                            //$content = Html::checkboxList($input_key,$value,$options);
+                        }
+                    }
+
+
+
+
+                }
                 break;
             default:
                 $content = '';

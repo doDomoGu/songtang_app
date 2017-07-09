@@ -434,7 +434,9 @@ class ApplyController extends BaseController
                 $valueArr = FormItem::jsonDecodeValue($item->item_value, $item->item_key, true);
                 //$i++;
                 $htmlOne = '<li class="form-item">';
-                $htmlOne .= '<span class="item-label" style="width:' . $valueArr['label_width'] . 'px">' . $valueArr['label'] . '</span>';
+                if($valueArr['label_width']>0) {
+                    $htmlOne .= '<span class="item-label" style="width:' . $valueArr['label_width'] . 'px">' . $valueArr['label'] . '</span>';
+                }
                 $htmlOne .= '<span class="item-content" style="width:' . $valueArr['input_width'] . 'px">' . $valueArr['itemContent'] . '</span>';
                 /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
                 $htmlOne.= '<div>标题：'.$f->title.'</div>';
@@ -509,9 +511,13 @@ class ApplyController extends BaseController
             $html.= '<section id="apply-form-content">';
             foreach($applyFromContent as $afc){
                 $valueArr = FormItem::jsonDecodeValue($afc->item_value,$afc->item_key,true);
+                $html.= '<span class="form-content-item">';
+                if($valueArr['label_width']>0) {
+                    $html .= '<span class="form-content-label" style="width:' . $valueArr['label_width'] . 'px;">' . $valueArr['label'] . '</span>';
+                }
+                $html .= '<span class="form-content-input" style="width:'.$valueArr['input_width'].'px;">'.$valueArr['itemContent'].'</span>';
 
-                $html .= '<span class="form-content-item"><span class="form-content-label" style="width:'.$valueArr['label_width'].'px;">'.$valueArr['label'].'</span>';
-                $html .= '<span class="form-content-input" style="width:'.$valueArr['input_width'].'px;">'.$valueArr['itemContent'].'</span></span>';
+                $html .='</span>';
             }
             $html.= '</section>';
         }
