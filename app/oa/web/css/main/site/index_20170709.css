@@ -1,0 +1,155 @@
+#task-index {
+    font-family: '方正兰亭纤黑';
+
+}
+
+#task-index a {
+    text-decoration: none;
+    color:#333;
+}
+
+#task-index a:hover {
+    color:#c7000a;
+}
+
+#task-index > .task-content > .task-list {
+    width:175px;
+    margin-right:14px;
+    float:left;
+}
+
+#task-index > .task-content > .task-list > .task-title {
+    display:block;
+    width:175px;
+    height:160px;
+    padding-top:36px;
+    padding-left:46px;
+    margin-bottom:18px;
+}
+
+
+#task-index > .task-content > .task-list:nth-child(1){
+    width:350px;
+}
+
+#task-index > .task-content > .task-list:nth-child(4){
+margin-right:0;
+}
+
+
+#task-index > .task-content > .task-list > .task-title-1 {
+    background-color:#f5d23a;
+    width:350px;
+    padding-left:142px;
+}
+#task-index > .task-content > .task-list > .task-title-2 {
+    background-color:#c7000a;
+}
+#task-index > .task-content > .task-list > .task-title-3 {
+    background-color:#252a54;
+}
+#task-index > .task-content > .task-list > .task-title-4 {
+    background-color:#6da62a;
+}
+
+#task-index > .task-content > .task-list > .task-category-list {
+    /*height:350px;
+    background-color:#e6e6e6;*/
+
+    list-style:none;
+
+}
+#task-index > .task-content > .task-list > .task-category-list a {
+    padding:6px;
+    display: block;
+}
+
+#task-index > .task-content > .task-list > .task-category-list a:hover {
+    background-color:#c7000a;
+    color:#fff;
+}
+
+
+#task-index > .task-content > .task-list > .task-category-list > li {
+    background-color:#bcbcbc;
+    text-align: center;
+    padding:0;
+    font-weight:bold;
+    font-size:16px;
+    letter-spacing: 4px;
+    margin-bottom:10px;
+}
+
+#task-index > .task-content > .task-list > .task-category-list.ul-2 {
+}
+
+
+#task-index > .task-content > .task-list > .task-category-list.ul-3 {
+}
+
+#task-index > .task-content > .task-list > .task-category-list.ul-1 > ul {
+    list-style:none;
+    width:175px;
+    float:left;
+    padding:0;
+}
+
+
+#task-index > .task-content > .task-list > .task-category-list.ul-1 > ul > li {
+    background-color:#bcbcbc;
+    text-align: center;
+    padding:0;
+    font-weight:bold;
+    font-size:16px;
+    letter-spacing: 4px;
+    margin-bottom:10px;
+}
+
+#task-index > .task-content > .task-list > .task-category-list.ul-1 > ul:nth-child(2) > li {
+    background: #e3e3e3;
+}
+
+
+
+
+
+
+
+
+.task-category {
+    overflow: hidden;
+    margin-top:20px;
+}
+
+.task-category.task-first {
+    margin-top:0;
+}
+
+.task-category .category-heading {
+    background:#e57e7e;
+    text-align: center;
+    padding:10px;
+}
+
+.task-category .category-heading h3 {
+    margin:0;
+}
+
+.task-category .category-list {
+    clear:both;
+}
+
+.task-category .category-list li {
+    list-style:none;
+    background: #ffbcbc;
+    width:304px;
+    margin-right:4px;
+    margin-top:4px;
+    float:left;
+    padding:10px;
+    text-align: center;
+}
+
+.task-category .category-list li.li-3rd {
+    margin-right:0;
+}

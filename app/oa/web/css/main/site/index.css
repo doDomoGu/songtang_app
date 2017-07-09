@@ -8,91 +8,173 @@
     color:#333;
 }
 
-#task-index a:hover {
+/*#task-index a:hover {
     color:#c7000a;
-}
+}*/
 
 #task-index > .task-content > .task-list {
-    width:175px;
-    margin-right:14px;
+    width:463px;
+    margin-right:40px;
+    margin-bottom:20px;
     float:left;
+}
+
+#task-index > .task-content > .task-list:nth-child(2),
+#task-index > .task-content > .task-list:nth-child(4) {
+    width:377px;
+}
+
+#task-index > .task-content > .task-list:nth-child(4){
+    margin-right:0;
 }
 
 #task-index > .task-content > .task-list > .task-title {
     display:block;
-    width:175px;
-    height:160px;
-    padding-top:36px;
-    padding-left:46px;
-    margin-bottom:18px;
+    width:169px;
+    height:260px;
+    padding-top:85px;
+    padding-left:44px;
+    float:left;
+    margin-right:29px;
+}
+#task-index > .task-content > .task-list > .task-title-3,
+#task-index > .task-content > .task-list > .task-title-4 {
+    width:263px;
+    height:263px;
+    padding-top:86px;
+    padding-left:91px;
 }
 
 
-#task-index > .task-content > .task-list:nth-child(1){
-    width:350px;
-}
-
-#task-index > .task-content > .task-list:nth-child(4){
-margin-right:0;
-}
 
 
 #task-index > .task-content > .task-list > .task-title-1 {
     background-color:#f5d23a;
-    width:350px;
-    padding-left:142px;
 }
 #task-index > .task-content > .task-list > .task-title-2 {
     background-color:#c7000a;
 }
 #task-index > .task-content > .task-list > .task-title-3 {
     background-color:#252a54;
+
 }
 #task-index > .task-content > .task-list > .task-title-4 {
     background-color:#6da62a;
 }
 
 #task-index > .task-content > .task-list > .task-category-list {
-    /*height:350px;
-    background-color:#e6e6e6;*/
-
-    list-style:none;
-
+    float:left;
+    width:265px;
 }
-#task-index > .task-content > .task-list > .task-category-list a {
-    padding:6px;
+
+#task-index > .task-content > .task-list > .task-category-list > ul > li > a {
+    padding:20px 9px;
     display: block;
+    font-size:26px;
+    font-weight: bold;
+}
+
+#task-index > .task-content > .task-list > .task-category-list > ul > li > a:hover {
+    opacity: 0.8;
+}
+
+#task-index > .task-content > .task-list > .task-category-list > ul > li.word-line-2 > a {
+    padding:10px 9px;
+    line-height:30px;
+}
+#task-index > .task-content > .task-list > .task-category-list > ul > li.word-line-3 > a {
+    padding:1px 9px;
+    line-height:25px;
+}
+#task-index > .task-content > .task-list > .task-category-list > ul > li.word-num-3 > a {
+    padding:20px 0;
+    letter-spacing: -1px;
 }
 
 #task-index > .task-content > .task-list > .task-category-list a:hover {
-    background-color:#c7000a;
-    color:#fff;
+    cursor: pointer;
+}
+#task-index > .task-content > .task-list > .task-category-list > ul {
+    float:left;
+    list-style: none;
+    padding:0;
+    margin:0;
 }
 
-
-#task-index > .task-content > .task-list > .task-category-list > li {
+#task-index > .task-content > .task-list > .task-category-list > ul > li {
     background-color:#bcbcbc;
     text-align: center;
+    width:78px;
+    height:78px;
     padding:0;
     font-weight:bold;
     font-size:16px;
     letter-spacing: 4px;
-    margin-bottom:10px;
+    margin-left:15px;
+    margin-bottom:13px;
+    float:left;
+    /*width:60px;*/
+
 }
+
+#task-index > .task-content > .task-list > .task-category-list > ul > li.last-line{
+    margin-bottom:0;
+}
+
+
+#task-index > .task-content > .task-list > .task-category-list.ul-1 > ul > li {
+    background-color: #fdf1bd;
+}
+
+#task-index > .task-content > .task-list > .task-category-list.ul-1 > ul > li:nth-child(3n+1){
+    margin-left:0;
+}
+
 
 #task-index > .task-content > .task-list > .task-category-list.ul-2 {
+    width:177px;
 }
 
+#task-index > .task-content > .task-list > .task-category-list.ul-2 > ul > li {
+    background-color: #ffd6d8;
+}
+
+
+#task-index > .task-content > .task-list > .task-category-list.ul-2 > ul > li:nth-child(2n+1){
+    margin-left:0;
+}
 
 #task-index > .task-content > .task-list > .task-category-list.ul-3 {
+    width:171px;
 }
 
-#task-index > .task-content > .task-list > .task-category-list.ul-1 > ul {
-    list-style:none;
-    width:175px;
-    float:left;
-    padding:0;
+#task-index > .task-content > .task-list > .task-category-list.ul-3 > ul > li {
+    background-color: #cfe8ff;
+    margin-bottom: 14px;
 }
+
+#task-index > .task-content > .task-list > .task-category-list.ul-3 > ul > li:nth-child(2n+1){
+    margin-left:0;
+}
+
+
+#task-index > .task-content > .task-list > .task-category-list.ul-4 {
+    width:78px;
+}
+
+#task-index > .task-content > .task-list > .task-category-list.ul-4 > ul > li {
+    background-color: #cef0a7;
+    margin-bottom: 14px;
+}
+
+#task-index > .task-content > .task-list > .task-category-list.ul-4 > ul > li{
+    margin-left:0;
+}
+
+/*
+
+
+
 
 
 #task-index > .task-content > .task-list > .task-category-list.ul-1 > ul > li {
@@ -108,6 +190,7 @@ margin-right:0;
 #task-index > .task-content > .task-list > .task-category-list.ul-1 > ul:nth-child(2) > li {
     background: #e3e3e3;
 }
+*/
 
 
 
@@ -116,6 +199,7 @@ margin-right:0;
 
 
 
+/*
 .task-category {
     overflow: hidden;
     margin-top:20px;
@@ -152,4 +236,4 @@ margin-right:0;
 
 .task-category .category-list li.li-3rd {
     margin-right:0;
-}
+}*/

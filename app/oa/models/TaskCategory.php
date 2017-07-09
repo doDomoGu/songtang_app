@@ -128,7 +128,7 @@ class TaskCategory extends \yii\db\ActiveRecord
         $typeList = self::getTypeList();
         foreach($typeList as $k => $tl){
             $list['t'.$k] = $tl;
-            $cate = TaskCategory::find()->where(['type'=>$k])->all();
+            $cate = TaskCategory::find()->where(['type'=>$k,'status'=>1])->orderBy(['ord'=>SORT_ASC])->all();
             $count = count($cate);
             $i=1;
             foreach($cate as $c){
