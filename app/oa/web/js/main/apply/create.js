@@ -2,6 +2,7 @@ $(function(){
     $('.task-preview').html('').hide();
     $('.task-select').on('change',function(e) {
         var task_id = $(this).val();
+        var category_id = $('#applycreateform-task_category').val();
         $('.task-preview').html('').hide();
 
         $('#applycreateform-form_id').html('<option value="">==请选择==</option>');
@@ -13,7 +14,8 @@ $(function(){
                 //async : false,
                 dataType: 'json',
                 data: {
-                    task_id:task_id
+                    task_id:task_id,
+                    category_id:category_id
                 },
                 success: function (data) {
                     if(data.result){

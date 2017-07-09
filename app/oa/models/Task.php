@@ -53,10 +53,10 @@ class Task extends \yii\db\ActiveRecord
         foreach($taskCateId as $t){
             $cateIds[] = $t->category_id;
         }
-        $category = TaskCategory::find()->where(['id'=>$cateIds])->orderBy('type asc')->all();
+        $category = TaskCategory::find()->where(['id'=>$cateIds])->orderBy(['type'=>SORT_ASC,'status'=>SORT_DESC,'ord'=>SORT_ASC])->all();
         $list = [];
         foreach($category as $c){
-            $list[$c->type][$c->id] = $c->name;
+            $list[$c->type][$c->id] = $c->status==1?$c->name:'<span style="color:red;">'.$c->name.'</span>';
         }
         $typeList = TaskCategory::getTypeList();
         $return = '';

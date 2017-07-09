@@ -13,6 +13,7 @@ use oa\models\ApplyFormContent;
 use oa\models\ApplyRecord;
 use oa\models\Flow;
 use oa\models\Form;
+use oa\models\FormCategory;
 use oa\models\FormItem;
 use oa\models\Task;
 use oa\models\TaskApplyUser;
@@ -317,6 +318,7 @@ class ApplyController extends BaseController
         $formSelectHtml = '';
         $formContentHtml = '';
         if(Yii::$app->request->isAjax){
+            $category_id = trim(Yii::$app->request->post('category_id',false));
             $task_id = trim(Yii::$app->request->post('task_id',false));
             $task = Task::find()->where(['id'=>$task_id])->one();
             if($task){
@@ -368,7 +370,10 @@ class ApplyController extends BaseController
 
                     $form = Form::find()->where(['id'=>$tf->form_id,'status'=>1,'set_complete'=>1])->one();
                     if($form){
-                        $formList[$form->id] = $form->title;
+                        $formCategory = FormCategory::find()->where(['form_id'=>$form->id,'category_id'=>$category_id])->one();
+                        if($formCategory){
+                            $formList[$form->id] = $form->title;
+                        }
                     }
                 }
 
