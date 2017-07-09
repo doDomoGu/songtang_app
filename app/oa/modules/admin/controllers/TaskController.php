@@ -41,12 +41,12 @@ class TaskController extends BaseController
         $query = Form::find();
 
         $count = $query->count();
-        $pageSize = 10;
+        $pageSize = 20;
         $pages = new Pagination(['totalCount' =>$count, 'pageSize' => $pageSize,'pageSizeParam'=>false]);
         $list = $query
             ->offset($pages->offset)
             ->limit($pages->limit)
-            ->orderBy('id desc')
+            ->orderBy(['id'=>SORT_ASC])
             ->all();
 
         $params['list'] = $list;
