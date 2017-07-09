@@ -77,12 +77,32 @@ class Task extends \yii\db\ActiveRecord
         foreach($taskFormId as $t){
             $ids[] = $t->form_id;
         }
+
         $forms = Form::find()->where(['id'=>$ids,'status'=>1])->all();
-        $list = [];
+        $formList = [];
         foreach($forms as $f){
-            $list[] = $f->title.($f->set_complete==0?'[暂停中]':'');
+            $formList[$f->id] = $f->title.($f->set_complete==0?'[暂停中]':'');
         }
-        $return = implode(' <br/> ',$list);
+
+        $formCategory = FormCategory::find()->where(['form_id'=>$ids])->all();
+        $list = [];
+        foreach($formCategory as $fc){
+            if(isset($formList[$fc->form_id])){
+                $list[$fc->category_id][] = $formList[$fc->form_id];
+            }
+        }
+        $categoryList = TaskCategory::getItems();
+        $return = '';
+
+
+
+        foreach($list as $k=>$forms){
+
+
+            $return .= '<span style="color:#999;">'.$categoryList[$k].'</span> : '.implode(' , ',$forms).'<br/>';
+        }
+
+
         return $return ;
     }
 
