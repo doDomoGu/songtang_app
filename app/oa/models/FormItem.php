@@ -229,4 +229,37 @@ class FormItem extends \yii\db\ActiveRecord
         $list['last'] = '最后';
         return $list;
     }
+
+
+    public static function getHtmlByForm($form_id){
+        $formContentHtml = '';
+        $formItems = FormItem::find()->where(['form_id'=>$form_id,'status'=>1])->orderBy('ord asc')->all();
+        if($formItems) {
+            $formContentHtml .= '<section class="task-form-section">' .
+                '<h1>申请表-表单：</h1>';
+            //$i = 0;
+            foreach ($formItems as $item) {
+
+                $valueArr = FormItem::jsonDecodeValue($item->item_value, $item->item_key, true);
+                //$i++;
+                $htmlOne = '<li class="form-item">';
+                if($valueArr['label_width']>0) {
+                    $htmlOne .= '<span class="item-label" style="width:' . $valueArr['label_width'] . 'px">' . $valueArr['label'] . '</span>';
+                }
+                $htmlOne .= '<span class="item-content" style="width:' . $valueArr['input_width'] . 'px">' . $valueArr['itemContent'] . '</span>';
+                /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
+                $htmlOne.= '<div>标题：'.$f->title.'</div>';
+                $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
+                $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
+
+                $htmlOne.= '<div>操作人：'.$operation_user.'</div>';*/
+                $htmlOne .= '</li>';
+                $formContentHtml .= $htmlOne;
+
+            }
+            $formContentHtml .= '</section>';
+        }
+        return $formContentHtml;
+
+    }
 }

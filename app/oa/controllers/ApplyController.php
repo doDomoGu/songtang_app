@@ -387,7 +387,7 @@ class ApplyController extends BaseController
                         $formSelectHtml .='<option value="'.$k.'">'.$v.'</option>';
                     }
                     //获取表单内容
-                    $formContentHtml = $this->getHtmlByForm($formSelect);
+                    $formContentHtml = FormItem::getHtmlByForm($formSelect);
 
                 }else{
                     $formSelectHtml .='<option value="">==请选择==</option>';
@@ -412,7 +412,7 @@ class ApplyController extends BaseController
         if(Yii::$app->request->isAjax){
             $form_id = trim(Yii::$app->request->post('form_id',false));
             //获取表单内容
-            $html = $this->getHtmlByForm($form_id);
+            $html = FormItem::getHtmlByForm($form_id);
             $result = true;
         }else{
             $errormsg = '操作错误，请重试!';

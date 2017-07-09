@@ -1,0 +1,53 @@
+.wrapper {
+    width:920px;
+}
+.task-form-section {
+    border:1px solid #aaa;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+    padding:15px;
+    font-size:14px;
+}
+
+.task-form-section {
+    overflow:hidden;
+}
+
+.task-form-section .form-item {
+    margin-top:14px;
+    list-style: none;
+    border-bottom: 1px solid #ccc;
+    padding-bottom:4px;
+    overflow: hidden;
+    font-size:14px;
+    font-weight: bold;
+    float:left;
+}
+
+.task-form-section .form-item .item-label,
+.task-form-section .form-item .item-content
+{
+    display:block;
+    float:left;
+    width:120px;
+}
+
+.task-form-section .form-item .item-content {
+    width:324px;
+}
+.task-form-section .form-item .item-content input[type='text'] {
+    width:90%;
+}
+
+.task-form-section .form-item .item-content .table-item-label,
+.task-form-section .form-item .item-content .table-item-input{
+    display:block;
+    float:left;
+}
+
+.task-form-section .form-item .item-content .table-item-input {
+    margin-top:10px;
+}
+
+.task-form-section li {
+    list-style: none;
+}

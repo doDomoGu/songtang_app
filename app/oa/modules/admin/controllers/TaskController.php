@@ -55,6 +55,12 @@ class TaskController extends BaseController
         return $this->render('form',$params);
     }
 
+    public function actionFormPreview(){
+        $form_id = Yii::$app->request->get('id',false);
+        $params['html'] = FormItem::getHtmlByForm($form_id);
+        return $this->render('form_preview',$params);
+    }
+
     public function actionIndex()
     {
         $aid = Yii::$app->request->get('aid',false);

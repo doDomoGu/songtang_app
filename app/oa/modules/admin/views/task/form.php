@@ -57,6 +57,7 @@ oa\modules\admin\assets\AdminAsset::addJsFile($this,'js/main/task/form.js');
                         <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
                         <?=Html::button('启用',['class'=>"complete-btn btn btn-warning btn-xs",'data-id'=>$l->id])?>
                     <?php endif;?>
+                    <?=Html::a('预览',['/admin/task/form-preview','id'=>$l->id],['class'=>'btn btn-xs btn-success','data-id'=>$l->id,'target'=>'_blank'])?>
                 </td>
             </tr>
 
