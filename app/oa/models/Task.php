@@ -81,7 +81,7 @@ class Task extends \yii\db\ActiveRecord
         $forms = Form::find()->where(['id'=>$ids,'status'=>1])->all();
         $formList = [];
         foreach($forms as $f){
-            $formList[$f->id] = $f->title.($f->set_complete==0?'[暂停中]':'');
+            $formList[$f->id] = $f->set_complete==0?('<span style="color:red;">'.$f->title.'[暂停中]</span>'):$f->title;
         }
 
         $formCategory = FormCategory::find()->where(['form_id'=>$ids])->all();

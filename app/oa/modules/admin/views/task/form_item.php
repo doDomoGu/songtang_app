@@ -101,12 +101,14 @@ Modal::begin([
                 <label class="col-sm-4 control-label label1">标签宽度</label>
                 <div class="col-sm-6">
                     <input class="form-control create-label_width">
+                    *建议120 或者纵向排列为 444   总宽度888
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">输入框宽度</label>
                 <div class="col-sm-6">
                     <input class="form-control create-input_width">
+                    *建议324（两栏）或者768（一栏）   或者纵向排列为 444
                 </div>
             </div>
             <div class="form-group">
