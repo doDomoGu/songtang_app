@@ -690,7 +690,7 @@ $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->po
 
         foreach($list as $l){
             $temp = [];
-            $userHistory = UserHistory::find()->where(['user_id',$l->id])->all();
+            $userHistory = UserHistory::find()->where(['user_id'=>$l->id])->all();
             foreach($userHistory as $uh){
                 $temp2 = [];
                 $flag = false; //是否匹配标志
