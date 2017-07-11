@@ -68,7 +68,7 @@
 }
 
 #task-index > .task-content > .task-list > .task-category-list > ul > li > a {
-    padding:20px 9px;
+    padding:20px 8px;
     display: block;
     font-size:26px;
     font-weight: bold;
@@ -79,11 +79,11 @@
 }
 
 #task-index > .task-content > .task-list > .task-category-list > ul > li.word-line-2 > a {
-    padding:10px 9px;
+    padding:10px 8px;
     line-height:30px;
 }
 #task-index > .task-content > .task-list > .task-category-list > ul > li.word-line-3 > a {
-    padding:1px 9px;
+    padding:1px 8px;
     line-height:25px;
 }
 #task-index > .task-content > .task-list > .task-category-list > ul > li.word-num-3 > a {
