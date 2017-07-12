@@ -1,7 +1,9 @@
+/*
 #task-index {
     font-family: '方正兰亭纤黑';
 
 }
+*/
 
 #task-index a {
     text-decoration: none;
@@ -68,10 +70,11 @@
 }
 
 #task-index > .task-content > .task-list > .task-category-list > ul > li > a {
-    padding:20px 8px;
+    padding:28px 16px;
     display: block;
-    font-size:26px;
-    font-weight: bold;
+    font-size:18px;
+    font-weight: 500;
+
 }
 
 #task-index > .task-content > .task-list > .task-category-list > ul > li > a:hover {
@@ -79,15 +82,15 @@
 }
 
 #task-index > .task-content > .task-list > .task-category-list > ul > li.word-line-2 > a {
-    padding:10px 8px;
-    line-height:30px;
+    padding:16px 16px;
+    line-height:24px;
 }
 #task-index > .task-content > .task-list > .task-category-list > ul > li.word-line-3 > a {
-    padding:1px 8px;
+    padding:2px 8px;
     line-height:25px;
 }
 #task-index > .task-content > .task-list > .task-category-list > ul > li.word-num-3 > a {
-    padding:20px 0;
+    padding:28px 0;
     letter-spacing: -1px;
 }
 
