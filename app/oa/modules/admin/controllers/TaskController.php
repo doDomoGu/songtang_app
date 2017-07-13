@@ -679,7 +679,7 @@ class TaskController extends BaseController
                 }else{
                     $existItem = FormItem::find()->where(['id'=>$item_id])->one();
                     if($existItem){
-                        $existKey = FormItem::find()->where(['item_key'=>$key])->andWhere(['<>','id',$item_id])->one();
+                        $existKey = FormItem::find()->where(['item_key'=>$key,'form_id'=>$form_id])->andWhere(['<>','id',$item_id])->one();
                         if(!$existKey){
 
                             $existItem->item_key = $key;
