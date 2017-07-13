@@ -100,21 +100,21 @@ Modal::begin([
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">标签宽度</label>
                 <div class="col-sm-6">
-                    <input class="form-control create-label_width">
+                    <input class="form-control create-label_width" value="120">
                     *建议120 或者纵向排列为 444   总宽度888
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">输入框宽度</label>
                 <div class="col-sm-6">
-                    <input class="form-control create-input_width">
+                    <input class="form-control create-input_width" value="324">
                     *建议324（两栏）或者768（一栏）   或者纵向排列为 444
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label label1">类型</label>
                 <div class="col-sm-6">
-                    <?=\yii\helpers\Html::dropDownList('input_type-select',null,FormItem::itemType(),['class'=>'form-control create-input_type-select'])?>
+                    <?=\yii\helpers\Html::dropDownList('input_type-select',FormItem::TYPE_TEXT,FormItem::itemType(),['class'=>'form-control create-input_type-select'])?>
                 </div>
             </div>
             <div class="form-group">

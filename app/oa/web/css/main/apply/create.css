@@ -137,8 +137,13 @@
 .form-content .form-item .item-content {
     width:324px;
 }
-.form-content .form-item .item-content input[type='text'] {
+.form-content .form-item .item-content input[type='text'],
+.form-content .form-item .item-content textarea{
     width:90%;
+}
+
+.form-content .form-item .item-content textarea {
+    height:200px;
 }
 
 .form-content .form-item .item-content .table-item-label,

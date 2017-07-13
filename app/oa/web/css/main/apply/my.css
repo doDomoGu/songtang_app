@@ -330,7 +330,12 @@
 #apply-form-content .form-content-input .table-item-input {
     margin-top:10px;
 }
-#apply-form-content .form-content-input .table-item-input input[type="text"] {
+#apply-form-content .form-content-input .table-item-input input[type="text"],
+#apply-form-content .form-content-input textarea {
     width:90%;
+}
+
+#apply-form-content .form-content-input textarea {
+    height:200px;
 }
 
