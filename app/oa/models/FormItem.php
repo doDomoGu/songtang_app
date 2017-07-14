@@ -17,6 +17,7 @@ class FormItem extends \yii\db\ActiveRecord
     const TYPE_DATE = 5;
     const TYPE_TABLE = 6;
     const TYPE_TEXTAREA = 7;
+    const TYPE_DROPDOWN = 8;
 
     const TYPE_NULL_CN = 'N/A';
     const TYPE_TEXT_CN = '文本';
@@ -26,6 +27,7 @@ class FormItem extends \yii\db\ActiveRecord
     const TYPE_DATE_CN = '日期';
     const TYPE_TABLE_CN = '表格';
     const TYPE_TEXTAREA_CN = '多行文本';
+    const TYPE_DROPDOWN_CN = '下拉框';
 
 
     public static function getDb(){
@@ -74,7 +76,8 @@ class FormItem extends \yii\db\ActiveRecord
             self::TYPE_CHECKBOX => self::TYPE_CHECKBOX_CN,
             self::TYPE_DATE => self::TYPE_DATE_CN,
             self::TYPE_TABLE => self::TYPE_TABLE_CN,
-            self::TYPE_TEXTAREA => self::TYPE_TEXTAREA_CN
+            self::TYPE_TEXTAREA => self::TYPE_TEXTAREA_CN,
+            self::TYPE_DROPDOWN => self::TYPE_DROPDOWN_CN
             /*'datetime' =>'日期和时间',
             'time' =>'时间',
             'range' =>'时间范围',*/
@@ -145,6 +148,12 @@ class FormItem extends \yii\db\ActiveRecord
                     $options = [];
                 }
                 $content = Html::radioList($input_key,$value,$options);
+                break;
+            case self::TYPE_DROPDOWN:
+                if(!is_array($options)){
+                    $options = [];
+                }
+                $content = Html::dropDownList($input_key,$value,$options);
                 break;
             case self::TYPE_CHECKBOX:
                 if(!is_array($options)){

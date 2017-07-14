@@ -21,6 +21,7 @@
     font-size:14px;
     font-weight: bold;
     float:left;
+    min-height:32px;
 }
 
 .task-form-section .form-item .item-label,
