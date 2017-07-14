@@ -4,6 +4,7 @@ namespace oa\models;
 
 //oa 模板和表单的对应关系
 
+use kartik\datetime\DateTimePicker;
 use Yii;
 use yii\helpers\Html;
 
@@ -161,6 +162,21 @@ class FormItem extends \yii\db\ActiveRecord
                 }
                 $content = Html::checkboxList($input_key,$value,$options);
                 break;
+            case self::TYPE_DATE:
+                $format = isset($options['format'])?$options['format']:'yyyy-mm-dd';
+                $content = DateTimePicker::widget([
+                    'name' => $input_key,
+                    'value'=>$value,
+                    'options' => ['placeholder' => 'Select operating time ...'],
+                    'convertFormat' => false,
+                    'pluginOptions' => [
+                        'format' => $format,
+                        'startDate' => '2014-01-01',
+
+                        'todayHighlight' => true
+                    ]
+                ]);
+                break;
             case self::TYPE_TABLE:
                 $content = '';
                 if(is_array($options)){
@@ -257,7 +273,7 @@ class FormItem extends \yii\db\ActiveRecord
 
                 $valueArr = FormItem::jsonDecodeValue($item->item_value, $item->item_key, true);
                 //$i++;
-                $htmlOne = '<li class="form-item">';
+                $htmlOne = '<li class="form-item type-'.$valueArr['input_type'].'">';
                 if($valueArr['label_width']>0) {
                     $htmlOne .= '<span class="item-label" style="width:' . $valueArr['label_width'] . 'px">' . $valueArr['label'] . '</span>';
                 }

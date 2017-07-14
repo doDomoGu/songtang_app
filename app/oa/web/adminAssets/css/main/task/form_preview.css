@@ -21,8 +21,34 @@
     font-size:14px;
     font-weight: bold;
     float:left;
-    min-height:32px;
+
 }
+.task-form-section .form-item.type-1,
+.task-form-section .form-item.type-2,
+.task-form-section .form-item.type-3,
+.task-form-section .form-item.type-4,
+.task-form-section .form-item.type-5,
+.task-form-section .form-item.type-8 {
+    height:40px;
+}
+
+.task-form-section .form-item.type-1 .item-label,
+.task-form-section .form-item.type-2 .item-label,
+.task-form-section .form-item.type-3 .item-label,
+.task-form-section .form-item.type-4 .item-label,
+.task-form-section .form-item.type-5 .item-label,
+.task-form-section .form-item.type-8 .item-label {
+    padding-top:10px;
+}
+
+.task-form-section .form-item.type-1 .item-content,
+.task-form-section .form-item.type-2 .item-content,
+.task-form-section .form-item.type-3 .item-content,
+.task-form-section .form-item.type-4 .item-content,
+.task-form-section .form-item.type-8 .item-content {
+    padding-top:8px;
+}
+
 
 .task-form-section .form-item .item-label,
 .task-form-section .form-item .item-content

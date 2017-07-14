@@ -433,7 +433,7 @@ class ApplyController extends BaseController
 
                 $valueArr = FormItem::jsonDecodeValue($item->item_value, $item->item_key, true);
                 //$i++;
-                $htmlOne = '<li class="form-item">';
+                $htmlOne = '<li class="form-item type-'.$valueArr['type'].'">';
                 if($valueArr['label_width']>0) {
                     $htmlOne .= '<span class="item-label" style="width:' . $valueArr['label_width'] . 'px">' . $valueArr['label'] . '</span>';
                 }
