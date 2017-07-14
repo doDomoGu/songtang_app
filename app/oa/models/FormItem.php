@@ -165,15 +165,18 @@ class FormItem extends \yii\db\ActiveRecord
             case self::TYPE_DATE:
                 $format = isset($options['format'])?$options['format']:'yyyy-mm-dd';
                 $content = DateTimePicker::widget([
+
                     'name' => $input_key,
                     'value'=>$value,
-                    'options' => ['placeholder' => 'Select operating time ...'],
-                    'convertFormat' => false,
+                    'layout'=>'{picker}{input}',
+
+                    'options' => ['placeholder' => '选择日期'],
                     'pluginOptions' => [
                         'format' => $format,
                         'startDate' => '2014-01-01',
-
-                        'todayHighlight' => true
+                        'todayHighlight' => true,
+                        'minView'=> "month",
+                        'autoclose'=>1
                     ]
                 ]);
                 break;
