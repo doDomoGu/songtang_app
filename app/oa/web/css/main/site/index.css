@@ -70,9 +70,10 @@
 }
 
 #task-index > .task-content > .task-list > .task-category-list > ul > li > a {
-    padding:28px 16px;
+    padding-top:28px;
+    padding-left:4px;
     display: block;
-    font-size:18px;
+    font-size:16px;
     font-weight: 500;
 
 }
@@ -82,16 +83,18 @@
 }
 
 #task-index > .task-content > .task-list > .task-category-list > ul > li.word-line-2 > a {
-    padding:16px 16px;
-    line-height:24px;
+    padding-top:20px;
+    padding-left:4px;
+    line-height:20px;
 }
 #task-index > .task-content > .task-list > .task-category-list > ul > li.word-line-3 > a {
-    padding:2px 8px;
-    line-height:25px;
+    padding-top:8px;
+    padding-left:4px;
+    line-height:20px;
 }
 #task-index > .task-content > .task-list > .task-category-list > ul > li.word-num-3 > a {
-    padding:28px 0;
-    letter-spacing: -1px;
+    padding-top:28px;
+    padding-left:4px;
 }
 
 #task-index > .task-content > .task-list > .task-category-list a:hover {
