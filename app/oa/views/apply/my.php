@@ -20,7 +20,7 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
                 <th><span><?=Html::img('/images/main/apply/th_1.png',['style'=>''])?> &nbsp;&nbsp; 标题</span></th>
                 <th><span><?=Html::img('/images/main/apply/th_2.png',['style'=>''])?> &nbsp;&nbsp; 任务表</span></th>
                 <th><span><?=Html::img('/images/main/apply/th_3.png',['style'=>''])?> &nbsp;&nbsp; 申请时间</span></th>
-                <th><span><?=Html::img('/images/main/apply/th_3.png',['style'=>''])?> &nbsp;&nbsp; 状态</span></th>
+                <th><span><?=Html::img('/images/main/apply/th_5.png',['style'=>''])?> &nbsp;&nbsp; 状态</span></th>
                 <th class="last"><span><?=Html::img('/images/main/apply/th_4.png',['style'=>''])?> &nbsp;&nbsp; 操作</span></th>
             </tr>
             <tbody>
