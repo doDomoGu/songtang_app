@@ -267,10 +267,11 @@ class FormItem extends \yii\db\ActiveRecord
 
     public static function getHtmlByForm($form_id){
         $formContentHtml = '';
+        $form = Form::find()->where(['id'=>$form_id])->one();
         $formItems = FormItem::find()->where(['form_id'=>$form_id,'status'=>1])->orderBy('ord asc')->all();
         if($formItems) {
             $formContentHtml .= '<section class="task-form-section">' .
-                '<h1>申请表-表单：</h1>';
+                '<h1>申请表 -【'.$form->title.'】- 表单：</h1>';
             //$i = 0;
             foreach ($formItems as $item) {
 

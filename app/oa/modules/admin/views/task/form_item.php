@@ -16,6 +16,7 @@ use oa\models\FormItem;
         <?/*=Html::a('清空选项','javascript:void(0)',['class'=>'btn btn-danger delete-all'])*/?>
         <?php /*endif;*/?>
         <?=Html::a('返回','/admin/task/form',['class'=>'btn btn-default'])?>
+        <?=Html::a('预览',['/admin/task/form-preview','id'=>$form->id],['class'=>'btn btn-success','target'=>'_blank'])?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
