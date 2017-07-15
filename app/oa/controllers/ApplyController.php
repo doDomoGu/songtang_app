@@ -508,7 +508,9 @@ class ApplyController extends BaseController
         //$form_id = $apply->form_id;
         $applyFromContent = ApplyFormContent::find()->where(['apply_id'=>$apply->id])->orderBy('ord asc')->all();
         if(!empty($applyFromContent)){
-            $html.= '<section id="apply-form-content">';
+            $html.= '<section id="apply-form-content" class="task-form-section">';
+            $html.= FormItem::getHtmlByFormItem($applyFromContent);
+            /*
             foreach($applyFromContent as $afc){
                 $valueArr = FormItem::jsonDecodeValue($afc->item_value,$afc->item_key,true);
                 $html.= '<span class="form-content-item">';
@@ -518,7 +520,7 @@ class ApplyController extends BaseController
                 $html .= '<span class="form-content-input" style="width:'.$valueArr['input_width'].'px;">'.$valueArr['itemContent'].'</span>';
 
                 $html .='</span>';
-            }
+            }*/
             $html.= '</section>';
         }
 

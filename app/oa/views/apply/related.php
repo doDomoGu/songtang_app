@@ -9,6 +9,9 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/related.css');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/table.css');
 
+oa\assets\AppAsset::addJsFile($this,'script/jquery-ui/jquery-ui.min.js');
+oa\assets\AppAsset::addCssFile($this,'script/jquery-ui/jquery-ui.min.css');
+
 ?>
     <section class="panel panel-default">
         <div class="panel-heading">

@@ -141,6 +141,7 @@ class FormItem extends \yii\db\ActiveRecord
             case self::TYPE_NUMBER:
                 $content = Html::textInput($input_key,$value);
                 break;
+
             case self::TYPE_TEXTAREA:
                 $content = Html::textarea($input_key,$value);
                 break;
@@ -163,6 +164,9 @@ class FormItem extends \yii\db\ActiveRecord
                 $content = Html::checkboxList($input_key,$value,$options);
                 break;
             case self::TYPE_DATE:
+                $content = Html::textInput($input_key,$value,['class'=>'datepicker-x']);
+                break;
+            /*case self::TYPE_DATE:
                 $format = isset($options['format'])?$options['format']:'yyyy-mm-dd';
                 $content = DateTimePicker::widget([
 
@@ -170,7 +174,7 @@ class FormItem extends \yii\db\ActiveRecord
                     'value'=>$value,
                     'layout'=>'{picker}{input}',
 
-                    'options' => ['placeholder' => '选择日期'],
+                    'options' => ['placeholder' => '选择日期','class'=>'datepicker-x'],
                     'pluginOptions' => [
                         'format' => $format,
                         'startDate' => '2014-01-01',
@@ -179,7 +183,7 @@ class FormItem extends \yii\db\ActiveRecord
                         'autoclose'=>1
                     ]
                 ]);
-                break;
+                break;*/
             case self::TYPE_TABLE:
                 $content = '';
                 if(is_array($options)){
@@ -273,27 +277,37 @@ class FormItem extends \yii\db\ActiveRecord
             $formContentHtml .= '<section class="task-form-section">' .
                 '<h1>申请表 -【'.$form->title.'】- 表单：</h1>';
             //$i = 0;
-            foreach ($formItems as $item) {
+            $formContentHtml .=self::getHtmlByFormItem($formItems);
 
-                $valueArr = FormItem::jsonDecodeValue($item->item_value, $item->item_key, true);
-                //$i++;
-                $htmlOne = '<li class="form-item type-'.$valueArr['input_type'].'">';
-                if($valueArr['label_width']>0) {
-                    $htmlOne .= '<span class="item-label" style="width:' . $valueArr['label_width'] . 'px">' . $valueArr['label'] . '</span>';
-                }
-                $htmlOne .= '<span class="item-content" style="width:' . $valueArr['input_width'] . 'px">' . $valueArr['itemContent'] . '</span>';
-                /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
-                $htmlOne.= '<div>标题：'.$f->title.'</div>';
-                $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
-                $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
-
-                $htmlOne.= '<div>操作人：'.$operation_user.'</div>';*/
-                $htmlOne .= '</li>';
-                $formContentHtml .= $htmlOne;
-
-            }
             $formContentHtml .= '</section>';
         }
+        return $formContentHtml;
+
+    }
+
+
+    public static function getHtmlByFormItem($formItems){
+        $formContentHtml = '';
+        foreach ($formItems as $item) {
+
+            $valueArr = FormItem::jsonDecodeValue($item->item_value, $item->item_key, true);
+            //$i++;
+            $htmlOne = '<li class="form-item type-'.$valueArr['input_type'].'">';
+            if($valueArr['label_width']>0) {
+                $htmlOne .= '<span class="item-label" style="width:' . $valueArr['label_width'] . 'px">' . $valueArr['label'] . '</span>';
+            }
+            $htmlOne .= '<span class="item-content" style="width:' . $valueArr['input_width'] . 'px">' . $valueArr['itemContent'] . '</span>';
+            /*$htmlOne.= '<div class="task-preview-step">步骤'.$f->step.'</div>';
+            $htmlOne.= '<div>标题：'.$f->title.'</div>';
+            $htmlOne.= '<div>类型：'.$f->typeName.'</div>';
+            $htmlOne.= '<div>转发：'.($f->enable_transfer==1?'允许':'禁止').'</div>';
+
+            $htmlOne.= '<div>操作人：'.$operation_user.'</div>';*/
+            $htmlOne .= '</li>';
+            $formContentHtml .= $htmlOne;
+
+        }
+
         return $formContentHtml;
 
     }

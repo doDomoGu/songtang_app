@@ -7,6 +7,9 @@ $this->title = '我的申请';
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/my.js');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/my.css');
 
+oa\assets\AppAsset::addJsFile($this,'script/jquery-ui/jquery-ui.min.js');
+oa\assets\AppAsset::addCssFile($this,'script/jquery-ui/jquery-ui.min.css');
+
 ?>
 <section class="panel panel-default">
     <div class="panel-heading">

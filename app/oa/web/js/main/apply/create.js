@@ -25,6 +25,29 @@ $(function(){
                         if(data.formContentHtml!='') {
                             $('.form-content').html(data.formContentHtml).show();
                         }
+
+                        $('.datepicker-x').datepicker(
+                            {
+                                dateFormat:'yy-mm-dd'
+                            }
+                        );
+
+                        /*$('.datepicker-x').datetimepicker(
+                            {
+                                language:'cn',
+                                layout: '{picker}{input}',
+                                options: {
+                                    placeholder: '选择日期'
+                                },
+                                pluginOptions:{
+                                    format :'yyyy-mm-dd',
+                                    startDate:'2014-01-01',
+                                    todayHighlight:true,
+                                    minView:"month",
+                                    autoclose:1
+                                }
+                            }
+                        );*/
                     }else{
                         $('.task-preview').html(data.errormsg).show();
 

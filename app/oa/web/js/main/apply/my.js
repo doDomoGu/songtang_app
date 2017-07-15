@@ -14,6 +14,11 @@ $(function(){
             success: function (data) {
                 if(data.result){
                     $('#infoContent .content').html(data.html);
+                    $('.datepicker-x').datepicker(
+                        {
+                            dateFormat:'yy-mm-dd'
+                        }
+                    );
                 }else{
                     $('#infoContent .errormsg-text').html(data.errormsg).show();
 

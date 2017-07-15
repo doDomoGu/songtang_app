@@ -7,6 +7,11 @@ oa\assets\AppAsset::addCssFile($this,'css/main/apply/create.css');
 oa\assets\AppAsset::addJsFile($this,'https://yun-source.songtang.net/resource/js/qiniu/plupload.full.min.js');
 oa\assets\AppAsset::addJsFile($this,'https://yun-source.songtang.net/resource/js/qiniu/qiniu.min.js');
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/create-apply-attachment-upload.js');
+/*oa\assets\AppAsset::addJsFile($this,'js/bootstrap-datetimepicker.js');
+oa\assets\AppAsset::addCssFile($this,'css/datetimepicker/bootstrap-datetimepicker.css');
+oa\assets\AppAsset::addCssFile($this,'css/datetimepicker/datetimepicker-kv.css');*/
+oa\assets\AppAsset::addJsFile($this,'script/jquery-ui/jquery-ui.min.js');
+oa\assets\AppAsset::addCssFile($this,'script/jquery-ui/jquery-ui.min.css');
 
 
 $this->title = '发起申请';
