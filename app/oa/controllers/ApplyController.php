@@ -675,7 +675,7 @@ class ApplyController extends BaseController
 
         $objPHPExcel->getActiveSheet()->mergeCells('A1:F2');
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'Hello');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', '差旅费报销单');
         $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
         $objPHPExcel->getActiveSheet()->mergeCells('G1:I3');
