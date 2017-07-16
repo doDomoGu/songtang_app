@@ -31,7 +31,7 @@
 .task-form-section .form-item.type-4,
 .task-form-section .form-item.type-5,
 .task-form-section .form-item.type-8 {
-    height:40px;
+    min-height:40px;
 }
 
 .task-form-section .form-item.type-1 .item-label,
@@ -47,6 +47,7 @@
 .task-form-section .form-item.type-2 .item-content,
 .task-form-section .form-item.type-3 .item-content,
 .task-form-section .form-item.type-4 .item-content,
+.task-form-section .form-item.type-5 .item-content,
 .task-form-section .form-item.type-8 .item-content {
     padding-top:8px;
 }
@@ -67,6 +68,15 @@
 .task-form-section .form-item .item-content textarea {
     width:90%;
 }
+.task-form-section .form-item .item-content input.datepicker-x {
+    width:160px;
+    text-align: right;
+}
+
+.task-form-section .form-item .item-content .num-unit {
+    padding-left:10px;
+}
+
 .task-form-section .form-item .item-content textarea {
     height:200px;
 }
@@ -76,7 +86,9 @@
     display:block;
     float:left;
 }
-
+.task-form-section .form-item .item-content .table-item-label {
+    text-align: center;
+}
 .task-form-section .form-item .item-content .table-item-input {
     margin-top:10px;
 }

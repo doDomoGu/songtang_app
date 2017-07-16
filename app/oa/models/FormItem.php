@@ -138,10 +138,25 @@ class FormItem extends \yii\db\ActiveRecord
         $input_key = 'form_item['.$key.']';
         switch($type){
             case self::TYPE_TEXT:
-            case self::TYPE_NUMBER:
                 $content = Html::textInput($input_key,$value);
                 break;
-
+            case self::TYPE_NUMBER:
+                $width = false;
+                $unit = false;
+                foreach($options as $o){
+                    $temp = explode(':',$o);
+                    if(count($temp)==2){
+                        if($temp[0]=='unit'){
+                            $unit = $temp[1];
+                        }elseif($temp[0]=='width') {
+                            $width = $temp[1];
+                        }
+                    }
+                }
+                $options2 = $width?['style'=>'width:'.$width.'px']:[];
+                $content = Html::textInput($input_key,$value,$options2);
+                $content .= $unit?'<span class="num-unit">'.$unit.'</span>':'';
+                break;
             case self::TYPE_TEXTAREA:
                 $content = Html::textarea($input_key,$value);
                 break;
