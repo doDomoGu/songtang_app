@@ -620,11 +620,219 @@ class ApplyController extends BaseController
         }
 
         //4. 打印按钮
-        $html .= '<div id="a-print" class="hidden-print"><a data-id="'.$apply->id.'" type="button" class="print-btn">打印</a></div>';
+        $html .= '<div id="a-print" class="hidden-print">
+                <a data-id="'.$apply->id.'" type="button" class="print-btn">打印</a>';
+        if(in_array($apply->form_id,[12,13,14])) {
+            $html .= '<a data-id="' . $apply->id . '" type="button" class="print2-btn">财务表格导出</a>';
+        }
+        $html .= '</div>';
 
         $html .= '</section>';
 
         return $html;
+    }
+
+    public function actionFinanceExport(){
+        //require_once '../../../common/extensions/phpexcel/PHPExcel.php';
+
+        $id = Yii::$app->request->get('id');
+        $apply = Apply::find()->where(['id'=>$id])->one();
+
+        if($apply->form_id == 12){
+            $this->export12($apply);
+        }else if($apply->form_id == 13){
+            $this->export13($apply);
+        }
+
+        Yii::$app->end();
+
+    }
+
+    public function export13($apply){
+        $user = User::find()->where(['id'=>$apply->user_id])->one();
+
+        $formContent = ApplyFormContent::find()->where(['apply_id'=>$apply->id])->all();
+        $options = [];
+        foreach($formContent as $item){
+            $options[$item->item_key] = FormItem::jsonDecodeValue($item->item_value);
+        }
+
+        $company = $options['company']['input_options'][$options['company']['value']];
+
+        $project = [];
+        $pinAll = 0;
+        foreach($options['project']['value'] as $p){
+            if($p['item']!=''){
+                $project[] = ['item'=>$p['item'],'pin'=>$p['pin'],'price'=>$p['price']];
+                $pinAll += intval($p['pin']);
+            }
+        }
+
+
+
+        // Create new PHPExcel object
+        $objPHPExcel = new \PHPExcel();
+
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:F2');
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'Hello');
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+        $objPHPExcel->getActiveSheet()->mergeCells('G1:I3');
+        $objDrawing = new \PHPExcel_Worksheet_Drawing();
+        $objDrawing->setName('Photo');
+        $objDrawing->setDescription('Photo');
+        $objDrawing->setPath('../web/images/code.jpg');
+        $objDrawing->setHeight(19);
+        $objDrawing->setWidth(108);
+        $objDrawing->setCoordinates('G1');
+        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+        $objPHPExcel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', 'V2.0');
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4', '申请日期');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D4', '费用部门');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G4', '附件');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('B4:C4');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B4', substr($apply->add_time,0,10));
+        $objPHPExcel->getActiveSheet()->mergeCells('E4:F4');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E4', $user->departmentFullRoute);
+        $objPHPExcel->getActiveSheet()->mergeCells('H4:I4');
+        /*$record = ApplyRecord::find()->where(['apply_id'=>$apply->id,'step'=>0])->one();
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H4', $record->attacment!='[]'?'有':'无');*/
+
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A5', '报销人员');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D5', '职务');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', '报销公司');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('B5:C5');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B5', $user->username);
+        $objPHPExcel->getActiveSheet()->mergeCells('E5:F5');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E5', $user->position->name);
+        $objPHPExcel->getActiveSheet()->mergeCells('H5:I5');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H5', $company);
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A6', '出差日期');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D6', '返回日期');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G6', '出差天数');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('B6:C6');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B6', $options['day']['value']);
+        $objPHPExcel->getActiveSheet()->mergeCells('E6:F6');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E6', $options['day2']['value']);
+        $objPHPExcel->getActiveSheet()->mergeCells('H6:I6');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H6', $options['daynum']['value']);
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A7', '同行人员');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D7', '报销事由');
+
+        $objPHPExcel->getActiveSheet()->mergeCells('B7:C7');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B7', $options['people']['value']);
+        $objPHPExcel->getActiveSheet()->mergeCells('E7:I7');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E7', $options['reason']['value']);
+
+
+        $objPHPExcel->getActiveSheet()->mergeCells('B8:D8');
+        $objPHPExcel->getActiveSheet()->mergeCells('F8:I8');
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A8', '序号');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B8', '项目');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E8', '凭证数量');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8', '合计金额');
+
+        $objPHPExcel->getActiveSheet()->getStyle('A8')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('B8')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('E8')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('F8')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $i = 1;
+        $l = 9;
+        foreach($project as $p){
+            $objPHPExcel->getActiveSheet()->mergeCells('B'.$l.':D'.$l);
+            $objPHPExcel->getActiveSheet()->mergeCells('F'.$l.':I'.$l);
+
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, $i);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$l, $p['item']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, $p['pin']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$l, $p['price']);
+            $l++;
+            $i++;
+        }
+
+
+        $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':D'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '合计金额');
+        $objPHPExcel->getActiveSheet()->getStyle('A'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, $pinAll);
+
+
+        $objPHPExcel->getActiveSheet()->mergeCells('F'.$l.':I'.$l);
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$l, $options['all']['value']);
+        $objPHPExcel->getActiveSheet()->getStyle('F'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+        $l++;
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '借款抵扣');
+        $objPHPExcel->getActiveSheet()->mergeCells('B'.$l.':D'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, '结算金额');
+        $objPHPExcel->getActiveSheet()->mergeCells('F'.$l.':I'.$l);
+
+        $l++;
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '收款方式');
+        $objPHPExcel->getActiveSheet()->mergeCells('B'.$l.':D'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, '大写');
+        $objPHPExcel->getActiveSheet()->mergeCells('F'.$l.':I'.$l);
+
+        $l++;
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '开户银行');
+        $objPHPExcel->getActiveSheet()->mergeCells('B'.$l.':D'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, '账号');
+        $objPHPExcel->getActiveSheet()->mergeCells('F'.$l.':I'.$l);
+
+
+
+
+        /*
+
+
+// Add some data
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'Hello')
+            ->setCellValue('B2', 'world!')
+            ->setCellValue('C1', 'Hello')
+            ->setCellValue('D2', 'world!');
+
+// Miscellaneous glyphs, UTF-8
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A4', 'Miscellaneous glyphs')
+            ->setCellValue('A5', 'éàèùâêîôûëïüÿäöüç');
+
+// Rename worksheet
+        $objPHPExcel->getActiveSheet()->setTitle('Simple');
+
+
+// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $objPHPExcel->setActiveSheetIndex(0);*/
+
+
+// Redirect output to a client’s web browser (Excel5)
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="01simple.xls"');
+        header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
     }
 
     //我的申请

@@ -58,6 +58,7 @@ $(function(){
     })
 
     $('#main').on('click','.print-btn',function(){
+
         //$("#infoModal .modal-content").jqprint()
 
         var newWindow=window.open("/apply/print?id="+$(this).attr('data-id'),"_blank");
@@ -98,5 +99,10 @@ $(function(){
         // 将原来窗口body的html值回填展示
         document.body.innerHTML = oldhtml;
         return false;*/
+    });
+
+
+    $('#main').on('click','.print2-btn',function(){
+        location.href = '/apply/finance-export?id='+$(this).attr('data-id');
     });
 });

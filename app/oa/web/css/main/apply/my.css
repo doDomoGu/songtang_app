@@ -278,7 +278,8 @@
     overflow:hidden;
 }
 
-#a-print .print-btn {
+#a-print .print-btn,
+#a-print .print2-btn{
     float:right;
     background:#c7000a;
     color:#fff;
@@ -287,10 +288,16 @@
     font-size:12px;
     text-decoration: none;
     cursor:pointer;
+    margin-left:10px;
 }
 
-#a-print .print-btn:hover {
+#a-print .print-btn:hover,
+#a-print .print2-btn:hover {
     opacity: 0.8;
+}
+
+#a-print .print2-btn {
+    background:#688bbf;
 }
 
 
