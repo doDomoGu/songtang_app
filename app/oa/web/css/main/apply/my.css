@@ -372,7 +372,7 @@
     width:90%;
 }
 
-.task-form-section .form-item .item-content input.datepicker-x {
+.task-form-section > .form-item > .item-content > input.datepicker-x  {
     width:160px;
     text-align: right;
 }

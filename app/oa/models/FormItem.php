@@ -210,6 +210,10 @@ class FormItem extends \yii\db\ActiveRecord
                             $line = $temp[1];
                         }else if(count($temp)==3){
                             $options2[$temp[0]] = ['title'=>$temp[1],'width'=>$temp[2]];
+                        }else if(count($temp)==4){
+                            $options2[$temp[0]] = ['title'=>$temp[1],'width'=>$temp[2],'type'=>$temp[3]];
+                        }else if(count($temp)==5){
+                            $options2[$temp[0]] = ['title'=>$temp[1],'width'=>$temp[2],'type'=>$temp[3],'options'=>$temp[4]];
                         }
                     }
 
@@ -221,7 +225,22 @@ class FormItem extends \yii\db\ActiveRecord
 
                     for($i=0;$i<$line;$i++){
                         foreach($options2 as $k=>$v){
-                            $content .= '<span class="table-item-input" style="width:'.$v['width'].'px;">'.Html::textInput($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'').'</span>';
+                            $content .= '<span class="table-item-input" style="width:'.$v['width'].'px;">';
+                            if(isset($v['type'])){
+                                if($v['type']==self::TYPE_DATE){
+                                    $content .= Html::textInput($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'',['class'=>'datepicker-x']);
+                                }else if($v['type']==self::TYPE_NUMBER){
+                                    $content .= Html::textInput($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'',['style'=>'width:'.($v['width']-30).'px']). '&nbsp;'.$v['options'];
+                                }else if($v['type']==self::TYPE_DROPDOWN){
+                                    $dropDownItems = explode('|',$v['options']);
+                                    $content .= Html::dropDownList($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'',$dropDownItems,['style'=>'width:96%;','prompt'=>'--请选择--']);
+                                }else{
+                                    $content .= Html::textInput($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'');
+                                }
+                            }else{
+                                $content .= Html::textInput($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'');
+                            }
+                            $content .= '</span>';
                             //$content = Html::checkboxList($input_key,$value,$options);
                         }
                     }
