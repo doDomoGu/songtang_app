@@ -663,9 +663,16 @@ class ApplyController extends BaseController
 
         $project = [];
         $pinAll = 0;
+        $projectOptions = $options['project']['input_options'];
+        foreach($projectOptions as $opt){
+            $optArr = explode(':',$opt);
+            if($optArr[0]=='item'){
+                $itemArr = explode('|',$optArr[4]);
+            }
+        }
         foreach($options['project']['value'] as $p){
-            if($p['item']!=''){
-                $project[] = ['item'=>$p['item'],'pin'=>$p['pin'],'price'=>$p['price']];
+            if($p['item']!==''){
+                $project[] = ['item'=>$itemArr[$p['item']],'pin'=>$p['pin'],'price'=>$p['price']];
                 $pinAll += intval($p['pin']);
             }
         }
@@ -751,7 +758,6 @@ class ApplyController extends BaseController
             $l++;
             $i++;
         }
-
 
         $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':D'.$l);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '合计金额');
@@ -840,9 +846,17 @@ class ApplyController extends BaseController
 
         $project = [];
         $pinAll = 0;
+
+        $projectOptions = $options['project']['input_options'];
+        foreach($projectOptions as $opt){
+            $optArr = explode(':',$opt);
+            if($optArr[0]=='item'){
+                $itemArr = explode('|',$optArr[4]);
+            }
+        }
         foreach($options['project']['value'] as $p){
             if($p['item']!=''){
-                $project[] = ['item'=>$p['item'],'pin'=>$p['pin'],'price'=>$p['price']];
+                $project[] = ['item'=>$itemArr[$p['item']],'pin'=>$p['pin'],'price'=>$p['price']];
                 $pinAll += intval($p['pin']);
             }
         }
@@ -939,7 +953,6 @@ class ApplyController extends BaseController
             $l++;
             $i++;
         }
-
 
         $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':D'.$l);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '合计金额');
