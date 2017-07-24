@@ -1267,7 +1267,24 @@ class ApplyController extends BaseController
         if($apply){
             //1.发起申请
             $html = '<li><div>发起申请</div><div>操作人：<b>'.$apply->applyUser->name.'</b> 时间：<b>'.$apply->add_time.' </b></div><div>申请信息：<b>'.$apply->message.'</b></div>';
+            $applyFromContent = ApplyFormContent::find()->where(['apply_id'=>$apply->id])->orderBy('ord asc')->all();
+            if(!empty($applyFromContent)){
+                $html.= '<section id="apply-form-content" class="task-form-section">';
+                $html.='<div>表单详情</div>';
+                $html.= FormItem::getHtmlByFormItem($applyFromContent);
+                /*
+                foreach($applyFromContent as $afc){
+                    $valueArr = FormItem::jsonDecodeValue($afc->item_value,$afc->item_key,true);
+                    $html.= '<span class="form-content-item">';
+                    if($valueArr['label_width']>0) {
+                        $html .= '<span class="form-content-label" style="width:' . $valueArr['label_width'] . 'px;">' . $valueArr['label'] . '</span>';
+                    }
+                    $html .= '<span class="form-content-input" style="width:'.$valueArr['input_width'].'px;">'.$valueArr['itemContent'].'</span>';
 
+                    $html .='</span>';
+                }*/
+                $html.= '</section>';
+            }
             $record0 = ApplyRecord::find()->where(['apply_id'=>$id,'step'=>0])->one();
             if($record0){
                 $attchList = json_decode($record0->attachment,true);

@@ -5,6 +5,7 @@ use oa\models\Flow;
 
 
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/operation.js');
+oa\assets\AppAsset::addCssFile($this,'css/main/apply/operation.css');
 oa\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
 oa\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/attachment-upload.js');
