@@ -132,6 +132,10 @@
     background-color: #fdf1bd;
 }
 
+#task-index > .task-content > .task-list > .task-category-list.ul-1 > ul > li a {
+    color: #9b6e02;
+}
+
 #task-index > .task-content > .task-list > .task-category-list.ul-1 > ul > li:nth-child(3n+1){
     margin-left:0;
 }
@@ -150,6 +154,10 @@
     margin-left:0;
 }
 
+#task-index > .task-content > .task-list > .task-category-list.ul-2 > ul > li a {
+    color: #a83238;
+}
+
 #task-index > .task-content > .task-list > .task-category-list.ul-3 {
     width:171px;
 }
@@ -161,6 +169,10 @@
 
 #task-index > .task-content > .task-list > .task-category-list.ul-3 > ul > li:nth-child(2n+1){
     margin-left:0;
+}
+
+#task-index > .task-content > .task-list > .task-category-list.ul-3 > ul > li a {
+    color: #565ea3;
 }
 
 
@@ -175,6 +187,10 @@
 
 #task-index > .task-content > .task-list > .task-category-list.ul-4 > ul > li{
     margin-left:0;
+}
+
+#task-index > .task-content > .task-list > .task-category-list.ul-4 > ul > li a {
+    color: #4c682b;
 }
 
 /*
