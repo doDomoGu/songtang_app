@@ -870,6 +870,7 @@ class ApplyController extends BaseController
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', '差旅费报销单');
         $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setName('微软雅黑')->setSize(16)->setBold(true);
 
         $objPHPExcel->getActiveSheet()->mergeCells('G1:I3');
         $objDrawing = new \PHPExcel_Worksheet_Drawing();
@@ -877,10 +878,11 @@ class ApplyController extends BaseController
         $objDrawing->setDescription('Photo');
         $objDrawing->setPath('../web/images/code.jpg');
         $objDrawing->setHeight(19);
-        $objDrawing->setWidth(108);
+        //$objDrawing->setWidth(108);
+        $objDrawing->setOffsetX(20);
         $objDrawing->setCoordinates('G1');
         $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
-        $objPHPExcel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        /*$objPHPExcel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);*/
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', 'V2.0');
 
