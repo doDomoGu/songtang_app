@@ -866,84 +866,103 @@ class ApplyController extends BaseController
         // Create new PHPExcel object
         $objPHPExcel = new \PHPExcel();
 
-        $objPHPExcel->getActiveSheet()->mergeCells('A1:F2');
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', '差旅费报销单');
-        $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setName('微软雅黑')->setSize(16)->setBold(true);
 
-        $objPHPExcel->getActiveSheet()->mergeCells('G1:I3');
+        $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setName("微软雅黑")->setSize(10)->setBold(true);
+
+        $objSheet = $objPHPExcel->getActiveSheet();
+        $objSheet->getColumnDimension('A')->setWidth(61/6); //设置列宽
+        $objSheet->getColumnDimension('B')->setWidth(62/6); //设置列宽
+        $objSheet->getColumnDimension('C')->setWidth(58/6); //设置列宽
+        $objSheet->getColumnDimension('D')->setWidth(68/6); //设置列宽
+        $objSheet->getColumnDimension('E')->setWidth(68/6); //设置列宽
+        $objSheet->getColumnDimension('F')->setWidth(56/6); //设置列宽
+        $objSheet->getColumnDimension('G')->setWidth(62/6); //设置列宽
+        $objSheet->getColumnDimension('H')->setWidth(62/6); //设置列宽
+        $objSheet->getColumnDimension('I')->setWidth(180/6); //设置列宽
+
+        $objSheet->getRowDimension('1')->setRowHeight(80/6); //设置行高
+
+
+        $objPHPExcel->getActiveSheet()->mergeCells('A17:F18');
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A17', '差旅费报销单');
+        $objPHPExcel->getActiveSheet()->getStyle('A17')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A17')->getFont()->setName('微软雅黑')->setSize(16)->setBold(true);
+
+        $objPHPExcel->getActiveSheet()->mergeCells('G17:I19');
         $objDrawing = new \PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Photo');
         $objDrawing->setDescription('Photo');
         $objDrawing->setPath('../web/images/code.jpg');
         $objDrawing->setHeight(19);
         //$objDrawing->setWidth(108);
-        $objDrawing->setOffsetX(20);
-        $objDrawing->setCoordinates('G1');
+        $objDrawing->setOffsetX(40);
+        $objDrawing->setOffsetY(40);
+        $objDrawing->setCoordinates('G17');
         $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
         /*$objPHPExcel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);*/
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', 'V2.0');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A19', 'V2.0');
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4', '申请日期');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D4', '费用部门');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G4', '附件');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A20', '申请日期');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D20', '费用部门');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G20', '附件');
 
-        $objPHPExcel->getActiveSheet()->mergeCells('B4:C4');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B4', substr($apply->add_time,0,10));
-        $objPHPExcel->getActiveSheet()->mergeCells('E4:F4');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E4', $user->departmentFullRoute);
-        $objPHPExcel->getActiveSheet()->mergeCells('H4:I4');
+        $objPHPExcel->getActiveSheet()->mergeCells('B20:C20');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B20', substr($apply->add_time,0,10));
+        $objPHPExcel->getActiveSheet()->mergeCells('E20:F20');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E20', $user->departmentFullRoute);
+        $objPHPExcel->getActiveSheet()->mergeCells('H20:I20');
         /*$record = ApplyRecord::find()->where(['apply_id'=>$apply->id,'step'=>0])->one();
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H4', $record->attacment!='[]'?'有':'无');*/
 
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A5', '报销人员');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D5', '职务');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', '报销公司');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A21', '报销人员');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D21', '职务');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G21', '报销公司');
 
-        $objPHPExcel->getActiveSheet()->mergeCells('B5:C5');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B5', $user->username);
-        $objPHPExcel->getActiveSheet()->mergeCells('E5:F5');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E5', $user->position->name);
-        $objPHPExcel->getActiveSheet()->mergeCells('H5:I5');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H5', $company);
+        $objPHPExcel->getActiveSheet()->mergeCells('B21:C21');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B21', $user->username);
+        $objPHPExcel->getActiveSheet()->mergeCells('E21:F21');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E21', $user->position->name);
+        $objPHPExcel->getActiveSheet()->mergeCells('H21:I21');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H21', $company);
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A6', '出差日期');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D6', '返回日期');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G6', '出差天数');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A22', '出差日期');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D22', '返回日期');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G22', '出差天数');
 
-        $objPHPExcel->getActiveSheet()->mergeCells('B6:C6');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B6', $options['day']['value']);
-        $objPHPExcel->getActiveSheet()->mergeCells('E6:F6');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E6', $options['day2']['value']);
-        $objPHPExcel->getActiveSheet()->mergeCells('H6:I6');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H6', $options['daynum']['value']);
+        $objPHPExcel->getActiveSheet()->mergeCells('B22:C22');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B22', $options['day']['value']);
+        $objPHPExcel->getActiveSheet()->mergeCells('E22:F22');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E22', $options['day2']['value']);
+        $objPHPExcel->getActiveSheet()->mergeCells('H22:I22');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H22', $options['daynum']['value']);
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A7', '同行人员');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D7', '报销事由');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A23', '同行人员');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D23', '报销事由');
 
-        $objPHPExcel->getActiveSheet()->mergeCells('B7:C7');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B7', $options['people']['value']);
-        $objPHPExcel->getActiveSheet()->mergeCells('E7:I7');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E7', $options['reason']['value']);
+        $objPHPExcel->getActiveSheet()->mergeCells('B23:C23');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B23', $options['people']['value']);
+        $objPHPExcel->getActiveSheet()->mergeCells('E23:I23');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E23', $options['reason']['value']);
 
 
-        $objPHPExcel->getActiveSheet()->mergeCells('B8:D8');
-        $objPHPExcel->getActiveSheet()->mergeCells('F8:I8');
+        $objPHPExcel->getActiveSheet()->mergeCells('B24:D24');
+        $objPHPExcel->getActiveSheet()->mergeCells('F24:I24');
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A8', '序号');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B8', '项目');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E8', '凭证数量');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8', '合计金额');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A24', '序号');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B24', '项目');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E24', '凭证数量');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F24', '合计金额');
 
-        $objPHPExcel->getActiveSheet()->getStyle('A8')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle('B8')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle('E8')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle('F8')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A24')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('B24')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('E24')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('F24')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
         $i = 1;
-        $l = 9;
+        $l = 25;
         foreach($project as $p){
             $objPHPExcel->getActiveSheet()->mergeCells('B'.$l.':D'.$l);
             $objPHPExcel->getActiveSheet()->mergeCells('F'.$l.':I'.$l);
