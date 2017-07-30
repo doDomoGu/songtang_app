@@ -881,7 +881,13 @@ class ApplyController extends BaseController
         $objSheet->getColumnDimension('H')->setWidth(62/6); //设置列宽
         $objSheet->getColumnDimension('I')->setWidth(180/6); //设置列宽
 
-        $objSheet->getRowDimension('1')->setRowHeight(80/6); //设置行高
+        for($ii = 1;$ii<17;$ii++){
+            $objSheet->getRowDimension($ii)->setRowHeight(16); //设置行高
+        }
+        for($ii = 17;$ii<33;$ii++){
+            $objSheet->getRowDimension($ii)->setRowHeight(18); //设置行高
+        }
+
 
 
         $objPHPExcel->getActiveSheet()->mergeCells('A17:F18');
