@@ -889,6 +889,26 @@ class ApplyController extends BaseController
         }
 
 
+        $objSheet->getStyle('A17')->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('B17')->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('C17')->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('D17')->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('E17')->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('F17')->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+
+        $objSheet->getStyle('A17')->getBorders()->getLeft()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('A18')->getBorders()->getLeft()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('F17')->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('F18')->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+
+        $objSheet->getStyle('A18')->getBorders()->getBottom()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('B18')->getBorders()->getBottom()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('C18')->getBorders()->getBottom()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('D18')->getBorders()->getBottom()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('E18')->getBorders()->getBottom()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('F18')->getBorders()->getBottom()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+
+
 
         $objPHPExcel->getActiveSheet()->mergeCells('A17:F18');
 
@@ -900,12 +920,12 @@ class ApplyController extends BaseController
         $objDrawing = new \PHPExcel_Worksheet_Drawing();
         $objDrawing->setName('Photo');
         $objDrawing->setDescription('Photo');
-        $objDrawing->setPath('../web/images/code.jpg');
-        $objDrawing->setHeight(19);
-        //$objDrawing->setWidth(108);
-        $objDrawing->setOffsetX(40);
-        $objDrawing->setOffsetY(40);
+        $objDrawing->setPath('../web/images/code2.png');
         $objDrawing->setCoordinates('G17');
+        $objDrawing->setHeight(40);
+        //$objDrawing->setWidth(108);
+        $objDrawing->setOffsetX(20);
+        $objDrawing->setOffsetY(20);
         $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
         /*$objPHPExcel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);*/
 
