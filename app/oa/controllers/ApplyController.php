@@ -876,6 +876,16 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
         //$objPHPExcel->getActiveSheet()->getStyle('A2')->getBorders()->getAllBorders()->setBorderStyle(\PHPExcel_Style_Border::BORDER_NONE);
 
         $objSheet = $objPHPExcel->getActiveSheet();
+
+
+        /*foreach($arr as $a) {
+            $objSheet->getStyle($a . '13')->getBorders()->getAllBorders()->setBorderStyle(\PHPExcel_Style_Border::BORDER_NONE);
+            $objSheet->getStyle($a . '14')->getBorders()->getAllBorders()->setBorderStyle(\PHPExcel_Style_Border::BORDER_NONE);
+            $objSheet->getStyle($a . '15')->getBorders()->getAllBorders()->setBorderStyle(\PHPExcel_Style_Border::BORDER_NONE);
+            $objSheet->getStyle($a . '16')->getBorders()->getAllBorders()->setBorderStyle(\PHPExcel_Style_Border::BORDER_NONE);
+        }*/
+
+
         $objSheet->getColumnDimension('A')->setWidth(61/6); //设置列宽
         $objSheet->getColumnDimension('B')->setWidth(62/6); //设置列宽
         $objSheet->getColumnDimension('C')->setWidth(58/6); //设置列宽
@@ -921,6 +931,7 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
 
         foreach($arr as $a) {
             $objSheet->getStyle($a . '14')->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_NONE);
+
         }
 
         $objPHPExcel->getActiveSheet()->mergeCells('A15:I16');
@@ -1034,6 +1045,7 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
 
         $objPHPExcel->getActiveSheet()->mergeCells('B20:C20');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B20', substr($apply->add_time,0,10));
+        $objPHPExcel->getActiveSheet()->getStyle('B20')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->mergeCells('E20:F20');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E20', $user->departmentFullRoute);
         $objPHPExcel->getActiveSheet()->mergeCells('H20:I20');
@@ -1058,16 +1070,20 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
 
         $objPHPExcel->getActiveSheet()->mergeCells('B22:C22');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B22', $options['day']['value']);
+        $objPHPExcel->getActiveSheet()->getStyle('B22')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->mergeCells('E22:F22');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E22', $options['day2']['value']);
+        $objPHPExcel->getActiveSheet()->getStyle('E22')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->mergeCells('H22:I22');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H22', $options['daynum']['value']);
+        $objPHPExcel->getActiveSheet()->getStyle('H22')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A23', '同行人员');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D23', '报销事由');
 
         $objPHPExcel->getActiveSheet()->mergeCells('B23:C23');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B23', $options['people']['value']);
+        $objPHPExcel->getActiveSheet()->getStyle('B23')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->mergeCells('E23:I23');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E23', $options['reason']['value']);
 
@@ -1095,6 +1111,11 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, $p['pin']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$l, $p['price']);
 
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('B'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('E'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('F'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
 
             foreach($arr as $a){
                 $objSheet->getStyle($a.$l)->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
@@ -1113,10 +1134,12 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
 
         $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':D'.$l);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '合计金额');
-        $objPHPExcel->getActiveSheet()->getStyle('A'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, $pinAll);
-
+        $objPHPExcel->getActiveSheet()->getStyle('E'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         $objPHPExcel->getActiveSheet()->mergeCells('F'.$l.':I'.$l);
 
@@ -1183,6 +1206,75 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
         $objSheet->getStyle('E'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
         $objSheet->getStyle('I'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
 
+
+        $l++;
+        $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':B'.$l);
+        $objPHPExcel->getActiveSheet()->getStyle('A'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '审批流程');
+        $objPHPExcel->getActiveSheet()->mergeCells('C'.$l.':D'.$l);
+        $objPHPExcel->getActiveSheet()->getStyle('C'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$l, '签名');
+        $objPHPExcel->getActiveSheet()->mergeCells('E'.$l.':F'.$l);
+        $objPHPExcel->getActiveSheet()->getStyle('E'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, '批示');
+        $objPHPExcel->getActiveSheet()->mergeCells('G'.$l.':H'.$l);
+        $objPHPExcel->getActiveSheet()->getStyle('G'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$l, '批注');
+        $objPHPExcel->getActiveSheet()->getStyle('I'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$l, '时间');
+
+        foreach($arr as $a){
+            $objSheet->getStyle($a.$l)->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        }
+        $objSheet->getStyle('A'.$l)->getBorders()->getLeft()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('B'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('D'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('F'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('H'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('I'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+
+
+        $l++;
+        $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':B'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '审批流程');
+        $objPHPExcel->getActiveSheet()->mergeCells('C'.$l.':D'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$l, '签名');
+        $objPHPExcel->getActiveSheet()->mergeCells('E'.$l.':F'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, '批示');
+        $objPHPExcel->getActiveSheet()->mergeCells('G'.$l.':H'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$l, '批注');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$l, '时间');
+
+        foreach($arr as $a){
+            $objSheet->getStyle($a.$l)->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        }
+        $objSheet->getStyle('A'.$l)->getBorders()->getLeft()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('B'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('D'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('F'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('H'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('I'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+
+        $l++;
+        $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':B'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '审批流程');
+        $objPHPExcel->getActiveSheet()->mergeCells('C'.$l.':D'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$l, '签名');
+        $objPHPExcel->getActiveSheet()->mergeCells('E'.$l.':F'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, '批示');
+        $objPHPExcel->getActiveSheet()->mergeCells('G'.$l.':H'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$l, '批注');
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$l, '时间');
+
+        foreach($arr as $a){
+            $objSheet->getStyle($a.$l)->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        }
+        $objSheet->getStyle('A'.$l)->getBorders()->getLeft()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('B'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('D'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('F'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('H'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+        $objSheet->getStyle('I'.$l)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
 
 
 
