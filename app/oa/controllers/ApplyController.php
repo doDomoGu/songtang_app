@@ -874,7 +874,7 @@ class ApplyController extends BaseController
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G21', '报销公司');
 
         $objPHPExcel->getActiveSheet()->mergeCells('B21:C21');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B21', $user->username);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B21', $user->name);
         $objPHPExcel->getActiveSheet()->mergeCells('E21:F21');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E21', $user->position->name);
         $objPHPExcel->getActiveSheet()->mergeCells('H21:I21');
@@ -1343,7 +1343,7 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G21', '报销公司');
 
         $objPHPExcel->getActiveSheet()->mergeCells('B21:C21');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B21', $user->username);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B21', $user->name);
         $objPHPExcel->getActiveSheet()->mergeCells('E21:F21');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E21', $user->position->name);
         $objPHPExcel->getActiveSheet()->mergeCells('H21:I21');
@@ -1715,7 +1715,7 @@ $l++;
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$l, '职务');
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, '付款公司');
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$l, $user->username);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$l, $user->name);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$l, $user->position->name);
         $objPHPExcel->getActiveSheet()->mergeCells('F'.$l.':G'.$l);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$l, $options['company']['value']);
