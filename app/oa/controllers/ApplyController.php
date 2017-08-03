@@ -1645,59 +1645,61 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
         $objPHPExcel = new \PHPExcel();
 
         $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setName("微软雅黑")->setSize(12)->setBold(true);
+        $objPHPExcel->getActiveSheet()->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
         $objSheet = $objPHPExcel->getActiveSheet();
 
-        $objSheet->getColumnDimension('A')->setWidth(68/6); //设置列宽
-        $objSheet->getColumnDimension('B')->setWidth(134/6); //设置列宽
+        $objSheet->getColumnDimension('A')->setWidth(67/6); //设置列宽
+        $objSheet->getColumnDimension('B')->setWidth(121/6); //设置列宽
         $objSheet->getColumnDimension('C')->setWidth(69/6); //设置列宽
-        $objSheet->getColumnDimension('D')->setWidth(145/6); //设置列宽
+        $objSheet->getColumnDimension('D')->setWidth(123/6); //设置列宽
         $objSheet->getColumnDimension('E')->setWidth(84/6); //设置列宽
         $objSheet->getColumnDimension('F')->setWidth(62/6); //设置列宽
-        $objSheet->getColumnDimension('G')->setWidth(147/6); //设置列宽
+        $objSheet->getColumnDimension('G')->setWidth(107/6); //设置列宽
 
-
-        for($ii = 1;$ii<16;$ii++){
+$l = 19;
+        for($ii = 1;$ii<$l+4;$ii++){
             $objSheet->getRowDimension($ii)->setRowHeight(18); //设置行高
         }
-        for($ii = 16;$ii<40;$ii++){
+        for($ii = $l+4;$ii<50;$ii++){
             $objSheet->getRowDimension($ii)->setRowHeight(30); //设置行高
         }
 
 
 
 
-        $objPHPExcel->getActiveSheet()->mergeCells('A1:G12');
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:G'.$l);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1','票据粘贴区域，请粘贴单据后剪切………');
         $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(false);
-        $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-        $objPHPExcel->getActiveSheet()->mergeCells('A13:G13');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A13','请沿此线剪切单据，然后粘贴在报销单左上角');
-        $objPHPExcel->getActiveSheet()->getStyle('A13')->getFont()->setBold(false);
-        $objPHPExcel->getActiveSheet()->getStyle('A13')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+        $l++;
+        $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':G'.$l);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l,'请沿此线剪切单据，然后粘贴在报销单左上角');
+        $objPHPExcel->getActiveSheet()->getStyle('A'.$l)->getFont()->setBold(false);
+        $objPHPExcel->getActiveSheet()->getStyle('A'.$l)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 
         foreach($arr as $a) {
             $objSheet->getStyle($a . '1')->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_DASHED);
         }
 
-        for($ii=1;$ii<=13;$ii++){
+        for($ii=1;$ii<=$l;$ii++){
             $objSheet->getStyle('A'.$ii)->getBorders()->getLeft()->setBorderStyle(\PHPExcel_Style_Border::BORDER_DASHED);
             $objSheet->getStyle('G'.$ii)->getBorders()->getRight()->setBorderStyle(\PHPExcel_Style_Border::BORDER_DASHED);
         }
 
         foreach($arr as $a) {
-            $objSheet->getStyle($a . '13')->getBorders()->getBottom()->setBorderStyle(\PHPExcel_Style_Border::BORDER_DASHED);
+            $objSheet->getStyle($a . $l)->getBorders()->getBottom()->setBorderStyle(\PHPExcel_Style_Border::BORDER_DASHED);
         }
 
         foreach($arr as $a) {
-            $objSheet->getStyle($a . '13')->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_NONE);
+            $objSheet->getStyle($a . $l)->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_NONE);
 
         }
 
-        $objPHPExcel->getActiveSheet()->mergeCells('A14:G15');
+        $objPHPExcel->getActiveSheet()->mergeCells('A'.($l+1).':G'.($l+2));
 
-$l=16;
+$l= $l+3;
         $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':G'.$l);
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$l, '对公付款申请');
@@ -1855,7 +1857,7 @@ $l++;
         $objPHPExcel->getActiveSheet()->mergeCells('B'.$l.':C'.$l);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$l, $options['bank']['value']);
         $objPHPExcel->getActiveSheet()->mergeCells('E'.$l.':G'.$l);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$l, $options['account']['value']);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValueExplicit('E'.$l, $options['account']['value'],\PHPExcel_Cell_DataType::TYPE_STRING);
 
         foreach($arr as $a){
             $objSheet->getStyle($a.$l)->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
