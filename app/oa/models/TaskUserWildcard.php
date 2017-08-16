@@ -32,6 +32,7 @@ class TaskUserWildcard extends \yii\db\ActiveRecord
 
     public function getUsers(){
         $query = User::find();
+        $query->where(['status'=>1]);
         if($this->district_id>10000){
             $query->andWhere(['district_id'=>$this->district_id]);
         }
