@@ -133,7 +133,8 @@ class TestController extends Controller
             mail('71936410@qq.com','songtang error',$e->getMessage(),$headers);
             exit();
         }
-
+        mail('71936410@qq.com','songtang no error mail','no error');
+        //error_log('songtang no error',1,'71936410@qq.com');
         echo "finish\n";
         exit;
 
