@@ -4,6 +4,7 @@ namespace console\controllers;
 use ucenter\models\User;
 use ucenter\models\UserAppAuth;
 use Yii;
+use yii\base\Exception;
 use yii\console\Controller;
 
 class TestController extends Controller
@@ -120,6 +121,33 @@ class TestController extends Controller
     }
 
 
+    public function actionAlarm(){
+        try {
+            User::find()->count();
 
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            echo "\n";
+            $headers = "Content-type:text/html;charset=utf-8" . "\r\n";
+
+            mail('71936410@qq.com','songtang error',$e->getMessage(),$headers);
+            exit();
+        }
+
+        echo "finish\n";
+        exit;
+
+        /*try {
+            $mgr = new CommandManager();
+            $cmd = $mgr->getCommandObject("realcommand");
+            $cmd->execute();
+        } catch (Exception $e) {
+            print $e->getMessage();
+            exit();
+        }
+        $user_count = User::find()->count();*/
+
+
+    }
 
 }
