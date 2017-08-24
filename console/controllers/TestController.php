@@ -122,17 +122,21 @@ class TestController extends Controller
 
 
     public function actionAlarm(){
+        //$headers = "Content-type:text/html;charset=utf-8" . "\r\n";
         try {
             User::find()->count();
 
         } catch (Exception $e) {
             echo $e->getMessage();
             echo "\n";
-            $headers = "Content-type:text/html;charset=utf-8" . "\r\n";
 
-            mail('71936410@qq.com','songtang error',$e->getMessage(),$headers);
+
+            mail('71936410@qq.com','songtang error',$e->getMessage());
             exit();
         }
+
+
+
         mail('71936410@qq.com','songtang no error mail','no error');
         //error_log('songtang no error',1,'71936410@qq.com');
         echo "finish\n";
