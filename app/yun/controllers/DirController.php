@@ -859,7 +859,7 @@ var_dump($file_path==$file_path2);exit;
         $file_id = Yii::$app->request->post('file_id');
         $filename_new = Yii::$app->request->post('filename_new');
         $filename_new = trim($filename_new);
-        $file = File::find()->where(['id'=>$file_id,'status'=>1,'user_id'=>Yii::$app->user->id])->one();
+        $file = File::find()->where(['id'=>$file_id,'status'=>1/*,'user_id'=>Yii::$app->user->id*/])->one();
         if($file && $filename_new!=''){
             if($file->p_id>0){
                 $exist = File::find()->where(['filename'=>$filename_new,'p_id'=>$file->p_id])->andWhere(['<>','filename',$file->filename])->all();

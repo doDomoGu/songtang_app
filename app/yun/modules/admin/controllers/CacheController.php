@@ -40,4 +40,9 @@ class CacheController extends BaseController
 
         return $this->render('index',$params);
     }
+
+    public function actionTemp(){
+        $cache = Yii::$app->cache;
+        $cache->delete('dir-children-data');
+    }
 }
