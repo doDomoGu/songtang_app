@@ -64,7 +64,7 @@
                             <?=Html::Button('<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>',['class'=> 'btn disabled'])?>
                         <?php endif;?>
                         <?php //TODO
-                        if(yii::$app->user->id==10005 || $l->user_id==yii::$app->user->id):?>
+                        if(in_array(yii::$app->user->id,[10000,10003,10005]) || $l->user_id==yii::$app->user->id):?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-is_dir'=>0,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>
@@ -73,7 +73,7 @@
                         <?php endif;?>
 
                     <?php else:?>
-                        <?php if(yii::$app->user->id==10005 || $l->user_id==yii::$app->user->id):?>
+                        <?php if(in_array(yii::$app->user->id,[10000,10003,10005]) || $l->user_id==yii::$app->user->id):?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-is_dir'=>1,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>
