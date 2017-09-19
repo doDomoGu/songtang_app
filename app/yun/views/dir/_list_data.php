@@ -7,7 +7,7 @@
 ?>
 <?php foreach($list as $l):?>
     <?php $downloadCheck = DirPermission::isFileAllow($l->dir_id,$l->id,DirPermission::OPERATION_DOWNLOAD);?>
-    <div class="list-item list-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=$l->user_id==yii::$app->user->id?'delete-enable':'delete-disable'?>" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
+    <div class="list-item list-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=(in_array(yii::$app->user->id,[10000,10003,10005]) || $l->user_id==yii::$app->user->id)?'delete-enable':'delete-disable'?>" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
         <div class="info">
             <div class="file-check">
                 <input type="checkbox" name="cb[]" class="file-checkbox" value="<?=$l->id?>" />

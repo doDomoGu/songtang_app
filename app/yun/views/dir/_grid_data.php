@@ -9,7 +9,7 @@
         $downloadCheck = DirPermission::isFileAllow($l->dir_id,$l->id,DirPermission::OPERATION_DOWNLOAD);
         $filethumb = ($downloadCheck && in_array($l->filetype,$this->context->thumbTypeArr))?true:false;
     ?>
-    <div class="list-item grid-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=$l->user_id==yii::$app->user->id?'delete-enable':'delete-disable'?> <?=$l->filetype==0?'is-dir':'is-file'?> text-center" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
+    <div class="list-item grid-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=(in_array(yii::$app->user->id,[10000,10003,10005]) || $l->user_id==yii::$app->user->id)?'delete-enable':'delete-disable'?> <?=$l->filetype==0?'is-dir':'is-file'?> text-center" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
         <div class="icon <?=$filethumb?'filethumb_icon':''?>">
             <?php if($filethumb):?>
                 <span class="filethumb" data-id="<?=$l->id?>">
