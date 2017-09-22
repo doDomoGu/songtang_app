@@ -658,7 +658,13 @@ var_dump($file_path==$file_path2);exit;
 
     public function actionDelete(){
         $id = Yii::$app->request->get('id');
-        $file = File::find()->where(['id'=>$id,'status'=>1,'user_id'=>Yii::$app->user->id])->one();
+
+        $file = File::find()->where(['id'=>$id,'status'=>1])
+        if(!in_array(Yii::$app->user->id,[10000,10003,10004,10005])){
+            $file = $file->addWhere(['user_id'=>Yii::$app->user->id]);
+        }
+
+        $file = $file->one();
         if($file){
             $file->status = 0;
             if($file->save()){
