@@ -59,7 +59,7 @@ class UserAppAuth extends \yii\db\ActiveRecord
     }
 
     public static function getAuthList($user_id){
-        $superAdminArr = [10000,10001,10003,10004];
+        $superAdminArr = [10000,10001,10003,10004,10005];
 
         $appAuthList = UserAppAuth::find()->where(['user_id'=>$user_id])->all();
         $appAuthArr = [];
