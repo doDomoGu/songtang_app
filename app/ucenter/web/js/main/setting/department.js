@@ -8,11 +8,17 @@ $(function () {
             dataType: 'json',
             data: {
                 name: $('#createContent .create-name').val(),
-                alias: $('#createContent .create-alias').val()
+                alias: $('#createContent .create-alias').val(),
+                p_id: $('#createContent .department_p_id').val()
             },
             success: function (data) {
                 if(data.result){
-                    location.href='/setting/department';
+                    var p_id= $('#createContent .department_p_id').val();
+                    if(p_id>0){
+                        location.href='/setting/department?p_id='+p_id;
+                    }else{
+                        location.href='/setting/department';
+                    }
                 }else{
                     $('#createContent .errormsg-text').html(data.errormsg).show();
 
@@ -46,7 +52,12 @@ $(function () {
             },
             success: function (data) {
                 if(data.result){
-                    location.href='/setting/department';
+                    var p_id= $('#createContent .department_p_id').val();
+                    if(p_id>0){
+                        location.href='/setting/department?p_id='+p_id;
+                    }else{
+                        location.href='/setting/department';
+                    }
                 }else{
                     $('#editContent .errormsg-text').html(data.errormsg).show();
 

@@ -88,13 +88,7 @@ Modal::begin([
 ?>
     <div id="createContent">
         <form class="form-horizontal" role="form">
-            <div class="form-group">
-                <label class="col-sm-4 control-label">父层级</label>
-                <div class="col-sm-6" style="padding-top: 7px;">
-                    <input class="p_id-value" type="hidden" />
-                    <span class="parent-name-text"></span>
-                </div>
-            </div>
+            <input type="hidden" class="department_p_id"  value="<?=$p_id?>" />
             <div class="form-group">
                 <label class="col-sm-4 control-label">名称</label>
                 <div class="col-sm-6">
