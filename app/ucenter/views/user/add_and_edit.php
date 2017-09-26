@@ -49,7 +49,7 @@
 <?= $form->field($model, 'industry_id')->dropDownList(Industry::getItems()) ?>
 <?= $form->field($model, 'company_id')->dropDownList(Company::getItems()) ?>
 <?= $form->field($model, 'department_id')->dropDownList(Department::getItems(),['encode'=>false]) ?>
-<?= $form->field($model, 'position_id')->dropDownList(Position::getItems()) ?>
+<?= $form->field($model, 'position_id')->dropDownList(Position::getItems(),['encode'=>false]) ?>
         <?= $form->field($model, 'gender')->dropDownList([0=>'N/A',1=>'男',2=>'女']) ?>
 
         <?= $form->field($model, 'mobile') ?>
