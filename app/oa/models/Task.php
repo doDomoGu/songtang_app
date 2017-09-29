@@ -61,7 +61,7 @@ class Task extends \yii\db\ActiveRecord
         $typeList = TaskCategory::getTypeList();
         $return = '';
         foreach($list as $k=>$types){
-            $return .= '<span style="color:#999;">'.$typeList[$k].'</span> : '.implode(' , ',$types).'<br/>';
+            $return .= '<span style="color:#999;display:block;float:left;width:70px;">'.$typeList[$k].' : </span><span style="display:block;float:left;width:200px;">'.implode(' , ',$types).'</span><br/>';
         }
 
 
@@ -99,7 +99,7 @@ class Task extends \yii\db\ActiveRecord
         foreach($list as $k=>$forms){
 
 
-            $return .= '<span style="color:#999;">'.$categoryList[$k].'</span> : '.implode(' , ',$forms).'<br/>';
+            $return .= '<span style="display:block;float:left;width:100%;"><span style="color:#999;display:block;float:left;width:92px;">'.$categoryList[$k].':</span><span style="display:block;float:left;width:140px;">'.implode(' , ',$forms).'</span></span><br/>';
         }
 
 

@@ -16,11 +16,21 @@
         <?=Html::button('新增模板',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
+        <!--<tr>
+            <th>-</th>
+            <th><input /></th>
+            <th>--</th>
+            <th>--</th>
+            <th>--</th>
+            <th>
+                <button >检索</button>
+            </th>
+        </tr>-->
         <tr>
             <th>#</th>
-            <th>模板标题</th>
-            <th width="200">所属分类</th>
-            <th width="200">表单分配</th>
+            <th width="300">模板标题</th>
+            <th width="300">所属分类</th>
+            <th width="250">表单分配</th>
             <!--<th width="200">关联表单</th>-->
             <!-- <th width="100">所属地区 </th>-->
             <!--<th>所属行业</th>-->
