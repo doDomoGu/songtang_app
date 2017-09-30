@@ -16,16 +16,16 @@
         <?=Html::button('新增模板',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
-        <!--<tr>
+        <tr>
             <th>-</th>
-            <th><input /></th>
+            <th><input name="search[title]" value="<?=$search['title']?>"  class="search_cond" /></th>
             <th>--</th>
             <th>--</th>
             <th>--</th>
             <th>
-                <button >检索</button>
+                <button class="btn btn-primary btn-xs" id="search-btn">检索</button>
             </th>
-        </tr>-->
+        </tr>
         <tr>
             <th>#</th>
             <th width="300">模板标题</th>

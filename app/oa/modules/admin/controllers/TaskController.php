@@ -63,9 +63,27 @@ class TaskController extends BaseController
 
     public function actionIndex()
     {
-        $aid = Yii::$app->request->get('aid',false);
-        $bid = Yii::$app->request->get('bid',false);
+        //$aid = Yii::$app->request->get('aid',false);
+        //$bid = Yii::$app->request->get('bid',false);
+        $search = [
+            'title'=>''
+        ];
+        $search2 = Yii::$app->request->get('search',[]);
+
+        foreach($search2 as $k=>$v){
+            if(isset($search[$k])){
+                $search[$k] = $v;
+            }
+        }
+
+
         $query = Task::find();
+
+        foreach($search as $k=>$v){
+            if($v!=''){
+                $query = $query->andWhere($k.' like "%'.$v.'%"');
+            }
+        }
 
         $count = $query->count();
         $pageSize = 20;
@@ -81,13 +99,14 @@ class TaskController extends BaseController
         /*$params['districtArr'] = District::getNameArr();
         $params['industryArr'] = Industry::getNameArr();
         $params['companyArr'] = Company::getNameArr();*/
-        $params['pArr'] = Position::getNameArr();
-        $params['industryArr2'] = District::getIndustryRelationsArr($aid);
+        //$params['pArr'] = Position::getNameArr();
+        //$params['industryArr2'] = District::getIndustryRelationsArr($aid);
 
-        $params['aid'] = $aid;
-        $params['bid'] = $bid;
+        //$params['aid'] = $aid;
+        //$params['bid'] = $bid;
         $params['taskCategoryList'] = TaskCategory::getDropdownList();
         $params['formList'] = Form::getDropdownList();
+        $params['search'] = $search;
         return $this->render('index',$params);
     }
 

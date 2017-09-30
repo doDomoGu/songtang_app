@@ -278,4 +278,52 @@ $(function () {
     });*/
 
 
+
+    $('#search-btn').click(function(){
+        var par = '';
+        var page = $('.pagination li.active a').html();
+        if(page>1){
+            par += 'page='+page;
+        }
+
+        $('.search_cond').each(function() {
+            if (par != '') {
+                par += '&';
+            }
+            par += this.name + '=' + this.value;
+        });
+        location.href = '/admin/task/index?'+par;
+
+        /*
+
+        $('#editContent .errormsg-text').html('').hide();
+        var category_ids = [];
+        $('input[name="edit-category-select[]"]:checked').each(function(){
+            category_ids.push($(this).val());
+        });
+
+        var category_id = category_ids.join(',');
+
+        $.ajax({
+            url: '/admin/task/edit',
+            type: 'post',
+            //async : false,
+            dataType: 'json',
+            data: {
+                task_id: $('#editContent .edit-task_id').val(),
+                title: $('#editContent .edit-title').val(),
+                category_id: category_id
+            },
+            success: function (data) {
+                if(data.result){
+                    location.href='/admin/task';
+                }else{
+                    $('#editContent .errormsg-text').html(data.errormsg).show();
+
+                }
+            }
+        });*/
+    });
+
+
 });
