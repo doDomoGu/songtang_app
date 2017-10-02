@@ -209,7 +209,7 @@ class DirController extends BaseController
             }
 
         }*/
-        
+
     }
 
 
@@ -218,7 +218,7 @@ class DirController extends BaseController
         $ord = 1;
         foreach($dir as $d){
             $d->ord = $ord;
-            $d->last = $ord == count($dir)?1:0;
+            $d->is_last = $ord == count($dir)?1:0;
             $d->save();
 
             $this->fixOrd($d->id);
