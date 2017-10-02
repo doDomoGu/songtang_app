@@ -103,9 +103,9 @@ class DirController extends BaseController
                     $lastDir->is_last = 0;
                     $lastDir->save();
                     //赋予新建的目录ord = lastDir->ord - 1  is_last = 1
-                    $dir->ord = $lastDir->ord - 1;
+                    $dir->ord = $lastDir->ord + 1;
                 }else{
-                    $dir->ord = 99;
+                    $dir->ord = 1;
                 }
                 $dir->is_last = 1;
 
@@ -186,6 +186,43 @@ class DirController extends BaseController
         $keyList = YunFunc::$cacheKeyList;
         foreach($keyList['dir'] as $k){
             $cache->delete('yun:dir/'.$k);
+        }
+    }
+
+    public function actionFixOrd(){
+
+
+        $this->fixOrd(0);
+        /*$dir1 = Dir::find()->where(['p_id'=>0])->orderBy('id asc')->all();
+
+        foreach($dir1 as $d1){
+
+            $dir2 = Dir::find()->where(['p_id'=>$d1->id])->orderBy('id asc')->all();
+
+            $ord = 1;
+            foreach($dir2 as $d2){
+                $d2->ord = $ord;
+                $d2->last = $ord == count($dir2)?1:0;
+                $d2->save();
+
+
+            }
+
+        }*/
+        
+    }
+
+
+    private function fixOrd($pid){
+        $dir = Dir::find()->where(['p_id'=>$pid])->orderBy('id asc')->all();
+        $ord = 1;
+        foreach($dir as $d){
+            $d->ord = $ord;
+            $d->last = $ord == count($dir)?1:0;
+            $d->save();
+
+            $this->fixOrd($d->id);
+
         }
     }
 }
