@@ -103,9 +103,9 @@ class DirController extends BaseController
                     $lastDir->is_last = 0;
                     $lastDir->save();
                     //赋予新建的目录ord = lastDir->ord - 1  is_last = 1
-                    $dir->ord = $lastDir->ord + 1;
+                    $dir->ord = $lastDir->ord - 1;
                 }else{
-                    $dir->ord = 1;
+                    $dir->ord = 99;
                 }
                 $dir->is_last = 1;
 
@@ -215,12 +215,12 @@ class DirController extends BaseController
 
     private function fixOrd($pid){
         $dir = Dir::find()->where(['p_id'=>$pid])->orderBy('id asc')->all();
-        $ord = 1;
+        $ord = 99;
         foreach($dir as $d){
             $d->ord = $ord;
             $d->is_last = $ord == count($dir)?1:0;
             $d->save();
-
+$ord--;
             $this->fixOrd($d->id);
 
         }
