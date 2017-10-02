@@ -96,18 +96,34 @@ class DirController extends BaseController
                 $dir = new Dir();
                 $dir->setAttributes($model->attributes);
                 $dir->more_cate = 0;
+
                 //查找出当前父目录下的其他子目录 ord 最小的
-                $lastDir = Dir::find()->where(['p_id'=>$p_id])->orderBy('ord asc')->one();
-                if($lastDir){
+                $lastDir = Dir::find()->where(['p_id'=>$p_id])->orderBy('ord desc')->one();
+                /*if($lastDir){
                     //将原本is_last子目录改为0
                     $lastDir->is_last = 0;
                     $lastDir->save();
                     //赋予新建的目录ord = lastDir->ord - 1  is_last = 1
-                    $dir->ord = $lastDir->ord - 1;
+                }*/
+
+                if($dir->ord == 0){
+                    if($lastDir){
+                        $dir->ord = $lastDir->ord + 1;
+                    }else{
+                        $dir->ord = 1;
+                    }
+                    $dir->is_last = 1;
+                    $lastDir->is_last = 0;
+                    $lastDir->save();
                 }else{
-                    $dir->ord = 99;
+                    if($dir->ord >= $lastDir->ord){
+                        $dir->is_last = 1;
+                        $lastDir->is_last = 0;
+                        $lastDir->save();
+                    }else{
+                        $dir->is_last = 0;
+                    }
                 }
-                $dir->is_last = 1;
 
             }else{
                 $dir->setAttributes($model->attributes);
@@ -215,12 +231,12 @@ class DirController extends BaseController
 
     private function fixOrd($pid){
         $dir = Dir::find()->where(['p_id'=>$pid])->orderBy('id asc')->all();
-        $ord = 99;
+        $ord = 1;
         foreach($dir as $d){
             $d->ord = $ord;
             $d->is_last = $ord == count($dir)?1:0;
             $d->save();
-$ord--;
+$ord++;
             $this->fixOrd($d->id);
 
         }
