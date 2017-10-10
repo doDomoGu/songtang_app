@@ -344,14 +344,10 @@ class Apply extends \yii\db\ActiveRecord
     public static function getStepUser($apply){
         if($apply->status == self::STATUS_NORMAL){
 
-            $stepAllCount = ApplyRecord::find()->where(['apply_id'=>$apply->id])->andWhere('step > 0')->orderBy('step asc')->count();
-            $stepNow = $apply->flow_step;
+            /*$stepAllCount = ApplyRecord::find()->where(['apply_id'=>$apply->id])->andWhere('step > 0')->orderBy('step asc')->count();
+            $stepNow = $apply->flow_step;*/
 
             $step = ApplyRecord::find()->where(['apply_id'=>$apply->id,'step'=>$apply->flow_step])->one();
-
-
-
-
 
             $step_user = $step?CommonFunc::getByCache(\login\models\UserIdentity::className(),'findIdentityOne',[$step->user_id],'ucenter:user/identity'):false;
             if($step_user)
@@ -359,13 +355,11 @@ class Apply extends \yii\db\ActiveRecord
             else
                 $step_username = 'N/A';
             
-            return $step_username.' ('.$stepNow.'/'.$stepAllCount.')';
-
-
-
+            return $step_username;
+            //return $step_username.' ('.$stepNow.'/'.$stepAllCount.')';
 
         }else{
-            return '--';
+            return '';
         }
 
 
