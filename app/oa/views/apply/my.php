@@ -33,7 +33,9 @@ oa\assets\AppAsset::addCssFile($this,'script/jquery-ui/jquery-ui.min.css');
                     <td><span><?=$l->title?></span></td>
                     <td><span><?=$l->task->title?></span></td>
                     <td><span><?=$l->add_time?></span></td>
-                    <td><span><?=Apply::getStatusCn($l->status)?></span></td>
+                    <td>
+                        <span><?=Apply::getStatusCn($l->status)?> <br/> <?=Apply::getStepUser($l)?></span>
+                    </td>
                     <td class="last"><span>
                         <?=Html::a('查看详情','javascript:void(0)',['data-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#infoModal",'class'=>'btn btn-success btn-xs'])?>
                         <?=$l->flow_step==1&&$l->status==Apply::STATUS_NORMAL?Html::button('撤销',['data-id'=>$l->id,'class'=>'btn btn-danger btn-xs btn-op-del']):''?>
