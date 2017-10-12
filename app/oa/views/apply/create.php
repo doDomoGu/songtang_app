@@ -81,7 +81,7 @@ $this->title = '发起申请';
 
 <div class="form-group">
     <div class="col-lg-offset-3 col-lg-9">
-        <?= Html::submitButton('提交', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+        <?= Html::submitButton('提交', ['class' => 'btn btn-primary', 'name' => 'login-button','id'=>'create-submit']) ?>
     </div>
 </div>
 

@@ -117,4 +117,64 @@ $(function(){
     });
 
     $('#applycreateform-task_category').change();
+
+
+    //$('#apply-create-form').on('submit',function(){
+    $('#create-submit').on('click',function(){
+        var task_form = $('#apply-create-form').find('.task-form-section');
+        var alertFlag = false; //是否弹出表格内容必填的错误提示
+        if(task_form.length>0){
+            for(var i=0;i<task_form.length;i++){
+                var form_table = $(task_form[i]).find('li.type-6');
+                if(form_table.length>0){
+                    for(var j=0;j<form_table.length;j++){
+                        var label_length = $(form_table[j]).find('.table-item-label').length;
+                        if(label_length>0){
+                            var input_item = $(form_table[j]).find('.table-item-input');
+                            var input_value_count = 0;
+                            var input_value = '';
+                            var input_item_value = '';
+                            for(var k=0;k<input_item.length;k++){
+                                if($(input_item[k]).find('input').length>0){
+                                    input_value = $(input_item[k]).find('input').val();
+                                }else if($(input_item[k]).find('select').length>0){
+                                    input_value = $(input_item[k]).find('select').val();
+                                }
+
+                                if($(input_item[k]).find('select.table-item-select-item').length>0){
+                                    input_item_value = $(input_item[k]).find('select.table-item-select-item').val();
+                                    console.log(input_item_value);
+                                }
+
+                                if(input_value){
+                                    input_value_count++;
+                                }
+
+
+                                if((k+1)%label_length===0){
+                                    if(input_value_count>0 && input_value_count<label_length){
+                                        if(input_item_value==''){
+                                            alertFlag = true;
+                                            break;
+                                        }
+                                    }
+                                    input_item_value = '';
+                                    input_value_count = 0;
+                                    /*
+
+                                    if(alertFlag){
+                                        break;
+                                    }*/
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(alertFlag){
+            alert('"申请表表单"中，每有一个"项目"就必须填写或者选择内容！');
+            return false;
+        }
+    })
 });

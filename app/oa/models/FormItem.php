@@ -233,7 +233,7 @@ class FormItem extends \yii\db\ActiveRecord
                                     $content .= Html::textInput($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'',['style'=>'width:'.($v['width']-30).'px']). '&nbsp;'.$v['options'];
                                 }else if($v['type']==self::TYPE_DROPDOWN){
                                     $dropDownItems = explode('|',$v['options']);
-                                    $content .= Html::dropDownList($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'',$dropDownItems,['style'=>'width:96%;','prompt'=>'--请选择--']);
+                                    $content .= Html::dropDownList($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'',$dropDownItems,['class'=>'table-item-select-item','style'=>'width:96%;','prompt'=>'--请选择--']);
                                 }else{
                                     $content .= Html::textInput($input_key.'['.$i.']['.$k.']',isset($value[$i][$k])?$value[$i][$k]:'');
                                 }

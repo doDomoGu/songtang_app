@@ -672,8 +672,17 @@ class ApplyController extends BaseController
             }
         }
         foreach($options['project']['value'] as $p){
-            if($p['item']!=''){
-                $project[] = ['item'=>$itemArr[$p['item']],'pin'=>$p['pin'],'price'=>$p['price']];
+            $allEmpty = true;
+            foreach($p as $_v){
+                $allEmpty = $allEmpty && $_v=='';
+            }
+            if(!$allEmpty){
+                if($p['item']!='') {
+                    $_item = $itemArr[$p['item']];
+                }else{
+                    $_item = '';
+                }
+                $project[] = ['item'=>$_item,'pin'=>$p['pin'],'price'=>$p['price']];
                 $pinAll += intval($p['pin']);
                 $priceAll += $p['price'];
             }
@@ -1139,8 +1148,17 @@ class ApplyController extends BaseController
             }
         }
         foreach($options['project']['value'] as $p){
-            if($p['item']!=''){
-                $project[] = ['item'=>$itemArr[$p['item']],'pin'=>$p['pin'],'price'=>$p['price']];
+            $allEmpty = true;
+            foreach($p as $_v){
+                $allEmpty = $allEmpty && $_v=='';
+            }
+            if(!$allEmpty){
+                if($p['item']!='') {
+                    $_item = $itemArr[$p['item']];
+                }else{
+                    $_item = '';
+                }
+                $project[] = ['item'=>$_item,'pin'=>$p['pin'],'price'=>$p['price']];
                 $pinAll += intval($p['pin']);
                 $priceAll += $p['price'];
             }
