@@ -520,30 +520,32 @@ class SettingController extends BaseController
             }else{
                 if($p_id>0){
                     $parentExist = Department::find()->where(['id'=>$p_id])->one();
-                    if($parentExist){
-                        $exist = Department::find()->where(['name'=>$name])->orWhere(['alias'=>$alias])->andWhere(['p_id'=>$p_id])->one();
-                        if($exist){
-                            $errormsg = '名称或别名已存在!';
-                        }else{
-                            $last = Department::find()->where(['p_id'=>$p_id,'status'=>1])->orderBy('ord desc')->one();
-                            $newDep = new Department();
-                            $newDep->name = $name;
-                            $newDep->alias = $alias;
-                            $newDep->p_id = $p_id;
-                            $newDep->ord = $last?$last->ord+1:1;
-                            $newDep->status = 1;
-                            if($newDep->save()){
-                                Yii::$app->getSession()->setFlash('success','新建部门【'.$newDep->name.'】成功！');
-                                $result = true;
-                            }else{
-                                $errormsg = '保存失败，刷新页面重试!';
-                            }
-                        }
-                    }else{
+                    if(!$parentExist){
                         $errormsg = '对应父部门不存在!';
                     }
-                }else{
+                }/*else{
                     $errormsg = '对应父部门不存在11111111!!';
+                }*/
+
+                if($errormsg==''){
+                    $exist = Department::find()->where(['name'=>$name])->orWhere(['alias'=>$alias])->andWhere(['p_id'=>$p_id])->one();
+                    if($exist){
+                        $errormsg = '名称或别名已存在!';
+                    }else{
+                        $last = Department::find()->where(['p_id'=>$p_id,'status'=>1])->orderBy('ord desc')->one();
+                        $newDep = new Department();
+                        $newDep->name = $name;
+                        $newDep->alias = $alias;
+                        $newDep->p_id = $p_id;
+                        $newDep->ord = $last?$last->ord+1:1;
+                        $newDep->status = 1;
+                        if($newDep->save()){
+                            Yii::$app->getSession()->setFlash('success','新建部门【'.$newDep->name.'】成功！');
+                            $result = true;
+                        }else{
+                            $errormsg = '保存失败，刷新页面重试!';
+                        }
+                    }
                 }
             }
         }else{
