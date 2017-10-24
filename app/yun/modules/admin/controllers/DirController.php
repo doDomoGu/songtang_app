@@ -109,12 +109,13 @@ class DirController extends BaseController
                 if($dir->ord == 0){
                     if($lastDir){
                         $dir->ord = $lastDir->ord + 1;
+                        $lastDir->is_last = 0;
+                        $lastDir->save();
                     }else{
                         $dir->ord = 1;
                     }
                     $dir->is_last = 1;
-                    $lastDir->is_last = 0;
-                    $lastDir->save();
+
                 }else{
                     if($dir->ord >= $lastDir->ord){
                         $dir->is_last = 1;
