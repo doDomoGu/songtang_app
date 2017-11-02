@@ -87,6 +87,7 @@
                         <?=Html::button('删除',['class'=>'btn btn-xs btn-danger del-btn','data-id'=>$l->id])?>
                         <?=Html::button('启用',['class'=>"complete-btn btn btn-warning btn-xs",'data-id'=>$l->id])?>
                     <?php endif;?>
+                    <?=Html::button('复制',['class'=>"copy-btn btn btn-primary btn-xs",'data-id'=>$l->id,'data-title'=>$l->title])?>
                 </td>
             </tr>
 
@@ -243,6 +244,40 @@ Modal::begin([
             </div>
         </form>
     </div>
+<?php
+Modal::end();
+?>
+
+<?php
+Modal::begin([
+    'header' => '复制模板',
+    'id'=>'copyModal',
+    'options'=>['style'=>'margin-top:120px;'],
+]);
+?>
+<div id="copyContent">
+    <form class="form-horizontal" role="form">
+        <input class="copy-task_id" type="hidden" />
+        <div class="form-group">
+            <label class="col-sm-4 control-label label1">模板标题</label>
+            <div class="col-sm-6">
+                <input class="form-control copy-title">
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-sm-4 control-label label1">原模板标题</label>
+        <div class="col-sm-6">
+            <div id="copy-old-title" style="padding-top:7px;"></div>
+        </div>
+</div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-6">
+                <button type="button" class="btn btn-success" id="copy-submit-btn">提交</button>
+                <div class="errormsg-text" style="display:none;color:red;padding-top:10px;"></div>
+            </div>
+        </div>
+    </form>
+</div>
 <?php
 Modal::end();
 ?>

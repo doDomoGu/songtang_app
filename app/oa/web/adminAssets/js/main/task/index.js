@@ -325,5 +325,40 @@ $(function () {
         });*/
     });
 
+    $('.copy-btn').click(function(){
+        $('.copy-task_id').val($(this).attr('data-id'));
+        $('.copy-title').val($(this).attr('data-title'));
+        $('#copy-old-title').html($(this).attr('data-title'));
+        $('#copyModal').modal('show');
+    });
+
+
+    $('#copy-submit-btn').click(function(){
+        $('#copyContent .errormsg-text').html('').hide();
+
+
+        var copy_from_id = $('.copy-task_id').val();
+        var new_title = $('.copy-title').val();
+
+        $.ajax({
+            url: '/admin/task/copy',
+            type: 'post',
+            //async : false,
+            dataType: 'json',
+            data: {
+                copy_from_id: copy_from_id,
+                new_title: new_title
+            },
+            success: function (data) {
+                if(data.result){
+                    location.href='/admin/task';
+                }else{
+                    $('#copyContent .errormsg-text').html(data.errormsg).show();
+
+                }
+            }
+        });
+    });
+
 
 });

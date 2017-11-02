@@ -1273,4 +1273,90 @@ $params['applyUserList'] = $applyUserList;
         $response->format=Response::FORMAT_JSON;
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
+
+
+    public function actionCopy(){
+        $errormsg = '';
+        $result = false;
+        if(Yii::$app->request->isAjax){
+            $copy_from_id = Yii::$app->request->post('copy_from_id',0);
+            $new_title = trim(Yii::$app->request->post('new_title',false));
+            //$category_id = Yii::$app->request->post('category_id','');
+            $copyFromTask = Task::find()->where(['id'=>$copy_from_id])->one();
+            if($copyFromTask){
+                if($new_title==''){
+                    $errormsg = '标题不能为空！';
+                }else {
+                    $exist = Task::find()->where(['title' => $new_title])->one();
+                    if ($exist) {
+                        $errormsg = '标题已存在!';
+                    } else {
+                        //生成task主体
+                        $newTask = new Task();
+                        $newTask->title = $new_title;
+                        $newTask->district_id = 10000;
+                        $newTask->industry_id = 10000;
+                        $newTask->company_id = 10000;
+                        $newTask->department_id = 10000;
+                        $newTask->ord = 0;
+                        $newTask->set_complete = 0;
+                        $newTask->status = 1;
+                        if($newTask->save()){
+                            $newId = $newTask->id;
+
+                            //复制分类
+                            $copyFromTCId = TaskCategoryId::find()->where(['task_id' => $copy_from_id])->All();
+                            foreach($copyFromTCId as $tcid){
+                                $newTcid = new TaskCategoryId();
+                                $newTcid->task_id = $newId;
+                                $newTcid->category_id = $tcid->category_id;
+                                $newTcid->save();
+                            }
+
+                            //复制相关表单
+                            $copyFromTFId = TaskForm::find()->where(['task_id' => $copy_from_id])->All();
+                            foreach($copyFromTFId as $tfid){
+                                $newTfid = new TaskForm();
+                                $newTfid->task_id = $newId;
+                                $newTfid->form_id = $tfid->form_id;
+                                $newTfid->save();
+                            }
+
+                            //复制流程
+                            $copyFromFlows = Flow::find()->where(['task_id' => $copy_from_id])->All();
+                            foreach($copyFromFlows as $flow){
+                                $newFlow = new Flow();
+                                $newFlow->attributes = $flow->attributes;
+                                $newFlow->task_id = $newId;
+                                $newFlow->save();
+                            }
+
+                            //复制发起人
+                            $copyFromTUId = TaskUserWildcard::find()->where(['task_id' => $copy_from_id])->All();
+                            foreach($copyFromTUId as $tuid){
+                                $newTuid = new TaskUserWildcard();
+                                $newTuid->attributes = $tuid->attributes;
+                                $newTuid->task_id = $newId;
+                                $newTuid->save();
+                            }
+
+
+                            Yii::$app->getSession()->setFlash('success', '复制模板【' . $newTask->title . '】成功！');
+                            $result = true;
+                        }else{
+                            $errormsg = '复制模板主体失败！';
+                        }
+                    }
+                }
+            }else{
+                $errormsg = '原模板错误！';
+            }
+        }else{
+            $errormsg = '操作错误，请重试!';
+        }
+        $response=Yii::$app->response;
+        $response->format=Response::FORMAT_JSON;
+        $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
 }
