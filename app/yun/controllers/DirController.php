@@ -661,7 +661,7 @@ var_dump($file_path==$file_path2);exit;
 
         $file = File::find()->where(['id'=>$id,'status'=>1]);
         if(!in_array(Yii::$app->user->id,[10000,10003,10004,10005])){
-            $file = $file->addWhere(['user_id'=>Yii::$app->user->id]);
+            $file = $file->andWhere(['user_id'=>Yii::$app->user->id]);
         }
 
         $file = $file->one();
