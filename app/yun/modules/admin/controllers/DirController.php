@@ -9,6 +9,7 @@ use yun\models\DirPermission;
 use yun\components\YunFunc;
 use yun\models\Dir;
 use yun\components\DirFunc;
+use yun\models\UserWildcard;
 use yun\modules\admin\models\DirForm;
 
 class DirController extends BaseController
@@ -168,6 +169,66 @@ class DirController extends BaseController
         }
 
         return $this->render('permission',$params);
+    }
+
+    public function actionPermissionSave(){
+        $result = false;
+        $error_message='';
+        $dir_id = Yii::$app->request->post('dir_id',false);
+        $dir = Dir::find()->where(['id'=>$dir_id])->one();
+
+        if($dir){
+            $pmInfo = Yii::$app->request->post('pm');
+
+            foreach($pmInfo as $pmId=>$pmOne ){
+                //var_dump($pmOne['user_match_param'][3]);exit;
+                $pm = DirPermission::find()->where(['id'=>$pmId,'dir_id'=>$dir_id])->one();
+                if($pm){
+                    $pm->attributes = $pmOne;
+                    if($pmOne['user_match_type']==1){
+                        $pm->user_match_param_id = 0;
+                    }elseif($pmOne['user_match_type']==3){
+                        $user_wildcard = UserWildcard::find()->where(['pm_id'=>$pmId])->one();
+                        if($user_wildcard){
+                            $user_wildcard->district_id = $pmOne['user_match_param'][3]['district_id'];
+                            $user_wildcard->industry_id = $pmOne['user_match_param'][3]['industry_id'];
+                            $user_wildcard->company_id = $pmOne['user_match_param'][3]['company_id'];
+                            $user_wildcard->department_id = $pmOne['user_match_param'][3]['department_id'];
+                            $user_wildcard->position_id = $pmOne['user_match_param'][3]['position_id'];
+                            $user_wildcard->save();
+                            $pm->user_match_param_id = $user_wildcard->id;
+                        }else{
+                            $user_wildcard_new = new UserWildcard();
+                            $user_wildcard_new->district_id = $pmOne['user_match_param'][3]['district_id'];
+                            $user_wildcard_new->industry_id = $pmOne['user_match_param'][3]['industry_id'];
+                            $user_wildcard_new->company_id = $pmOne['user_match_param'][3]['company_id'];
+                            $user_wildcard_new->department_id = $pmOne['user_match_param'][3]['department_id'];
+                            $user_wildcard_new->position_id = $pmOne['user_match_param'][3]['position_id'];
+
+                            //$user_wildcard_new->setAttributes($pmOne['user_match_param'][3]);
+                            $user_wildcard_new->pm_id = $pmId;
+                            $user_wildcard_new->save();
+                            $pm->user_match_param_id = $user_wildcard_new->id;
+                        }
+                    }elseif($pmOne['user_match_type']==7){
+                        $pm->user_match_param_id = $pmOne['user_match_param'][7];
+                    }
+
+
+                    $pm->save();
+                }
+            }
+
+
+            $result = true;
+        }
+
+        $arr = [];
+        $arr['error'] = $error_message;
+        $arr['result'] = $result;
+        echo json_encode($arr);
+        Yii::$app->end();
+
     }
 
     public function actionIndex2(){
