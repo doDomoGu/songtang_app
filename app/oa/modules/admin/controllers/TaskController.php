@@ -77,11 +77,12 @@ class TaskController extends BaseController
         }
 
 
-        $query = Task::find();
+        $query = Task::find()->where(['status'=>1]);
 
         foreach($search as $k=>$v){
             if($v!=''){
-                $query = $query->andWhere($k.' like "%'.$v.'%"');
+                //$query = $query->andWhere($k.' like "%'.$v.'%"');
+                $query = $query->andFilterWhere(['like',$k,$v]);
             }
         }
 
@@ -1147,11 +1148,14 @@ $params['applyUserList'] = $applyUserList;
         $result = false;
         if(Yii::$app->request->isAjax){
             $task_id = Yii::$app->request->post('id','');
-            $exist = Task::find()->where(['id'=>$task_id])->one();
-            if(!$exist){
+            $task = Task::find()->where(['id'=>$task_id])->one();
+            if(!$task){
                 $errormsg = '对应的任务ID不存在！';
             }else{
-                Task::deleteAll(['id'=>$task_id]);
+
+                $task->status = 2;
+                $task->save();
+                //Task::deleteAll(['id'=>$task_id]);
 
                 Yii::$app->getSession()->setFlash('success','删除任务表（模板）成功！');
                 $result = true;
@@ -1422,7 +1426,8 @@ $params['applyUserList'] = $applyUserList;
 
         $tasks = Task::find()
             //->filterWhere(['like','title',$district])
-            ->onCondition('left(title,2) = "'.$district.'"')
+            ->where(['status'=>1])
+            ->andOnCondition('left(title,2) = "'.$district.'"')
             ->all();
         $i = 2;
         foreach($tasks as $task){
