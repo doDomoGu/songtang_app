@@ -1359,4 +1359,50 @@ $params['applyUserList'] = $applyUserList;
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
     }
 
+
+    public function actionExport(){
+        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setName("微软雅黑")->setSize(10)->setBold(true);
+        $objPHPExcel->getActiveSheet()->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+
+        $objSheet = $objPHPExcel->getActiveSheet();
+
+        $objSheet->getColumnDimension('B')->setWidth(40);
+
+
+        $objSheet->setCellValue('A1','ID');
+        $objSheet->setCellValue('B1','标题');
+        $objSheet->setCellValue('H1','状态');
+
+        $tasks = Task::find()->all();
+        $i = 2;
+        foreach($tasks as $task){
+            $objSheet->setCellValue('A'.$i,$task->id);
+            $objSheet->setCellValue('B'.$i,$task->title);
+            $objSheet->setCellValue('H'.$i,($task->set_complete==1)?'启用':'暂停');
+
+            $i++;
+        }
+
+
+
+
+        header('Content-Type: application/vnd.ms-excel');
+        $filename = 'songtang_oa-task_template_'.date('Y-m-dTH:i:s');
+        header('Content-Disposition: attachment;filename="'.$filename.'.xls"');
+        header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+    }
+
 }

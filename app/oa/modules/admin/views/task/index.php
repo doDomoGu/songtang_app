@@ -14,6 +14,8 @@
 <section>
     <div style="margin-bottom: 10px;">
         <?=Html::button('新增模板',['data-toggle'=>"modal",'data-target'=>"#createModal",'class'=>'btn btn-success'])?>
+        <?=Html::button('导出',['class'=>'btn btn-primary export-btn'])?>
+        <?=Html::button('导入',['class'=>'btn btn-warning import-btn'])?>
     </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
