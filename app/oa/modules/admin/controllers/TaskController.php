@@ -1379,7 +1379,7 @@ $params['applyUserList'] = $applyUserList;
 
 
 
-//        exit;
+        exit;
 
         ob_end_clean();
         //ob_clean();
@@ -1421,6 +1421,7 @@ $params['applyUserList'] = $applyUserList;
         $objSheet->setCellValue('C1','标题');
         $objSheet->setCellValue('D1','所属分类');
         $objSheet->setCellValue('E1','表单分配');
+        $objSheet->setCellValue('F1','发起人');
 
         $objSheet->setCellValue('I1','状态');
 
@@ -1433,7 +1434,7 @@ $params['applyUserList'] = $applyUserList;
         foreach($tasks as $task){
             echo $task->title.'<br/>';
 
-
+            //分类
             $cateContent = '';
             $cates = TaskCategoryId::find()->where(['task_id'=>$task->id])->all();
             foreach($cates as $cate){
@@ -1443,6 +1444,7 @@ $params['applyUserList'] = $applyUserList;
             }
             $objSheet->setCellValue('D'.$i,$cateContent);
 
+            //表单
             $formContent = '';
             $forms = TaskForm::find()->where(['task_id'=>$task->id])->all();
             foreach($forms as $form){
@@ -1451,6 +1453,24 @@ $params['applyUserList'] = $applyUserList;
                 echo $formName.'<br/>';
             }
             $objSheet->setCellValue('E'.$i,$formContent);
+
+            //发起人
+            $userContent = '';
+            $users = TaskUserWildcard::find()->where(['task_id'=>$task->id])->all();
+            foreach($users as $user){
+                $userOne = '';
+                $userOne .= $user->district->name.'/';
+                $userOne .= $user->industry->name.'/';
+                $userOne .= $user->company->name.'/';
+                $userOne .= $user->department->name.'/';
+                $userOne .= $user->position->name;
+                $userContent .= $userOne."\n";
+                echo $userOne.'<br/>';
+            }
+            $objSheet->setCellValue('F'.$i,$userContent);
+
+
+
 
             $objSheet->setCellValue('A'.$i,$i-1);
             $objSheet->setCellValue('B'.$i,$task->id);
