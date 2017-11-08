@@ -1379,7 +1379,7 @@ $params['applyUserList'] = $applyUserList;
 
 
 
-        exit;
+        //exit;
 
         ob_end_clean();
         //ob_clean();
@@ -1411,9 +1411,20 @@ $params['applyUserList'] = $applyUserList;
         $objSheet->setTitle($district);
 
 
-        $objSheet->getColumnDimension('C')->setWidth(40);
-        $objSheet->getColumnDimension('D')->setWidth(40);
-        $objSheet->getColumnDimension('E')->setWidth(40);
+        $objSheet->getColumnDimension('A')->setWidth(8);
+        $objSheet->getColumnDimension('B')->setWidth(8);
+        $objSheet->getColumnDimension('C')->setWidth(30);
+        $objSheet->getColumnDimension('D')->setWidth(20);
+        $objSheet->getColumnDimension('E')->setWidth(20);
+        $objSheet->getColumnDimension('F')->setWidth(28);
+
+        $objSheet->getColumnDimension('G')->setWidth(18);
+        $objSheet->getColumnDimension('H')->setWidth(20);
+        $objSheet->getColumnDimension('I')->setWidth(16);
+        $objSheet->getColumnDimension('J')->setWidth(16);
+        $objSheet->getColumnDimension('K')->setWidth(16);
+        $objSheet->getColumnDimension('L')->setWidth(16);
+        $objSheet->getColumnDimension('M')->setWidth(16);
 
 
         $objSheet->setCellValue('A1','#');
@@ -1423,7 +1434,15 @@ $params['applyUserList'] = $applyUserList;
         $objSheet->setCellValue('E1','表单分配');
         $objSheet->setCellValue('F1','发起人');
 
-        $objSheet->setCellValue('I1','状态');
+        $objSheet->setCellValue('G1','部门领导 | 审批');
+        $objSheet->setCellValue('H1','行控中心/综管部 | 审批');
+        $objSheet->setCellValue('I1','财务部 | 审核');
+        $objSheet->setCellValue('J1','总经理A | 审批');
+        $objSheet->setCellValue('K1','总经理B | 审批');
+        $objSheet->setCellValue('L1','总经理C | 审批');
+        $objSheet->setCellValue('M1','综管部/财务部 | 执行');
+
+        $objSheet->setCellValue('N1','状态');
 
         $tasks = Task::find()
             //->filterWhere(['like','title',$district])
@@ -1439,7 +1458,7 @@ $params['applyUserList'] = $applyUserList;
             $cates = TaskCategoryId::find()->where(['task_id'=>$task->id])->all();
             foreach($cates as $cate){
                 $cateName = $cate->category->name;
-                $cateContent .= $cateName."\n";
+                $cateContent .= ($cateContent!=''?"\n":'').$cateName;
                 echo $cateName.'<br/>';
             }
             $objSheet->setCellValue('D'.$i,$cateContent);
@@ -1449,7 +1468,7 @@ $params['applyUserList'] = $applyUserList;
             $forms = TaskForm::find()->where(['task_id'=>$task->id])->all();
             foreach($forms as $form){
                 $formName = $form->form->title;
-                $formContent .= $formName."\n";
+                $formContent .= ($formContent!=''?"\n":'').$formName;
                 echo $formName.'<br/>';
             }
             $objSheet->setCellValue('E'.$i,$formContent);
@@ -1462,12 +1481,46 @@ $params['applyUserList'] = $applyUserList;
                 $userOne .= $user->district->name.'/';
                 $userOne .= $user->industry->name.'/';
                 $userOne .= $user->company->name.'/';
-                $userOne .= $user->department->name.'/';
-                $userOne .= $user->position->name;
-                $userContent .= $userOne."\n";
+                $userOne .= $user->department->name.'/';  //暂时不处理有多层级的department  默认p_id = 0
+                $userOne .= $user->position->name;   //职位 p_id >0
+                $userContent .= ($userContent!=''?"\n":'').$userOne;
+
+
                 echo $userOne.'<br/>';
+
             }
             $objSheet->setCellValue('F'.$i,$userContent);
+
+
+            //流程
+            $flows = Flow::find()->where(['task_id'=>$task->id])->all();
+            foreach($flows as $flow){
+                //var_dump($flow->user_id);
+                $flowUserName = $flow->user_id>0?($flow->user?$flow->user->name:'N/A'):'选择';
+                switch($flow->title) {
+                    case '部门领导':
+                        $objSheet->setCellValue('G'.$i,$flowUserName);
+                        break;
+                    case '行控中心/综管部':
+                        $objSheet->setCellValue('H'.$i,$flowUserName);
+                        break;
+                    case '财务部':
+                        $objSheet->setCellValue('I'.$i,$flowUserName);
+                        break;
+                    case '总经理A':
+                        $objSheet->setCellValue('J'.$i,$flowUserName);
+                        break;
+                    case '总经理B':
+                        $objSheet->setCellValue('K'.$i,$flowUserName);
+                        break;
+                    case '总经理C':
+                        $objSheet->setCellValue('L'.$i,$flowUserName);
+                        break;
+                    case '综管部/财务部':
+                        $objSheet->setCellValue('M'.$i,$flowUserName);
+                        break;
+                }
+            }
 
 
 
@@ -1475,7 +1528,7 @@ $params['applyUserList'] = $applyUserList;
             $objSheet->setCellValue('A'.$i,$i-1);
             $objSheet->setCellValue('B'.$i,$task->id);
             $objSheet->setCellValue('C'.$i,$task->title);
-            $objSheet->setCellValue('I'.$i,($task->set_complete==1)?'启用':'暂停');
+            $objSheet->setCellValue('N'.$i,($task->set_complete==1)?'启用':'暂停');
 
             $i++;
             echo '==========<br/>';
