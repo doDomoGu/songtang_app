@@ -666,6 +666,8 @@ var_dump($file_path==$file_path2);exit;
 
         $file = $file->one();
         if($file){
+            $file->filename = $file->filename.'_'.date('Ymd_His');
+            $file->edit_time = date('Y-m-d H:i:s');
             $file->status = 0;
             if($file->save()){
                 FileFrontFunc::updateParentStatus2($file->id);
