@@ -24,4 +24,8 @@ class TaskCategoryId extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public function getCategory(){
+        return $this->hasOne(TaskCategory::className(), array('id' => 'category_id'));
+    }
 }

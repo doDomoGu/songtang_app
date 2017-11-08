@@ -26,7 +26,9 @@ class TaskForm extends \yii\db\ActiveRecord
         ];
     }
 
-
+    public function getForm(){
+        return $this->hasOne(Form::className(), array('id' => 'form_id'));
+    }
     /*public function getUser(){
         return $this->hasOne(User::className(), array('id' => 'user_id'));
     }

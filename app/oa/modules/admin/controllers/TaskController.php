@@ -1361,32 +1361,24 @@ $params['applyUserList'] = $applyUserList;
 
 
     public function actionExport(){
+        ob_start();
+        header("Content-type: text/html; charset=utf-8");
+
         $objPHPExcel = new \PHPExcel();
         $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setName("微软雅黑")->setSize(10)->setBold(true);
         $objPHPExcel->getActiveSheet()->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
 
-        $objSheet = $objPHPExcel->getActiveSheet();
 
-        $objSheet->getColumnDimension('B')->setWidth(40);
-
-
-        $objSheet->setCellValue('A1','ID');
-        $objSheet->setCellValue('B1','标题');
-        $objSheet->setCellValue('H1','状态');
-
-        $tasks = Task::find()->all();
-        $i = 2;
-        foreach($tasks as $task){
-            $objSheet->setCellValue('A'.$i,$task->id);
-            $objSheet->setCellValue('B'.$i,$task->title);
-            $objSheet->setCellValue('H'.$i,($task->set_complete==1)?'启用':'暂停');
-
-            $i++;
-        }
+        $this->getOneSheet($objPHPExcel,0,'上海');
+        $this->getOneSheet($objPHPExcel,1,'南京');
 
 
 
+//        exit;
+
+        ob_end_clean();
+        //ob_clean();
 
         header('Content-Type: application/vnd.ms-excel');
         $filename = 'songtang_oa-task_template_'.date('Y-m-dTH:i:s');
@@ -1403,6 +1395,68 @@ $params['applyUserList'] = $applyUserList;
 
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
+    }
+
+
+    public function getOneSheet($objPHPExcel,$index,$district){
+        if($index>0){
+            $objPHPExcel->createSheet();
+        }
+        $objPHPExcel->setactivesheetindex($index);
+        $objSheet = $objPHPExcel->getActiveSheet();
+        $objSheet->setTitle($district);
+
+
+        $objSheet->getColumnDimension('C')->setWidth(40);
+        $objSheet->getColumnDimension('D')->setWidth(40);
+        $objSheet->getColumnDimension('E')->setWidth(40);
+
+
+        $objSheet->setCellValue('A1','#');
+        $objSheet->setCellValue('B1','ID');
+        $objSheet->setCellValue('C1','标题');
+        $objSheet->setCellValue('D1','所属分类');
+        $objSheet->setCellValue('E1','表单分配');
+
+        $objSheet->setCellValue('I1','状态');
+
+        $tasks = Task::find()
+            //->filterWhere(['like','title',$district])
+            ->onCondition('left(title,2) = "'.$district.'"')
+            ->all();
+        $i = 2;
+        foreach($tasks as $task){
+            echo $task->title.'<br/>';
+
+
+            $cateContent = '';
+            $cates = TaskCategoryId::find()->where(['task_id'=>$task->id])->all();
+            foreach($cates as $cate){
+                $cateName = $cate->category->name;
+                $cateContent .= $cateName."\n";
+                echo $cateName.'<br/>';
+            }
+            $objSheet->setCellValue('D'.$i,$cateContent);
+
+            $formContent = '';
+            $forms = TaskForm::find()->where(['task_id'=>$task->id])->all();
+            foreach($forms as $form){
+                $formName = $form->form->title;
+                $formContent .= $formName."\n";
+                echo $formName.'<br/>';
+            }
+            $objSheet->setCellValue('E'.$i,$formContent);
+
+            $objSheet->setCellValue('A'.$i,$i-1);
+            $objSheet->setCellValue('B'.$i,$task->id);
+            $objSheet->setCellValue('C'.$i,$task->title);
+            $objSheet->setCellValue('I'.$i,($task->set_complete==1)?'启用':'暂停');
+
+            $i++;
+            echo '==========<br/>';
+        }
+
+
     }
 
 }
