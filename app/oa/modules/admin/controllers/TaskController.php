@@ -29,7 +29,7 @@ class TaskController extends BaseController
 {
     public function actionCategory()
     {
-        $list = TaskCategory::find()->orderBy(['type'=>SORT_ASC,'status'=>SORT_DESC,'ord'=>SORT_ASC])->all();
+        $list = TaskCategory::find()->orderBy(['status'=>SORT_DESC,'type'=>SORT_ASC,'ord'=>SORT_ASC])->all();
 
 
         $params['list'] = $list;
@@ -1416,7 +1416,7 @@ $params['applyUserList'] = $applyUserList;
         $objSheet->getColumnDimension('C')->setWidth(30);
         $objSheet->getColumnDimension('D')->setWidth(20);
         $objSheet->getColumnDimension('E')->setWidth(20);
-        $objSheet->getColumnDimension('F')->setWidth(28);
+        $objSheet->getColumnDimension('F')->setWidth(30);
 
         $objSheet->getColumnDimension('G')->setWidth(18);
         $objSheet->getColumnDimension('H')->setWidth(20);
@@ -1478,10 +1478,10 @@ $params['applyUserList'] = $applyUserList;
             $users = TaskUserWildcard::find()->where(['task_id'=>$task->id])->all();
             foreach($users as $user){
                 $userOne = '';
-                $userOne .= $user->district->name.'/';
-                $userOne .= $user->industry->name.'/';
-                $userOne .= $user->company->name.'/';
-                $userOne .= $user->department->name.'/';  //暂时不处理有多层级的department  默认p_id = 0
+                $userOne .= $user->district->name.' / ';
+                $userOne .= $user->industry->name.' / ';
+                $userOne .= $user->company->name.' / ';
+                $userOne .= $user->department->name.' / ';  //暂时不处理有多层级的department  默认p_id = 0
                 $userOne .= $user->position->name;   //职位 p_id >0
                 $userContent .= ($userContent!=''?"\n":'').$userOne;
 
@@ -1534,6 +1534,68 @@ $params['applyUserList'] = $applyUserList;
             echo '==========<br/>';
         }
 
+
+    }
+
+
+
+    public function actionImport(){
+        $file = '/Users/dodomogu/Downloads/11.xls';
+
+
+        $file = iconv("utf-8", "gb2312", $file);   //转码
+        if(empty($file) OR !file_exists($file)) {
+            die('file not exists!');
+        }
+        //include('PHPExcel.php');  //引入PHP EXCEL类
+        $objRead = new \PHPExcel_Reader_Excel2007();   //建立reader对象
+        if(!$objRead->canRead($file)){
+            $objRead = new \PHPExcel_Reader_Excel5();
+            if(!$objRead->canRead($file)){
+                die('No Excel!');
+            }
+        }
+
+
+        $cellName = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ');
+
+        $obj = $objRead->load($file);  //建立excel对象
+        $sheet = 0;
+        $currSheet = $obj->getSheet($sheet);   //获取指定的sheet表
+        $columnH = $currSheet->getHighestColumn();   //取得最大的列号
+        $columnCnt = array_search($columnH, $cellName);
+        $rowCnt = $currSheet->getHighestRow();   //获取总行数
+
+        $data = array();
+        for($_row=1; $_row<=$rowCnt; $_row++){  //读取内容
+            for($_column=0; $_column<=$columnCnt; $_column++){
+                $cellId = $cellName[$_column].$_row;
+                $cellValue = $currSheet->getCell($cellId)->getValue();
+                //$cellValue = $currSheet->getCell($cellId)->getCalculatedValue();  #获取公式计算的值
+                if($cellValue instanceof \PHPExcel_RichText){   //富文本转换字符串
+                    $cellValue = $cellValue->__toString();
+                }
+
+                $data[$_row][$cellName[$_column]] = $cellValue;
+            }
+        }
+
+        //ob_start();
+        header("Content-type: text/html; charset=utf-8");
+        echo '<table>';
+        foreach($data as $d){
+            echo '<tr>';
+            foreach($d as $d1){
+                echo '<td>';
+                echo $d1;
+                echo '</td>';
+            }
+
+            echo '</tr>';
+        }
+        echo '</table>';
+
+        //ob_end_clean();
 
     }
 
