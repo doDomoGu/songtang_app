@@ -614,7 +614,7 @@ $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->po
         error_reporting(E_ALL);
 
         $data = User::find()
-            ->where(['district_id'=>10005])
+            ->where(['district_id'=>10005,'status'=>1])
             ->orderBy('industry_id asc, department_id asc')
             ->all();
         foreach($data as $k=>$d){
@@ -637,7 +637,7 @@ $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->po
 
         Excel::export([
             'models'=>$data,
-            'fileName'=>'职员列表_'.time(),
+            'fileName'=>'南京职员列表_'.time(),
             'columns'=>['id','username','name','district_id','industry_id','company_id','department_id','position_id','status','yun_status','oa_status'],
             'headers'=>[
                 'id'=>'ID',
