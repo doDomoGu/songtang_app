@@ -7,7 +7,7 @@
 ?>
 <?php foreach($list as $l):?>
     <?php $downloadCheck = DirPermission::isFileAllow($l->dir_id,$l->id,DirPermission::OPERATION_DOWNLOAD);?>
-    <div class="list-item list-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=(in_array(yii::$app->user->id,[10000,10003,10004,10005]) || $l->user_id==yii::$app->user->id)?'delete-enable':'delete-disable'?>" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
+    <div class="list-item list-style <?=$l->filetype == 0?'dirtype':'filetype'?> <?=$downloadCheck?'download-enable':'download-disable'?> <?=(in_array(yii::$app->user->id,[10000,10003,10004,10005,10007]) || $l->user_id==yii::$app->user->id)?'delete-enable':'delete-disable'?>" data-is-dir="<?=$l->filetype==0?'1':'0'?>" data-id="<?=$l->id?>" download-check="<?=$downloadCheck?'enable':'disable'?>">
         <div class="info">
             <div class="file-check">
                 <input type="checkbox" name="cb[]" class="file-checkbox" value="<?=$l->id?>" />
@@ -64,7 +64,7 @@
                             <?=Html::Button('<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>',['class'=> 'btn disabled'])?>
                         <?php endif;?>
                         <?php //TODO
-                        if(in_array(yii::$app->user->id,[10000,10003,10004,10005]) || $l->user_id==yii::$app->user->id):?>
+                        if(in_array(yii::$app->user->id,[10000,10003,10004,10005,10007]) || $l->user_id==yii::$app->user->id):?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-is_dir'=>0,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>
@@ -73,7 +73,7 @@
                         <?php endif;?>
 
                     <?php else:?>
-                        <?php if(in_array(yii::$app->user->id,[10000,10003,10004,10005]) || $l->user_id==yii::$app->user->id):?>
+                        <?php if(in_array(yii::$app->user->id,[10000,10003,10004,10005,10007]) || $l->user_id==yii::$app->user->id):?>
                             <?=Html::Button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',['class'=> 'editBtn btn','data-district_id'=>$district_id,'data-industry_id'=>$industry_id,'data-filename'=>$l->filename,'data-is_dir'=>1,'data-file-id'=>$l->id,'data-toggle'=>"modal",'data-target'=>"#editModal"])?>
                             <?=Html::Button('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['link'=>'/dir/delete?id='.$l->id,'class'=> 'deleteBtn btn'])?>
                         <?php else:?>
