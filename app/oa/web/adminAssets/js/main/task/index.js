@@ -360,5 +360,9 @@ $(function () {
         });
     });
 
+    $('.export-btn').on('click',function(){
+        location.href = '/admin/task/export';
+    })
+
 
 });

@@ -609,6 +609,51 @@ $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->po
         ]);
     }
 
+
+    public function actionExportAll2(){
+        error_reporting(E_ALL);
+
+        $data = User::find()
+            ->where(['district_id'=>10005,'status'=>1])
+            ->orderBy('industry_id asc, department_id asc')
+            ->all();
+        foreach($data as $k=>$d){
+            $d->district_id = CommonFunc::getByCache(District::className(),'getName',[$d->district_id],'ucenter:district/name');
+            $d->industry_id = CommonFunc::getByCache(Industry::className(),'getName',[$d->industry_id],'ucenter:industry/name');
+            $d->company_id = CommonFunc::getByCache(Company::className(),'getName',[$d->company_id],'ucenter:company/name');
+            $d->department_id = CommonFunc::getByCache(Department::className(),'getFullRoute',[$d->department_id],'ucenter:department/full-route');
+            $d->position_id = CommonFunc::getByCache(Position::className(),'getName',[$d->position_id],'ucenter:position/name');
+
+            $data[$k] = $d->attributes;
+
+            $data[$k]['status'] = $d->status==1?'正常':'禁用';
+
+
+            $authList = \ucenter\models\UserAppAuth::getAuthList($d->id);
+            $data[$k]['yun_status'] = $authList['isYunFrontend']?'启用':($authList['isYunFrontendAdmin']?'启用*':'禁用');
+            $data[$k]['oa_status'] = $authList['isOaFrontend']?'启用':($authList['isOaFrontendAdmin']?'启用*':'禁用');
+
+        }
+
+        Excel::export([
+            'models'=>$data,
+            'fileName'=>'南京职员列表_'.time(),
+            'columns'=>['id','username','name','district_id','industry_id','company_id','department_id','position_id','status','yun_status','oa_status'],
+            'headers'=>[
+                'id'=>'ID',
+                'username'=>'用户名',
+                'name'=>'姓名',
+                'district_id'=>'地区',
+                'industry_id'=>'行业',
+                'company_id'=>'公司',
+                'department_id'=>'部门',
+                'position_id'=>'职位',
+                'status'=>'账号状态',
+                'yun_status'=>'颂唐云状态',
+                'oa_status'=>'颂唐OA状态'
+            ],
+        ]);
+    }
     //操作记录
     public function actionHistory(){
         $start_time = date('Y-m-d',strtotime('-1 month'));

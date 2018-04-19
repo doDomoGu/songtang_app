@@ -660,7 +660,7 @@ var_dump($file_path==$file_path2);exit;
         $id = Yii::$app->request->get('id');
 
         $file = File::find()->where(['id'=>$id,'status'=>1]);
-        if(!in_array(Yii::$app->user->id,[10000,10003,10004,10005])){
+        if(!in_array(Yii::$app->user->id,[10000,10003,10004,10005,10007])){
             $file = $file->andWhere(['user_id'=>Yii::$app->user->id]);
         }
 

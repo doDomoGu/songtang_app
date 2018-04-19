@@ -3,47 +3,71 @@
     use yun\models\DirPermission;
     use yun\modules\admin\assets\AdminAsset;
     use yun\models\File;
+    use yun\models\UserWildcard;
+    use ucenter\models\District;
+    use ucenter\models\Industry;
+    use ucenter\models\Company;
+    use ucenter\models\Department;
+    use ucenter\models\Position;
 
-$this->title = '【'.File::getFileFullRoute($dir->id).'】 - 权限编辑';
+$this->title = '【'.File::getFileFullRoute($dir->id).'】 - 权限设置';
 AdminAsset::addJsFile($this,'js/main/dir/permission.js');
 ?>
 <form id="permission-form" class="form-horizontal" action="" method="post">
+<input type="hidden" id="dir_id" name="dir_id" value="<?=$dir->id?>" />
 <table class="table table-bordered">
     <tr>
-        <th>#</th>
-        <th>文件属性限制</th>
-        <th>匹配类型</th>
+        <th width="60">#</th>
+        <th width="120">文件属性限制</th>
+        <th width="120">匹配类型</th>
         <th>匹配参数</th>
-        <th>操作类型</th>
-        <th>模式</th>
+        <th width="120">操作类型</th>
+        <th width="120">模式</th>
+        <!--<th width="100">编辑</th>-->
     </tr>
 <?php if(!empty($permission_list)):?>
-    <?php $i=1;foreach($permission_list as $dp):?>
+    <?php foreach($permission_list as $dp):?>
+        <?php if($dp->user_match_type==3){
+            $user_wildcard = UserWildcard::find()->where(['id'=>$dp->user_match_param_id])->one();
+        }?>
     <tr>
         <td>
-            <?=$i?>
+            <?=$dp->id?>
         </td>
         <td>
-            <?=BaseHtml::dropDownList('permission_type_'.$i,$dp->permission_type,DirPermission::getPermissionTypeItems(),['class'=>'permission-type-select'])?>
+            <?=BaseHtml::dropDownList('pm['.$dp->id.'][permission_type]',$dp->permission_type,DirPermission::getPermissionTypeItems(),['class'=>'permission-type-select'])?>
         </td>
         <td>
-            <?=BaseHtml::dropDownList('user_match_type_'.$i,$dp->user_match_type,DirPermission::getTypeItems(),['class'=>'user-match-type-select'])?>
+            <?=BaseHtml::dropDownList('pm['.$dp->id.'][user_match_type]',$dp->user_match_type,DirPermission::getTypeItems(),['class'=>'user-match-type-select'])?>
         </td>
         <td>
             <div class="user_match_param_div user_match_param_1_div" style="display: none;">
                 --
-                <?=BaseHtml::hiddenInput('user_match_param_'.$i.'_1',0)?>
+                <?=BaseHtml::hiddenInput('pm['.$dp->id.'][user_match_param][1]',0)?>
             </div>
+
+            <div class="user_match_param_div user_match_param_3_div" style="display: none;">
+                地区: <?=BaseHtml::dropDownList('pm['.$dp->id.'][user_match_param][3][district_id]',$dp->user_match_type==3 && $user_wildcard?$user_wildcard->district_id:'',District::getItems())?> <br/>
+                行业: <?=BaseHtml::dropDownList('pm['.$dp->id.'][user_match_param][3][industry_id]',$dp->user_match_type==3 && $user_wildcard?$user_wildcard->industry_id:'',Industry::getItems())?><br/>
+                公司: <?=BaseHtml::dropDownList('pm['.$dp->id.'][user_match_param][3][company_id]',$dp->user_match_type==3 && $user_wildcard?$user_wildcard->company_id:'',Company::getItems())?><br/>
+                部门: <?=BaseHtml::dropDownList('pm['.$dp->id.'][user_match_param][3][department_id]',$dp->user_match_type==3 && $user_wildcard?$user_wildcard->department_id:'',Department::getItems(),['encode'=>false])?><br/>
+                职位: <?=BaseHtml::dropDownList('pm['.$dp->id.'][user_match_param][3][position_id]',$dp->user_match_type==3 && $user_wildcard?$user_wildcard->position_id:'',Position::getItems(),['encode'=>false])?>
+            </div>
+
             <div class="user_match_param_div user_match_param_7_div" style="display: none;">
-                用户组ID：<?=BaseHtml::textInput('user_match_param_'.$i.'_7',$dp->user_match_type==7?$dp->user_match_param_id:'')?>
+                用户组ID：<?=BaseHtml::textInput('pm['.$dp->id.'][user_match_param][7]',$dp->user_match_type==7?$dp->user_match_param_id:'')?>
             </div>
         </td>
         <td>
-            <?=BaseHtml::dropDownList('operation_'.$i,$dp->operation,DirPermission::getOperationItems())?>
+            <?=BaseHtml::dropDownList('pm['.$dp->id.'][operation]',$dp->operation,DirPermission::getOperationItems())?>
 
         </td>
         <td>
-            <?=BaseHtml::dropDownList('mode_'.$i,$dp->mode,DirPermission::getModeItems())?>
+            <?=BaseHtml::dropDownList('pm['.$dp->id.'][mode]',$dp->mode,DirPermission::getModeItems())?>
+<!--        </td>-->
+<!--        <td>-->
+
+            <?/*=BaseHtml::button('删除', ['class' => 'btn btn-danger btn-xs delete-btn', 'name' => 'delete-button']) */?>
         </td>
     </tr>
     <!--<div class="form-group permission-one" style="background: #d1d1d1;padding:10px 0;">
@@ -71,13 +95,13 @@ AdminAsset::addJsFile($this,'js/main/dir/permission.js');
             </div>
         </div>
     </div>-->
-    <?php $i++;endforeach;?>
+    <?php endforeach;?>
 <?php endif;?>
 
 
 
 </table>
-
+    <?=BaseHtml::button('保存', ['class' => 'btn btn-success save-btn', 'name' => 'save-button','style'=>'float:right;']) ?>
     <!--<div class="form-group">
         <div class="col-lg-offset-2 col-lg-10">
             <button type="submit" class="btn btn-primary" name="login-button">提交</button>

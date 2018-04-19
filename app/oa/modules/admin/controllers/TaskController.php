@@ -29,7 +29,7 @@ class TaskController extends BaseController
 {
     public function actionCategory()
     {
-        $list = TaskCategory::find()->orderBy(['type'=>SORT_ASC,'status'=>SORT_DESC,'ord'=>SORT_ASC])->all();
+        $list = TaskCategory::find()->orderBy(['status'=>SORT_DESC,'type'=>SORT_ASC,'ord'=>SORT_ASC])->all();
 
 
         $params['list'] = $list;
@@ -77,11 +77,12 @@ class TaskController extends BaseController
         }
 
 
-        $query = Task::find();
+        $query = Task::find()->where(['status'=>1]);
 
         foreach($search as $k=>$v){
             if($v!=''){
-                $query = $query->andWhere($k.' like "%'.$v.'%"');
+                //$query = $query->andWhere($k.' like "%'.$v.'%"');
+                $query = $query->andFilterWhere(['like',$k,$v]);
             }
         }
 
@@ -1147,11 +1148,14 @@ $params['applyUserList'] = $applyUserList;
         $result = false;
         if(Yii::$app->request->isAjax){
             $task_id = Yii::$app->request->post('id','');
-            $exist = Task::find()->where(['id'=>$task_id])->one();
-            if(!$exist){
+            $task = Task::find()->where(['id'=>$task_id])->one();
+            if(!$task){
                 $errormsg = '对应的任务ID不存在！';
             }else{
-                Task::deleteAll(['id'=>$task_id]);
+
+                $task->status = 2;
+                $task->save();
+                //Task::deleteAll(['id'=>$task_id]);
 
                 Yii::$app->getSession()->setFlash('success','删除任务表（模板）成功！');
                 $result = true;
@@ -1357,6 +1361,242 @@ $params['applyUserList'] = $applyUserList;
         $response=Yii::$app->response;
         $response->format=Response::FORMAT_JSON;
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+
+    public function actionExport(){
+        ob_start();
+        header("Content-type: text/html; charset=utf-8");
+
+        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel->getActiveSheet()->getDefaultStyle()->getFont()->setName("微软雅黑")->setSize(10)->setBold(true);
+        $objPHPExcel->getActiveSheet()->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+
+
+        $this->getOneSheet($objPHPExcel,0,'上海');
+        $this->getOneSheet($objPHPExcel,1,'南京');
+
+
+
+        //exit;
+
+        ob_end_clean();
+        //ob_clean();
+
+        header('Content-Type: application/vnd.ms-excel');
+        $filename = 'songtang_oa-task_template_'.date('Y-m-dTH:i:s');
+        header('Content-Disposition: attachment;filename="'.$filename.'.xls"');
+        header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+    }
+
+
+    public function getOneSheet($objPHPExcel,$index,$district){
+        if($index>0){
+            $objPHPExcel->createSheet();
+        }
+        $objPHPExcel->setactivesheetindex($index);
+        $objSheet = $objPHPExcel->getActiveSheet();
+        $objSheet->setTitle($district);
+
+
+        $objSheet->getColumnDimension('A')->setWidth(8);
+        $objSheet->getColumnDimension('B')->setWidth(8);
+        $objSheet->getColumnDimension('C')->setWidth(30);
+        $objSheet->getColumnDimension('D')->setWidth(20);
+        $objSheet->getColumnDimension('E')->setWidth(20);
+        $objSheet->getColumnDimension('F')->setWidth(30);
+
+        $objSheet->getColumnDimension('G')->setWidth(18);
+        $objSheet->getColumnDimension('H')->setWidth(20);
+        $objSheet->getColumnDimension('I')->setWidth(16);
+        $objSheet->getColumnDimension('J')->setWidth(16);
+        $objSheet->getColumnDimension('K')->setWidth(16);
+        $objSheet->getColumnDimension('L')->setWidth(16);
+        $objSheet->getColumnDimension('M')->setWidth(16);
+
+
+        $objSheet->setCellValue('A1','#');
+        $objSheet->setCellValue('B1','ID');
+        $objSheet->setCellValue('C1','标题');
+        $objSheet->setCellValue('D1','所属分类');
+        $objSheet->setCellValue('E1','表单分配');
+        $objSheet->setCellValue('F1','发起人');
+
+        $objSheet->setCellValue('G1','部门领导 | 审批');
+        $objSheet->setCellValue('H1','行控中心/综管部 | 审批');
+        $objSheet->setCellValue('I1','财务部 | 审核');
+        $objSheet->setCellValue('J1','总经理A | 审批');
+        $objSheet->setCellValue('K1','总经理B | 审批');
+        $objSheet->setCellValue('L1','总经理C | 审批');
+        $objSheet->setCellValue('M1','综管部/财务部 | 执行');
+
+        $objSheet->setCellValue('N1','状态');
+
+        $tasks = Task::find()
+            //->filterWhere(['like','title',$district])
+            ->where(['status'=>1])
+            ->andOnCondition('left(title,2) = "'.$district.'"')
+            ->all();
+        $i = 2;
+        foreach($tasks as $task){
+            echo $task->title.'<br/>';
+
+            //分类
+            $cateContent = '';
+            $cates = TaskCategoryId::find()->where(['task_id'=>$task->id])->all();
+            foreach($cates as $cate){
+                $cateName = $cate->category->name;
+                $cateContent .= ($cateContent!=''?"\n":'').$cateName;
+                echo $cateName.'<br/>';
+            }
+            $objSheet->setCellValue('D'.$i,$cateContent);
+
+            //表单
+            $formContent = '';
+            $forms = TaskForm::find()->where(['task_id'=>$task->id])->all();
+            foreach($forms as $form){
+                $formName = $form->form->title;
+                $formContent .= ($formContent!=''?"\n":'').$formName;
+                echo $formName.'<br/>';
+            }
+            $objSheet->setCellValue('E'.$i,$formContent);
+
+            //发起人
+            $userContent = '';
+            $users = TaskUserWildcard::find()->where(['task_id'=>$task->id])->all();
+            foreach($users as $user){
+                $userOne = '';
+                $userOne .= $user->district->name.' / ';
+                $userOne .= $user->industry->name.' / ';
+                $userOne .= $user->company->name.' / ';
+                $userOne .= $user->department->name.' / ';  //暂时不处理有多层级的department  默认p_id = 0
+                $userOne .= $user->position->name;   //职位 p_id >0
+                $userContent .= ($userContent!=''?"\n":'').$userOne;
+
+
+                echo $userOne.'<br/>';
+
+            }
+            $objSheet->setCellValue('F'.$i,$userContent);
+
+
+            //流程
+            $flows = Flow::find()->where(['task_id'=>$task->id])->all();
+            foreach($flows as $flow){
+                //var_dump($flow->user_id);
+                $flowUserName = $flow->user_id>0?($flow->user?$flow->user->name:'N/A'):'选择';
+                switch($flow->title) {
+                    case '部门领导':
+                        $objSheet->setCellValue('G'.$i,$flowUserName);
+                        break;
+                    case '行控中心/综管部':
+                        $objSheet->setCellValue('H'.$i,$flowUserName);
+                        break;
+                    case '财务部':
+                        $objSheet->setCellValue('I'.$i,$flowUserName);
+                        break;
+                    case '总经理A':
+                        $objSheet->setCellValue('J'.$i,$flowUserName);
+                        break;
+                    case '总经理B':
+                        $objSheet->setCellValue('K'.$i,$flowUserName);
+                        break;
+                    case '总经理C':
+                        $objSheet->setCellValue('L'.$i,$flowUserName);
+                        break;
+                    case '综管部/财务部':
+                        $objSheet->setCellValue('M'.$i,$flowUserName);
+                        break;
+                }
+            }
+
+
+
+
+            $objSheet->setCellValue('A'.$i,$i-1);
+            $objSheet->setCellValue('B'.$i,$task->id);
+            $objSheet->setCellValue('C'.$i,$task->title);
+            $objSheet->setCellValue('N'.$i,($task->set_complete==1)?'启用':'暂停');
+
+            $i++;
+            echo '==========<br/>';
+        }
+
+
+    }
+
+
+
+    public function actionImport(){
+        $file = '/Users/dodomogu/Downloads/11.xls';
+
+
+        $file = iconv("utf-8", "gb2312", $file);   //转码
+        if(empty($file) OR !file_exists($file)) {
+            die('file not exists!');
+        }
+        //include('PHPExcel.php');  //引入PHP EXCEL类
+        $objRead = new \PHPExcel_Reader_Excel2007();   //建立reader对象
+        if(!$objRead->canRead($file)){
+            $objRead = new \PHPExcel_Reader_Excel5();
+            if(!$objRead->canRead($file)){
+                die('No Excel!');
+            }
+        }
+
+
+        $cellName = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ');
+
+        $obj = $objRead->load($file);  //建立excel对象
+        $sheet = 0;
+        $currSheet = $obj->getSheet($sheet);   //获取指定的sheet表
+        $columnH = $currSheet->getHighestColumn();   //取得最大的列号
+        $columnCnt = array_search($columnH, $cellName);
+        $rowCnt = $currSheet->getHighestRow();   //获取总行数
+
+        $data = array();
+        for($_row=1; $_row<=$rowCnt; $_row++){  //读取内容
+            for($_column=0; $_column<=$columnCnt; $_column++){
+                $cellId = $cellName[$_column].$_row;
+                $cellValue = $currSheet->getCell($cellId)->getValue();
+                //$cellValue = $currSheet->getCell($cellId)->getCalculatedValue();  #获取公式计算的值
+                if($cellValue instanceof \PHPExcel_RichText){   //富文本转换字符串
+                    $cellValue = $cellValue->__toString();
+                }
+
+                $data[$_row][$cellName[$_column]] = $cellValue;
+            }
+        }
+
+        //ob_start();
+        header("Content-type: text/html; charset=utf-8");
+        echo '<table>';
+        foreach($data as $d){
+            echo '<tr>';
+            foreach($d as $d1){
+                echo '<td>';
+                echo $d1;
+                echo '</td>';
+            }
+
+            echo '</tr>';
+        }
+        echo '</table>';
+
+        //ob_end_clean();
+
     }
 
 }

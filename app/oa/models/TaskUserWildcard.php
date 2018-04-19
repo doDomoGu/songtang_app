@@ -4,7 +4,10 @@ namespace oa\models;
 
 //oa 任务发起人 对应匹配表 根据 地区  行业 公司 部门 职位
 
+use ucenter\models\Company;
 use ucenter\models\Department;
+use ucenter\models\District;
+use ucenter\models\Industry;
 use ucenter\models\Position;
 use ucenter\models\User;
 use Yii;
@@ -70,6 +73,27 @@ class TaskUserWildcard extends \yii\db\ActiveRecord
         return $query->all();
 
         //return $this->hasMany(UserGroupUser::className(), array('group_id' =>'id'));
+    }
+
+
+    public function getDistrict(){
+        return $this->hasOne(District::className(), array('id' => 'district_id'));
+    }
+
+    public function getIndustry(){
+        return $this->hasOne(Industry::className(), array('id' => 'industry_id'));
+    }
+
+    public function getCompany(){
+        return $this->hasOne(Company::className(), array('id' => 'company_id'));
+    }
+
+    public function getDepartment(){
+        return $this->hasOne(Department::className(), array('id' => 'department_id'));
+    }
+
+    public function getPosition(){
+        return $this->hasOne(Position::className(), array('id' => 'position_id'));
     }
 
 /*
