@@ -30,7 +30,7 @@ $this->title = '发起申请';
     'validateOnChange' => false,
     'validateOnBlur' => false,
     'validateOnSubmit' => true,
-    'options' => ['class' => 'form-horizontal','autocomplete'=>'off'],
+    'options' => ['class' => 'form-horizontal','autocomplete'=>'off','onkeydown'=>'if(event.keyCode==13)return false;'],
     'fieldConfig' => [
         'template' => "{label}\n<div class=\"col-lg-7\">{input}{hint}</div>\n<div class=\"col-lg-2\">{error}</div>",
         'labelOptions' => ['class' => 'col-lg-3 control-label'],
