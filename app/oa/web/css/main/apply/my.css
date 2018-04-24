@@ -90,14 +90,14 @@
 .panel-default > .panel-body > table > tbody > tr > td > span
 {
     word-break: break-all;
-    width: 36px;
+    width: 56px;
     overflow:hidden;
 }
 
 .panel-default > .panel-body > table > tbody > tr > th:nth-child(2) > span,
 .panel-default > .panel-body > table > tbody > tr > td:nth-child(2) > span
 {
-    width: 276px;
+    width: 256px;
 }
 
 .panel-default > .panel-body > table > tbody > tr > th:nth-child(3) > span,
