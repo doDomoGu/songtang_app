@@ -46,6 +46,9 @@ oa\assets\AppAsset::addCssFile($this,'script/jquery-ui/jquery-ui.min.css');
             <?php endforeach;?>
             </tbody>
         </table>
+        <?php echo \yii\widgets\LinkPager::widget([
+            'pagination' => $pages ,
+        ])?>
     </div>
 
 </section>

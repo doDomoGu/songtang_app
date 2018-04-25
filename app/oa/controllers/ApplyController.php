@@ -23,6 +23,7 @@ use oa\models\TaskForm;
 use oa\models\TaskUserWildcard;
 use ucenter\models\User;
 use yii\bootstrap\Html;
+use yii\data\Pagination;
 use yii\web\Response;
 use Yii;
 
@@ -2033,7 +2034,9 @@ $l++;
     //我的申请
     public function actionMy(){
         $list = Apply::getMyList();
-
+        $pages = new Pagination(['totalCount' =>count($list), 'pageSize' => 20,'pageSizeParam'=>false]);
+        $params['pages'] = $pages;
+        $list = array_splice($list,$pages->pageSize * $pages->page,$pages->pageSize);
         $params['list'] = $list;
         if($this->isMobile){
             $this->tabbar_on = 2;
@@ -2045,7 +2048,9 @@ $l++;
     //待办事项
     public function actionTodo(){
         $list = Apply::getTodoList();
-
+        $pages = new Pagination(['totalCount' =>count($list), 'pageSize' => 20,'pageSizeParam'=>false]);
+        $params['pages'] = $pages;
+        $list = array_splice($list,$pages->pageSize * $pages->page,$pages->pageSize);
         $params['list'] = $list;
         if($this->isMobile){
             $this->tabbar_on = 1;
@@ -2059,6 +2064,9 @@ $l++;
         $list = Apply::getRelatedList();
 
 
+        $pages = new Pagination(['totalCount' =>count($list), 'pageSize' => 20,'pageSizeParam'=>false]);
+        $params['pages'] = $pages;
+        $list = array_splice($list,$pages->pageSize * $pages->page,$pages->pageSize);
         $params['list'] = $list;
         if($this->isMobile){
             $this->tabbar_on = 1;
@@ -2072,6 +2080,9 @@ $l++;
         //检索出所有与你相关的流程  按task_id分组
 
         $list = Apply::getDoneList();
+        $pages = new Pagination(['totalCount' =>count($list), 'pageSize' => 20,'pageSizeParam'=>false]);
+        $params['pages'] = $pages;
+        $list = array_splice($list,$pages->pageSize * $pages->page,$pages->pageSize);
         $params['list'] = $list;
         if($this->isMobile){
             $this->tabbar_on = 1;
@@ -2084,6 +2095,9 @@ $l++;
     public function actionFinish(){
         //检索出所有与你相关的流程  按task_id分组
         $list = Apply::getFinishList();
+        $pages = new Pagination(['totalCount' =>count($list), 'pageSize' => 20,'pageSizeParam'=>false]);
+        $params['pages'] = $pages;
+        $list = array_splice($list,$pages->pageSize * $pages->page,$pages->pageSize);
         $params['list'] = $list;
         if($this->isMobile){
             $this->tabbar_on = 1;
