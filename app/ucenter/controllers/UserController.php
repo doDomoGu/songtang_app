@@ -12,6 +12,7 @@ use ucenter\models\User;
 use ucenter\models\UserForm;
 use ucenter\models\UserHistory;
 use Yii;
+use yii\data\Pagination;
 use yii\web\Response;
 use common\components\CommonFunc;
 
@@ -20,9 +21,16 @@ class UserController extends BaseController
     public function actionIndex(){
         /*$aid = Yii::$app->request->get('aid',false);
         $bid = Yii::$app->request->get('bid',false);*/
-        $list = User::find()->all();
+        $users = User::find();
+        $count = $users->count();
 
+        $pages = new Pagination(['totalCount' =>$count, 'pageSize' => 20,'pageSizeParam'=>false]);
 
+        $list = $users->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        $params['pages'] = $pages;
         $params['list'] = $list;
         /*$params['districtArr'] = District::getNameArr();
         $params['industryArr'] = Industry::getNameArr();

@@ -55,4 +55,7 @@ use ucenter\models\Position;
         <?php endforeach;?>
         </tbody>
     </table>
+    <?php echo \yii\widgets\LinkPager::widget([
+        'pagination' => $pages ,
+    ])?>
 </section>
