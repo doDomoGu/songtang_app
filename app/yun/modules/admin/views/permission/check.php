@@ -128,12 +128,12 @@ function showStatus($bool){
                     </tr>
                     <tr>
                         <td>全部</td>
-                        <td>限制地区</td>
-                        <td>限制行业</td>
+                        <td>限制地区,不限制行业</td>
+                        <td>限制行业,不限制地区</td>
                         <td>限制地区和行业</td>
                         <td>全部</td>
-                        <td>限制地区</td>
-                        <td>限制行业</td>
+                        <td>限制地区,不限制行业</td>
+                        <td>限制行业,不限制地区</td>
                         <td>限制地区和行业</td>
                     </tr>
                     <tr>
