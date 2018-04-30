@@ -36,12 +36,31 @@ $(function(){
                             var _for = $(t).attr('data-for');
 
                             var _type = $(t).attr('data-type');
+                            var forObject;
 
-                            var forObject = $('input[name="form_item['+_for+']');
-                            if(forObject.length == 1){
-                                forObject.on('input',function(){
-                                    $(t).val(intToChinese($(this).val()))
-                                })
+                            if(_type == 'upper'){
+                                forObject = $('input[name="form_item['+_for+']');
+                                if(forObject.length == 1){
+                                    forObject.on('input',function(){
+                                        $(t).val(intToChinese($(this).val()))
+                                    })
+                                }
+                            }else if(_type == 'table_sum'){
+                                var _table = _for.split('|')[0];
+                                var _col = _for.split('|')[1];
+                                forObject = $('input[name^="form_item['+_table+']"][name$="['+_col+']"]')
+
+                                if(forObject.length>0){
+                                    forObject.each(function(){
+                                        $(this).on('input',function(){
+                                            var _sum = 0;
+                                            forObject.each(function(){
+                                                _sum += $(this).val()!=''?parseFloat($(this).val()):0;
+                                            })
+                                            $(t).val(_sum)
+                                        })
+                                    })
+                                }
                             }
                         })
                         /*$('.datepicker-x').datetimepicker(
