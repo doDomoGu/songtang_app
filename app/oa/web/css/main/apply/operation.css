@@ -28,7 +28,8 @@
 .task-form-section .form-item.type-3,
 .task-form-section .form-item.type-4,
 .task-form-section .form-item.type-5,
-.task-form-section .form-item.type-8 {
+.task-form-section .form-item.type-8,
+.task-form-section .form-item.type-9 {
     min-height:40px;
 }
 
@@ -37,7 +38,8 @@
 .task-form-section .form-item.type-3 .item-label,
 .task-form-section .form-item.type-4 .item-label,
 .task-form-section .form-item.type-5 .item-label,
-.task-form-section .form-item.type-8 .item-label {
+.task-form-section .form-item.type-8 .item-label,
+.task-form-section .form-item.type-9 .item-label {
     padding-top:10px;
 }
 
@@ -46,7 +48,8 @@
 .task-form-section .form-item.type-3 .item-content,
 .task-form-section .form-item.type-4 .item-content,
 .task-form-section .form-item.type-5 .item-content,
-.task-form-section .form-item.type-8 .item-content {
+.task-form-section .form-item.type-8 .item-content,
+.task-form-section .form-item.type-9 .item-content {
     padding-top:8px;
 }
 

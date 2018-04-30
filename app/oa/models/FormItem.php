@@ -19,6 +19,7 @@ class FormItem extends \yii\db\ActiveRecord
     const TYPE_TABLE = 6;
     const TYPE_TEXTAREA = 7;
     const TYPE_DROPDOWN = 8;
+    const TYPE_FORMAT = 9;
 
     const TYPE_NULL_CN = 'N/A';
     const TYPE_TEXT_CN = '文本';
@@ -29,6 +30,7 @@ class FormItem extends \yii\db\ActiveRecord
     const TYPE_TABLE_CN = '表格';
     const TYPE_TEXTAREA_CN = '多行文本';
     const TYPE_DROPDOWN_CN = '下拉框';
+    const TYPE_FORMAT_CN = '格式化';
 
 
     public static function getDb(){
@@ -78,7 +80,8 @@ class FormItem extends \yii\db\ActiveRecord
             self::TYPE_DATE => self::TYPE_DATE_CN,
             self::TYPE_TABLE => self::TYPE_TABLE_CN,
             self::TYPE_TEXTAREA => self::TYPE_TEXTAREA_CN,
-            self::TYPE_DROPDOWN => self::TYPE_DROPDOWN_CN
+            self::TYPE_DROPDOWN => self::TYPE_DROPDOWN_CN,
+            self::TYPE_FORMAT => self::TYPE_FORMAT_CN
             /*'datetime' =>'日期和时间',
             'time' =>'时间',
             'range' =>'时间范围',*/
@@ -180,6 +183,22 @@ class FormItem extends \yii\db\ActiveRecord
                 break;
             case self::TYPE_DATE:
                 $content = Html::textInput($input_key,$value,['class'=>'datepicker-x']);
+                break;
+            case self::TYPE_FORMAT:
+                $_for = false;
+                $_type = false;
+                foreach($options as $o){
+                    $temp = explode(':',$o);
+                    if(count($temp)==2){
+                        if($temp[0]=='for'){
+                            $_for = $temp[1];
+                        }elseif($temp[0]=='type') {
+                            $_type = $temp[1];
+                        }
+                    }
+                }
+                $content = Html::textInput($input_key,$value,['class'=>'form_format','data-for'=>$_for,'data-type'=>$_type]);
+
                 break;
             /*case self::TYPE_DATE:
                 $format = isset($options['format'])?$options['format']:'yyyy-mm-dd';
