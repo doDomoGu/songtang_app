@@ -101,9 +101,33 @@ class Apply extends \yii\db\ActiveRecord
         return $return;
     }
 
+    public static function getStatusItems(){
+        return [
+            self::STATUS_NORMAL => self::STATUS_NORMAL_CN,
+            self::STATUS_DELETE => self::STATUS_DELETE_CN,
+            self::STATUS_SUCCESS => self::STATUS_SUCCESS_CN,
+            self::STATUS_FAILURE => self::STATUS_FAILURE_CN,
+            self::STATUS_BEATBACK => self::STATUS_BEATBACK_CN,
+            self::STATUS_APPLYDELETE => self::STATUS_APPLYDELETE_CN
+        ];
+    }
+
     //
-    public static function getMyList($getCount=false){
+    public static function getMyList($search,$getCount=false){
         $query = self::find()->where(['user_id'=>Yii::$app->user->id]);
+
+        foreach($search as $k=>$v){
+            if($k=='category' && $v!=''){
+                $query = $query->andWhere(['task_category'=>$v]);
+            }else if($k=='status' && $v!=''){
+                $query = $query->andWhere(['status'=>$v]);
+            }else if($k=='add_time_start' && $v!=''){
+                $query = $query->andWhere(['>=','add_time',$v]);
+            }else if($k=='add_time_end' && $v!=''){
+                $query = $query->andWhere(['<=','add_time',$v]);
+            }
+        }
+
         if($getCount)
             $return = $query->count();
         else
@@ -145,11 +169,25 @@ class Apply extends \yii\db\ActiveRecord
     }
 
     //待办事项:   当前流程操作人是"我"，且状态为“执行中”（这个是必然的，其他状态没有操作人了，都是已经完成的申请，不是成功就是失败）
-    public static function getTodoList($getCount=false){
+    public static function getTodoList($search,$getCount=false){
         $list = [];
         $user_id = Yii::$app->user->id;
         // 1.搜索执行中的申请
-        $applyList = Apply::find()->where(['status'=>self::STATUS_NORMAL])->all();
+        $query = Apply::find()->where(['status'=>self::STATUS_NORMAL]);
+
+        foreach($search as $k=>$v){
+            if($k=='category' && $v!=''){
+                $query = $query->andWhere(['task_category'=>$v]);
+            }else if($k=='status' && $v!=''){
+                $query = $query->andWhere(['status'=>$v]);
+            }else if($k=='add_time_start' && $v!=''){
+                $query = $query->andWhere(['>=','add_time',$v]);
+            }else if($k=='add_time_end' && $v!=''){
+                $query = $query->andWhere(['<=','add_time',$v]);
+            }
+        }
+
+        $applyList = $query->all();
 
         foreach($applyList as $apply){
             // 2.根据申请对应的任务表  和  步骤 ，判断操作人是不是自己
@@ -169,12 +207,27 @@ class Apply extends \yii\db\ActiveRecord
     }
 
     //办结事项   流程(不包含发起人）中操作人是"我"，且状态为 “已完成”
-    public static function getDoneList($getCount=false){
+    public static function getDoneList($search,$getCount=false){
         //$flow = Flow::find()->where(['user_id'=>Yii::$app->user->id])->groupBy('task_id')->orderBy('step desc')->select(['task_id','step'])->all();
         $list = [];
         $user_id = Yii::$app->user->id;
         // 1.搜索完结的申请
-        $applyList = Apply::find()->where(['status'=>self::STATUS_SUCCESS])->orderBy('add_time desc')->all();
+        $query = Apply::find()->where(['status'=>self::STATUS_SUCCESS]);
+
+        foreach($search as $k=>$v){
+            if($k=='category' && $v!=''){
+                $query = $query->andWhere(['task_category'=>$v]);
+            }else if($k=='status' && $v!=''){
+                $query = $query->andWhere(['status'=>$v]);
+            }else if($k=='add_time_start' && $v!=''){
+                $query = $query->andWhere(['>=','add_time',$v]);
+            }else if($k=='add_time_end' && $v!=''){
+                $query = $query->andWhere(['<=','add_time',$v]);
+            }
+        }
+
+
+        $applyList = $query->orderBy('add_time desc')->all();
 
         foreach($applyList as $apply){
             // 2.搜索操作记录中user_id 是不是自己
@@ -221,7 +274,7 @@ class Apply extends \yii\db\ActiveRecord
         return $return;
     }
 
-    public static function getRelatedList($getCount=false){
+    public static function getRelatedList($search,$getCount=false){
         $user_id = Yii::$app->user->id;
         //1.查找操作历史（不包含发起人）中是"我"的
         $records = ApplyRecord::find()->where(['user_id'=>$user_id])->andWhere(['>','step',0])->groupBy('apply_id')->all();
@@ -243,8 +296,8 @@ class Apply extends \yii\db\ActiveRecord
                 $taskIds[] = $f->task_id;
             }*/
 
-            $todoList = self::getTodoList();
-            $doneList = self::getDoneList();
+            $todoList = self::getTodoList($search);
+            $doneList = self::getDoneList($search);
             //$finishList = self::getFinishList();
             $notInIds = [];
             foreach($todoList as $l){
@@ -260,7 +313,21 @@ class Apply extends \yii\db\ActiveRecord
             $query = Apply::find()
                 /*->where(['task_id'=>$taskIds])*/
                 ->where(['id'=>$apply_ids])
-                ->andWhere(['not in','id',$notInIds])->orderBy('add_time desc');
+                ->andWhere(['not in','id',$notInIds]);
+
+            foreach($search as $k=>$v){
+                if($k=='category' && $v!=''){
+                    $query = $query->andWhere(['task_category'=>$v]);
+                }else if($k=='status' && $v!=''){
+                    $query = $query->andWhere(['status'=>$v]);
+                }else if($k=='add_time_start' && $v!=''){
+                    $query = $query->andWhere(['>=','add_time',$v]);
+                }else if($k=='add_time_end' && $v!=''){
+                    $query = $query->andWhere(['<=','add_time',$v]);
+                }
+            }
+
+            $query = $query->orderBy('add_time desc');
 
             if($getCount)
                 $return = $query->count();

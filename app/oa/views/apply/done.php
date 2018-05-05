@@ -21,6 +21,18 @@ oa\assets\AppAsset::addCssFile($this,'script/jquery-ui/jquery-ui.min.css');
             <?/*=Html::img('/images/main/apply/create-icon-2.png')*/?>
         </div>
         <div class="panel-body">
+            <div id="search-form" style="padding:10px;">
+                <form action="" method="get">
+                    <div>
+                    <label>申请类型</label>
+                        <?=Html::dropDownList('search[category]',$search['category'],\oa\models\TaskCategory::getDropdownList(),['class'=>'search_category','prompt'=>'==请选择==','encode'=>false])?>
+                        <label style="padding-left:100px;">时间范围</label>
+                        <?=Html::textInput('search[add_time_start]',$search['add_time_start'],['class'=>'search_time'])?>  ~
+                        <?=Html::textInput('search[add_time_end]',$search['add_time_end'],['class'=>'search_time'])?>
+                        <button style="float:right;" type="submit" id="searchBtn" >检索</button>
+                    </div>
+                </form>
+            </div>
             <table>
                 <tr>
                     <th><span>#</span></th>

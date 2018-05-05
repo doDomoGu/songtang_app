@@ -105,4 +105,21 @@ $(function(){
     $('#main').on('click','.print2-btn',function(){
         location.href = '/apply/finance-export?id='+$(this).attr('data-id');
     });
+
+    $('.search_time').datepicker(
+        {
+            dateFormat:'yy-mm-dd'
+        }
+    );
+
+    $('.search_category option').each(function(){
+        var disabledArr = ['t1','t2','t3','t4'];
+        if(disabledArr.indexOf($(this).val())>-1){
+            $(this).attr('disabled','disabled');
+        }
+    });
+
+    // $('#searchBtn').on('click',function(){
+    //
+    // })
 });

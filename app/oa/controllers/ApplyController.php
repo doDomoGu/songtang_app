@@ -2033,11 +2033,21 @@ $l++;
 
     //我的申请
     public function actionMy(){
-        $list = Apply::getMyList();
+        $search = Yii::$app->request->get('search',[]);
+
+        $defaultSearch = [
+            'category' => '',
+            'status' => [1,2,3,4,5],
+            'add_time_start' => date('Y-m-d',strtotime('-2month')),
+            'add_time_end' => date('Y-m-d')
+        ];
+        $search = array_merge($defaultSearch,$search);
+        $list = Apply::getMyList($search);
         $pages = new Pagination(['totalCount' =>count($list), 'pageSize' => 20,'pageSizeParam'=>false]);
         $params['pages'] = $pages;
         $list = array_splice($list,$pages->pageSize * $pages->page,$pages->pageSize);
         $params['list'] = $list;
+        $params['search'] = $search;
         if($this->isMobile){
             $this->tabbar_on = 2;
             return $this->render('mobile/my',$params);
@@ -2047,11 +2057,22 @@ $l++;
 
     //待办事项
     public function actionTodo(){
-        $list = Apply::getTodoList();
+        $search = Yii::$app->request->get('search',[]);
+
+        $defaultSearch = [
+            'category' => '',
+            //'status' => [1,2,3,4,5],
+            'add_time_start' => date('Y-m-d',strtotime('-2month')),
+            'add_time_end' => date('Y-m-d')
+        ];
+        $search = array_merge($defaultSearch,$search);
+
+        $list = Apply::getTodoList($search);
         $pages = new Pagination(['totalCount' =>count($list), 'pageSize' => 20,'pageSizeParam'=>false]);
         $params['pages'] = $pages;
         $list = array_splice($list,$pages->pageSize * $pages->page,$pages->pageSize);
         $params['list'] = $list;
+        $params['search'] = $search;
         if($this->isMobile){
             $this->tabbar_on = 1;
             return $this->render('mobile/todo',$params);
@@ -2061,13 +2082,25 @@ $l++;
 
     //相关事项
     public function actionRelated(){
-        $list = Apply::getRelatedList();
+        $search = Yii::$app->request->get('search',[]);
+
+        $defaultSearch = [
+            'category' => '',
+            'status' => [1,2,3,4,5],
+            'add_time_start' => date('Y-m-d',strtotime('-2month')),
+            'add_time_end' => date('Y-m-d')
+        ];
+
+        $search = array_merge($defaultSearch,$search);
+
+        $list = Apply::getRelatedList($search);
 
 
         $pages = new Pagination(['totalCount' =>count($list), 'pageSize' => 20,'pageSizeParam'=>false]);
         $params['pages'] = $pages;
         $list = array_splice($list,$pages->pageSize * $pages->page,$pages->pageSize);
         $params['list'] = $list;
+        $params['search'] = $search;
         if($this->isMobile){
             $this->tabbar_on = 1;
             return $this->render('mobile/related',$params);
@@ -2079,11 +2112,24 @@ $l++;
     public function actionDone(){
         //检索出所有与你相关的流程  按task_id分组
 
-        $list = Apply::getDoneList();
+        $search = Yii::$app->request->get('search',[]);
+
+        $defaultSearch = [
+            'category' => '',
+            //'status' => [1,2,3,4,5],
+            'add_time_start' => date('Y-m-d',strtotime('-2month')),
+            'add_time_end' => date('Y-m-d')
+        ];
+
+        $search = array_merge($defaultSearch,$search);
+
+        $list = Apply::getDoneList($search);
+
         $pages = new Pagination(['totalCount' =>count($list), 'pageSize' => 20,'pageSizeParam'=>false]);
         $params['pages'] = $pages;
         $list = array_splice($list,$pages->pageSize * $pages->page,$pages->pageSize);
         $params['list'] = $list;
+        $params['search'] = $search;
         if($this->isMobile){
             $this->tabbar_on = 1;
             return $this->render('mobile/done',$params);
