@@ -92,4 +92,9 @@ $this->title = '待办事项';
 <input id="apply_id" value="<?=$apply->id?>" type="hidden" />
 <?=$html2?>
     </div>
+
+<?=$this->render('file_preview_modal')?>
 </section>
+
+
+

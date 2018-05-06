@@ -70,4 +70,13 @@ $(function(){
             });
         }
     });
+
+
+    $('.attachment_preview').on('click',function(e){
+        e.preventDefault();
+
+        $('#file_preview_iframe').attr('src',$(this).attr('data-url'));
+
+        $('#file_preview_modal').modal('show')
+    })
 });

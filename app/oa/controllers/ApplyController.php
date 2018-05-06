@@ -2211,9 +2211,13 @@ $l++;
             if($record0){
                 $attchList = json_decode($record0->attachment,true);
                 if($attchList){
-                    $html .= '<div><span style="display:block;width:40px;float:left;">附件: </span><span style="display: block;width:500px;float:left;">';
+                    $html .= '<div style="margin-top:10px;"><span style="display:block;width:40px;float:left;">附件: </span><span style="display: block;margin-top:width:500px;float:left;">';
                     foreach($attchList as $a){
-                        $html .= '<div>'.Html::a($a['name'],OaFunc::getResourcePath($a['url']),['style'=>'color:#333;text-decoration:underline;']).'</div>';
+                        $html .= '<div>';
+                        $html .= Html::tag('span',$a['name'],['class'=>'attachment_preview','data-url'=>OaFunc::getResourcePath($a['url']),'style'=>'color:#333;text-decoration:underline;cursor:pointer;']).' ';
+                        $html .= Html::a('预览','/apply/file-preview?url='.urlencode(OaFunc::getResourcePath($a['url'])),['style'=>'color:#333;text-decoration:underline;']).' ';
+                        $html .= Html::a('下载',OaFunc::getResourcePath($a['url']),['style'=>'color:#333;text-decoration:underline;']).' ';
+                        $html .= '</div>';
                     }
                     $html .= '</span></div>';
                 }
@@ -2419,6 +2423,17 @@ $l++;
         $response=Yii::$app->response;
         $response->format=Response::FORMAT_JSON;
         $response->data=['result'=>$result,'errormsg'=>$errormsg];
+    }
+
+
+    public function actionFilePreview(){
+        $this->layout = false;
+        $url = Yii::$app->request->get('url');
+
+        $params['url'] = $url;
+
+        return $this->render('file_preview',$params);
+
     }
 
 }

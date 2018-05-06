@@ -124,7 +124,7 @@ class Apply extends \yii\db\ActiveRecord
             }else if($k=='add_time_start' && $v!=''){
                 $query = $query->andWhere(['>=','add_time',$v]);
             }else if($k=='add_time_end' && $v!=''){
-                $query = $query->andWhere(['<=','add_time',$v]);
+                $query = $query->andWhere(['<=','add_time',$v.' 23:59:59']);
             }
         }
 
@@ -183,11 +183,11 @@ class Apply extends \yii\db\ActiveRecord
             }else if($k=='add_time_start' && $v!=''){
                 $query = $query->andWhere(['>=','add_time',$v]);
             }else if($k=='add_time_end' && $v!=''){
-                $query = $query->andWhere(['<=','add_time',$v]);
+                $query = $query->andWhere(['<=','add_time',$v.' 23:59:59']);
             }
         }
 
-        $applyList = $query->all();
+        $applyList = $query->orderBy('add_time desc')->all();
 
         foreach($applyList as $apply){
             // 2.根据申请对应的任务表  和  步骤 ，判断操作人是不是自己
@@ -222,7 +222,7 @@ class Apply extends \yii\db\ActiveRecord
             }else if($k=='add_time_start' && $v!=''){
                 $query = $query->andWhere(['>=','add_time',$v]);
             }else if($k=='add_time_end' && $v!=''){
-                $query = $query->andWhere(['<=','add_time',$v]);
+                $query = $query->andWhere(['<=','add_time',$v.' 23:59:59']);
             }
         }
 
@@ -261,7 +261,7 @@ class Apply extends \yii\db\ActiveRecord
         $list = [];
         if(!empty($flow)){
             foreach($flow as $f){
-                $applyList = Apply::find()->where(['task_id'=>$f->task_id,'status'=>self::STATUS_SUCCESS])->all();
+                $applyList = Apply::find()->where(['task_id'=>$f->task_id,'status'=>self::STATUS_SUCCESS])->orderBy('add_time desc')->all();
                 if(!empty($applyList))
                     $list = array_merge($list,$applyList);
             }
@@ -323,7 +323,7 @@ class Apply extends \yii\db\ActiveRecord
                 }else if($k=='add_time_start' && $v!=''){
                     $query = $query->andWhere(['>=','add_time',$v]);
                 }else if($k=='add_time_end' && $v!=''){
-                    $query = $query->andWhere(['<=','add_time',$v]);
+                    $query = $query->andWhere(['<=','add_time',$v.' 23:59:59']);
                 }
             }
 
