@@ -124,7 +124,7 @@ class Apply extends \yii\db\ActiveRecord
             }else if($k=='add_time_start' && $v!=''){
                 $query = $query->andWhere(['>=','add_time',$v]);
             }else if($k=='add_time_end' && $v!=''){
-                $query = $query->andWhere(['<=','add_time',$v.' 23:59:59']);
+                $query = $query->andWhere(['<=','left(add_time,10)',$v]);
             }
         }
 
@@ -183,7 +183,7 @@ class Apply extends \yii\db\ActiveRecord
             }else if($k=='add_time_start' && $v!=''){
                 $query = $query->andWhere(['>=','add_time',$v]);
             }else if($k=='add_time_end' && $v!=''){
-                $query = $query->andWhere(['<=','add_time',$v.' 23:59:59']);
+                $query = $query->andWhere(['<=','left(add_time,10)',$v]);
             }
         }
 
@@ -222,7 +222,7 @@ class Apply extends \yii\db\ActiveRecord
             }else if($k=='add_time_start' && $v!=''){
                 $query = $query->andWhere(['>=','add_time',$v]);
             }else if($k=='add_time_end' && $v!=''){
-                $query = $query->andWhere(['<=','add_time',$v.' 23:59:59']);
+                $query = $query->andWhere(['<=','left(add_time,10)',$v]);
             }
         }
 
@@ -323,7 +323,7 @@ class Apply extends \yii\db\ActiveRecord
                 }else if($k=='add_time_start' && $v!=''){
                     $query = $query->andWhere(['>=','add_time',$v]);
                 }else if($k=='add_time_end' && $v!=''){
-                    $query = $query->andWhere(['<=','add_time',$v.' 23:59:59']);
+                    $query = $query->andWhere(['<=','left(add_time,10)',$v]);
                 }
             }
 
