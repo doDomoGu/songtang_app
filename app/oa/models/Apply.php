@@ -116,8 +116,9 @@ class Apply extends \yii\db\ActiveRecord
     public static function getMyList($search,$getCount=false){
         $query = self::find()->where(['user_id'=>Yii::$app->user->id]);
 
-        foreach($search as $k=>$v){
-            if($k=='category' && $v!=''){
+        foreach($search as $k=>$v){if($k=='title' && $v!=''){
+            $query = $query->andWhere(['like','title',$v]);
+            }else if($k=='category' && $v!=''){
                 $query = $query->andWhere(['task_category'=>$v]);
             }else if($k=='status' && $v!=''){
                 $query = $query->andWhere(['status'=>$v]);
@@ -176,7 +177,9 @@ class Apply extends \yii\db\ActiveRecord
         $query = Apply::find()->where(['status'=>self::STATUS_NORMAL]);
 
         foreach($search as $k=>$v){
-            if($k=='category' && $v!=''){
+            if($k=='title' && $v!=''){
+                $query = $query->andWhere(['like','title',$v]);
+            }else if($k=='category' && $v!=''){
                 $query = $query->andWhere(['task_category'=>$v]);
             }else if($k=='status' && $v!=''){
                 $query = $query->andWhere(['status'=>$v]);
@@ -215,7 +218,9 @@ class Apply extends \yii\db\ActiveRecord
         $query = Apply::find()->where(['status'=>self::STATUS_SUCCESS]);
 
         foreach($search as $k=>$v){
-            if($k=='category' && $v!=''){
+            if($k=='title' && $v!=''){
+                $query = $query->andWhere(['like','title',$v]);
+            }else if($k=='category' && $v!=''){
                 $query = $query->andWhere(['task_category'=>$v]);
             }else if($k=='status' && $v!=''){
                 $query = $query->andWhere(['status'=>$v]);
@@ -316,7 +321,9 @@ class Apply extends \yii\db\ActiveRecord
                 ->andWhere(['not in','id',$notInIds]);
 
             foreach($search as $k=>$v){
-                if($k=='category' && $v!=''){
+                if($k=='title' && $v!=''){
+                    $query = $query->andWhere(['like','title',$v]);
+                }else if($k=='category' && $v!=''){
                     $query = $query->andWhere(['task_category'=>$v]);
                 }else if($k=='status' && $v!=''){
                     $query = $query->andWhere(['status'=>$v]);

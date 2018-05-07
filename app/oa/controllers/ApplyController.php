@@ -2036,6 +2036,7 @@ $l++;
         $search = Yii::$app->request->get('search',[]);
 
         $defaultSearch = [
+            'title' => '',
             'category' => '',
             'status' => [1,2,3,4,5],
             'add_time_start' => date('Y-m-d',strtotime('-2month')),
@@ -2060,6 +2061,7 @@ $l++;
         $search = Yii::$app->request->get('search',[]);
 
         $defaultSearch = [
+            'title' => '',
             'category' => '',
             //'status' => [1,2,3,4,5],
             'add_time_start' => date('Y-m-d',strtotime('-2month')),
@@ -2085,6 +2087,7 @@ $l++;
         $search = Yii::$app->request->get('search',[]);
 
         $defaultSearch = [
+            'title' => '',
             'category' => '',
             'status' => [1,2,3,4,5],
             'add_time_start' => date('Y-m-d',strtotime('-2month')),
@@ -2115,6 +2118,7 @@ $l++;
         $search = Yii::$app->request->get('search',[]);
 
         $defaultSearch = [
+            'title' => '',
             'category' => '',
             //'status' => [1,2,3,4,5],
             'add_time_start' => date('Y-m-d',strtotime('-2month')),
