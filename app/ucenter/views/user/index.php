@@ -18,6 +18,26 @@ use ucenter\models\Position;
         <?=Html::a('全部导出','/user/export-all',['class'=>'btn btn-warning'])?>
         <?/*=Html::a('清除user缓存','/user/clear-cache',['class'=>'btn btn-danger'])*/?>
     </div>
+    <div id="search-form" style="padding:10px;">
+        <form action="" method="get">
+            <div>
+                <label>用户名：</label>
+                <?=Html::textInput('search[username]',$search['username'])?>
+                <label>姓名：</label>
+                <?=Html::textInput('search[name]',$search['name'])?>
+
+<!--                --><?//=Html::dropDownList('search[username]',$search['username'],\oa\models\TaskCategory::getDropdownList(),['class'=>'search_category','prompt'=>'==请选择==','encode'=>false])?>
+<!--                <label style="padding-left:100px;">时间范围</label>-->
+<!--                --><?//=Html::textInput('search[add_time_start]',$search['add_time_start'],['class'=>'search_time'])?><!--  ~-->
+<!--                --><?//=Html::textInput('search[add_time_end]',$search['add_time_end'],['class'=>'search_time'])?>
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label>状态</label>-->
+<!--                --><?//=Html::checkboxList('search[status]',$search['status'],Apply::getStatusItems(),['tag'=>'span','separator'=>' '])?>
+                <button style="float:right;" type="submit" id="searchBtn" >检索</button>
+            </div>
+        </form>
+    </div>
     <table class="table table-bordered" style="background: #fafafa;">
         <tr>
             <th>#</th>

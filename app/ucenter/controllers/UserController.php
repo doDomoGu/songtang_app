@@ -21,17 +21,35 @@ class UserController extends BaseController
     public function actionIndex(){
         /*$aid = Yii::$app->request->get('aid',false);
         $bid = Yii::$app->request->get('bid',false);*/
-        $users = User::find();
-        $count = $users->count();
+        $search = Yii::$app->request->get('search',[]);
+
+        $defaultSearch = [
+            'username' => '',
+            'name' => ''
+        ];
+        $search = array_merge($defaultSearch,$search);
+
+
+
+        $query = User::find();
+        foreach($search as $k=>$v){
+            if(($k=='username'||$k=='name') && $v!=''){
+                $query = $query->andWhere(['like',$k,$v]);
+            }
+        }
+
+
+        $count = $query->count();
 
         $pages = new Pagination(['totalCount' =>$count, 'pageSize' => 20,'pageSizeParam'=>false]);
 
-        $list = $users->offset($pages->offset)
+        $list = $query->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
 
         $params['pages'] = $pages;
         $params['list'] = $list;
+        $params['search'] = $search;
         /*$params['districtArr'] = District::getNameArr();
         $params['industryArr'] = Industry::getNameArr();
         $params['companyArr'] = Company::getNameArr();
