@@ -161,7 +161,7 @@
 </div>
 
 
-<?=$this->render('modal/upload_common')?>
+<?=$this->render('modal/upload_common',['dir_id'=>$dir_id])?>
 <?/*=$this->render('modal/upload_person')*/?>
 <?=$this->render('modal/create_dir_common')?>
 <?/*=$this->render('modal/create_dir_person')*/?>

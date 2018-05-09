@@ -188,7 +188,7 @@ class DirPermission extends \yii\db\ActiveRecord
     /*
      * 检测目录是否允许执行所选操作
      * 参数 dir_id : 目录ID
-     * 参数 [Array|String] permission_type :   权限类型，1常规不限制， 2 3 4 限制文件属性(地区,行业,公司)和用户属性保持一致
+     * 参数 [Array|String] permission_type :   权限类型，1常规不限制， 2 3 4 限制文件属性(地区,行业)和用户属性保持一致
      * ['and'=>array(1,2...)] 表示这些权限要都有
      * ['or'=>array(1,2,....)] 表示有其一即可
      * 1/2/3    单一数字，表示单一权限

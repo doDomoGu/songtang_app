@@ -3,6 +3,11 @@
 namespace ucenter\models;
 
 use Yii;
+use yun\models\Attribute;
+use yun\models\Dir;
+use yun\models\DirAttribute;
+use yun\models\DirPermission;
+
 //Industry      行业 (产业)
 
 class Industry extends \yii\db\ActiveRecord
@@ -65,17 +70,59 @@ class Industry extends \yii\db\ActiveRecord
         ])->with('company')->all();
     }
 
-    public static function getItems($foreground=false){
+    public static function getItems($frontend=false,$idArr=false){
         $items = [];
-        $list = self::find()->where(['status'=>1])->orderBy('ord asc')->all();
+        $list = self::find()->where(['status'=>1]);
+        if($idArr!==false && is_array($idArr)){
+            $list = $list->andWhere(['id'=>$idArr]);
+        }
+        $list = $list->orderBy('ord asc')->all();
         foreach($list as $l){
             $items[$l->id] = $l->name;
         }
-        if($foreground){
+        if($frontend){
             $default = self::find()->where(['alias'=>'default'])->one();
-            $items[$default->id] = '全员';
+            if(isset($items[$default->id]))
+                $items[$default->id] = '全员';
         }
         return $items;
+    }
+
+    public static function getItemsByPermission($dir_id,$frontend=false,$user=false){
+        $idArr = [];
+        if($user===false)
+            $user = Yii::$app->user->identity;
+        $up1 = DirPermission::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_UPLOAD,$user);
+        if($up1){
+            $idArr = false;
+        }else{
+            $up3 = DirPermission::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_INDUSTRY,DirPermission::OPERATION_UPLOAD,$user);
+            $up4 = DirPermission::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY,DirPermission::OPERATION_UPLOAD,$user);
+            if($up3 || $up4){
+                $idArr[] = $user->industry_id;
+//                $default = self::find()->where(['alias'=>'default'])->one();
+//                $idArr[] = $default->id;
+            }
+        }
+
+        $dir = Dir::find()->where(['id'=>$dir_id])->one();
+        if($dir){
+            $idAttr = false;
+            $attributes = json_decode($dir->attr_limit,true);
+            if($attributes){
+                if(isset($attributes[Attribute::TYPE_INDUSTRY]) && is_array($attributes[Attribute::TYPE_INDUSTRY])){
+                    $idAttr = [];
+                    foreach($attributes[Attribute::TYPE_INDUSTRY] as $attr){
+                        $idAttr[] = $attr;
+                    }
+                }
+            }
+            if(is_array($idAttr)){
+                $idArr = $idArr!==false ? array_diff($idArr,$idAttr) : $idAttr;
+            }
+        }
+
+        return self::getItems($frontend,$idArr);
     }
 
     public static function getIds(){

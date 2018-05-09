@@ -4,6 +4,7 @@
     use ucenter\models\District;
     use ucenter\models\Industry;
     use yii\bootstrap\BaseHtml;
+    use yun\models\DirPermission;
 
    /* yun\assets\AppAsset::addJsFile($this,'js/qiniu/plupload.full.min.js');
     yun\assets\AppAsset::addJsFile($this,'js/qiniu/qiniu.js');*/
@@ -14,8 +15,12 @@
 
     yun\assets\AppAsset::addJsFile($this,'js/main/dir/modal/upload_common.js');
 
-    $districtItems = District::getItems(true);
-    $industryItems = Industry::getItems(true);
+
+
+    $districtItems = District::getItemsByPermission($dir_id,true);
+    $industryItems = Industry::getItemsByPermission($dir_id,true);
+
+
 ?>
 <?php
 Modal::begin([

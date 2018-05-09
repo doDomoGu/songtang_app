@@ -2,6 +2,10 @@
 namespace ucenter\models;
 
 use Yii;
+use yun\models\Attribute;
+use yun\models\Dir;
+use yun\models\DirAttribute;
+use yun\models\DirPermission;
 
 //District      地区 (地方,行政划分)
 
@@ -79,17 +83,64 @@ class District extends \yii\db\ActiveRecord{
         return $arr;
     }
 
-    public static function getItems($frontend=false){
+
+    // $idArrLimit id限制 false：不限制  或者 为ID数组
+
+    public static function getItems($frontend=false,$idArrLimit=false){
         $items = [];
-        $list = self::find()->where(['status'=>1])->orderBy('ord asc')->all();
+        $list = self::find()->where(['status'=>1]);
+        if($idArrLimit!==false && is_array($idArrLimit)){
+            $list = $list->andWhere(['id'=>$idArrLimit]);
+        }
+        $list = $list->orderBy('ord asc')->all();
         foreach($list as $l){
             $items[$l->id] = $l->name;
         }
         if($frontend){  //前台 默认值显示设置
             $default = self::find()->where(['alias'=>'default'])->one();
-            $items[$default->id] = '全员';
+            if(isset($items[$default->id]))
+                $items[$default->id] = '全员';
         }
         return $items;
+    }
+
+
+    public static function getItemsByPermission($dir_id,$frontend=false,$user=false){
+        $idArr = [];
+        if($user===false)
+            $user = Yii::$app->user->identity;
+        $up1 = DirPermission::isDirAllow($dir_id,DirPermission::PERMISSION_TYPE_NORMAL,DirPermission::OPERATION_UPLOAD,$user);
+        if($up1){
+            $idArr = false;
+        }else{
+            $up2 = DirPermission::isDirAllow($dir_id,['or'=>[DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT,DirPermission::PERMISSION_TYPE_ATTR_LIMIT_DISTRICT_INDUSTRY]],DirPermission::OPERATION_UPLOAD,$user);
+            if($up2){
+                $idArr[] = $user->district_id;
+//                $default = self::find()->where(['alias'=>'default'])->one();
+//                $idArr[] = $default->id;
+            }
+        }
+
+
+        $dir = Dir::find()->where(['id'=>$dir_id])->one();
+        if($dir){
+            $idAttr = false;
+            $attributes = json_decode($dir->attr_limit,true);
+            if($attributes){
+                
+                if(isset($attributes[Attribute::TYPE_DISTRICT]) && is_array($attributes[Attribute::TYPE_DISTRICT])){
+                    $idAttr = [];
+                    foreach($attributes[Attribute::TYPE_DISTRICT] as $attr){
+                        $idAttr[] = $attr;
+                    }
+                }
+            }
+            if(is_array($idAttr)){
+                $idArr = $idArr!==false ? array_diff($idArr,$idAttr) : $idAttr;
+            }
+        }
+
+        return self::getItems($frontend,$idArr);
     }
 
     public static function getIds(){
