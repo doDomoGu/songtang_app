@@ -5,6 +5,7 @@ namespace yun\modules\admin\controllers;
 use common\components\CommonFunc;
 use ucenter\models\User;
 use Yii;
+use yun\models\Attribute;
 use yun\models\DirPermission;
 use yun\components\YunFunc;
 use yun\models\Dir;

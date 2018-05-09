@@ -47,7 +47,7 @@ use common\components\CommonFunc;
                         <?php if($l->is_leaf==0):?>
                             <?=BaseHtml::a('添加子目录',['add-and-edit','p_id'=>$l->id],['class'=>'btn btn-warning btn-xs'])?>
                         <?php else:?>
-
+                            <?=BaseHtml::a('属性限制设置',['attr-limit','id'=>$l->id],['class'=>'btn btn-warning btn-xs','style'=>'background-color:#a34ef0;border-color:#b036ee;'])?>
                         <?php endif;?>
                     <?php endif;?>
                 </td>
