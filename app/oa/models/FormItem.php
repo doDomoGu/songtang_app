@@ -146,6 +146,7 @@ class FormItem extends \yii\db\ActiveRecord
             case self::TYPE_NUMBER:
                 $width = false;
                 $unit = false;
+                $type = false;
                 foreach($options as $o){
                     $temp = explode(':',$o);
                     if(count($temp)==2){
@@ -153,10 +154,18 @@ class FormItem extends \yii\db\ActiveRecord
                             $unit = $temp[1];
                         }elseif($temp[0]=='width') {
                             $width = $temp[1];
+                        }elseif($temp[0]=='type') {
+                            $type = $temp[1];
                         }
                     }
                 }
-                $options2 = $width?['style'=>'width:'.$width.'px']:[];
+                $options2 = ['class'=>'form_number'];
+                if($width){
+                    $options2['style'] = 'width:'.$width.'px';
+                }
+                if($type){
+                    $options2['data-type'] = $type;
+                }
                 $content = Html::textInput($input_key,$value,$options2);
                 $content .= $unit?'<span class="num-unit">'.$unit.'</span>':'';
                 break;

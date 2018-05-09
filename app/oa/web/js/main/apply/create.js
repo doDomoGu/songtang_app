@@ -26,43 +26,10 @@ $(function(){
                             $('.form-content').html(data.formContentHtml).show();
                         }
 
-                        $('.datepicker-x').datepicker(
-                            {
-                                dateFormat:'yy-mm-dd'
-                            }
-                        );
-                        $('.form_format').each(function () {
-                            var t = this;
-                            var _for = $(t).attr('data-for');
 
-                            var _type = $(t).attr('data-type');
-                            var forObject;
+                        form_script_bind();
 
-                            if(_type == 'upper'){
-                                forObject = $('input[name="form_item['+_for+']');
-                                if(forObject.length == 1){
-                                    forObject.on('input',function(){
-                                        $(t).val(intToChinese($(this).val()))
-                                    })
-                                }
-                            }else if(_type == 'table_sum'){
-                                var _table = _for.split('|')[0];
-                                var _col = _for.split('|')[1];
-                                forObject = $('input[name^="form_item['+_table+']"][name$="['+_col+']"]')
 
-                                if(forObject.length>0){
-                                    forObject.each(function(){
-                                        $(this).on('input',function(){
-                                            var _sum = 0;
-                                            forObject.each(function(){
-                                                _sum += $(this).val()!=''?parseFloat($(this).val()):0;
-                                            })
-                                            $(t).val(_sum)
-                                        })
-                                    })
-                                }
-                            }
-                        })
                         /*$('.datepicker-x').datetimepicker(
                             {
                                 language:'cn',
@@ -138,12 +105,18 @@ $(function(){
                 success: function (data) {
                     if(data.result){
                         $('.form-content').html(data.html).show();
-                        $('.datepicker-x').datepicker(
+
+                        form_script_bind();
+
+                        /*$('.datepicker-x').datepicker(
                             {
                                 dateFormat:'yy-mm-dd'
                             }
                         );
                         $('.form_format').each(function () {
+                            form_format_bind(this);
+                        })*/
+                        /*$('.form_format').each(function () {
                             var t = this;
                             var _for = $(t).attr('data-for');
 
@@ -152,10 +125,11 @@ $(function(){
                             var forObject = $('input[name="form_item['+_for+']');
                             if(forObject.length == 1){
                                 forObject.on('input',function(){
-                                    $(t).val(intToChinese($(this).val()))
+                                    //$(t).val(intToChinese($(this).val()))
+                                    $(t).val(convertCurrency($(this).val()))
                                 })
                             }
-                        })
+                        })*/
                     }else{
                         //$('.task-preview').html(data.errormsg).show();
 
@@ -256,5 +230,172 @@ $(function(){
                 }
             }
         });
+    }
+
+
+    //代码如下所示：
+    function convertCurrency(money) {
+        //汉字的数字
+        var cnNums = new Array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖');
+        //基本单位
+        var cnIntRadice = new Array('', '拾', '佰', '仟');
+        //对应整数部分扩展单位
+        var cnIntUnits = new Array('', '万', '亿', '兆');
+        //对应小数部分单位
+        var cnDecUnits = new Array('角', '分', '毫', '厘');
+        //整数金额时后面跟的字符
+        var cnInteger = '整';
+        //整型完以后的单位
+        var cnIntLast = '元';
+        //最大处理的数字
+        var maxNum = 999999999999999.9999;
+        //金额整数部分
+        var integerNum;
+        //金额小数部分
+        var decimalNum;
+        //输出的中文金额字符串
+        var chineseStr = '';
+        //分离金额后用的数组，预定义
+        var parts;
+        if (money == '') { return ''; }
+        money = parseFloat(money);
+        if (money >= maxNum) {
+            //超出最大处理数字
+            return '';
+        }
+        if (money == 0) {
+            chineseStr = cnNums[0] + cnIntLast + cnInteger;
+            return chineseStr;
+        }
+        //转换为字符串
+        money = money.toString();
+        if (money.indexOf('.') == -1) {
+            integerNum = money;
+            decimalNum = '';
+        } else {
+            parts = money.split('.');
+            integerNum = parts[0];
+            decimalNum = parts[1].substr(0, 4);
+        }
+        //获取整型部分转换
+        if (parseInt(integerNum, 10) > 0) {
+            var zeroCount = 0;
+            var IntLen = integerNum.length;
+            for (var i = 0; i < IntLen; i++) {
+                var n = integerNum.substr(i, 1);
+                var p = IntLen - i - 1;
+                var q = p / 4;
+                var m = p % 4;
+                if (n == '0') {
+                    zeroCount++;
+                } else {
+                    if (zeroCount > 0) {
+                        chineseStr += cnNums[0];
+                    }
+                    //归零
+                    zeroCount = 0;
+                    chineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
+                }
+                if (m == 0 && zeroCount < 4) {
+                    chineseStr += cnIntUnits[q];
+                }
+            }
+            chineseStr += cnIntLast;
+        }
+        //小数部分
+        if (decimalNum != '') {
+            var decLen = decimalNum.length;
+            console.log(decLen);
+            for (var i = 0; i < decLen; i++) {
+                var n = decimalNum.substr(i, 1);
+                if (n != '0') {
+                    chineseStr += cnNums[Number(n)] + cnDecUnits[i];
+                }else if(i==0){
+                    chineseStr += '零'
+                }
+            }
+        }
+        if (chineseStr == '') {
+            chineseStr += cnNums[0] + cnIntLast + cnInteger;
+        } else if (decimalNum == '') {
+            chineseStr += cnInteger;
+        }
+        return chineseStr;
+    }
+
+    function form_script_bind() {
+        $('.datepicker-x').datepicker(
+            {
+                dateFormat:'yy-mm-dd'
+            }
+        );
+        $('.form_number').each(function(){
+            var t = this;
+            var _type = $(t).attr('data-type');
+
+            if(_type == 'price'){//金额格式  两位小数
+                $(t).on('input',function(){
+                    var v = $(t).val();
+
+
+                    v = v.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+                    v = v.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+                    v = v.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+                    v = v.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数
+                    if(v.indexOf(".")< 0 && v !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+                        v = parseFloat(v);
+                    }
+
+                    $(t).val(v);
+
+
+                    //$(t).val(intToChinese($(this).val()))
+                    //$(t).val(convertCurrency($(this).val()))
+                })
+
+
+
+            }
+        })
+
+
+
+        $('.form_format').each(function () {
+            var t = this;
+            var _for = $(t).attr('data-for');
+
+            var _type = $(t).attr('data-type');
+            var forObject;
+
+            if(_type == 'upper'){
+                forObject = $('input[name="form_item['+_for+']');
+                if(forObject.length == 1){
+                    forObject.on('input',function(){
+                        //$(t).val(intToChinese($(this).val()))
+                        $(t).val(convertCurrency($(this).val()))
+                    })
+                }
+            }else if(_type == 'table_sum'){
+                var _table = _for.split('|')[0];
+                var _col = _for.split('|')[1];
+                forObject = $('input[name^="form_item['+_table+']"][name$="['+_col+']"]')
+
+                if(forObject.length>0){
+                    forObject.each(function(){
+                        $(this).on('input',function(){
+                            var _sum = 0;
+                            forObject.each(function(){
+                                _sum += $(this).val()!=''?parseFloat($(this).val()):0;
+                            })
+                            $(t).val(_sum)
+                        })
+                    })
+                }
+            }
+
+        })
+
+
+
     }
 });
