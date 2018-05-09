@@ -304,4 +304,50 @@ $ord++;
 
         }
     }
+
+    public function actionAttrLimit(){
+        $dir_id = Yii::$app->request->get('id',false);
+        $dir = Dir::find()->where(['id'=>$dir_id])->one();
+        if($dir){
+            if($_POST){
+                $districtAttr = Yii::$app->request->post('isDistrictLimit',false) == 1 ? Yii::$app->request->post('districtCheck',[]) : false;
+                $industryAttr = Yii::$app->request->post('isIndustryLimit',false) == 1 ? Yii::$app->request->post('industryCheck',[]) : false;
+
+                $dir->attr_limit = json_encode([Attribute::TYPE_DISTRICT=>$districtAttr,Attribute::TYPE_INDUSTRY=>$industryAttr]);
+                $dir->save();
+                $this->refresh();
+
+            }
+
+
+            $districtAttr = false;
+            $industryAttr = false;
+            $attributes = json_decode($dir->attr_limit,true);
+            if($attributes){
+                if(isset($attributes[Attribute::TYPE_DISTRICT]) && is_array($attributes[Attribute::TYPE_DISTRICT])){
+                    $districtAttr = [];
+                    foreach($attributes[Attribute::TYPE_DISTRICT] as $attr){
+                        $districtAttr[] = $attr;
+                    }
+                }
+                if(isset($attributes[Attribute::TYPE_INDUSTRY]) && is_array($attributes[Attribute::TYPE_INDUSTRY])){
+                    $industryAttr = [];
+                    foreach($attributes[Attribute::TYPE_INDUSTRY] as $attr){
+                        $industryAttr[] = $attr;
+                    }
+                }
+            }
+
+            $params['districtArr'] = $districtAttr;
+            $params['industryArr'] = $industryAttr;
+            $params['dir'] = $dir;
+            return $this->render('attr_limit',$params);
+        }else{
+            echo 'wrong dir_id';exit;
+        }
+
+    }
+
+
+    
 }
