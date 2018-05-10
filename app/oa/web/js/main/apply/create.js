@@ -368,7 +368,7 @@ $(function(){
             var forObject;
 
             if(_type == 'upper'){
-                forObject = $('input[name="form_item['+_for+']');
+                forObject = $('input[name="form_item['+_for+']"]');
                 if(forObject.length == 1){
                     forObject.on('input',function(){
                         //$(t).val(intToChinese($(this).val()))
