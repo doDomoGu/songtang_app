@@ -2064,8 +2064,8 @@ $l++;
             'title' => '',
             'category' => '',
             //'status' => [1,2,3,4,5],
-            'add_time_start' => date('Y-m-d',strtotime('-2month')),
-            'add_time_end' => date('Y-m-d')
+            'add_time_start' => '',
+            'add_time_end' => ''
         ];
         $search = array_merge($defaultSearch,$search);
 
