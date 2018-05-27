@@ -801,16 +801,17 @@ class ApplyController extends BaseController
 
 
         $objPHPExcel->getActiveSheet()->mergeCells('G'.$l.':I'.($l+2));
-        $objDrawing = new \PHPExcel_Worksheet_Drawing();
-        $objDrawing->setName('Photo');
-        $objDrawing->setDescription('Photo');
-        $objDrawing->setPath('../web/images/code2.png');
-        $objDrawing->setCoordinates('G'.$l);
-        $objDrawing->setHeight(40);
-        //$objDrawing->setWidth(108);
-        $objDrawing->setOffsetX(20);
-        $objDrawing->setOffsetY(20);
-        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+        $objPHPExcel->getActiveSheet()->setCellValue('G'.$l, $apply->form_number);
+//        $objDrawing = new \PHPExcel_Worksheet_Drawing();
+//        $objDrawing->setName('Photo');
+//        $objDrawing->setDescription('Photo');
+//        $objDrawing->setPath('../web/images/code2.png');
+//        $objDrawing->setCoordinates('G'.$l);
+//        $objDrawing->setHeight(40);
+//        //$objDrawing->setWidth(108);
+//        $objDrawing->setOffsetX(20);
+//        $objDrawing->setOffsetY(20);
+//        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
         /*$objPHPExcel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);*/
 
         $l = $l + 2;
@@ -1279,16 +1280,17 @@ $arr = ['A','B','C','D','E','F','G','H','I'];
 
 
         $objPHPExcel->getActiveSheet()->mergeCells('G'.$l.':I'.($l+2));
-        $objDrawing = new \PHPExcel_Worksheet_Drawing();
-        $objDrawing->setName('Photo');
-        $objDrawing->setDescription('Photo');
-        $objDrawing->setPath('../web/images/code2.png');
-        $objDrawing->setCoordinates('G'.$l);
-        $objDrawing->setHeight(40);
-        //$objDrawing->setWidth(108);
-        $objDrawing->setOffsetX(20);
-        $objDrawing->setOffsetY(20);
-        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+        $objPHPExcel->getActiveSheet()->setCellValue('G'.$l, $apply->form_number);
+//        $objDrawing = new \PHPExcel_Worksheet_Drawing();
+//        $objDrawing->setName('Photo');
+//        $objDrawing->setDescription('Photo');
+//        $objDrawing->setPath('../web/images/code2.png');
+//        $objDrawing->setCoordinates('G'.$l);
+//        $objDrawing->setHeight(40);
+//        //$objDrawing->setWidth(108);
+//        $objDrawing->setOffsetX(20);
+//        $objDrawing->setOffsetY(20);
+//        $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
         /*$objPHPExcel->getActiveSheet()->getStyle('G1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);*/
 
 
