@@ -162,6 +162,16 @@ class District extends \yii\db\ActiveRecord{
         return $name;
     }
 
+    public static function getAlias($id){
+        $one = self::find()->where(['id'=>$id])->one();
+        if($one){
+            $name = $one->alias;
+        }else{
+            $name = null;
+        }
+        return $name;
+    }
+
 
     public function install() {
         try {

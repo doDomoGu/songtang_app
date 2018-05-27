@@ -21,6 +21,7 @@ use oa\models\TaskCategory;
 use oa\models\TaskCategoryId;
 use oa\models\TaskForm;
 use oa\models\TaskUserWildcard;
+use oa\models\FormNumber;
 use ucenter\models\User;
 use yii\bootstrap\Html;
 use yii\data\Pagination;
@@ -92,6 +93,10 @@ class ApplyController extends BaseController
             }else{
                 $new->flow_user = '';
             }
+            //生成报销表单序号
+            $new->form_number = FormNumber::generate($new->form_id);
+
+
             if($new->save()){
                 $r = new ApplyRecord();
                 $r->apply_id = $new->id;

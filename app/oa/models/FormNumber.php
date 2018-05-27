@@ -1,7 +1,9 @@
 <?php
 
-namespace app\oa\models;
+namespace oa\models;
 
+use ucenter\models\District;
+use ucenter\models\Industry;
 use Yii;
 
 /**
@@ -59,5 +61,39 @@ class FormNumber extends \yii\db\ActiveRecord
             'industry_id' => 'Industry ID',
             'current_number' => 'Current Number',
         ];
+    }
+
+    public static function generate($form_id){
+        $form_number = '';
+        if(in_array($form_id,[12,13])){
+            $user = Yii::$app->user->getIdentity();
+            $year = date('Y');
+            $month = date('m');
+            $district_id = $user->district_id;
+            $industry_id = $user->industry_id;
+            $one = self::find()->where(['form_id'=>$form_id,'year'=>$year,'month'=>$month,'district_id'=>$district_id,'industry_id'=>$industry_id])->one();
+            if($one){
+                $number = $one->current_number;
+            }else{
+                $number = 1;
+            }
+            $current_number = (string)($number + 1);
+            $new = new self();
+            $new->form_id = $form_id;
+            $new->year = $year;
+            $new->month = $month;
+            $new->district_id = $district_id;
+            $new->industry_id = $industry_id;
+            $new->current_number = $current_number;
+            $new->save();
+            
+            $number = $number<10 ? '00'.$number : ($number < 100 ? '0'.$number : $number);
+            $district_alias = strtoupper(District::getAlias($district_id));
+            $industry_alias = strtoupper(Industry::getAlias($industry_id));
+
+            $form_number = $district_alias.$industry_alias.$year.$month.$number;
+
+        }
+        return $form_number;
     }
 }

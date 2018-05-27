@@ -52,7 +52,7 @@ class Apply extends \yii\db\ActiveRecord
         return [
             [['title','user_id','task_id','flow_step','task_category'], 'required'],
             [['user_id','task_id','flow_step','status','task_category','form_id'], 'integer'],
-            [['add_time','edit_time','message','flow_user'],'safe']
+            [['add_time','edit_time','message','flow_user','form_number'],'safe']
         ];
     }
 
