@@ -74,18 +74,20 @@ class FormNumber extends \yii\db\ActiveRecord
             $one = self::find()->where(['form_id'=>$form_id,'year'=>$year,'month'=>$month,'district_id'=>$district_id,'industry_id'=>$industry_id])->one();
             if($one){
                 $number = $one->current_number;
+                $one->current_number = (string)($number + 1);
+                $one->save();
             }else{
                 $number = 1;
+                $new = new self();
+                $new->form_id = $form_id;
+                $new->year = $year;
+                $new->month = $month;
+                $new->district_id = $district_id;
+                $new->industry_id = $industry_id;
+                $new->current_number = '2';
+                $new->save();
             }
-            $current_number = (string)($number + 1);
-            $new = new self();
-            $new->form_id = $form_id;
-            $new->year = $year;
-            $new->month = $month;
-            $new->district_id = $district_id;
-            $new->industry_id = $industry_id;
-            $new->current_number = $current_number;
-            $new->save();
+
             
             $number = $number<10 ? '00'.$number : ($number < 100 ? '0'.$number : $number);
             $district_alias = strtoupper(District::getAlias($district_id));
