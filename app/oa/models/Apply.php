@@ -194,10 +194,14 @@ class Apply extends \yii\db\ActiveRecord
 
         foreach($applyList as $apply){
             // 2.根据申请对应的任务表  和  步骤 ，判断操作人是不是自己
-            $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
+            //$flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
+            $applyRecord = ApplyRecord::find()->where(['apply_id'=>$apply->id,'step'=>$apply->flow_step])->one();
 
-            if(self::isFlowUser($user_id,$flow,$apply))
+            if($applyRecord && $applyRecord->user_id==Yii::$app->user->id)
                 $list[] = $apply;
+
+            /*if(self::isFlowUser($user_id,$flow,$apply))
+                $list[] = $apply;*/
         }
 
         if($getCount){
