@@ -2289,18 +2289,24 @@ $l++;
                     $html2 .= $htmlOne;
                 }
             }
-            $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
             $flag = false;
-            if($flow->user_id>0){
-                if($flow->user_id==Yii::$app->user->id){
-                    $flag = true;
-                }
-            }else{
-                $flowUser = Apply::flowUserStr2Arr($apply->flow_user);
-                if(isset($flowUser[$apply->flow_step]) && $flowUser[$apply->flow_step] == Yii::$app->user->id){
-                    $flag = true;
-                }
+
+            $flow = ApplyRecord::find()->where(['apply_id'=>$apply->id,'step'=>$apply->flow_step])->one();
+            if($flow->user_id==Yii::$app->user->id){
+                $flag = true;
             }
+
+//            $flow = Flow::find()->where(['task_id'=>$apply->task_id,'step'=>$apply->flow_step])->one();
+//            if($flow->user_id>0){
+//                if($flow->user_id==Yii::$app->user->id){
+//                    $flag = true;
+//                }
+//            }else{
+//                $flowUser = Apply::flowUserStr2Arr($apply->flow_user);
+//                if(isset($flowUser[$apply->flow_step]) && $flowUser[$apply->flow_step] == Yii::$app->user->id){
+//                    $flag = true;
+//                }
+//            }
 
 
             if($flag){
