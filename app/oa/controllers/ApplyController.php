@@ -2258,7 +2258,7 @@ $l++;
                     $htmlOne.= '<div>标题：<b>'.$r->title.'</b>  操作类型：<b>'.Flow::typeName($r->type).'</b></div>';
                     $flow_user = CommonFunc::getByCache(UserIdentity::className(),'findIdentityOne',[$r->user_id],'ucenter:user/identity');
                     $username = $flow_user?$flow_user->name:'N/A';
-                    $htmlOne.= '<div>操作人：<b>'.$username.'</b> 时间: <b>'.$r->add_time.'</b> </div><div>结果：<b>'.Flow::getResultCn($r->flow->type,$r->result).'</b></div>';
+                    $htmlOne.= '<div>操作人：<b>'.$username.'</b> 时间: <b>'.$r->add_time.'</b> </div><div>结果：<b>'.Flow::getResultCn($r->type,$r->result).'</b></div>';
                     $htmlOne.= '<div>备注信息：<b>'.$r->message.'</b></div>';
                     $attchList = json_decode($r->attachment,true);
                     if($attchList){
