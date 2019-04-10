@@ -1,6 +1,7 @@
 <?php
 namespace yun\modules\admin\controllers;
 
+use common\components\CommonFunc;
 use yun\modules\admin\components\AdminFunc;
 use Yii;
 use yii\web\Controller;
@@ -18,6 +19,9 @@ class  BaseController extends Controller
         $this->except = [
             AdminFunc::adminUrl('default/error'),
         ];
+        if(!CommonFunc::checkIpWhiteList()){
+            return false;
+        }
         $this->checkLogin();
 
         return true;

@@ -1,6 +1,7 @@
 <?php
 namespace common\components;
 
+use common\models\GlobalConfig;
 use ucenter\models\UserHistory;
 use yii\base\Component;
 use yii;
@@ -264,5 +265,22 @@ class CommonFunc extends Component {
         $new->referer = Yii::$app->request->getReferrer();
         $new->add_time = date('Y-m-d H:i:s');
         $new->save();
+    }
+
+    public static function checkIpWhiteList(){
+        $result = GlobalConfig::getConfig('ip_white_list');
+        if($result){
+            // 白名单以|号分割
+            $list = explode('|',$result);
+            if(in_array(Yii::$app->request->getUserIP(),$list)){
+                return true;
+            }else{
+                echo '网站暂停访问!';
+                return false;
+            }
+        }else{
+            // 没有设置白名单表示全不允许
+            return true;
+        }
     }
 }

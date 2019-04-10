@@ -15,6 +15,11 @@ class BaseController extends Controller
             return false;
         }else{
             CommonFunc::addHistory();
+
+            if(!CommonFunc::checkIpWhiteList()){
+                return false;
+            }
+
             $this->checkLogin();  //检测用户登录 和 状态是否正常
             return true;
         }

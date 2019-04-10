@@ -31,6 +31,11 @@ class BaseController extends Controller
             'site/footer'
         ];
         CommonFunc::addHistory();
+
+        if(!CommonFunc::checkIpWhiteList()){
+            return false;
+        }
+
         if(!$this->checkLogin()){
             return false;
         }

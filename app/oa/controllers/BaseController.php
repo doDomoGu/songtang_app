@@ -38,6 +38,11 @@ $s=5/0;
 
 
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
+
+            if(!CommonFunc::checkIpWhiteList()){
+                return false;
+            }
+
             $this->checkLogin();  //检测用户登录 和 状态是否正常
 
             /*if(!Yii::$app->user->isGuest){

@@ -40,6 +40,10 @@ $s=5/0;
             }*/
 CommonFunc::addHistory();
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
+            if(!CommonFunc::checkIpWhiteList()){
+                return false;
+            }
+
             $this->checkLogin();  //检测用户是否登录和状态是否正常
 
            // $this->checkAppAuth(); //检测用户是否有当前APP的权限
