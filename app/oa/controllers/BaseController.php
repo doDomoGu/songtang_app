@@ -39,7 +39,7 @@ $s=5/0;
 
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
 
-            if(!CommonFunc::checkIpWhiteList()){
+            if(!CommonFunc::checkAllow()){
                 return false;
             }
 

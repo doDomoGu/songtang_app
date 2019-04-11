@@ -32,7 +32,7 @@ class BaseController extends Controller
         ];
         CommonFunc::addHistory();
 
-        if(!CommonFunc::checkIpWhiteList()){
+        if(!CommonFunc::checkAllow()){
             return false;
         }
 

@@ -40,7 +40,7 @@ $s=5/0;
             }*/
 CommonFunc::addHistory();
             //var_dump(Yii::$app->response->statusCode);//Yii::$app->end();
-            if(!CommonFunc::checkIpWhiteList()){
+            if(!CommonFunc::checkAllow()){
                 return false;
             }
 

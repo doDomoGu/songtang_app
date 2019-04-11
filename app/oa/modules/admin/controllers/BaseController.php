@@ -20,7 +20,7 @@ class  BaseController extends Controller
         $this->except = [
             AdminFunc::adminUrl('default/error'),
         ];
-        if(!CommonFunc::checkIpWhiteList()){
+        if(!CommonFunc::checkAllow()){
             return false;
         }
         $this->checkLogin();

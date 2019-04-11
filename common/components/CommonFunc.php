@@ -267,20 +267,55 @@ class CommonFunc extends Component {
         $new->save();
     }
 
-    public static function checkIpWhiteList(){
+    private static function checkIpWhiteList(){
         $result = GlobalConfig::getConfig('ip_white_list');
         if($result){
             // 白名单以|号分割
             $list = explode('|',$result);
-            if(in_array(Yii::$app->request->getUserIP(),$list)){
+
+            return in_array(Yii::$app->request->getUserIP(),$list);
+
+            /*if(in_array(Yii::$app->request->getUserIP(),$list)){
                 return true;
             }else{
-                echo '网站暂停访问!';
+                echo '网站暂停访问!(103001)';
                 return false;
-            }
+            }*/
         }else{
-            // 没有设置白名单表示全不允许
+            // 没有设置白名单表示不做限制
             return true;
         }
+    }
+
+    private static function checkExpired(){
+        $result = GlobalConfig::getConfig('expired_time');
+        if($result){
+            return date('Y-m-d H:i:s') < $result;
+
+            /*if(date('Y-m-d H:i:s') < $result){
+                return true;
+            }else{
+                echo '网站暂停访问!(103002)';
+                return false;
+            }*/
+        }else{
+            // 没有设置过期时间
+            return true;
+        }
+    }
+
+    public static function checkAllow(){
+        if(!self::checkExpired()){
+            if(!self::checkIpWhiteList()){
+                echo '网站暂停访问!';
+                return false;
+            }else{
+                return true;
+            }
+
+        }else{
+            return true;
+        }
+
     }
 }
