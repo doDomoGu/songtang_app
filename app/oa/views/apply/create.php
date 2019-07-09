@@ -4,8 +4,8 @@ use yii\bootstrap\ActiveForm;
 
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/create.js');
 oa\assets\AppAsset::addCssFile($this,'css/main/apply/create.css');
-oa\assets\AppAsset::addJsFile($this,'https://yun-source.songtang.net/resource/js/qiniu/plupload.full.min.js');
-oa\assets\AppAsset::addJsFile($this,'https://yun-source.songtang.net/resource/js/qiniu/qiniu.min.js');
+oa\assets\AppAsset::addJsFile($this,'http://yun-source2.songtang.net/resource/js/qiniu/plupload.full.min.js');
+oa\assets\AppAsset::addJsFile($this,'http://yun-source2.songtang.net/resource/js/qiniu/qiniu.min.js');
 oa\assets\AppAsset::addJsFile($this,'js/main/apply/create-apply-attachment-upload.js');
 /*oa\assets\AppAsset::addJsFile($this,'js/bootstrap-datetimepicker.js');
 oa\assets\AppAsset::addCssFile($this,'css/datetimepicker/bootstrap-datetimepicker.css');
