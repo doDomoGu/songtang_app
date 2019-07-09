@@ -63,9 +63,9 @@ return [
             ]
         ],
         'cache' => [
-            //'class' => 'yii\caching\FileCache',s
-            //'cachePath' => '@common/runtime/cache',
-            'class' => 'yii\redis\Cache',
+            'class' => 'yii\caching\FileCache',
+            'cachePath' => '@common/runtime/cache',
+//            'class' => 'yii\redis\Cache',
         ],
         'redis' => [
             'class' => 'yii\redis\Connection',
