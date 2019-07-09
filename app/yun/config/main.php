@@ -46,7 +46,7 @@ return [
                 'yii\web\JqueryAsset'=> [
                     'sourcePath'=>  null,
                     'js'=>
-                        ['https://yun-source.songtang.net/resource/js/jquery.js']
+                        [$params['qiniu-domain-beaut'].'resource/js/jquery.js']
 
                 ],
 
