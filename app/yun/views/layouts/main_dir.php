@@ -10,14 +10,14 @@
     <?php echo $this->render($this->context->navbarView); /* 引入导航栏 */?>
     <div id="dir-container" class="container" style="padding-top:85px;">
         <div id="dir-sidebar">
-            <?=$this->render('/dir/_left',['dir_id'=>$this->params['dir_id']])?>
+<!--            --><?//=$this->render('/dir/_left',['dir_id'=>$this->params['dir_id']])?>
         </div>
 
         <?php if(1!=1 && $this->params['dir_id']==5):?>
-        <?=$this->render('/dir/_rank_download')?>
+<!--        --><?//=$this->render('/dir/_rank_download')?>
         <?php else:?>
         <div id="dir-sidebar-right">
-        <?=$this->render('/dir/_sidebar_right')?>
+<!--        --><?//=$this->render('/dir/_sidebar_right')?>
         </div>
         <?php endif;?>
         <div id="dir-main" class="<?=1!=1 && $this->params['dir_id']==5?'dir-study':''?>">
