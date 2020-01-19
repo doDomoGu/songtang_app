@@ -60,23 +60,23 @@ class SiteController extends BaseController
         $dir_1 = Dir::find()->where(['p_id'=>0,'ord'=>1])->one();
         $dir_2 = Dir::find()->where(['p_id'=>0,'ord'=>2])->one();
         $dir_3 = Dir::find()->where(['p_id'=>0,'ord'=>3])->one();
-        $dir_4 = Dir::find()->where(['p_id'=>0,'ord'=>4])->one();
-        $dir_5 = Dir::find()->where(['p_id'=>0,'ord'=>5])->one();
+//        $dir_4 = Dir::find()->where(['p_id'=>0,'ord'=>4])->one();
+//        $dir_5 = Dir::find()->where(['p_id'=>0,'ord'=>5])->one();
 
         $params['list_dirOne'] = [
             1=>$dir_1,
             2=>$dir_2,
             3=>$dir_3,
-            4=>$dir_4,
-            5=>$dir_5
+//            4=>$dir_4,
+//            5=>$dir_5
         ];
 
         $limit = 5;
         $params['list_1'] = Dir::getChildrenByCache($dir_1->id,true,1,Dir::ORDER_TYPE_1,$limit);
         $params['list_2'] = Dir::getChildrenByCache($dir_2->id,true,1,Dir::ORDER_TYPE_1,$limit);
         $params['list_3'] = Dir::getChildrenByCache($dir_3->id,true,1,Dir::ORDER_TYPE_1,$limit);
-        $params['list_4'] = Dir::getChildrenByCache($dir_4->id,true,1,Dir::ORDER_TYPE_1,$limit);
-        $params['list_5'] = Dir::getChildrenByCache($dir_5->id,true,1,Dir::ORDER_TYPE_1,$limit);
+//        $params['list_4'] = Dir::getChildrenByCache($dir_4->id,true,1,Dir::ORDER_TYPE_1,$limit);
+//        $params['list_5'] = Dir::getChildrenByCache($dir_5->id,true,1,Dir::ORDER_TYPE_1,$limit);
         $this->view->title = yii::$app->name;
         return $this->render('index',$params);
     }

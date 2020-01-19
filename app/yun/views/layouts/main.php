@@ -16,10 +16,10 @@ AppAsset::register($this);  /* 注册appAsset */
     <?=$this->render($this->context->navbarView)/* 引入导航栏 */?>
     <?php if(yii::$app->controller->route == 'site/index'):?>
         <?=$this->render('/site/_news')?>
-        <?=$this->render('/site/_recruitment')?>
+<!--        --><?//=$this->render('/site/_recruitment')?>
     <?php endif;?>
     <?php if(yii::$app->controller->route == 'site/index'):?>
-    <div class="container" style="padding-top:640px;">
+    <div class="container" style="padding-top:590px;">
     <?php else:?>
     <div class="container">
     <?php endif;?>
