@@ -193,7 +193,7 @@ class DirController extends BaseController
                         if($cacheExist){
                             $order = $cache['dirOrder_'.Yii::$app->user->id];
                         }else{
-                            $order = $this->orderArr[0];;
+                            $order = $this->orderArr[5];;
                         }
                     }else{
                         $cache = Yii::$app->cache;
