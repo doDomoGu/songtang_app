@@ -64,6 +64,7 @@
 }
 .navbar ul li {
     height:72px;
+    padding: 0 20px;
 }
 .navbar ul li a {
     padding :26px 8px;
