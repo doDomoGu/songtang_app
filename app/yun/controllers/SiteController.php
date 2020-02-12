@@ -71,7 +71,7 @@ class SiteController extends BaseController
 //            5=>$dir_5
         ];
 
-        $limit = 5;
+        $limit = 10;
         $params['list_1'] = Dir::getChildrenByCache($dir_1->id,true,1,Dir::ORDER_TYPE_1,$limit);
         $params['list_2'] = Dir::getChildrenByCache($dir_2->id,true,1,Dir::ORDER_TYPE_1,$limit);
         $params['list_3'] = Dir::getChildrenByCache($dir_3->id,true,1,Dir::ORDER_TYPE_1,$limit);

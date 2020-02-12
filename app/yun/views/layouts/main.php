@@ -29,7 +29,8 @@ AppAsset::register($this);  /* 注册appAsset */
         <?= $content ?>
     </div>
     <?php if(yii::$app->controller->route == 'site/index'):?>
-        <div style="height:30px;background: #3A2E3C;margin-bottom: 10px;">
+<!--        <div style="height:30px;background: #3A2E3C;margin-bottom: 10px;">-->
+        <div style="height:30px;margin-bottom: 10px;">
 
         </div>
     <?php endif;?>

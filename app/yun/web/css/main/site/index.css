@@ -10,8 +10,8 @@
 }
 /* main */
 #site-index main {
-    width:920px;
-    float:left;
+    /*width:920px;*/
+    /*float:left;*/
 }
 
 /* aside slogan */
@@ -108,6 +108,81 @@
 
 #dir-list article .item-list li a:hover{
     opacity: 0.8;
+}
+
+
+#dir-list2 {
+    overflow: hidden;
+    margin-bottom:6px;
+}
+
+#dir-list2 article {
+    display: block;
+    width: 100%;
+    height: 60px;
+    /*height:400px;*/
+    /*margin-right:5px;*/
+    /*float:left;*/
+    clear:both;
+}
+
+/*#dir-list article.last {*/
+/*    margin-right: 0;*/
+/*}*/
+
+#dir-list2 article .item-heading a {
+    font-size:14px;
+    width:240px;
+    display:block;
+    float:left;
+    text-align: center;
+    text-decoration: none;
+    color:#fff;
+    background: #393332;
+    padding: 14px 0;
+    height: 50px;
+    letter-spacing:2px;
+}
+
+#dir-list2 article .item-heading a:hover{
+    opacity: 0.8;
+}
+
+#dir-list2 article .item-list ul {
+    height: 50px;
+    background: #eaeaea;
+    margin-top:4px;
+    margin-bottom: 0;
+    padding-top: 14px;
+}
+#dir-list2 article .item-list li{
+    /*width: 80px;*/
+    float: left;
+    margin-left: 20px;
+    /*border-bottom: 1px dashed #333;*/
+    height:36px;
+    overflow: hidden;
+
+}
+#dir-list2 article .item-list li a {
+    font-size:14px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color:#333;
+    height:20px;
+    line-height: 20px;
+    /*padding:10px 0 10px;*/
+}
+
+#dir-list2 article .item-list li a:hover{
+    opacity: 0.8;
+}
+
+
+#code {
+    background: #e7e7e7;
+    text-align:center;
 }
 
 /* main article */
