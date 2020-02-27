@@ -72,7 +72,7 @@
         </span>
     </div>
     <div id="attr-check">
-        <div class="attr-one">
+        <div class="attr-one" style="display:none;">
 
             地区：<?php foreach($districtItems as $k=>$a):?>
                 <?php
@@ -92,7 +92,7 @@
 
             <?/*=BaseHtml::checkboxList('area-check',$attrSearch['area'],$areaItems,['tag'=>false,'itemOptions'=>['class'=>'attr-check area-check']])*/?>
         </div>
-        <div class="attr-one">
+        <div class="attr-one" style="display:none;">
             行业：
             <?php foreach($industryItems as $k=>$a):?>
                 <?php
@@ -156,7 +156,7 @@
         </div>
     </div>
 </div>
-<div id="list-main">
+<div id="list-main" style="margin-top: 130px;">
 
 </div>
 

@@ -20,10 +20,10 @@ Modal::begin([
 
     <div id="editModalContent">
         <input type="hidden" class="edit_is_dir" />
-        <p>
+        <p style="display: none;">
             地区：<?=Html::dropDownList('district-check','',$districtItems,['class'=>'attr-check district-check'])?>
         </p>
-        <p>
+        <p style="display: none;">
             行业：<?=Html::dropDownList('industry-check','',$industryItems,['class'=>'attr-check industry-check'])?>
         </p>
         <p>
