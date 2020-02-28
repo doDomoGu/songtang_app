@@ -113,13 +113,14 @@
 
 #dir-list2 {
     overflow: hidden;
-    margin-bottom:6px;
+    /*margin-bottom:6px;*/
 }
 
 #dir-list2 article {
     display: block;
     width: 100%;
-    height: 60px;
+    height: 50px;
+    margin-bottom:10px;
     /*height:400px;*/
     /*margin-right:5px;*/
     /*float:left;*/
@@ -151,7 +152,7 @@
 #dir-list2 article .item-list ul {
     height: 50px;
     background: #eaeaea;
-    margin-top:4px;
+    /*margin-top:4px;*/
     margin-bottom: 0;
     padding-top: 14px;
 }

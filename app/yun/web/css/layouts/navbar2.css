@@ -71,8 +71,8 @@
 }
 
 .navbar-brand img{
-    height:70px;
-    padding:1px;
+    height:60px;
+    padding-top:10px;
 }
 
 .navbar-default .navbar-nav > .active > a,

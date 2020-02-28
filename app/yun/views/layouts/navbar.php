@@ -93,7 +93,7 @@ $item2 = [];
 
 <?php
     NavBar::begin([
-        'brandLabel' => BaseHtml::img('/images/logo.png'),
+        'brandLabel' => BaseHtml::img('/images/logo2.png'),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-default',
