@@ -20,7 +20,7 @@
         <div class="bd">
             <ul>
                 <?php foreach($news_list as $l):?>
-                <li style="background:url('<?=YunFunc::getResourcePath($l->img_url)?>') #eee center 0 no-repeat;backgroun-size:auto 100%;">
+                <li style="background:url('<?=YunFunc::getResourcePath($l->img_url)?>') #eee center 0 no-repeat;background-size:auto 100%;">
                     <div class="siteWidth"><a href="/" target="_blank"></a></div></li>
                 <?php endforeach;?>
             </ul>
