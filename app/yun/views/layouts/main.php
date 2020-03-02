@@ -19,7 +19,7 @@ AppAsset::register($this);  /* 注册appAsset */
 <!--        --><?//=$this->render('/site/_recruitment')?>
     <?php endif;?>
     <?php if(yii::$app->controller->route == 'site/index'):?>
-    <div class="container" style="padding-top:595px;">
+    <div class="container" style="padding-top:495px;">
     <?php else:?>
     <div class="container">
     <?php endif;?>

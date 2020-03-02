@@ -28,7 +28,7 @@
 
         <?= $form->field($model, 'img_url',['template'=>"{label}\n<div class=\"col-lg-3\">
     <div>
-    <img id=\"img-upload\" src=\"".YunFunc::getResourcePath($model->img_url)."\" style=\"border:1px solid #333;\" />
+    <img id=\"img-upload\" src=\"".YunFunc::getResourcePath($model->img_url)."\" style=\"height:200px;border:1px solid #333;\" />
     </div>
     <div id=\"pickfile_container\">
     <p>
